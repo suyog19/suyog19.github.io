@@ -1,151 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suyog Joshi | Landing Page</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            background: #f4f6f8;
-            min-height: 100vh;
-        }
-        .header {
-            background: #23395d;
-            color: #fff;
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: 0 4px 16px rgba(35,57,93,0.08);
-        }
-        .main-layout {
-            display: flex;
-            flex-direction: row;
-            min-height: 70vh;
-            max-width: 900px;
-            margin: 2rem auto;
-            background: #fff;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 16px rgba(35,57,93,0.10);
-            overflow: hidden;
-        }
-        .side-panel {
-            background: #23395d;
-            color: #fff;
-            min-width: 200px;
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        .tool-link {
-            margin: 0.5rem 0;
-            width: 100%;
-            text-align: left;
-        }
-        .tool-link.btn {
-            background-color: #3e7cb1;
-            border: none;
-            color: #fff;
-            font-weight: 500;
-            border-radius: 0.5rem;
-            transition: background 0.2s;
-        }
-        .tool-link.btn:hover, .tool-link.active {
-            background-color: #f9a825;
-            color: #23395d;
-        }
-        .content-panel {
-            flex: 1;
-            padding: 2rem;
-            min-width: 0;
-        }
-        .tool-content {
-            display: none;
-        }
-        .active-tool {
-            display: block;
-        }
-        .footer {
-            background: #23395d;
-            color: #fff;
-            text-align: center;
-            padding: 1rem;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-            font-size: 1rem;
-            border-top: 3px solid #3e7cb1;
-            box-shadow: 0 -4px 16px rgba(35,57,93,0.08);
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        @media (max-width: 768px) {
-            .main-layout {
-                flex-direction: column;
-                margin: 1rem;
-            }
-            .side-panel {
-                flex-direction: row;
-                min-width: 0;
-                padding: 1rem;
-                justify-content: center;
-                align-items: center;
-            }
-            .tool-link {
-                margin: 0 0.5rem;
-                width: auto;
-            }
-            .content-panel {
-                padding: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suyog Joshi - Portfolio</title>
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <span class="display-5 fw-bold">Welcome! Thanks for visiting</span>
-    </header>
-    <main>
-        <div class="main-layout">
-            <nav class="side-panel">
-                <button class="btn tool-link active" onclick="showTool('resumechat', this)">Chat with my Resume</button>
-                <button class="btn tool-link" onclick="showTool('codeexplainer', this)">Code Explainer</button>
-                <button class="btn tool-link" onclick="showTool('texttoquiz', this)">Text to Quiz</button>
-            </nav>
-            <section class="content-panel">
-                <div id="resumechat" class="tool-content active-tool">
-                    <h5>Chat with my Resume</h5>
-                    <iframe src="resumechat.html" style="width:100%;height:400px;border:none;border-radius:1rem;"></iframe>
-                </div>
-                <div id="codeexplainer" class="tool-content">
-                    <h5>Code Explainer</h5>
-                    <iframe src="codeexplainer.html" style="width:100%;height:400px;border:none;border-radius:1rem;"></iframe>
-                </div>
-                <div id="texttoquiz" class="tool-content">
-                    <h5>Text to Quiz</h5>
-                    <iframe src="texttoquiz.html" style="width:100%;height:400px;border:none;border-radius:1rem;"></iframe>
-                </div>
-            </section>
+  <header>
+    <div class="logo">Suyog Joshi<br><small>Software Engineer | AI Enthusiast</small></div>
+    <nav id="navbar">
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+        <span class="menu-icon"><i class="fas fa-bars"></i></span>
+      </button>
+      <ul id="nav-list">
+        <li><a href="#resume">Professional Summary</a></li>
+        <li><a href="#software-tools">My Software Tools</a></li>
+        <li><a href="#hobbies">Beyond Work</a></li>
+        <li><a href="#contact">Let's Connect</a></li>
+        <!--li class="lang-select">
+          <div class="custom-lang-dropdown">
+            <button class="dropdown-toggle" onclick="toggleLangDropdown(event)">
+              <img src="https://flagcdn.com/gb.svg" alt="English" class="flag-icon"> English
+            </button>
+            <div class="dropdown-menu hidden">
+              <div class="dropdown-item" onclick="switchLang('en')">
+                <img src="https://flagcdn.com/gb.svg" alt="English" class="flag-icon"> English
+              </div>
+              <div class="dropdown-item" onclick="switchLang('mr')">
+                <img src="https://flagcdn.com/in.svg" alt="Marathi" class="flag-icon"> Marathi
+              </div>
+              <div class="dropdown-item" onclick="switchLang('hi')">
+                <img src="https://flagcdn.com/in.svg" alt="Hindi" class="flag-icon"> Hindi
+              </div>
+            </div>
+          </div>
+        </li-->
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="resume">
+      <h2 class="resume-timeline-title" data-key="resume_title">Professional Summary</h2>
+      <div class="resume-summary-cards" style="display: flex; gap: 1.5em; flex-wrap: wrap; justify-content: center;">
+        <div class="resume-summary-card">
+          <div class="resume-timeline-item-title">Experience</div>
+          <div class="resume-timeline-item-desc">21 years in product companies, developing market-leading software in payment and banking domains.</div>
         </div>
-    </main>
-    <footer class="footer">
-        &copy; 2025 Suyog Joshi. All rights reserved.
-    </footer>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function showTool(toolId, btn) {
-            document.querySelectorAll('.tool-content').forEach(function(el) {
-                el.classList.remove('active-tool');
-            });
-            document.getElementById(toolId).classList.add('active-tool');
-            document.querySelectorAll('.tool-link').forEach(function(b) {
-                b.classList.remove('active');
-            });
-            btn.classList.add('active');
-        }
-    </script>
+        <div class="resume-summary-card">
+          <div class="resume-timeline-item-title">Leadership</div>
+          <div class="resume-timeline-item-desc">Led a team of 20 software engineers to deliver successful outcomes.</div>
+        </div>
+        <div class="resume-summary-card">
+          <div class="resume-timeline-item-title">Technical Expertise</div>
+          <div class="resume-timeline-item-desc">Software architecture and REST microservices on Java tech stack.</div>
+        </div>
+        <div class="resume-summary-card">
+          <div class="resume-timeline-item-title">Communication</div>
+          <div class="resume-timeline-item-desc">Effective stakeholder communication and team motivation.</div>
+        </div>
+        <div class="resume-summary-card">
+          <div class="resume-timeline-item-title">Values</div>
+          <div class="resume-timeline-item-desc">Works with passion, transparency, and leads by example.</div>
+        </div>
+      </div>
+      <div class="resume-actions">
+        <a href="#" class="resume-chat-btn" onclick="openChatbot();return false;" title="Ask questions about my experience!">
+          <i class="fas fa-comments"></i> Chat With Resume
+        </a>
+        <a href="#" class="resume-skills-btn" onclick="openSkillsModal();return false;" title="See my skills and proficiency">
+          <i class="fas fa-lightbulb"></i> Skills
+        </a>
+        <a href="assets/Suyog_Joshi.pdf" download class="resume-download-btn">
+          <i class="fas fa-download"></i> Download Resume
+        </a>
+      </div>
+    </section>
+
+    <!-- My Software Tools Section -->
+    <section id="software-tools" class="section">
+      <h2 class="section-title">My Software Tools</h2>
+      <div class="tools-grid">
+        <!-- Example Tool Card -->
+        <div class="tool-card">
+          <h3 class="tool-title">Human vs AI Tic-Tac-Toe</h3>
+          <p class="tool-desc">A web-based Tic-Tac-Toe game where users can play against an AI opponent.</p>
+          <div class="tool-links">
+            <a href="https://github.com/suyog19/tic-tac-toe" target="_blank" class="github-link"><i class="fab fa-github"></i> GitHub</a>
+            <button class="demo-btn" onclick="openDemoModal('https://huggingface.co/spaces/suyog19/tic-tac-toe')"><i class="fas fa-play"></i> Demo</button>
+          </div>
+        </div>
+        <div class="tool-card">
+          <h3 class="tool-title">Text to Quiz</h3>
+          <p class="tool-desc">A tool that converts text passages into quiz questions.</p>
+          <div class="tool-links">
+            <a href="https://github.com/suyog19/text-to-quiz" target="_blank" class="github-link"><i class="fab fa-github"></i> GitHub</a>
+            <button class="demo-btn" onclick="openDemoModal('https://suyog19-text-to-quiz.hf.space/')"><i class="fas fa-play"></i> Demo</button>
+          </div>
+        </div>
+        <div class="tool-card">
+          <h3 class="tool-title">Code Explainer</h3>
+          <p class="tool-desc">A tool that explains code snippets and provides insights.</p>
+          <div class="tool-links">
+            <a href="https://github.com/suyog19/code-explainer" target="_blank" class="github-link"><i class="fab fa-github"></i> GitHub</a>
+            <button class="demo-btn" onclick="openDemoModal('https://suyog19-code-explainer.hf.space/')"><i class="fas fa-play"></i> Demo</button>
+          </div>
+        </div>
+        <!-- Add more tool cards as needed -->
+      </div>
+      <!-- Demo Modal (hidden by default) -->
+      <div id="demo-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close" onclick="closeDemoModal()">&times;</span>
+          <div id="demo-content">
+            <!-- Demo content will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </section>
+      </div>
+    </section>
+
+    <section id="hobbies">
+      <h2 data-key="hobbies_title">Beyond Work</h2>
+      <h3>🪴 Home Gardening</h3>
+      <p class="hobby-desc">I love growing a variety of plants and flowers at home. Here are some highlights from my garden:</p>
+      <div class="hobby-gallery">
+        <img src="assets/images/garden1.jpg" alt="Home Gardening 1" class="hobby-img" onclick="openLightbox(this)">
+        <img src="assets/images/garden2.jpg" alt="Home Gardening 2" class="hobby-img" onclick="openLightbox(this)">
+        <img src="assets/images/garden3.jpg" alt="Home Gardening 3" class="hobby-img" onclick="openLightbox(this)">
+        <img src="assets/images/garden4.jpg" alt="Home Gardening 4" class="hobby-img" onclick="openLightbox(this)">
+        <!-- Add more images as needed -->
+      </div>
+      <h3>🐾 Cat Daddy</h3>
+      <p class="hobby-desc">I am a proud cat parent! Here are some adorable moments with my cats:</p>
+      <div class="hobby-gallery">
+        <img src="assets/images/cat1.jpg" alt="Cat Daddy 1" class="hobby-img" onclick="openLightbox(this)">
+        <img src="assets/images/cat2.jpg" alt="Cat Daddy 2" class="hobby-img" onclick="openLightbox(this)">
+        <img src="assets/images/cat3.jpg" alt="Cat Daddy 3" class="hobby-img" onclick="openLightbox(this)">
+        <img src="assets/images/cat4.jpg" alt="Cat Daddy 4" class="hobby-img" onclick="openLightbox(this)">
+        <!-- Add more images as needed -->
+      </div>
+      <!-- Lightbox Modal -->
+      <div id="lightbox-modal" class="lightbox-modal hidden" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox();event.stopPropagation();">&times;</span>
+        <img id="lightbox-img" src="" alt="Large Hobby Image">
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 data-key="contact_title">Let’s Connect</h2>
+      <p class="contact-desc">Feel free to reach out to me via social media or the contact form below!</p>
+      <div class="contact-socials">
+        <a href="https://github.com/suyog19" target="_blank" rel="noopener" class="contact-icon" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/suyog-joshi/" target="_blank" rel="noopener" class="contact-icon" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="https://x.com/JoshiSuyog19" target="_blank" rel="noopener" class="contact-icon" title="Twitter"><i class="fab fa-twitter"></i></a>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+        <button type="submit" class="contact-submit-btn">Send Message</button>
+      </form>
+      <div id="form-message" style="display:none; text-align:center; margin-top:1em;"></div>
+    </section>
+  </main>
+
+  <footer>
+  <!-- Skills Modal -->
+  <div id="skills-modal" class="hidden">
+    <div class="skills-modal-content">
+      <div class="skills-modal-header">
+        <span class="skills-modal-title"><i class="fas fa-lightbulb"></i> My Skills</span>
+        <button class="skills-modal-close" onclick="closeSkillsModal()" aria-label="Close skills modal">&times;</button>
+      </div>
+      <div class="skills-modal-body">
+        <div class="skills-grid">
+          <div class="skill-card">
+            <i class="fab fa-html5 skill-icon" style="color:#e34c26;"></i>
+            <span class="skill-name">Web Development - MERN Stack</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+            <span class="skill-badge latest">Latest</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-robot skill-icon" style="color:#6f42c1;"></i>
+            <span class="skill-name">AI/ML</span>
+            <span class="skill-badge beginner">Beginner</span>
+            <span class="skill-badge latest">Latest</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-drafting-compass skill-icon" style="color:#6f42c1;"></i>
+            <span class="skill-name">Software Architecture</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-project-diagram skill-icon" style="color:#2965f1;"></i>
+            <span class="skill-name">Design Patterns</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-server skill-icon" style="color:#f7df1e;"></i>
+            <span class="skill-name">Software Resiliency, High Availability, Performance</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-server skill-icon" style="color:#f7df1e;"></i>
+            <span class="skill-name">Java, J2EE Tech Stack</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-server skill-icon" style="color:#f7df1e;"></i>
+            <span class="skill-name">REST API Development In Adherence To Gold Standards</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-server skill-icon" style="color:#f7df1e;"></i>
+            <span class="skill-name">Leadership</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-server skill-icon" style="color:#f7df1e;"></i>
+            <span class="skill-name">People Management</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-server skill-icon" style="color:#f7df1e;"></i>
+            <span class="skill-name">Project Management using ALM Rally, JIRA</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-server skill-icon" style="color:#f7df1e;"></i>
+            <span class="skill-name">Agile Scrum, SAFe Frameworks</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-database skill-icon" style="color:#f80000;"></i>
+            <span class="skill-name">Oracle Database</span>
+            <span class="skill-badge expert">Expert</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-database skill-icon" style="color:#336791;"></i>
+            <span class="skill-name">PostgreSQL</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-database skill-icon" style="color:#00758f;"></i>
+            <span class="skill-name">mysql</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-leaf skill-icon" style="color:#47A248;"></i>
+            <span class="skill-name">MongoDB</span>
+            <span class="skill-badge beginner">Beginner</span>
+          </div>
+          <div class="skill-card">
+            <i class="fab fa-python skill-icon" style="color:#3776ab;"></i>
+            <span class="skill-name">Python</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+          <div class="skill-card">
+            <i class="fab fa-python skill-icon" style="color:#3776ab;"></i>
+            <span class="skill-name">Software Quality Assurance</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-tools skill-icon" style="color:#e67e22;"></i>
+            <span class="skill-name">CI/CD - Git, Maven, Jenkins, Docker, Kubernetes, Helm Charts</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+          <div class="skill-card">
+            <i class="fab fa-java skill-icon" style="color:#007396;"></i>
+            <span class="skill-name">Spring, Springboot, Hibernate</span>
+            <span class="skill-badge beginner">Beginner</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-cloud skill-icon" style="color:#6f42c1;"></i>
+            <span class="skill-name">Pivotal Cloud Foundry</span>
+            <span class="skill-badge beginner">Beginner</span>
+          </div>
+          <div class="skill-card">
+            <i class="fas fa-shield-alt skill-icon" style="color:#1ca7b6;"></i>
+            <span class="skill-name">Software Security - Checkmarx, Sonarqube, Blackduck</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+          <div class="skill-card">
+            <i class="fab fa-html5 skill-icon" style="color:#e34c26;"></i>
+            <span class="skill-name">Web Development - HTML5, CSS, Javascript, Bootstrap</span>
+            <span class="skill-badge intermediate">Intermediate</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <p>&copy; 2025 Suyog Joshi, All Rights Reserved.</p>
+  </footer>
+
+  <div id="chatbot" class="hidden">
+    <div class="chatbot-modal hidden" id="chatbot-modal">
+      <div class="chatbot-header" id="chatbot-header">
+        <span class="chatbot-title"><i class="fas fa-robot"></i> Resume Chatbot</span>
+        <button class="chatbot-close" onclick="closeChatbot()" aria-label="Close chatbot">&times;</button>
+      </div>
+      <div class="chatbot-body" id="chatbot-body">
+        <div id="chatbot-loader" class="chatbot-loader"></div>
+        <iframe id="chatbot-iframe" src="" title="Resume Chatbot" frameborder="0" allow="clipboard-write" class="chatbot-iframe" style="display:none" onload="hideChatbotLoader()"></iframe>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
