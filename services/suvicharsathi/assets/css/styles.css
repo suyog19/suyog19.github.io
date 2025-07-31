@@ -1,0 +1,332 @@
+/* Custom styles for SuvicharSathi */
+
+:root {
+  --primary-color: #0d6efd;
+  --secondary-color: #23395d;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #0dcaf0;
+  --light-color: #f8f9fa;
+  --dark-color: #212529;
+}
+
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f8f9fa;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+/* Custom button styles */
+.btn-primary {
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+}
+
+/* Card styles */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border-radius: 12px 12px 0 0 !important;
+  border: none;
+}
+
+/* Form styles */
+.form-control {
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Alert styles */
+.alert {
+  border-radius: 10px;
+  border: none;
+}
+
+.alert-success {
+  background: linear-gradient(45deg, #d1edff, #e7f3ff);
+  color: #0c5460;
+}
+
+.alert-danger {
+  background: linear-gradient(45deg, #ffeaa7, #fab1a0);
+  color: #721c24;
+}
+
+.alert-info {
+  background: linear-gradient(45deg, #a8e6cf, #dcedc1);  
+  color: #055160;
+}
+
+/* Animation classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Progress bar */
+.progress {
+  border-radius: 10px;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  background: linear-gradient(45deg, var(--success-color), #20c997);
+}
+
+/* Badge styles */
+.badge {
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}
+
+/* Pricing cards */
+.pricing-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+}
+
+.pricing-card.featured {
+  border: 2px solid var(--primary-color);
+  transform: scale(1.05);
+}
+
+.pricing-card.featured::before {
+  height: 6px;
+  background: linear-gradient(45deg, var(--warning-color), #ff6b6b);
+}
+
+/* Message cards */
+.message-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.message-card::before {
+  content: '📜';
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5rem;
+  opacity: 0.3;
+}
+
+.message-text {
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.message-date {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .pricing-card.featured {
+    transform: none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+}
+
+/* Footer adjustments */
+footer {
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Header adjustments */
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand img {
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: rotate(10deg);
+}
+
+/* Input group styling */
+.input-group-text {
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  border: 2px solid var(--primary-color);
+  font-weight: 600;
+}
+
+/* OTP input special styling */
+.otp-input {
+  font-family: 'Courier New', monospace;
+  text-align: center;
+  letter-spacing: 0.5rem;
+  font-size: 1.8rem !important;
+  font-weight: 600;
+  border: 3px solid #e9ecef;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.otp-input:focus {
+  border-color: var(--success-color);
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.25);
+  transform: scale(1.02);
+}
+
+/* Success animation */
+.success-checkmark {
+  animation: checkmark 0.6s ease-in-out;
+}
+
+@keyframes checkmark {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Dashboard specific styles */
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.subscription-progress {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.subscription-progress .progress-bar {
+  background: linear-gradient(45deg, #4CAF50, #8BC34A);
+  transition: width 0.8s ease;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 576px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .btn {
+    padding: 0.7rem 1.2rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .navbar, footer, .btn, #alertContainer {
+    display: none !important;
+  }
+  
+  body {
+    padding: 0;
+    background: white;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}

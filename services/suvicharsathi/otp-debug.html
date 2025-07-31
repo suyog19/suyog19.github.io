@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Specific Debug</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🚀 OTP Endpoint Specific Debug</h2>
+        <div class="alert alert-info">
+            This test focuses specifically on the OTP endpoint that's failing
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">Test Data</div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label>Phone:</label>
+                            <input type="text" id="testPhone" class="form-control" value="+919999999999">
+                        </div>
+                        <div class="mb-2">
+                            <label>Name:</label>
+                            <input type="text" id="testName" class="form-control" value="Test User">
+                        </div>
+                        <div class="mb-2">
+                            <label>Email:</label>
+                            <input type="text" id="testEmail" class="form-control" value="test@example.com">
+                        </div>
+                        <button id="testOTPDetailed" class="btn btn-primary w-100">Test OTP Endpoint</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        Detailed Results
+                        <button id="clearLog" class="btn btn-sm btn-outline-secondary float-end">Clear</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="detailedLog" style="max-height: 500px; overflow-y: auto; font-family: monospace; font-size: 0.8em; background: #f8f9fa; padding: 10px; border-radius: 5px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const logDiv = document.getElementById('detailedLog');
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '5px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            logDiv.appendChild(div);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function logObject(obj, title) {
+            log(`${title}:`, 'info');
+            const pre = document.createElement('pre');
+            pre.style.background = '#e9ecef';
+            pre.style.padding = '10px';
+            pre.style.fontSize = '0.75em';
+            pre.style.marginLeft = '20px';
+            pre.textContent = JSON.stringify(obj, null, 2);
+            logDiv.appendChild(pre);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        document.getElementById('testOTPDetailed').addEventListener('click', async () => {
+            logDiv.innerHTML = '';
+            
+            const phone = document.getElementById('testPhone').value;
+            const name = document.getElementById('testName').value;
+            const email = document.getElementById('testEmail').value;
+            
+            log('🚀 Starting Detailed OTP Test', 'info');
+            log(`Frontend Origin: ${window.location.origin}`, 'info');
+            log(`Backend URL: ${baseURL}`, 'info');
+            
+            // Step 1: Test if backend is reachable
+            log('📡 Step 1: Testing backend connectivity...', 'info');
+            try {
+                const pingResponse = await fetch(baseURL, { method: 'GET' });
+                log(`✅ Backend reachable: ${pingResponse.status}`, 'success');
+            } catch (error) {
+                log(`❌ Backend not reachable: ${error.message}`, 'error');
+                return;
+            }
+            
+            // Step 2: Test OPTIONS request (CORS preflight)
+            log('🔍 Step 2: Testing CORS preflight (OPTIONS)...', 'info');
+            try {
+                const optionsResponse = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'content-type',
+                        'Origin': window.location.origin
+                    }
+                });
+                
+                log(`✅ OPTIONS request successful: ${optionsResponse.status}`, 'success');
+                
+                // Log all response headers
+                const headers = {};
+                for (let [key, value] of optionsResponse.headers.entries()) {
+                    headers[key] = value;
+                }
+                logObject(headers, 'CORS Headers from OPTIONS response');
+                
+            } catch (error) {
+                log(`❌ OPTIONS request failed: ${error.message}`, 'error');
+                log('This indicates a CORS preflight issue', 'warning');
+            }
+            
+            // Step 3: Test actual POST request
+            log('📤 Step 3: Testing POST request to OTP endpoint...', 'info');
+            
+            const requestData = {
+                phone_number: phone,
+                full_name: name,
+                email: email
+            };
+            
+            logObject(requestData, 'Request Data');
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Origin': window.location.origin,
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                log(`📨 Response Status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'warning');
+                
+                // Log response headers
+                const responseHeaders = {};
+                for (let [key, value] of response.headers.entries()) {
+                    responseHeaders[key] = value;
+                }
+                logObject(responseHeaders, 'Response Headers');
+                
+                // Log response body
+                let responseData;
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    responseData = await response.json();
+                    logObject(responseData, 'Response JSON');
+                } else {
+                    responseData = await response.text();
+                    log(`Response Text: ${responseData}`, 'info');
+                }
+                
+                if (response.ok) {
+                    log('🎉 OTP Request Successful!', 'success');
+                } else {
+                    log(`⚠️ OTP Request Failed with status ${response.status}`, 'warning');
+                }
+                
+            } catch (error) {
+                log(`❌ POST request failed: ${error.message}`, 'error');
+                
+                // Detailed error analysis
+                if (error.message.includes('CORS')) {
+                    log('🔧 CORS Error - Check backend CORS configuration', 'error');
+                } else if (error.message.includes('Failed to fetch')) {
+                    log('🌐 Network Error - Possible causes:', 'error');
+                    log('  • Backend server down', 'warning');
+                    log('  • CORS policy blocking request', 'warning');
+                    log('  • Network connectivity issue', 'warning');
+                } else if (error.message.includes('NetworkError')) {
+                    log('🔌 Network Error - Check internet connection', 'error');
+                }
+                
+                // Browser console info
+                log('💡 Also check browser Developer Tools > Console for more details', 'info');
+            }
+            
+            log('✅ Detailed test complete', 'info');
+        });
+
+        document.getElementById('clearLog').addEventListener('click', () => {
+            logDiv.innerHTML = '';
+        });
+
+        // Auto-run test on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('testOTPDetailed').click();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

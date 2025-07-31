@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - SuvicharSathi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>🧪 SuvicharSathi API Test</h2>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Registration OTP</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="testRegisterForm">
+                            <div class="mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="testPhone" value="9876543210" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="testName" value="Test User" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email (Optional)</label>
+                                <input type="email" class="form-control" id="testEmail" value="test@example.com">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send OTP</button>
+                        </form>
+                        <div id="registerResult" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Login OTP</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="testLoginForm">
+                            <div class="mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="loginTestPhone" value="9876543210" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Send Login OTP</button>
+                        </form>
+                        <div id="loginResult" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>API Response Log</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="apiLog" style="background: #f8f9fa; padding: 15px; border-radius: 5px; max-height: 400px; overflow-y: auto;"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        const apiLog = document.getElementById('apiLog');
+        
+        function logToConsole(message, data = null) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}${data ? '\n' + JSON.stringify(data, null, 2) : ''}`;
+            apiLog.textContent += logEntry + '\n\n';
+            apiLog.scrollTop = apiLog.scrollHeight;
+            console.log(message, data);
+        }
+        
+        // Test Registration OTP
+        document.getElementById('testRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById('testPhone').value;
+            const name = document.getElementById('testName').value;
+            const email = document.getElementById('testEmail').value;
+            
+            logToConsole('🚀 Testing Registration OTP API...');
+            logToConsole('Request Data:', { phone, name, email });
+            
+            try {
+                const result = await api.sendRegistrationOTP(
+                    api.formatPhoneNumber(phone), 
+                    name, 
+                    email
+                );
+                
+                logToConsole('✅ Registration OTP Response:', result);
+                
+                const resultDiv = document.getElementById('registerResult');
+                if (result.success) {
+                    resultDiv.innerHTML = '<div class="alert alert-success">✅ OTP Sent Successfully!</div>';
+                } else {
+                    resultDiv.innerHTML = `<div class="alert alert-danger">❌ Error: ${result.error}</div>`;
+                }
+            } catch (error) {
+                logToConsole('💥 Registration OTP Error:', error);
+                document.getElementById('registerResult').innerHTML = 
+                    `<div class="alert alert-danger">💥 Network Error: ${error.message}</div>`;
+            }
+        });
+        
+        // Test Login OTP
+        document.getElementById('testLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phone = document.getElementById('loginTestPhone').value;
+            
+            logToConsole('🚀 Testing Login OTP API...');
+            logToConsole('Request Data:', { phone });
+            
+            try {
+                const result = await api.sendLoginOTP(api.formatPhoneNumber(phone));
+                
+                logToConsole('✅ Login OTP Response:', result);
+                
+                const resultDiv = document.getElementById('loginResult');
+                if (result.success) {
+                    resultDiv.innerHTML = '<div class="alert alert-success">✅ Login OTP Sent!</div>';
+                } else {
+                    resultDiv.innerHTML = `<div class="alert alert-danger">❌ Error: ${result.error}</div>`;
+                }
+            } catch (error) {
+                logToConsole('💥 Login OTP Error:', error);
+                document.getElementById('loginResult').innerHTML = 
+                    `<div class="alert alert-danger">💥 Network Error: ${error.message}</div>`;
+            }
+        });
+        
+        // Log current configuration
+        logToConsole('🔧 API Configuration:', {
+            baseURL: api.baseURL,
+            hasToken: !!api.getToken()
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referrer Policy & Headers Debug</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Test with different referrer policies -->
+    <meta name="referrer" content="no-referrer" id="referrerMeta">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🔍 Referrer Policy & Headers Debug</h2>
+        
+        <div class="alert alert-info">
+            <strong>Testing:</strong> Referrer Policy and other potential header issues that could affect CORS
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Current Browser Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Current Origin:</strong> <span id="currentOrigin" class="text-primary"></span></p>
+                        <p><strong>Document Referrer:</strong> <span id="documentReferrer" class="text-info"></span></p>
+                        <p><strong>Referrer Policy:</strong> <span id="referrerPolicy" class="text-warning"></span></p>
+                        <p><strong>User Agent:</strong> <span id="userAgent" class="text-muted small"></span></p>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Test Different Referrer Policies</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testNoReferrer" class="btn btn-primary btn-sm mb-2 w-100">🚫 no-referrer</button>
+                        <button id="testOrigin" class="btn btn-info btn-sm mb-2 w-100">🏠 origin</button>
+                        <button id="testSameOrigin" class="btn btn-warning btn-sm mb-2 w-100">🔒 same-origin</button>
+                        <button id="testUnsafeUrl" class="btn btn-danger btn-sm mb-2 w-100">⚠️ unsafe-url</button>
+                        <button id="testDefault" class="btn btn-secondary btn-sm mb-2 w-100">📋 Default (no policy)</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Results</h5>
+                        <button id="clearResults" class="btn btn-sm btn-outline-secondary float-end">Clear</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="results" style="max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85em; background: #f8f9fa; padding: 10px; border-radius: 5px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Complete Headers Test</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testAllHeaders" class="btn btn-success btn-lg w-100 mb-3">🔬 Test with All Possible Headers</button>
+                        <div id="headersResults" style="font-family: monospace; font-size: 0.8em; background: #f8f9fa; padding: 10px; border-radius: 5px; min-height: 100px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const resultsDiv = document.getElementById('results');
+        const headersResultsDiv = document.getElementById('headersResults');
+
+        // Display current browser settings
+        document.getElementById('currentOrigin').textContent = window.location.origin;
+        document.getElementById('documentReferrer').textContent = document.referrer || 'None';
+        document.getElementById('referrerPolicy').textContent = document.referrerPolicy || 'Default';
+        document.getElementById('userAgent').textContent = navigator.userAgent;
+
+        function log(message, type = 'info', targetDiv = resultsDiv) {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '3px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            targetDiv.appendChild(div);
+            targetDiv.scrollTop = targetDiv.scrollHeight;
+        }
+
+        function separator(targetDiv = resultsDiv) {
+            log('─'.repeat(40), 'info', targetDiv);
+        }
+
+        function setReferrerPolicy(policy) {
+            const meta = document.getElementById('referrerMeta');
+            if (policy) {
+                meta.setAttribute('content', policy);
+                document.getElementById('referrerPolicy').textContent = policy;
+            } else {
+                meta.removeAttribute('content');
+                document.getElementById('referrerPolicy').textContent = 'Default';
+            }
+        }
+
+        async function testOTPWithPolicy(policyName, customHeaders = {}) {
+            log(`🧪 Testing with referrer policy: ${policyName}`, 'info');
+            
+            try {
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    ...customHeaders
+                };
+                
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: headers,
+                    referrerPolicy: policyName === 'Default' ? undefined : policyName,
+                    body: JSON.stringify({
+                        phone_number: '+919999999999',
+                        full_name: 'Test User',
+                        email: 'test@example.com'
+                    })
+                });
+
+                log(`✅ ${policyName}: Status ${response.status}`, response.ok ? 'success' : 'warning');
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`Response: ${JSON.stringify(data, null, 2)}`, 'success');
+                }
+                
+            } catch (error) {
+                log(`❌ ${policyName}: ${error.message}`, 'error');
+                
+                if (error.message.includes('CORS')) {
+                    log(`🚨 CORS error with ${policyName}`, 'error');
+                }
+            }
+        }
+
+        // Test different referrer policies
+        document.getElementById('testNoReferrer').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            setReferrerPolicy('no-referrer');
+            await testOTPWithPolicy('no-referrer');
+        });
+
+        document.getElementById('testOrigin').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            setReferrerPolicy('origin');
+            await testOTPWithPolicy('origin');
+        });
+
+        document.getElementById('testSameOrigin').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            setReferrerPolicy('same-origin');
+            await testOTPWithPolicy('same-origin');
+        });
+
+        document.getElementById('testUnsafeUrl').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            setReferrerPolicy('unsafe-url');
+            await testOTPWithPolicy('unsafe-url');
+        });
+
+        document.getElementById('testDefault').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            setReferrerPolicy(null);
+            await testOTPWithPolicy('Default');
+        });
+
+        // Test with all possible headers
+        document.getElementById('testAllHeaders').addEventListener('click', async () => {
+            headersResultsDiv.innerHTML = '';
+            log('🔬 Testing with comprehensive headers...', 'info', headersResultsDiv);
+            separator(headersResultsDiv);
+            
+            const testHeaders = {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Origin': window.location.origin,
+                'Referer': window.location.href,
+                'X-Requested-With': 'XMLHttpRequest',
+                'User-Agent': navigator.userAgent,
+                'Accept-Language': navigator.language,
+                'Accept-Encoding': 'gzip, deflate, br'
+            };
+            
+            log('Headers being sent:', 'info', headersResultsDiv);
+            Object.entries(testHeaders).forEach(([key, value]) => {
+                log(`  ${key}: ${value}`, 'info', headersResultsDiv);
+            });
+            
+            separator(headersResultsDiv);
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: testHeaders,
+                    referrerPolicy: 'no-referrer',
+                    body: JSON.stringify({
+                        phone_number: '+919999999999',
+                        full_name: 'Test User',
+                        email: 'test@example.com'
+                    })
+                });
+
+                log(`🎯 Comprehensive test: Status ${response.status}`, response.ok ? 'success' : 'warning', headersResultsDiv);
+                
+                // Log response headers
+                log('Response headers received:', 'info', headersResultsDiv);
+                for (let [key, value] of response.headers.entries()) {
+                    log(`  ${key}: ${value}`, 'info', headersResultsDiv);
+                }
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    log(`✅ SUCCESS! Response: ${JSON.stringify(data, null, 2)}`, 'success', headersResultsDiv);
+                } else {
+                    const errorText = await response.text();
+                    log(`⚠️ Error response: ${errorText}`, 'warning', headersResultsDiv);
+                }
+                
+            } catch (error) {
+                log(`❌ Comprehensive test failed: ${error.message}`, 'error', headersResultsDiv);
+                
+                if (error.message.includes('CORS')) {
+                    log('🚨 CORS error - backend CORS configuration issue', 'error', headersResultsDiv);
+                    log('Backend needs to allow these headers in CORS config:', 'warning', headersResultsDiv);
+                    log('  - Content-Type', 'warning', headersResultsDiv);
+                    log('  - Accept', 'warning', headersResultsDiv);
+                    log('  - Origin', 'warning', headersResultsDiv);
+                    log('  - X-Requested-With', 'warning', headersResultsDiv);
+                }
+            }
+        });
+
+        document.getElementById('clearResults').addEventListener('click', () => {
+            resultsDiv.innerHTML = '';
+            headersResultsDiv.innerHTML = '';
+        });
+
+        // Auto-run a basic test
+        window.addEventListener('load', () => {
+            log('🔍 Browser referrer policy analysis:', 'info');
+            log(`Current referrer policy: ${document.referrerPolicy || 'Default (strict-origin-when-cross-origin)'}`, 'info');
+            log(`Document referrer: ${document.referrer || 'None'}`, 'info');
+            log(`Origin: ${window.location.origin}`, 'info');
+            
+            if (!document.referrer) {
+                log('⚠️ No referrer - this might be causing issues', 'warning');
+            }
+            
+            separator();
+            log('Click a test button to check different referrer policies', 'info');
+        });
+    </script>
+</body>
+</html>

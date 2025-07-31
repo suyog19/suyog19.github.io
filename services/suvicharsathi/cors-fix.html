@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Error Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🚨 CORS Error Analysis & Fix</h2>
+        
+        <div class="alert alert-info">
+            <strong>Current Status:</strong> CORS error detected! Let's identify the exact issue.
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Current Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Frontend URL:</strong> <span id="frontendUrl" class="text-primary"></span></p>
+                        <p><strong>Backend URL:</strong> <span class="text-info">https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev</span></p>
+                        <hr>
+                        <p><strong>Backend Should Allow:</strong></p>
+                        <ul>
+                            <li><code>http://localhost:5500</code></li>
+                            <li><code>http://127.0.0.1:5500</code></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testCORS" class="btn btn-danger btn-sm mb-2 w-100">🔍 Analyze CORS Error</button>
+                        <button id="testPreflight" class="btn btn-warning btn-sm mb-2 w-100">⚡ Test Preflight</button>
+                        <button id="generateFix" class="btn btn-success btn-sm mb-2 w-100">🔧 Generate Backend Fix</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>CORS Analysis Results</h5>
+                        <button id="clearResults" class="btn btn-sm btn-outline-secondary float-end">Clear</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="results" style="max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85em; background: #f8f9fa; padding: 10px; border-radius: 5px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Backend CORS Configuration Fix</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Based on your frontend URL, here's the CORS configuration your backend needs:</p>
+                        <div id="corsFixCode" style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.9em;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const resultsDiv = document.getElementById('results');
+        const corsFixDiv = document.getElementById('corsFixCode');
+        
+        // Display current frontend URL
+        const frontendOrigin = window.location.origin;
+        document.getElementById('frontendUrl').textContent = frontendOrigin;
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '3px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function separator() {
+            log('─'.repeat(40), 'info');
+        }
+
+        // Test CORS Error Analysis
+        document.getElementById('testCORS').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('🚨 CORS Error Analysis Started', 'error');
+            log(`Frontend Origin: ${frontendOrigin}`, 'info');
+            separator();
+            
+            // Test 1: Basic GET request
+            log('Test 1: Basic GET request...', 'info');
+            try {
+                const response = await fetch(baseURL, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                const corsOrigin = response.headers.get('access-control-allow-origin');
+                log(`✅ GET request works! Status: ${response.status}`, 'success');
+                log(`CORS Origin from GET: ${corsOrigin || 'Not set'}`, corsOrigin ? 'success' : 'warning');
+                
+            } catch (error) {
+                log(`❌ GET request failed: ${error.message}`, 'error');
+            }
+            
+            separator();
+            
+            // Test 2: POST request (this will likely fail with CORS)
+            log('Test 2: POST request (expected to fail)...', 'info');
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone_number: '+919999999999',
+                        full_name: 'Test User',
+                        email: 'test@example.com'
+                    })
+                });
+                
+                log(`✅ POST request works! Status: ${response.status}`, 'success');
+                
+            } catch (error) {
+                log(`❌ POST request failed: ${error.message}`, 'error');
+                
+                // Analyze the error
+                if (error.message.includes('CORS')) {
+                    log('🔍 CORS Policy Error Analysis:', 'warning');
+                    log('  • Browser blocked the request due to CORS policy', 'warning');
+                    log('  • Backend needs to allow your origin in CORS config', 'warning');
+                    log(`  • Your origin: ${frontendOrigin}`, 'warning');
+                }
+            }
+        });
+
+        // Test Preflight Request
+        document.getElementById('testPreflight').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('⚡ Testing CORS Preflight Request', 'warning');
+            log('This tests if backend handles OPTIONS requests correctly', 'info');
+            separator();
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'content-type',
+                        'Origin': frontendOrigin
+                    }
+                });
+                
+                log(`✅ Preflight Success! Status: ${response.status}`, 'success');
+                
+                // Check all CORS headers
+                const headers = [
+                    'access-control-allow-origin',
+                    'access-control-allow-methods',
+                    'access-control-allow-headers',
+                    'access-control-allow-credentials',
+                    'access-control-max-age'
+                ];
+                
+                log('CORS Headers Analysis:', 'info');
+                headers.forEach(header => {
+                    const value = response.headers.get(header);
+                    if (value) {
+                        log(`  ✅ ${header}: ${value}`, 'success');
+                    } else {
+                        log(`  ❌ ${header}: Missing`, 'error');
+                    }
+                });
+                
+            } catch (error) {
+                log(`❌ Preflight Failed: ${error.message}`, 'error');
+                log('Backend is not handling OPTIONS requests properly', 'error');
+            }
+        });
+
+        // Generate Backend Fix
+        document.getElementById('generateFix').addEventListener('click', () => {
+            log('🔧 Generating backend CORS fix...', 'success');
+            
+            const fastAPIFix = `# FastAPI CORS Configuration Fix
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "${frontendOrigin}",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+)`;
+
+            const expressFix = `// Express.js CORS Configuration Fix
+const cors = require('cors');
+
+app.use(cors({
+    origin: [
+        "${frontendOrigin}",
+        "http://localhost:5500", 
+        "http://127.0.0.1:5500"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+    credentials: true
+}));`;
+
+            corsFixDiv.innerHTML = `
+                <h6>FastAPI (Python):</h6>
+                <pre style="background: #e9ecef; padding: 10px; border-radius: 3px; font-size: 0.8em;">${fastAPIFix}</pre>
+                
+                <h6 class="mt-3">Express.js (Node.js):</h6>
+                <pre style="background: #e9ecef; padding: 10px; border-radius: 3px; font-size: 0.8em;">${expressFix}</pre>
+                
+                <div class="alert alert-warning mt-3">
+                    <strong>⚠️ Important:</strong> After updating your backend CORS config, restart your backend server!
+                </div>
+            `;
+            
+            log('✅ CORS fix configuration generated below!', 'success');
+        });
+
+        document.getElementById('clearResults').addEventListener('click', () => {
+            resultsDiv.innerHTML = '';
+        });
+
+        // Auto-generate the fix on page load
+        window.addEventListener('load', () => {
+            document.getElementById('generateFix').click();
+            
+            setTimeout(() => {
+                document.getElementById('testCORS').click();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

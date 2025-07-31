@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Network Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Network Debug Test</h2>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Connection Tests</h5>
+                        <div id="testResults"></div>
+                        <button id="testConnection" class="btn btn-primary">Test Backend Connection</button>
+                        <button id="testOTP" class="btn btn-warning ms-2">Test OTP Endpoint</button>
+                        <button id="testCodspace" class="btn btn-info ms-2">Check Codespace Config</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const resultsDiv = document.getElementById('testResults');
+
+        function addResult(message, type = 'info') {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} mt-2`;
+            alert.textContent = message;
+            resultsDiv.appendChild(alert);
+        }
+
+        function clearResults() {
+            resultsDiv.innerHTML = '';
+        }
+
+        // Test basic connection
+        document.getElementById('testConnection').addEventListener('click', async () => {
+            clearResults();
+            addResult('Testing basic connection...', 'info');
+            addResult(`Current origin: ${window.location.origin}`, 'info');
+
+            try {
+                // First try a simple GET request
+                const response = await fetch(baseURL, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                addResult(`✅ Connection successful! Status: ${response.status}`, 'success');
+                
+                // Check for CORS headers
+                const corsHeaders = [
+                    'access-control-allow-origin',
+                    'access-control-allow-methods', 
+                    'access-control-allow-headers',
+                    'access-control-allow-credentials'
+                ];
+                
+                addResult('--- CORS Headers Check ---', 'info');
+                corsHeaders.forEach(header => {
+                    const value = response.headers.get(header);
+                    if (value) {
+                        addResult(`✅ ${header}: ${value}`, 'success');
+                    } else {
+                        addResult(`❌ ${header}: Not set`, 'warning');
+                    }
+                });
+                
+                const text = await response.text();
+                addResult(`Response preview: ${text.substring(0, 200)}...`, 'info');
+                
+            } catch (error) {
+                addResult(`❌ Connection failed: ${error.message}`, 'danger');
+                
+                // Detailed error analysis
+                if (error.message.includes('CORS')) {
+                    addResult('🚨 CORS Policy Error detected!', 'danger');
+                    addResult('Backend must allow requests from: ' + window.location.origin, 'warning');
+                } else if (error.message.includes('401')) {
+                    addResult('🔒 Authentication required - GitHub Codespace port may need authentication', 'warning');
+                    addResult('Solutions: 1) Make port public in Codespace 2) Use authentication token', 'info');
+                } else if (error.message.includes('Failed to fetch')) {
+                    addResult('🌐 Network connectivity issue', 'warning');
+                    addResult('Check: 1) Backend running 2) Port accessibility 3) Network connection', 'info');
+                }
+            }
+        });
+
+        // Test OTP endpoint specifically
+        document.getElementById('testOTP').addEventListener('click', async () => {
+            clearResults();
+            addResult('Testing OTP endpoint...', 'info');
+
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone_number: '+919999999999',
+                        full_name: 'Test User',
+                        email: 'test@example.com'
+                    })
+                });
+
+                addResult(`OTP endpoint response: ${response.status}`, response.ok ? 'success' : 'warning');
+                
+                const data = await response.json();
+                addResult(`Response data: ${JSON.stringify(data, null, 2)}`, 'info');
+                
+            } catch (error) {
+                addResult(`OTP endpoint failed: ${error.message}`, 'danger');
+                
+                if (error.message.includes('Failed to fetch')) {
+                    addResult('This is typically a CORS or network connectivity issue.', 'warning');
+                }
+            }
+        });
+
+        // Auto-run connection test on load
+        window.addEventListener('load', () => {
+            document.getElementById('testConnection').click();
+        });
+
+        // Test GitHub Codespace configuration
+        document.getElementById('testCodspace').addEventListener('click', async () => {
+            clearResults();
+            addResult('🔍 Checking GitHub Codespace Configuration...', 'info');
+            
+            addResult('Current frontend URL: ' + window.location.origin, 'info');
+            addResult('Backend URL: ' + baseURL, 'info');
+            
+            // Check if backend URL looks like a Codespace
+            if (baseURL.includes('github.dev') || baseURL.includes('githubpreview.dev')) {
+                addResult('✅ Detected GitHub Codespace backend', 'success');
+                
+                addResult('--- Codespace CORS Requirements ---', 'warning');
+                addResult('1. Backend must include CORS middleware', 'warning');
+                addResult('2. Must allow origin: ' + window.location.origin, 'warning');
+                addResult('3. Port must be set to "Public" in Codespace', 'warning');
+                addResult('4. Or use authentication token if port is private', 'warning');
+                
+                // Test port accessibility
+                try {
+                    const healthCheck = await fetch(baseURL + '/health', { mode: 'no-cors' });
+                    addResult('✅ Port appears accessible (no-cors mode)', 'success');
+                } catch (e) {
+                    addResult('❌ Port may not be accessible: ' + e.message, 'danger');
+                }
+            } else {
+                addResult('ℹ️ Not a GitHub Codespace URL', 'info');
+            }
+            
+            addResult('--- Next Steps ---', 'info');
+            addResult('1. In your Codespace, check port 8000 visibility', 'info');
+            addResult('2. Ensure backend has CORS enabled for: ' + window.location.origin, 'info');
+            addResult('3. Try the OTP test button after fixing CORS', 'info');
+        });
+    </script>
+</body>
+</html>

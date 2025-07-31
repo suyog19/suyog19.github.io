@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 OTP Test & API Verification</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>🔍 SuvicharSathi API Test Dashboard</h2>
+        
+        <div class="alert alert-success">
+            <strong>✅ API Integration Fixed!</strong> All endpoints now match Swagger specification.
+        </div>
+        
+        <div class="row">
+            <!-- OTP Testing -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🔐 OTP Testing</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="getLatestOTP" class="btn btn-primary mb-2 w-100">🔍 Get Latest Test OTP</button>
+                        <button id="sendTestOTP" class="btn btn-success mb-2 w-100">📱 Send Test OTP</button>
+                        <div id="otpResults" class="mt-3"></div>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>📊 API Endpoint Tests</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testAllEndpoints" class="btn btn-info w-100">🧪 Test All Fixed Endpoints</button>
+                        <div id="endpointResults" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>📋 Test Results</h5>
+                        <button id="clearResults" class="btn btn-sm btn-outline-secondary float-end">Clear</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="results" style="max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85em; background: #f8f9fa; padding: 10px; border-radius: 5px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- API Status -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>✅ Fixed API Integrations</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>✅ Authentication APIs (Fixed):</h6>
+                                <ul class="list-unstyled">
+                                    <li>✅ <code>/auth/register/send-otp</code> - Fixed: <code>name</code> field</li>
+                                    <li>✅ <code>/auth/register/verify-otp</code> - Fixed: <code>otp_code</code> field</li>
+                                    <li>✅ <code>/auth/login/verify-otp</code> - Fixed: <code>otp_code</code> field</li>
+                                    <li>✅ <code>/auth/resend-otp</code> - Fixed: Single endpoint</li>
+                                    <li>🆕 <code>/auth/test-otp</code> - Added for development</li>
+                                    <li>🆕 <code>/auth/me</code> - Added for user profile</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>✅ Payment APIs (Fixed):</h6>
+                                <ul class="list-unstyled">
+                                    <li>✅ <code>/payments/initiate</code> - Fixed: <code>plan_id</code> field</li>
+                                    <li>✅ <code>/payments/verify</code> - Fixed: Razorpay field names</li>
+                                    <li>🆕 <code>/payments/plans</code> - Added for subscription plans</li>
+                                    <li>✅ <code>/payments/history</code> - Already correct</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        const api = new APIService();
+        const resultsDiv = document.getElementById('results');
+        const otpResultsDiv = document.getElementById('otpResults');
+        const endpointResultsDiv = document.getElementById('endpointResults');
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '3px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function logToSection(sectionDiv, message, type = 'info') {
+            const colors = {
+                'success': 'text-success',
+                'error': 'text-danger',
+                'warning': 'text-warning',
+                'info': 'text-info'
+            };
+            
+            const div = document.createElement('div');
+            div.className = `${colors[type]} mb-1`;
+            div.innerHTML = message;
+            sectionDiv.appendChild(div);
+        }
+
+        // Get Latest OTP
+        document.getElementById('getLatestOTP').addEventListener('click', async () => {
+            otpResultsDiv.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Getting latest OTP...';
+            log('🔍 Fetching latest test OTP...', 'info');
+            
+            try {
+                const result = await api.getTestOTP();
+                
+                if (result.success) {
+                    log(`✅ Latest OTP retrieved: ${JSON.stringify(result.data)}`, 'success');
+                    otpResultsDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <h6>🎯 Latest Test OTP:</h6>
+                            <pre>${JSON.stringify(result.data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    log(`❌ Failed to get OTP: ${result.error}`, 'error');
+                    otpResultsDiv.innerHTML = `<div class="alert alert-danger">❌ ${result.error}</div>`;
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                otpResultsDiv.innerHTML = `<div class="alert alert-danger">❌ ${error.message}</div>`;
+            }
+        });
+
+        // Send Test OTP
+        document.getElementById('sendTestOTP').addEventListener('click', async () => {
+            const testPhone = '9999999999';
+            const testName = 'Test User';
+            
+            otpResultsDiv.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Sending test OTP...';
+            log('📱 Sending test OTP to 9999999999...', 'info');
+            
+            try {
+                const result = await api.sendRegistrationOTP(testPhone, testName, 'test@example.com');
+                
+                if (result.success) {
+                    log(`✅ OTP sent successfully: ${JSON.stringify(result.data)}`, 'success');
+                    otpResultsDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <h6>📱 OTP Sent Successfully!</h6>
+                            <pre>${JSON.stringify(result.data, null, 2)}</pre>
+                            <small class="text-muted">Now click "Get Latest Test OTP" to see the generated OTP</small>
+                        </div>
+                    `;
+                } else {
+                    log(`❌ Failed to send OTP: ${result.error}`, 'error');
+                    otpResultsDiv.innerHTML = `<div class="alert alert-danger">❌ ${result.error}</div>`;
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                otpResultsDiv.innerHTML = `<div class="alert alert-danger">❌ ${error.message}</div>`;
+            }
+        });
+
+        // Test All Endpoints
+        document.getElementById('testAllEndpoints').addEventListener('click', async () => {
+            endpointResultsDiv.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Testing all endpoints...';
+            log('🧪 Testing all fixed API endpoints...', 'info');
+            
+            const tests = [
+                { name: 'GET /auth/test-otp', test: () => api.getTestOTP() },
+                { name: 'GET /payments/plans', test: () => api.getPaymentPlans() },
+                { name: 'POST /auth/register/send-otp', test: () => api.sendRegistrationOTP('9999999999', 'Test User') },
+            ];
+            
+            endpointResultsDiv.innerHTML = '';
+            
+            for (const testCase of tests) {
+                logToSection(endpointResultsDiv, `Testing: ${testCase.name}...`, 'info');
+                
+                try {
+                    const result = await testCase.test();
+                    if (result.success) {
+                        logToSection(endpointResultsDiv, `✅ ${testCase.name}: SUCCESS`, 'success');
+                        log(`✅ ${testCase.name}: SUCCESS`, 'success');
+                    } else {
+                        logToSection(endpointResultsDiv, `⚠️ ${testCase.name}: ${result.error}`, 'warning');
+                        log(`⚠️ ${testCase.name}: ${result.error}`, 'warning');
+                    }
+                } catch (error) {
+                    logToSection(endpointResultsDiv, `❌ ${testCase.name}: ${error.message}`, 'error');
+                    log(`❌ ${testCase.name}: ${error.message}`, 'error');
+                }
+                
+                // Small delay between tests
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+            
+            logToSection(endpointResultsDiv, '🏁 All endpoint tests completed!', 'success');
+        });
+
+        document.getElementById('clearResults').addEventListener('click', () => {
+            resultsDiv.innerHTML = '';
+            otpResultsDiv.innerHTML = '';
+            endpointResultsDiv.innerHTML = '';
+        });
+    </script>
+</body>
+</html>

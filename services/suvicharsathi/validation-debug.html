@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP 422 Validation Error Debug</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🎉 Progress! HTTP 422 Validation Error Debug</h2>
+        
+        <div class="alert alert-success">
+            <strong>✅ Good News:</strong> CORS is working! HTTP 422 means the request reached the server but has validation errors.
+        </div>
+        
+        <div class="alert alert-info">
+            <strong>HTTP 422:</strong> "Unprocessable Entity" - The request data format doesn't match what the backend expects.
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🔍 Test Different Data Formats</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Phone Number Format:</label>
+                            <select id="phoneFormat" class="form-select">
+                                <option value="+919999999999">+919999999999 (with +91)</option>
+                                <option value="919999999999">919999999999 (without +)</option>
+                                <option value="9999999999">9999999999 (10 digits only)</option>
+                                <option value="+91 9999999999">+91 9999999999 (with space)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Name:</label>
+                            <input type="text" id="testName" class="form-control" value="Test User">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Email:</label>
+                            <input type="text" id="testEmail" class="form-control" value="test@example.com">
+                        </div>
+                        
+                        <button id="testCurrentFormat" class="btn btn-primary btn-sm mb-2 w-100">🧪 Test Current Format</button>
+                        <button id="testAllFormats" class="btn btn-info btn-sm mb-2 w-100">🔄 Test All Phone Formats</button>
+                        <button id="testMinimalData" class="btn btn-warning btn-sm mb-2 w-100">📋 Test Minimal Data</button>
+                        <button id="getValidationDetails" class="btn btn-success btn-sm mb-2 w-100">🔍 Get Validation Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Results & Error Details</h5>
+                        <button id="clearResults" class="btn btn-sm btn-outline-secondary float-end">Clear</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="results" style="max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85em; background: #f8f9fa; padding: 10px; border-radius: 5px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>💡 Common 422 Validation Issues</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Phone Number Issues:</h6>
+                                <ul>
+                                    <li>Missing country code (+91)</li>
+                                    <li>Wrong format (spaces, dashes)</li>
+                                    <li>Invalid length (not 10 digits)</li>
+                                    <li>Field name mismatch (phone vs phone_number)</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Data Structure Issues:</h6>
+                                <ul>
+                                    <li>Missing required fields</li>
+                                    <li>Wrong field names</li>
+                                    <li>Invalid email format</li>
+                                    <li>Empty string vs null values</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const resultsDiv = document.getElementById('results');
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '3px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function separator() {
+            log('─'.repeat(50), 'info');
+        }
+
+        async function testOTPRequest(phoneNumber, fullName, email, testName) {
+            log(`🧪 Testing: ${testName}`, 'info');
+            
+            const requestData = {
+                phone_number: phoneNumber,
+                full_name: fullName,
+                email: email
+            };
+            
+            log(`Request Data: ${JSON.stringify(requestData, null, 2)}`, 'info');
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                log(`Response Status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'warning');
+                
+                let responseData;
+                try {
+                    responseData = await response.json();
+                    log(`Response Body: ${JSON.stringify(responseData, null, 2)}`, 
+                        response.ok ? 'success' : 'error');
+                } catch (e) {
+                    const text = await response.text();
+                    log(`Response Text: ${text}`, 'error');
+                }
+                
+                if (response.status === 422) {
+                    log('🚨 HTTP 422: Validation Error Details:', 'error');
+                    if (responseData && responseData.detail) {
+                        if (Array.isArray(responseData.detail)) {
+                            responseData.detail.forEach(error => {
+                                log(`  Field: ${error.loc ? error.loc.join('.') : 'unknown'}`, 'error');
+                                log(`  Error: ${error.msg}`, 'error');
+                                log(`  Type: ${error.type}`, 'error');
+                            });
+                        } else {
+                            log(`  Error: ${responseData.detail}`, 'error');
+                        }
+                    }
+                } else if (response.ok) {
+                    log('✅ SUCCESS! Request worked!', 'success');
+                }
+                
+            } catch (error) {
+                log(`❌ Request failed: ${error.message}`, 'error');
+            }
+            
+            separator();
+        }
+
+        // Test current format
+        document.getElementById('testCurrentFormat').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            const phone = document.getElementById('phoneFormat').value;
+            const name = document.getElementById('testName').value;
+            const email = document.getElementById('testEmail').value;
+            
+            await testOTPRequest(phone, name, email, 'Current Format');
+        });
+
+        // Test all phone formats
+        document.getElementById('testAllFormats').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            const name = document.getElementById('testName').value;
+            const email = document.getElementById('testEmail').value;
+            
+            const phoneFormats = [
+                ['+919999999999', 'International format with +91'],
+                ['919999999999', 'Without + prefix'],
+                ['9999999999', '10 digits only'],
+                ['+91 9999999999', 'With space after country code'],
+                ['09999999999', 'With leading zero'],
+                ['91-9999999999', 'With dash separator']
+            ];
+            
+            for (const [phone, description] of phoneFormats) {
+                await testOTPRequest(phone, name, email, description);
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Delay between tests
+            }
+        });
+
+        // Test minimal data
+        document.getElementById('testMinimalData').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            
+            const testCases = [
+                // Test 1: Only phone
+                {
+                    data: { phone_number: '+919999999999' },
+                    name: 'Only phone_number'
+                },
+                // Test 2: Phone + name
+                {
+                    data: { phone_number: '+919999999999', full_name: 'Test User' },
+                    name: 'Phone + full_name'
+                },
+                // Test 3: All fields
+                {
+                    data: { phone_number: '+919999999999', full_name: 'Test User', email: 'test@example.com' },
+                    name: 'All fields'
+                },
+                // Test 4: Empty email
+                {
+                    data: { phone_number: '+919999999999', full_name: 'Test User', email: '' },
+                    name: 'Empty email string'
+                },
+                // Test 5: No email field
+                {
+                    data: { phone_number: '+919999999999', full_name: 'Test User' },
+                    name: 'No email field'
+                }
+            ];
+            
+            for (const testCase of testCases) {
+                log(`🧪 Testing: ${testCase.name}`, 'info');
+                log(`Request Data: ${JSON.stringify(testCase.data, null, 2)}`, 'info');
+                
+                try {
+                    const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(testCase.data)
+                    });
+
+                    log(`Status: ${response.status} ${response.statusText}`, 
+                        response.ok ? 'success' : 'warning');
+                    
+                    if (response.status === 422) {
+                        const errorData = await response.json();
+                        if (errorData.detail && Array.isArray(errorData.detail)) {
+                            errorData.detail.forEach(error => {
+                                log(`  ❌ ${error.loc?.join('.')}: ${error.msg}`, 'error');
+                            });
+                        }
+                    } else if (response.ok) {
+                        log('  ✅ This format works!', 'success');
+                        const data = await response.json();
+                        log(`  Response: ${JSON.stringify(data, null, 2)}`, 'success');
+                    }
+                    
+                } catch (error) {
+                    log(`  ❌ Error: ${error.message}`, 'error');
+                }
+                
+                separator();
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Delay between tests
+            }
+        });
+
+        // Get detailed validation info
+        document.getElementById('getValidationDetails').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('🔍 Getting detailed validation information...', 'info');
+            
+            // Try to get API schema/docs if available
+            try {
+                log('Checking if API documentation is available...', 'info');
+                const docsResponse = await fetch(`${baseURL}/docs`, {
+                    method: 'GET'
+                });
+                
+                if (docsResponse.ok) {
+                    log('✅ API docs available at: ' + baseURL + '/docs', 'success');
+                    log('You can check the exact request format there', 'info');
+                }
+                
+            } catch (error) {
+                log('API docs not accessible via fetch', 'warning');
+            }
+            
+            separator();
+            
+            // Send a deliberately bad request to see validation details
+            log('Sending invalid request to get validation details...', 'info');
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        // Deliberately invalid data
+                        phone_number: '',
+                        full_name: '',
+                        email: 'invalid-email'
+                    })
+                });
+
+                if (response.status === 422) {
+                    const errorData = await response.json();
+                    log('📋 Backend Validation Requirements:', 'info');
+                    
+                    if (errorData.detail && Array.isArray(errorData.detail)) {
+                        errorData.detail.forEach(error => {
+                            log(`Field: ${error.loc?.join('.')}`, 'warning');
+                            log(`Required: ${error.msg}`, 'warning');
+                            log(`Type: ${error.type}`, 'info');
+                            log('---', 'info');
+                        });
+                    }
+                }
+                
+            } catch (error) {
+                log(`Error getting validation details: ${error.message}`, 'error');
+            }
+        });
+
+        document.getElementById('clearResults').addEventListener('click', () => {
+            resultsDiv.innerHTML = '';
+        });
+
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            log('🎉 Great progress! HTTP 422 means CORS is working!', 'success');
+            log('Now we need to fix the data validation format', 'info');
+            log('Click "Get Validation Details" to see what the backend expects', 'info');
+            separator();
+        });
+    </script>
+</body>
+</html>

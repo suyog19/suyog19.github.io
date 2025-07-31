@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend CORS Fix for Content-Type</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🔧 Backend CORS Fix for Content-Type Header</h2>
+        
+        <div class="alert alert-warning">
+            <strong>⚠️ Root Cause:</strong> Your backend CORS configuration must explicitly allow the <code>Content-Type</code> header!
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>✅ Correct Backend CORS Configuration</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>FastAPI (Python) - Add this to your backend:</strong></p>
+                        <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.9em;">from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5500",
+        "http://127.0.0.1:5500"
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=[
+        "Content-Type",  # ← This is CRITICAL!
+        "Authorization",
+        "Accept",
+        "Origin",
+        "X-Requested-With"
+    ],
+)</pre>
+
+                        <div class="alert alert-info mt-3">
+                            <strong>🔑 Key Point:</strong> The <code>allow_headers</code> must include <code>"Content-Type"</code> explicitly!
+                        </div>
+
+                        <p><strong>Express.js (Node.js) - Alternative:</strong></p>
+                        <pre style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.9em;">const cors = require('cors');
+
+app.use(cors({
+    origin: [
+        "http://localhost:5500", 
+        "http://127.0.0.1:5500"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+        "Content-Type",  // ← This is CRITICAL!
+        "Authorization",
+        "Accept",
+        "Origin",
+        "X-Requested-With"
+    ],
+    credentials: true
+}));</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🧪 Test After Backend Update</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testOTP" class="btn btn-primary btn-lg w-100">Test OTP After Fix</button>
+                        <p class="text-muted mt-2 small">Click after updating your backend CORS config</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>📋 Checklist</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check1">
+                            <label class="form-check-label" for="check1">
+                                Updated backend CORS config
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check2">
+                            <label class="form-check-label" for="check2">
+                                Added "Content-Type" to allow_headers
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="check3">
+                            <label class="form-check-label" for="check3">
+                                Restarted backend server
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Results</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="testResults" style="font-family: monospace; font-size: 0.9em; background: #f8f9fa; padding: 10px; border-radius: 5px; min-height: 100px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        const api = new APIService();
+        const resultsDiv = document.getElementById('testResults');
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '5px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        document.getElementById('testOTP').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('🧪 Testing OTP with proper Content-Type header...', 'info');
+            
+            try {
+                const result = await api.sendRegistrationOTP('+919999999999', 'Test User', 'test@example.com');
+                
+                if (result.success) {
+                    log('🎉 SUCCESS! OTP request worked!', 'success');
+                    log('Response: ' + JSON.stringify(result.data, null, 2), 'success');
+                    log('✅ CORS and Content-Type issues are now resolved!', 'success');
+                } else {
+                    log('⚠️ OTP request failed: ' + result.error, 'warning');
+                    
+                    if (result.error.includes('CORS')) {
+                        log('❌ Still getting CORS error. Check backend configuration.', 'error');
+                    }
+                }
+                
+            } catch (error) {
+                log('❌ Exception occurred: ' + error.message, 'error');
+                
+                if (error.message.includes('CORS')) {
+                    log('🚨 CORS error persists. Backend needs to allow Content-Type header!', 'error');
+                }
+            }
+        });
+
+        // Initial message
+        window.addEventListener('load', () => {
+            log('📋 Ready to test! Update your backend CORS config first, then click the test button.', 'info');
+        });
+    </script>
+</body>
+</html>

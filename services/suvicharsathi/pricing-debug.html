@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Debug Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>🔧 Pricing Page Debug Test</h2>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Subscribe Button Test</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label>Authentication Status:</label>
+                            <span id="authStatus" class="badge bg-secondary">Checking...</span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>User Data:</label>
+                            <pre id="userData" class="bg-light p-2">Loading...</pre>
+                        </div>
+                        
+                        <button class="btn btn-primary subscribe-btn" 
+                                data-plan="monthly" 
+                                data-amount="49" 
+                                data-duration="monthly">
+                            <span class="spinner-border spinner-border-sm d-none"></span>
+                            Test Subscribe Monthly
+                        </button>
+                        
+                        <button class="btn btn-success subscribe-btn ms-2" 
+                                data-plan="yearly" 
+                                data-amount="499" 
+                                data-duration="yearly">
+                            <span class="spinner-border spinner-border-sm d-none"></span>
+                            Test Subscribe Yearly
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Debug Log</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="debugLog" style="max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.85em;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer" class="position-fixed top-0 start-50 translate-middle-x" style="z-index: 9999; margin-top: 20px;"></div>
+
+    <!-- Authentication Required Modal -->
+    <div class="modal fade" id="authRequiredModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Account Required</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <i class="display-4">🔐</i>
+                    </div>
+                    <h6>Please create an account or login to subscribe</h6>
+                    <p class="text-muted">We need to verify your WhatsApp number to send you daily सुविचार.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="register.html" class="btn btn-primary">Create Account</a>
+                    <a href="login.html" class="btn btn-outline-primary">Login</a>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Initialize API service
+        const api = new APIService();
+        const debugLog = document.getElementById('debugLog');
+        
+        function log(message) {
+            const time = new Date().toLocaleTimeString();
+            debugLog.innerHTML += `<div><strong>[${time}]</strong> ${message}</div>`;
+            debugLog.scrollTop = debugLog.scrollHeight;
+            console.log(message);
+        }
+
+        // Check authentication status
+        async function checkStatus() {
+            log('🔍 Checking authentication status...');
+            
+            const isAuth = api.isAuthenticated();
+            const authStatus = document.getElementById('authStatus');
+            
+            if (isAuth) {
+                authStatus.textContent = 'Authenticated';
+                authStatus.className = 'badge bg-success';
+                log('✅ User is authenticated');
+                
+                const userData = api.getUserData();
+                document.getElementById('userData').textContent = JSON.stringify(userData, null, 2);
+                log('👤 User data loaded');
+            } else {
+                authStatus.textContent = 'Not Authenticated';
+                authStatus.className = 'badge bg-danger';
+                document.getElementById('userData').textContent = 'No user data (not authenticated)';
+                log('❌ User not authenticated');
+            }
+        }
+
+        // Copy the exact pricing.js functions for testing
+        function showAlert(message, type = 'info') {
+            log(`🚨 Alert: ${message} (${type})`);
+            const alertContainer = document.getElementById('alertContainer');
+            const alertId = 'alert-' + Date.now();
+            
+            const alertHtml = `
+                <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            alertContainer.innerHTML = alertHtml;
+            
+            setTimeout(() => {
+                const alertElement = document.getElementById(alertId);
+                if (alertElement) {
+                    const bsAlert = new bootstrap.Alert(alertElement);
+                    bsAlert.close();
+                }
+            }, 5000);
+        }
+
+        function showLoading(button, show) {
+            const spinner = button.querySelector('.spinner-border');
+            const originalText = button.dataset.originalText || button.textContent;
+            
+            if (show) {
+                button.dataset.originalText = originalText;
+                button.disabled = true;
+                spinner.classList.remove('d-none');
+                button.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Processing...`;
+            } else {
+                button.disabled = false;
+                spinner.classList.add('d-none');
+                button.textContent = originalText;
+            }
+        }
+
+        function showAuthRequiredModal() {
+            log('🔐 Showing authentication required modal');
+            const modal = new bootstrap.Modal(document.getElementById('authRequiredModal'));
+            modal.show();
+        }
+
+        async function checkActiveSubscription() {
+            try {
+                log('🔍 Checking for active subscription...');
+                const result = await api.getCurrentSubscription();
+                log(`📊 Subscription check result: ${JSON.stringify(result)}`);
+                
+                if (result.success && result.data) {
+                    const hasActive = result.data.status === 'active';
+                    log(`✅ Has active subscription: ${hasActive}`);
+                    return hasActive;
+                }
+                
+                log('ℹ️ No subscription data found');
+                return false;
+            } catch (error) {
+                log(`❌ Error checking subscription: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function initiatePayment(plan, amount, duration, button) {
+            log(`💳 Initiating payment for ${plan} plan (₹${amount})`);
+            showLoading(button, true);
+
+            try {
+                const planId = plan;
+                log(`📝 Calling api.initiatePayment with planId: ${planId}`);
+                const orderResult = await api.initiatePayment(planId);
+                
+                log(`📋 Payment initiation result: ${JSON.stringify(orderResult)}`);
+                
+                if (!orderResult.success) {
+                    throw new Error(orderResult.error || 'Failed to create payment order');
+                }
+
+                showAlert('Payment order created successfully! (Test mode)', 'success');
+                log('✅ Payment initiation successful');
+
+            } catch (error) {
+                log(`❌ Payment initiation error: ${error.message}`);
+                showAlert(error.message || 'Failed to initiate payment. Please try again.', 'danger');
+            } finally {
+                showLoading(button, false);
+            }
+        }
+
+        async function handleSubscription(event) {
+            log('🎯 Subscribe button clicked!');
+            const button = event.target;
+            const plan = button.dataset.plan;
+            const amount = parseInt(button.dataset.amount);
+            const duration = button.dataset.duration;
+
+            log(`📝 Subscription details: ${JSON.stringify({ plan, amount, duration })}`);
+
+            // Check if user is authenticated
+            if (!api.isAuthenticated()) {
+                log('❌ User not authenticated, showing auth modal');
+                showAuthRequiredModal();
+                return;
+            }
+
+            log('✅ User is authenticated, proceeding...');
+
+            // Check if user already has an active subscription
+            const hasActiveSubscription = await checkActiveSubscription();
+            if (hasActiveSubscription) {
+                showAlert('You already have an active subscription. Visit your dashboard to manage it.', 'info');
+                return;
+            }
+
+            log('🚀 No active subscription, initiating payment');
+            await initiatePayment(plan, amount, duration, button);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            const subscribeButtons = document.querySelectorAll('.subscribe-btn');
+            log(`🔧 Found ${subscribeButtons.length} subscribe buttons`);
+            
+            subscribeButtons.forEach((button, index) => {
+                log(`⚙️ Setting up button ${index}: ${button.dataset.plan}`);
+                button.addEventListener('click', handleSubscription);
+            });
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', async () => {
+            log('🚀 Page loaded, initializing...');
+            await checkStatus();
+            setupEventListeners();
+            log('✅ Initialization complete');
+        });
+    </script>
+</body>
+</html>

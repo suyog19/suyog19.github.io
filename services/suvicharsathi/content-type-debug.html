@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content-Type Header Debug</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🔧 Content-Type Header Debug</h2>
+        
+        <div class="alert alert-info">
+            <strong>Issue Identified:</strong> Content-Type header might be missing or incorrect!
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Different Content-Type Headers</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testWithContentType" class="btn btn-primary btn-sm mb-2 w-100">✅ With Content-Type</button>
+                        <button id="testWithoutContentType" class="btn btn-warning btn-sm mb-2 w-100">❌ Without Content-Type</button>
+                        <button id="testDifferentContentTypes" class="btn btn-info btn-sm mb-2 w-100">🔄 Different Content-Types</button>
+                        <button id="testExplicitHeaders" class="btn btn-success btn-sm mb-2 w-100">🎯 Explicit Headers</button>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Test Data</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <label>Phone:</label>
+                            <input type="text" id="testPhone" class="form-control" value="+919999999999">
+                        </div>
+                        <div class="mb-2">
+                            <label>Name:</label>
+                            <input type="text" id="testName" class="form-control" value="Test User">
+                        </div>
+                        <div class="mb-2">
+                            <label>Email:</label>
+                            <input type="text" id="testEmail" class="form-control" value="test@example.com">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Results</h5>
+                        <button id="clearResults" class="btn btn-sm btn-outline-secondary float-end">Clear</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="results" style="max-height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85em; background: #f8f9fa; padding: 10px; border-radius: 5px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Fixed API Request Code</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Here's the corrected code with proper Content-Type handling:</p>
+                        <div id="fixedCode" style="background: #f8f9fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 0.9em;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const resultsDiv = document.getElementById('results');
+        const fixedCodeDiv = document.getElementById('fixedCode');
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '3px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function separator() {
+            log('─'.repeat(50), 'info');
+        }
+
+        function getTestData() {
+            return {
+                phone_number: document.getElementById('testPhone').value,
+                full_name: document.getElementById('testName').value,
+                email: document.getElementById('testEmail').value
+            };
+        }
+
+        // Test WITH Content-Type header
+        document.getElementById('testWithContentType').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('✅ Testing WITH Content-Type: application/json', 'success');
+            separator();
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(getTestData())
+                });
+
+                log(`Response Status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'warning');
+                
+                const data = await response.json();
+                log(`Response: ${JSON.stringify(data, null, 2)}`, 'info');
+                
+            } catch (error) {
+                log(`❌ Request failed: ${error.message}`, 'error');
+                
+                if (error.message.includes('CORS')) {
+                    log('🚨 CORS Error! Backend needs to allow Content-Type header', 'error');
+                }
+            }
+        });
+
+        // Test WITHOUT Content-Type header
+        document.getElementById('testWithoutContentType').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('❌ Testing WITHOUT Content-Type header', 'warning');
+            separator();
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    // No Content-Type header
+                    body: JSON.stringify(getTestData())
+                });
+
+                log(`Response Status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'warning');
+                
+                const data = await response.json();
+                log(`Response: ${JSON.stringify(data, null, 2)}`, 'info');
+                
+            } catch (error) {
+                log(`❌ Request failed: ${error.message}`, 'error');
+            }
+        });
+
+        // Test Different Content-Types
+        document.getElementById('testDifferentContentTypes').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('🔄 Testing Different Content-Type Values', 'info');
+            separator();
+            
+            const contentTypes = [
+                'application/json',
+                'application/json; charset=utf-8',
+                'text/plain',
+                'application/x-www-form-urlencoded'
+            ];
+            
+            for (const contentType of contentTypes) {
+                log(`Testing Content-Type: ${contentType}`, 'info');
+                
+                try {
+                    const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': contentType
+                        },
+                        body: contentType.includes('json') ? 
+                            JSON.stringify(getTestData()) : 
+                            'test data'
+                    });
+
+                    log(`  ✅ ${contentType}: ${response.status}`, 'success');
+                    
+                } catch (error) {
+                    log(`  ❌ ${contentType}: ${error.message}`, 'error');
+                }
+                
+                // Small delay between tests
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        });
+
+        // Test with Explicit Headers
+        document.getElementById('testExplicitHeaders').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('🎯 Testing with ALL Required Headers', 'success');
+            separator();
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Origin': window.location.origin,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(getTestData())
+                });
+
+                log(`Response Status: ${response.status} ${response.statusText}`, 
+                    response.ok ? 'success' : 'warning');
+                
+                // Log all response headers
+                log('Response Headers:', 'info');
+                for (let [key, value] of response.headers.entries()) {
+                    log(`  ${key}: ${value}`, 'info');
+                }
+                
+                const data = await response.json();
+                log(`Response Data: ${JSON.stringify(data, null, 2)}`, 'info');
+                
+            } catch (error) {
+                log(`❌ Request failed: ${error.message}`, 'error');
+            }
+        });
+
+        document.getElementById('clearResults').addEventListener('click', () => {
+            resultsDiv.innerHTML = '';
+        });
+
+        // Generate Fixed Code
+        window.addEventListener('load', () => {
+            const fixedAPICode = `// Fixed API Service - makeRequest method
+async makeRequest(endpoint, options = {}) {
+  const url = \`\${this.baseURL}\${endpoint}\`;
+  const config = {
+    method: options.method || 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Origin': window.location.origin,
+      ...options.headers
+    },
+    ...options
+  };
+
+  // Add auth token if available
+  if (this.token) {
+    config.headers['Authorization'] = \`Bearer \${this.token}\`;
+  }
+
+  // Ensure body is properly stringified for JSON requests
+  if (config.method !== 'GET' && config.headers['Content-Type'] === 'application/json') {
+    if (typeof options.body === 'object') {
+      config.body = JSON.stringify(options.body);
+    } else {
+      config.body = options.body;
+    }
+  }
+
+  try {
+    const response = await fetch(url, config);
+    
+    let data;
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      data = await response.json();
+    } else {
+      data = { message: await response.text() };
+    }
+
+    if (!response.ok) {
+      throw new Error(data.message || data.detail || \`HTTP \${response.status}\`);
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: error.message || 'Network error occurred'
+    };
+  }
+}
+
+// Fixed sendRegistrationOTP method
+async sendRegistrationOTP(phoneNumber, fullName, email = '') {
+  return this.makeRequest('/auth/register/send-otp', {
+    method: 'POST',
+    body: {  // Pass object directly, makeRequest will stringify it
+      phone_number: phoneNumber,
+      full_name: fullName,
+      email: email
+    }
+  });
+}`;
+
+            fixedCodeDiv.innerHTML = `<pre style="background: #e9ecef; padding: 10px; border-radius: 3px; font-size: 0.8em;">${fixedAPICode}</pre>`;
+        });
+    </script>
+</body>
+</html>

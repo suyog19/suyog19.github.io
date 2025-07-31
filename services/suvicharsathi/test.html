@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuvicharSathi - Test Mode</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div id="shared-header"></div>
+
+  <div class="container my-5" style="margin-top: 120px !important;">
+    
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="card">
+          <div class="card-header">
+            <h3>🧪 SuvicharSathi Frontend Test Mode</h3>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-info">
+              <h5>Backend Integration Status</h5>
+              <p>The backend API is currently not accessible. This test page simulates the frontend functionality.</p>
+              <p><strong>Backend URL:</strong> <code>https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev</code></p>
+            </div>
+
+            <h5>Frontend Features Implemented ✅</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">✅ User Registration with OTP</li>
+                  <li class="list-group-item">✅ User Login with OTP</li>
+                  <li class="list-group-item">✅ User Dashboard</li>
+                  <li class="list-group-item">✅ Subscription Management</li>
+                  <li class="list-group-item">✅ Payment Integration (Razorpay)</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">✅ Responsive Design</li>
+                  <li class="list-group-item">✅ Dynamic Navigation</li>
+                  <li class="list-group-item">✅ Local Storage Management</li>
+                  <li class="list-group-item">✅ Form Validation</li>
+                  <li class="list-group-item">✅ Error Handling</li>
+                </ul>
+              </div>
+            </div>
+
+            <h5 class="mt-4">Test the Frontend</h5>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h6>Homepage</h6>
+                    <p class="small text-muted">Main landing page with features</p>
+                    <a href="suvicharsathi.html" class="btn btn-outline-primary btn-sm">Visit</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h6>Registration</h6>
+                    <p class="small text-muted">OTP-based user registration</p>
+                    <a href="register.html" class="btn btn-outline-primary btn-sm">Visit</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h6>Login</h6>
+                    <p class="small text-muted">OTP-based user login</p>
+                    <a href="login.html" class="btn btn-outline-primary btn-sm">Visit</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h6>Pricing</h6>
+                    <p class="small text-muted">Subscription plans with payment</p>
+                    <a href="pricing.html" class="btn btn-outline-primary btn-sm">Visit</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="mt-4">Test User Dashboard</h5>
+            <div class="alert alert-warning">
+              <p>To test the dashboard without backend authentication, click the button below to simulate a logged-in user:</p>
+              <button class="btn btn-warning" onclick="simulateLogin()">Simulate Login & Open Dashboard</button>
+            </div>
+
+            <h5 class="mt-4">Backend API Endpoints Expected</h5>
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>POST</td><td>/auth/register/send-otp</td><td>Send registration OTP</td></tr>
+                  <tr><td>POST</td><td>/auth/register/verify-otp</td><td>Verify registration OTP</td></tr>
+                  <tr><td>POST</td><td>/auth/login/send-otp</td><td>Send login OTP</td></tr>
+                  <tr><td>POST</td><td>/auth/login/verify-otp</td><td>Verify login OTP</td></tr>
+                  <tr><td>GET</td><td>/user/profile</td><td>Get user profile</td></tr>
+                  <tr><td>POST</td><td>/payments/create-order</td><td>Create payment order</td></tr>
+                  <tr><td>POST</td><td>/payments/verify</td><td>Verify payment</td></tr>
+                  <tr><td>GET</td><td>/subscriptions/current</td><td>Get current subscription</td></tr>
+                  <tr><td>GET</td><td>/messages/recent</td><td>Get recent messages</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="mt-4">Next Steps</h5>
+            <ol>
+              <li>Start your backend server</li>
+              <li>Update the <code>baseURL</code> in <code>assets/js/api.js</code> if needed</li>
+              <li>Add your Razorpay key in <code>assets/js/pricing.js</code></li>
+              <li>Test the registration flow</li>
+              <li>Test the subscription and payment flow</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="shared-footer"></div>
+  
+  <script src="assets/js/shared.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    function simulateLogin() {
+      // Simulate user data for testing
+      const testUser = {
+        id: 1,
+        full_name: "Test User",
+        phone_number: "+91 9876543210",
+        email: "test@example.com",
+        created_at: new Date().toISOString()
+      };
+      
+      const testSubscription = {
+        id: 1,
+        plan_name: "Monthly Plan",
+        status: "active",
+        start_date: new Date().toISOString(),
+        end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+        amount: 49,
+        duration: "monthly"
+      };
+      
+      // Store test data
+      localStorage.setItem('suvicharsathi_token', 'test_token_123');
+      localStorage.setItem('suvicharsathi_user', JSON.stringify(testUser));
+      localStorage.setItem('suvicharsathi_subscription', JSON.stringify(testSubscription));
+      
+      alert('Test login data created! You can now access the dashboard.');
+      window.location.href = 'dashboard.html';
+    }
+
+    // Clear test data button
+    function clearTestData() {
+      localStorage.removeItem('suvicharsathi_token');
+      localStorage.removeItem('suvicharsathi_user');
+      localStorage.removeItem('suvicharsathi_subscription');
+      alert('Test data cleared!');
+      location.reload();
+    }
+  </script>
+</body>
+</html>

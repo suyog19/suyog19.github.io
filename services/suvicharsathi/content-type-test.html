@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content-Type Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h3>Content-Type Testing</h3>
+        <div class="row">
+            <div class="col-md-6">
+                <button id="testJSON" class="btn btn-primary mb-2 w-100">Test with JSON</button>
+                <button id="testForm" class="btn btn-warning mb-2 w-100">Test with Form Data</button>
+                <button id="testText" class="btn btn-info mb-2 w-100">Test with Plain Text</button>
+            </div>
+            <div class="col-md-6">
+                <div id="contentResults" style="font-family: monospace; font-size: 0.8em;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const resultsDiv = document.getElementById('contentResults');
+        
+        function logResult(msg) {
+            resultsDiv.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`;
+        }
+
+        // Test JSON content-type
+        document.getElementById('testJSON').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            logResult('Testing JSON content-type...');
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phone_number: '+919999999999',
+                        full_name: 'Test User',
+                        email: 'test@example.com'
+                    })
+                });
+                logResult(`JSON test: ${response.status} ${response.statusText}`);
+            } catch (error) {
+                logResult(`JSON test error: ${error.message}`);
+            }
+        });
+
+        // Test form data content-type
+        document.getElementById('testForm').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            logResult('Testing form data content-type...');
+            
+            const formData = new FormData();
+            formData.append('phone_number', '+919999999999');
+            formData.append('full_name', 'Test User');
+            formData.append('email', 'test@example.com');
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    body: formData
+                });
+                logResult(`Form test: ${response.status} ${response.statusText}`);
+            } catch (error) {
+                logResult(`Form test error: ${error.message}`);
+            }
+        });
+
+        // Test text content-type
+        document.getElementById('testText').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            logResult('Testing text content-type...');
+            
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: 'test data'
+                });
+                logResult(`Text test: ${response.status} ${response.statusText}`);
+            } catch (error) {
+                logResult(`Text test error: ${error.message}`);
+            }
+        });
+    </script>
+</body>
+</html>

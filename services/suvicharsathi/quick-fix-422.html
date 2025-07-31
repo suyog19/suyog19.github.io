@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick 422 Fix Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🔧 Quick 422 Validation Fix</h2>
+        
+        <div class="alert alert-success">
+            <strong>Progress:</strong> CORS works! Now fixing HTTP 422 validation error.
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test OTP Request</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="otpTestForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label>Phone Number:</label>
+                                        <input type="text" id="phoneInput" class="form-control" value="9999999999" placeholder="Enter 10 digits">
+                                        <small class="text-muted">Will be formatted to +919999999999</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label>Full Name:</label>
+                                        <input type="text" id="nameInput" class="form-control" value="Test User">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label>Email (Optional):</label>
+                                <input type="email" id="emailInput" class="form-control" value="test@example.com">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-lg">🚀 Send OTP (Fixed Format)</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Request Preview</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="requestPreview" style="font-family: monospace; font-size: 0.8em; background: #f8f9fa; padding: 10px; border-radius: 3px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Test Results</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="results" style="font-family: monospace; font-size: 0.9em; background: #f8f9fa; padding: 15px; border-radius: 5px; min-height: 150px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script>
+        const api = new APIService();
+        const resultsDiv = document.getElementById('results');
+        const previewDiv = document.getElementById('requestPreview');
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '5px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function updatePreview() {
+            const phone = document.getElementById('phoneInput').value;
+            const name = document.getElementById('nameInput').value;
+            const email = document.getElementById('emailInput').value;
+            
+            const formattedPhone = api.formatPhoneNumber(phone);
+            
+            const requestData = {
+                phone_number: formattedPhone,
+                full_name: name.trim(),
+                email: email.trim() || undefined
+            };
+            
+            // Remove undefined values
+            Object.keys(requestData).forEach(key => {
+                if (requestData[key] === undefined) {
+                    delete requestData[key];
+                }
+            });
+            
+            previewDiv.innerHTML = `<strong>Request Data:</strong><br><pre>${JSON.stringify(requestData, null, 2)}</pre>`;
+        }
+
+        // Update preview when inputs change
+        ['phoneInput', 'nameInput', 'emailInput'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+
+        // Handle form submission
+        document.getElementById('otpTestForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            resultsDiv.innerHTML = '';
+            
+            const phone = document.getElementById('phoneInput').value.trim();
+            const name = document.getElementById('nameInput').value.trim();
+            const email = document.getElementById('emailInput').value.trim();
+            
+            if (!phone) {
+                log('❌ Phone number is required', 'error');
+                return;
+            }
+            
+            if (!name) {
+                log('❌ Full name is required', 'error');
+                return;
+            }
+            
+            log('🚀 Testing OTP request with formatted data...', 'info');
+            
+            try {
+                const formattedPhone = api.formatPhoneNumber(phone);
+                log(`Formatted phone: ${formattedPhone}`, 'info');
+                
+                const result = await api.sendRegistrationOTP(formattedPhone, name, email);
+                
+                if (result.success) {
+                    log('🎉 SUCCESS! OTP request worked!', 'success');
+                    log(`Response: ${JSON.stringify(result.data, null, 2)}`, 'success');
+                    log('✅ The validation error is now fixed!', 'success');
+                } else {
+                    log('❌ OTP request failed:', 'error');
+                    log(`Error: ${result.error}`, 'error');
+                    
+                    // Try to parse if it's a validation error
+                    if (result.error.includes('422') || result.error.includes('validation')) {
+                        log('🔍 This is still a validation error. Let me try alternative formats...', 'warning');
+                        
+                        // Try without email
+                        log('Trying without email field...', 'info');
+                        const resultNoEmail = await api.sendRegistrationOTP(formattedPhone, name, '');
+                        
+                        if (resultNoEmail.success) {
+                            log('✅ Success without email!', 'success');
+                            log(`Response: ${JSON.stringify(resultNoEmail.data, null, 2)}`, 'success');
+                        } else {
+                            log(`Still failed: ${resultNoEmail.error}`, 'error');
+                        }
+                    }
+                }
+                
+            } catch (error) {
+                log(`❌ Exception: ${error.message}`, 'error');
+            }
+        });
+
+        // Initial preview update
+        window.addEventListener('load', () => {
+            updatePreview();
+            log('✅ CORS issue resolved! Now testing data validation...', 'success');
+            log('Enter your phone number and click "Send OTP"', 'info');
+        });
+    </script>
+</body>
+</html>

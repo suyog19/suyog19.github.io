@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Codespaces CORS Issues</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-3">
+        <h2>🚨 GitHub Codespaces CORS Issues</h2>
+        
+        <div class="alert alert-danger">
+            <strong>⚠️ ROOT CAUSE IDENTIFIED:</strong> GitHub Codespaces has specific CORS and port forwarding issues!
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🔍 GitHub Codespaces Issues</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="text-danger">Common Problems:</h6>
+                        <ul>
+                            <li><strong>Port Visibility:</strong> Ports might be "Private" instead of "Public"</li>
+                            <li><strong>Authentication Required:</strong> Private ports require GitHub authentication</li>
+                            <li><strong>CORS Headers:</strong> Codespace proxy might strip/modify CORS headers</li>
+                            <li><strong>URL Format:</strong> Special Codespace URLs don't work the same as localhost</li>
+                            <li><strong>Referrer Policy:</strong> Codespace proxy has strict referrer policies</li>
+                        </ul>
+                        
+                        <h6 class="text-success mt-3">✅ Solutions:</h6>
+                        <ol>
+                            <li><strong>Make Port Public</strong> (Most Important)</li>
+                            <li><strong>Use Correct CORS Configuration</strong></li>
+                            <li><strong>Handle Codespace-specific headers</strong></li>
+                            <li><strong>Alternative: Use Tunnel Service</strong></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🔧 Step 1: Fix Port Visibility</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>In your GitHub Codespace:</strong></p>
+                        <ol>
+                            <li>Open the <strong>PORTS</strong> tab (bottom panel)</li>
+                            <li>Find port <strong>8000</strong></li>
+                            <li>Right-click → <strong>"Make Public"</strong></li>
+                            <li>Or click the 🔒 icon to change to 🌐</li>
+                        </ol>
+                        
+                        <div class="alert alert-info">
+                            <strong>💡 Tip:</strong> Public ports work with CORS, Private ports require authentication
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🔧 Step 2: Codespace CORS Config</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Backend CORS for Codespaces:</strong></p>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 3px; font-size: 0.8em;">allow_origins=[
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+    "https://*.github.dev",
+    "https://*.githubpreview.dev",
+    "*"  # For testing only
+]</pre>
+                        <div class="alert alert-warning">
+                            <strong>⚠️ Note:</strong> Using "*" for origins is not secure for production
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🧪 Test Codespace Connection</h5>
+                    </div>
+                    <div class="card-body">
+                        <button id="testCodespaceConnection" class="btn btn-primary btn-lg mb-3">🔍 Test Codespace Issues</button>
+                        <button id="testAlternativeURL" class="btn btn-info btn-lg mb-3 ms-2">🌐 Test Alternative URL</button>
+                        <div id="testResults" style="font-family: monospace; font-size: 0.85em; background: #f8f9fa; padding: 15px; border-radius: 5px; min-height: 200px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>🚀 Alternative Solution: Use Tunnel</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>If Codespace ports don't work, use a tunnel service:</p>
+                        
+                        <h6>Option 1: ngrok (Recommended)</h6>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 3px;">
+# In your Codespace terminal:
+1. Install: curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+2. Add repo: echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
+3. Update: sudo apt update && sudo apt install ngrok
+4. Run: ngrok http 8000
+5. Use the https://xxxxx.ngrok.io URL
+                        </pre>
+                        
+                        <h6>Option 2: Codespace Port Forwarding</h6>
+                        <pre style="background: #f8f9fa; padding: 10px; border-radius: 3px;">
+# Use the direct Codespace URL but make it public:
+https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const baseURL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+        const resultsDiv = document.getElementById('testResults');
+
+        function log(message, type = 'info') {
+            const time = new Date().toLocaleTimeString();
+            const colors = {
+                'success': '#28a745',
+                'error': '#dc3545',
+                'warning': '#ffc107',
+                'info': '#17a2b8'
+            };
+            
+            const div = document.createElement('div');
+            div.style.color = colors[type] || '#000';
+            div.style.marginBottom = '5px';
+            div.innerHTML = `<strong>[${time}]</strong> ${message}`;
+            resultsDiv.appendChild(div);
+            resultsDiv.scrollTop = resultsDiv.scrollHeight;
+        }
+
+        function separator() {
+            log('═'.repeat(60), 'info');
+        }
+
+        // Test Codespace connection issues
+        document.getElementById('testCodespaceConnection').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('🔍 Testing GitHub Codespace Connection Issues...', 'info');
+            log(`Backend URL: ${baseURL}`, 'info');
+            log(`Frontend Origin: ${window.location.origin}`, 'info');
+            separator();
+            
+            // Test 1: Basic connectivity
+            log('Test 1: Basic GET request to check port accessibility...', 'info');
+            try {
+                const response = await fetch(baseURL, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                log(`✅ GET request successful: ${response.status}`, 'success');
+                
+                // Check if it's returning HTML (login page) instead of API response
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('text/html')) {
+                    log('⚠️ WARNING: Received HTML response - port might require authentication!', 'warning');
+                    log('🔧 Solution: Make port PUBLIC in Codespace', 'warning');
+                } else {
+                    log(`✅ Received proper API response (${contentType})`, 'success');
+                }
+                
+            } catch (error) {
+                log(`❌ GET request failed: ${error.message}`, 'error');
+                
+                if (error.message.includes('Failed to fetch')) {
+                    log('🚨 Port is likely PRIVATE or not accessible', 'error');
+                    log('🔧 Solution: Make port PUBLIC in Codespace PORTS tab', 'error');
+                }
+            }
+            
+            separator();
+            
+            // Test 2: CORS Preflight
+            log('Test 2: CORS Preflight (OPTIONS) request...', 'info');
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'content-type',
+                        'Origin': window.location.origin
+                    }
+                });
+                
+                log(`✅ OPTIONS request successful: ${response.status}`, 'success');
+                
+                // Check CORS headers
+                const allowOrigin = response.headers.get('access-control-allow-origin');
+                const allowMethods = response.headers.get('access-control-allow-methods');
+                const allowHeaders = response.headers.get('access-control-allow-headers');
+                
+                log(`CORS Allow-Origin: ${allowOrigin || 'NOT SET'}`, allowOrigin ? 'success' : 'error');
+                log(`CORS Allow-Methods: ${allowMethods || 'NOT SET'}`, allowMethods ? 'success' : 'error');
+                log(`CORS Allow-Headers: ${allowHeaders || 'NOT SET'}`, allowHeaders ? 'success' : 'error');
+                
+                if (!allowOrigin || (allowOrigin !== '*' && allowOrigin !== window.location.origin)) {
+                    log('❌ CORS Allow-Origin is missing or incorrect!', 'error');
+                    log(`Backend needs to allow: ${window.location.origin}`, 'error');
+                }
+                
+            } catch (error) {
+                log(`❌ OPTIONS request failed: ${error.message}`, 'error');
+            }
+            
+            separator();
+            
+            // Test 3: Actual POST request
+            log('Test 3: POST request to OTP endpoint...', 'info');
+            try {
+                const response = await fetch(`${baseURL}/auth/register/send-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        phone_number: '+919999999999',
+                        full_name: 'Test User',
+                        email: 'test@example.com'
+                    })
+                });
+
+                log(`✅ POST request successful: ${response.status}`, response.ok ? 'success' : 'warning');
+                
+                const data = await response.json();
+                log(`Response: ${JSON.stringify(data, null, 2)}`, 'info');
+                
+                if (response.ok) {
+                    log('🎉 SUCCESS! Codespace CORS is working!', 'success');
+                }
+                
+            } catch (error) {
+                log(`❌ POST request failed: ${error.message}`, 'error');
+                
+                if (error.message.includes('CORS')) {
+                    log('🚨 CORS Policy Error - Codespace Configuration Issue!', 'error');
+                    log('🔧 Solutions:', 'warning');
+                    log('   1. Make port 8000 PUBLIC in Codespace', 'warning');
+                    log('   2. Update backend CORS to allow your origin', 'warning');
+                    log('   3. Or use allow_origins=["*"] for testing', 'warning');
+                }
+            }
+            
+            separator();
+            log('✅ Codespace connection test complete', 'info');
+        });
+
+        // Test alternative URL formats
+        document.getElementById('testAlternativeURL').addEventListener('click', async () => {
+            resultsDiv.innerHTML = '';
+            log('🌐 Testing Alternative Codespace URL Formats...', 'info');
+            separator();
+            
+            const alternativeURLs = [
+                baseURL,
+                baseURL.replace('app.github.dev', 'githubpreview.dev'),
+                baseURL.replace('https://', 'http://'),
+                'http://localhost:8000'  // If port forwarding works
+            ];
+            
+            for (const url of alternativeURLs) {
+                log(`Testing URL: ${url}`, 'info');
+                
+                try {
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        mode: 'cors'
+                    });
+                    
+                    log(`  ✅ ${url}: Status ${response.status}`, 'success');
+                    
+                } catch (error) {
+                    log(`  ❌ ${url}: ${error.message}`, 'error');
+                }
+                
+                // Delay between tests
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
+            separator();
+            log('🔧 If none work, try making port PUBLIC or use ngrok tunnel', 'warning');
+        });
+
+        // Initial load message
+        window.addEventListener('load', () => {
+            log('🚨 GitHub Codespace CORS Issues Detected!', 'warning');
+            log('Most likely cause: Port is PRIVATE instead of PUBLIC', 'warning');
+            log('Click "Test Codespace Issues" to diagnose the problem', 'info');
+            separator();
+        });
+    </script>
+</body>
+</html>
