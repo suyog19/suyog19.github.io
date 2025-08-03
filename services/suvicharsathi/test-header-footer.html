@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Header Footer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div id="shared-header" style="background: red; height: 60px;">HEADER SHOULD LOAD HERE</div>
+
+  <div class="container my-5" style="margin-top: 120px !important;">
+    <h1>Test Page</h1>
+    <p>This is a test to see if header/footer loads properly.</p>
+    
+    <div id="debug-info">
+      <h3>Debug Info:</h3>
+      <div id="debug-log"></div>
+    </div>
+  </div>
+
+  <div id="shared-footer" style="background: blue; height: 40px; color: white;">FOOTER SHOULD LOAD HERE</div>
+
+  <script>
+    function log(message) {
+      console.log(message);
+      document.getElementById('debug-log').innerHTML += message + '<br>';
+    }
+    
+    log('Test page loaded');
+    
+    // Check if we can manually load shared.js
+    const script = document.createElement('script');
+    script.src = 'assets/js/shared.js';
+    script.onload = function() {
+      log('✅ shared.js loaded successfully');
+      log('injectHeaderFooter function: ' + typeof injectHeaderFooter);
+      
+      if (typeof injectHeaderFooter === 'function') {
+        log('Calling injectHeaderFooter manually...');
+        injectHeaderFooter();
+        
+        setTimeout(() => {
+          const header = document.getElementById('shared-header');
+          const footer = document.getElementById('shared-footer');
+          log('Header length: ' + (header ? header.innerHTML.length : 'null'));
+          log('Footer length: ' + (footer ? footer.innerHTML.length : 'null'));
+        }, 500);
+      }
+    };
+    script.onerror = function() {
+      log('❌ Failed to load shared.js');
+    };
+    document.head.appendChild(script);
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
