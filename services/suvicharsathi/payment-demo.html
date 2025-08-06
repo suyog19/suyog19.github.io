@@ -109,89 +109,98 @@
     <script src="assets/js/payment-otp.js"></script>
 
     <script>
-        // Initialize the Payment+OTP library
-        PaymentOTP.init({
-            razorpayKeyId: 'rzp_test_FxTSJ2PpEdW53N', // Replace with your key
-            backendUrl: 'http://localhost:5000', // Replace with your backend URL
-            
-            onSuccess: (data) => {
-                showMessage('Payment successful! OTP sent to your phone.', 'success');
-                document.getElementById('otpSection').classList.remove('hidden');
-            },
-            
-            onError: (error) => {
-                showMessage('Error: ' + error, 'error');
-            },
-            
-            onOTPSent: (data) => {
-                showMessage(`OTP sent to ${data.phone}`, 'info');
-            },
-            
-            onOTPVerified: (data) => {
-                showMessage('🎉 Complete! Payment and OTP verification successful!', 'success');
-                document.getElementById('otpSection').classList.add('hidden');
-                resetForm();
-            }
-        });
-
-        // Handle form submission
-        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const orderData = {
-                amount: parseFloat(document.getElementById('amount').value),
-                customer_name: document.getElementById('name').value,
-                customer_phone: document.getElementById('phone').value,
-                customer_email: document.getElementById('email').value
-            };
-
-            try {
-                showMessage('Creating order...', 'info');
-                await PaymentOTP.createOrder(orderData);
-                
-                showMessage('Order created! Opening payment gateway...', 'info');
-                PaymentOTP.openPaymentGateway();
-                
-            } catch (error) {
-                showMessage('Failed to create order: ' + error.message, 'error');
-            }
-        });
-
-        // Verify OTP
-        async function verifyOTP() {
-            const otp = document.getElementById('otp').value;
-            if (!otp || otp.length !== 6) {
-                showMessage('Please enter a valid 6-digit OTP', 'error');
-                return;
-            }
-
-            try {
-                await PaymentOTP.verifyOTP(otp);
-            } catch (error) {
-                // Error already handled by onError callback
-            }
-        }
-
-        // Resend OTP
-        async function resendOTP() {
-            try {
-                await PaymentOTP.resendOTP();
-            } catch (error) {
-                // Error already handled by onError callback
-            }
-        }
-
         // Utility functions
         function showMessage(message, type = 'info') {
             const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
         }
 
-        function resetForm() {
-            document.getElementById('paymentForm').reset();
-            document.getElementById('otp').value = '';
-            PaymentOTP.resetSession();
-        }
+        // Wait for the DOM and scripts to load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if PaymentOTP is available
+            if (typeof PaymentOTP !== 'undefined' && PaymentOTP.init) {
+                PaymentOTP.init({
+                    razorpayKeyId: 'rzp_test_FxTSJ2PpEdW53N', // Replace with your key
+                    backendUrl: 'https://crispy-chainsaw-wgwvrw755vx25rwg-5000.app.github.dev', // Replace with your backend URL
+                    
+                    onSuccess: (data) => {
+                        showMessage('Payment successful! OTP sent to your phone.', 'success');
+                        document.getElementById('otpSection').classList.remove('hidden');
+                    },
+                    
+                    onError: (error) => {
+                        showMessage('Error: ' + error, 'error');
+                    },
+                    
+                    onOTPSent: (data) => {
+                        showMessage(`OTP sent to ${data.phone}`, 'info');
+                    },
+                    
+                    onOTPVerified: (data) => {
+                        showMessage('🎉 Complete! Payment and OTP verification successful!', 'success');
+                        document.getElementById('otpSection').classList.add('hidden');
+                        resetForm();
+                    }
+                });
+            } else {
+                console.error('PaymentOTP library not loaded properly');
+                showMessage('Payment system not available. Please refresh the page.', 'error');
+                return;
+            }
+
+            // Handle form submission
+            document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const orderData = {
+                    amount: parseFloat(document.getElementById('amount').value),
+                    customer_name: document.getElementById('name').value,
+                    customer_phone: document.getElementById('phone').value,
+                    customer_email: document.getElementById('email').value
+                };
+
+                try {
+                    showMessage('Creating order...', 'info');
+                    await PaymentOTP.createOrder(orderData);
+                    
+                    showMessage('Order created! Opening payment gateway...', 'info');
+                    PaymentOTP.openPaymentGateway();
+                    
+                } catch (error) {
+                    showMessage('Failed to create order: ' + error.message, 'error');
+                }
+            });
+
+            // Verify OTP function
+            window.verifyOTP = async function() {
+                const otp = document.getElementById('otp').value;
+                if (!otp || otp.length !== 6) {
+                    showMessage('Please enter a valid 6-digit OTP', 'error');
+                    return;
+                }
+
+                try {
+                    await PaymentOTP.verifyOTP(otp);
+                } catch (error) {
+                    // Error already handled by onError callback
+                }
+            };
+
+            // Resend OTP function
+            window.resendOTP = async function() {
+                try {
+                    await PaymentOTP.resendOTP();
+                } catch (error) {
+                    // Error already handled by onError callback
+                }
+            };
+
+            function resetForm() {
+                document.getElementById('paymentForm').reset();
+                document.getElementById('otp').value = '';
+                PaymentOTP.resetSession();
+            }
+        });
     </script>
 </body>
 </html>
