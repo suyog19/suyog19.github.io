@@ -1,5 +1,7 @@
-// Injects the shared header and footer into the page
-function injectHeaderFooter() {
+// Universal Header/Footer Injection - Live Server Compatible
+// This script can be embedded directly in HTML files for maximum compatibility
+
+function createUniversalHeaderFooter() {
   // Check if user is authenticated
   const isAuthenticated = localStorage.getItem('suvicharsathi_token');
   const userData = JSON.parse(localStorage.getItem('suvicharsathi_user') || '{}');
@@ -13,9 +15,6 @@ function injectHeaderFooter() {
   navItems += '<li class="nav-item"><a class="nav-link fw-semibold" href="privacy.html">Privacy Policy</a></li>';
   navItems += '<li class="nav-item"><a class="nav-link fw-semibold" href="terms.html">Terms & Conditions</a></li>';
   navItems += '<li class="nav-item"><a class="nav-link fw-semibold" href="refund.html">Refund Policy</a></li>';
-  
-  // Admin link (discrete - small shield icon for admin access)
-  navItems += '<li class="nav-item"><a class="nav-link" href="admin-login.html" title="Admin Portal" style="opacity: 0.7; font-size: 0.9rem;">🛡️</a></li>';
   
   if (isAuthenticated) {
     navItems += '<li class="nav-item"><a class="nav-link fw-semibold" href="dashboard.html">Dashboard</a></li>';
@@ -62,8 +61,16 @@ function injectHeaderFooter() {
     </footer>
   `;
   
-  document.getElementById('shared-header').innerHTML = headerHTML;
-  document.getElementById('shared-footer').innerHTML = footerHTML;
+  const headerElement = document.getElementById('shared-header');
+  const footerElement = document.getElementById('shared-footer');
+  
+  if (headerElement) {
+    headerElement.innerHTML = headerHTML;
+  }
+  
+  if (footerElement) {
+    footerElement.innerHTML = footerHTML;
+  }
 }
 
 // Global logout function
@@ -79,23 +86,14 @@ function handleLogout() {
   }
 }
 
-document.addEventListener('DOMContentLoaded', injectHeaderFooter);
+// Multiple initialization methods for maximum compatibility
+document.addEventListener('DOMContentLoaded', createUniversalHeaderFooter);
 
-// Additional fallbacks for Live Server compatibility
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', injectHeaderFooter);
+  document.addEventListener('DOMContentLoaded', createUniversalHeaderFooter);
 } else {
-  // DOM already loaded
-  injectHeaderFooter();
+  createUniversalHeaderFooter();
 }
 
-// Extra fallback after a short delay
-setTimeout(() => {
-  const header = document.getElementById('shared-header');
-  const footer = document.getElementById('shared-footer');
-  
-  if (header && header.innerHTML.length === 0) {
-    console.log('Header still empty, retrying injection...');
-    injectHeaderFooter();
-  }
-}, 1000);
+// Backup timer
+setTimeout(createUniversalHeaderFooter, 500);
