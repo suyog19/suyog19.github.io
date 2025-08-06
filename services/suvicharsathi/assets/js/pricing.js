@@ -4,39 +4,41 @@
  */
 
 // Initialize API service with error handling
-let api;
+let pricingApi;
 try {
-  api = new APIService();
-  console.log('✅ API service initialized successfully');
+  if (typeof APIService === 'undefined') {
+    console.error('APIService class not found - api.js might not be loaded');
+  } else {
+    pricingApi = new APIService();
+  }
 } catch (error) {
-  console.error('❌ Failed to initialize API service:', error);
+  console.error('Failed to initialize pricing API service:', error);
+}
+
+// Also check if global api exists as fallback
+if (typeof api !== 'undefined') {
+  pricingApi = api;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('📄 Pricing DOM loaded');
-  
-  if (!api) {
-    console.error('❌ API service not available');
-    alert('Technical error: API service not available. Please refresh the page.');
+  if (!pricingApi) {
+    showAlert('Technical error: API service not available. Please refresh the page.', 'danger');
     return;
   }
-  
-  console.log('� API authenticated:', api.isAuthenticated());
   
   initializePricingPage();
   setupEventListeners();
 });
 
 function initializePricingPage() {
-  console.log('🚀 Initializing pricing page');
   // Check if user is logged in
-  if (api.isAuthenticated()) {
+  if (pricingApi && pricingApi.isAuthenticated()) {
     showUserGreeting();
   }
 }
 
 function showUserGreeting() {
-  const userData = api.getUserData();
+  const userData = pricingApi.getUserData();
   if (userData) {
     const greetingElement = document.getElementById('userGreeting');
     const nameElement = document.getElementById('greetingName');
@@ -47,104 +49,84 @@ function showUserGreeting() {
 }
 
 function setupEventListeners() {
-  console.log('� Setting up event listeners');
-  
-  const subscribeButtons = document.querySelectorAll('.subscribe-btn');
-  console.log('🔍 Found subscribe buttons:', subscribeButtons.length);
-  
-  if (subscribeButtons.length === 0) {
-    console.error('❌ No subscribe buttons found!');
-    return;
-  }
-  
-  subscribeButtons.forEach((button, index) => {
-    console.log(`⚙️ Setting up button ${index}: ${button.dataset.plan}`);
+  // Wait a bit for DOM to be fully ready
+  setTimeout(() => {
+    const subscribeButtons = document.querySelectorAll('.subscribe-btn');
     
-    button.addEventListener('click', function(event) {
-      console.log('🎯 Subscribe button clicked:', button.dataset.plan);
-      alert('Button clicked: ' + button.dataset.plan);
-      
-      // Add more detailed logging
-      console.log('🔍 About to call handleSubscription...');
-      console.log('🔍 Event object:', event);
-      console.log('🔍 Button element:', button);
-      
-      try {
-        handleSubscription(event);
-        console.log('✅ handleSubscription called successfully');
-      } catch (error) {
-        console.error('❌ Error calling handleSubscription:', error);
-        alert('Error: ' + error.message);
+    if (subscribeButtons.length === 0) {
+      // Try again with different selector
+      const alternativeButtons = document.querySelectorAll('button[data-plan]');
+      if (alternativeButtons.length === 0) {
+        return;
       }
+    }
+    
+    const buttonsToSetup = subscribeButtons.length > 0 ? subscribeButtons : document.querySelectorAll('button[data-plan]');
+    
+    buttonsToSetup.forEach((button) => {
+      // Remove any existing listeners first
+      button.removeEventListener('click', handleButtonClick);
+      // Add the event listener
+      button.addEventListener('click', handleButtonClick);
     });
-  });
+  }, 100);
+}
+
+// Separate function to handle button clicks
+function handleButtonClick(event) {
+  event.preventDefault();
   
-  console.log('✅ Event listeners setup complete');
+  const button = event.currentTarget;
+  
+  try {
+    handleSubscription(event);
+  } catch (error) {
+    console.error('Error calling handleSubscription:', error);
+    showAlert('Error: ' + error.message, 'danger');
+  }
 }
 
 async function handleSubscription(event) {
-  console.log('🎯 handleSubscription called - START');
-  
   try {
-    console.log('🔍 Event received:', event);
-    
-    const button = event.target;
-    console.log('🔍 Button element:', button);
+    const button = event.currentTarget;
     
     const plan = button.dataset.plan;
     const amount = parseInt(button.dataset.amount);
     const duration = button.dataset.duration;
 
-    console.log('📝 Subscription details:', { plan, amount, duration });
+    // Validate required data
+    if (!plan || !amount || !duration) {
+      throw new Error('Missing subscription data. Please refresh the page and try again.');
+    }
 
     // Check if user is authenticated
-    console.log('🔍 Checking authentication...');
-    console.log('🔍 API object available:', !!api);
-    
-    if (!api) {
-      console.error('❌ API object is null/undefined');
-      alert('API service not available. Please refresh the page.');
+    if (!pricingApi) {
+      showAlert('API service not available. Please refresh the page.', 'danger');
       return;
     }
     
-    const isAuth = api.isAuthenticated();
-    console.log('🔐 Authentication check result:', isAuth);
+    const isAuth = pricingApi.isAuthenticated();
     
     if (!isAuth) {
-      console.log('❌ User not authenticated');
-      alert('You need to login first. Redirecting to login page...');
       showAuthRequiredModal();
       return;
     }
 
-    console.log('✅ User is authenticated');
-
-    // Skip subscription check for now to test payment flow
-    console.log('🚀 Proceeding to payment...');
-    
     // Start payment process
-    console.log('💳 About to call initiatePayment...');
     await initiatePayment(plan, amount, duration, button);
-    console.log('✅ initiatePayment completed');
     
   } catch (error) {
-    console.error('❌ Error in handleSubscription:', error);
-    console.error('❌ Error stack:', error.stack);
-    alert('Error: ' + error.message);
+    console.error('Error in handleSubscription:', error);
+    showAlert('Error: ' + error.message, 'danger');
   }
-  
-  console.log('🎯 handleSubscription - END');
 }
 
 async function checkActiveSubscription() {
   try {
-    console.log('Checking for active subscription...');
-    const result = await api.getCurrentSubscription();
-    console.log('Subscription check result:', result);
+    const result = await pricingApi.getCurrentSubscription();
     
     if (result.success && result.data) {
       const hasActive = result.data.status === 'active';
-      console.log('Has active subscription:', hasActive);
       return hasActive;
     }
     
@@ -162,14 +144,14 @@ async function initiatePayment(plan, amount, duration, button) {
   try {
     // Create payment order using the fixed API method
     const planId = plan; // Simple plan ID mapping
-    const orderResult = await api.initiatePayment(planId);
+    const orderResult = await pricingApi.initiatePayment(planId);
     
     if (!orderResult.success) {
       throw new Error(orderResult.error || 'Failed to create payment order');
     }
 
     const order = orderResult.data;
-    const userData = api.getUserData();
+    const userData = pricingApi.getUserData();
 
     // Razorpay options
     const options = {
@@ -215,7 +197,7 @@ async function handlePaymentSuccess(paymentResponse, plan, duration) {
     showAlert('Payment successful! Verifying...', 'success');
 
     // Verify payment with backend
-    const verifyResult = await api.verifyPayment(
+    const verifyResult = await pricingApi.verifyPayment(
       paymentResponse.razorpay_order_id,
       paymentResponse.razorpay_payment_id,
       paymentResponse.razorpay_signature
@@ -227,7 +209,7 @@ async function handlePaymentSuccess(paymentResponse, plan, duration) {
       
       // Update local subscription data
       if (verifyResult.data.subscription) {
-        api.saveSubscriptionData(verifyResult.data.subscription);
+        pricingApi.saveSubscriptionData(verifyResult.data.subscription);
       }
       
       // Redirect to dashboard after a delay
@@ -247,16 +229,54 @@ async function handlePaymentSuccess(paymentResponse, plan, duration) {
 
 function showAuthRequiredModal() {
   console.log('🔐 User needs to authenticate');
-  alert('Please create an account or login to subscribe to SuvicharSathi!');
-  // Optionally redirect to registration
-  // window.location.href = 'register.html';
+  
+  // Try to show the modal if it exists
+  const modal = document.getElementById('authRequiredModal');
+  if (modal) {
+    const bootstrapModal = new bootstrap.Modal(modal);
+    bootstrapModal.show();
+  } else {
+    // Fallback to alert and redirect
+    showAlert('Please create an account or login to subscribe to SuvicharSathi!', 'warning');
+    setTimeout(() => {
+      window.location.href = 'register.html';
+    }, 2000);
+  }
 }
 
 // Utility functions
 function showAlert(message, type = 'info') {
   console.log(`🚨 Alert: ${message} (${type})`);
-  // Use simple alert for now
-  alert(message);
+  
+  // Try to use Bootstrap alert container if available
+  const alertContainer = document.getElementById('alertContainer');
+  if (alertContainer) {
+    const alertClass = type === 'danger' ? 'alert-danger' : 
+                     type === 'success' ? 'alert-success' : 
+                     type === 'warning' ? 'alert-warning' : 'alert-info';
+    
+    const alertHTML = `
+      <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    `;
+    
+    alertContainer.innerHTML = alertHTML;
+    
+    // Auto-dismiss after 5 seconds for non-error alerts
+    if (type !== 'danger') {
+      setTimeout(() => {
+        const alert = alertContainer.querySelector('.alert');
+        if (alert) {
+          alert.remove();
+        }
+      }, 5000);
+    }
+  } else {
+    // Fallback to browser alert
+    alert(message);
+  }
 }
 
 function showLoading(button, show) {
@@ -291,7 +311,7 @@ if (urlParams.get('plan')) {
 }
 
 // Auto-refresh subscription status every 30 seconds if user is logged in
-if (api.isAuthenticated()) {
+if (pricingApi && pricingApi.isAuthenticated()) {
   setInterval(async () => {
     await checkActiveSubscription();
   }, 30000);

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Users POST API Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .response-area {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .success {
+            color: #198754;
+        }
+    </style>
+</head>
+<body>
+    <div class="container test-container">
+        <h2 class="mb-4">Admin Users POST API Test</h2>
+        
+        <!-- Admin Token Input -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Authentication</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="adminToken" class="form-label">Admin Token</label>
+                    <input type="text" class="form-control" id="adminToken" placeholder="Enter admin token or click 'Get from Storage'">
+                    <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="getTokenFromStorage()">
+                        Get from Storage
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Form -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Create New User Test</h5>
+            </div>
+            <div class="card-body">
+                <form id="testForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name *</label>
+                                <input type="text" class="form-control" id="name" value="Test Admin User" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" value="admintest@example.com" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="text" class="form-control" id="phone" value="+919876543000" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" value="TestPassword123">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="language" class="form-label">Preferred Language</label>
+                                <select class="form-select" id="language">
+                                    <option value="english">English</option>
+                                    <option value="marathi" selected>Marathi</option>
+                                    <option value="hindi">Hindi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status">
+                                    <option value="ACTIVE" selected>Active</option>
+                                    <option value="PENDING_VERIFICATION">Pending Verification</option>
+                                    <option value="INACTIVE">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="isActive" checked>
+                            <label class="form-check-label" for="isActive">
+                                Is Active
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <span id="testSpinner" class="spinner-border spinner-border-sm d-none me-2"></span>
+                        Test POST API
+                    </button>
+                    
+                    <button type="button" class="btn btn-secondary ms-2" onclick="testEndpointExists()">
+                        Check if Endpoint Exists
+                    </button>
+                    
+                    <button type="button" class="btn btn-info ms-2" onclick="testTokenValidity()">
+                        Test Token Validity
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Response Display -->
+        <div class="card">
+            <div class="card-header">
+                <h5>API Response</h5>
+            </div>
+            <div class="card-body">
+                <div id="responseArea" class="response-area">
+                    Click "Test POST API" or "Check if Endpoint Exists" to see the response...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_BASE_URL = 'https://cuddly-spork-xqvpg9w4xh6pxr-8000.app.github.dev';
+
+        // Get admin token from localStorage
+        function getTokenFromStorage() {
+            const token = localStorage.getItem('adminToken');
+            const isAdmin = localStorage.getItem('isAdmin');
+            const refreshToken = localStorage.getItem('adminRefreshToken');
+            
+            if (token) {
+                document.getElementById('adminToken').value = token;
+                showResponse(`Token retrieved from storage:
+Token Length: ${token.length} characters
+Is Admin: ${isAdmin}
+Has Refresh Token: ${!!refreshToken}
+Token Preview: ${token.substring(0, 20)}...${token.substring(token.length - 10)}`, 'success');
+            } else {
+                showResponse('No admin token found in storage', 'error');
+            }
+        }
+
+        // Show response in the response area
+        function showResponse(message, type = 'info') {
+            const responseArea = document.getElementById('responseArea');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : '';
+            
+            responseArea.innerHTML = `[${timestamp}] <span class="${className}">${message}</span>`;
+        }
+
+        // Set loading state
+        function setLoading(isLoading) {
+            const spinner = document.getElementById('testSpinner');
+            const submitBtn = document.querySelector('button[type="submit"]');
+            
+            if (isLoading) {
+                spinner.classList.remove('d-none');
+                submitBtn.disabled = true;
+            } else {
+                spinner.classList.add('d-none');
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Test token validity
+        async function testTokenValidity() {
+            const token = document.getElementById('adminToken').value.trim();
+            if (!token) {
+                showResponse('Please enter admin token first', 'error');
+                return;
+            }
+
+            setLoading(true);
+            showResponse('Testing token validity with /admin/dashboard endpoint...');
+
+            try {
+                // Test with admin dashboard endpoint (which should work if token is valid)
+                const response = await fetch(`${API_BASE_URL}/admin/dashboard`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const responseText = await response.text();
+                let responseData;
+                
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) {
+                    responseData = responseText;
+                }
+
+                const result = `Token Validation Test (/admin/dashboard):
+Status: ${response.status} ${response.statusText}
+Headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}
+
+Token Used: ${token.substring(0, 20)}...${token.substring(token.length - 10)}
+
+Response:
+${typeof responseData === 'object' ? JSON.stringify(responseData, null, 2) : responseData}`;
+
+                if (response.status === 401) {
+                    showResponse(result + `
+
+🔴 TOKEN IS INVALID OR EXPIRED!
+Possible solutions:
+1. Log out and log back in to get a fresh token
+2. Check if the token format is correct (should be a long JWT string)
+3. Verify the API base URL is correct`, 'error');
+                } else if (response.ok) {
+                    showResponse(result + `
+
+✅ TOKEN IS VALID!
+You can proceed with testing the POST endpoint.`, 'success');
+                } else {
+                    showResponse(result + `
+
+⚠️ Unexpected response. Token might have limited permissions.`, 'error');
+                }
+
+            } catch (error) {
+                showResponse(`Token validation error: ${error.message}
+
+🔴 NETWORK ERROR OR INVALID API URL
+Check:
+1. Is the backend server running?
+2. Is the API base URL correct?
+3. Are there CORS issues?`, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Test if the endpoint exists
+        async function testEndpointExists() {
+            const token = document.getElementById('adminToken').value.trim();
+            if (!token) {
+                showResponse('Please enter admin token first', 'error');
+                return;
+            }
+
+            setLoading(true);
+            showResponse('Checking if POST /admin/users endpoint exists...');
+
+            try {
+                // Try OPTIONS request first
+                const optionsResponse = await fetch(`${API_BASE_URL}/admin/users`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                showResponse(`OPTIONS Response:
+Status: ${optionsResponse.status} ${optionsResponse.statusText}
+Headers: ${JSON.stringify(Object.fromEntries(optionsResponse.headers.entries()), null, 2)}
+Allowed Methods: ${optionsResponse.headers.get('Allow') || 'Not specified'}`, 'info');
+
+            } catch (error) {
+                showResponse(`OPTIONS Request Error: ${error.message}`, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Test POST API
+        async function testPostAPI() {
+            const token = document.getElementById('adminToken').value.trim();
+            if (!token) {
+                showResponse('Please enter admin token first', 'error');
+                return;
+            }
+
+            setLoading(true);
+            showResponse('Testing POST /admin/users endpoint...');
+
+            // Gather form data
+            const userData = {
+                name: document.getElementById('name').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone_number: document.getElementById('phone').value.trim(),
+                password: document.getElementById('password').value.trim(),
+                preferred_language: document.getElementById('language').value,
+                status: document.getElementById('status').value,
+                is_active: document.getElementById('isActive').checked
+            };
+
+            // Remove empty password if not provided
+            if (!userData.password) {
+                delete userData.password;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const responseText = await response.text();
+                let responseData;
+                
+                try {
+                    responseData = JSON.parse(responseText);
+                } catch (e) {
+                    responseData = responseText;
+                }
+
+                const result = `POST /admin/users Response:
+Status: ${response.status} ${response.statusText}
+Headers: ${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}
+
+Request Body:
+${JSON.stringify(userData, null, 2)}
+
+Response Body:
+${typeof responseData === 'object' ? JSON.stringify(responseData, null, 2) : responseData}`;
+
+                showResponse(result, response.ok ? 'success' : 'error');
+
+            } catch (error) {
+                showResponse(`POST Request Error: ${error.message}`, 'error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Form submission
+        document.getElementById('testForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            testPostAPI();
+        });
+
+        // Auto-load token on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            getTokenFromStorage();
+        });
+    </script>
+</body>
+</html>

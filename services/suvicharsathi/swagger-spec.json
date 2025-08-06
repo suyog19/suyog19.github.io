@@ -1,11 +1,11 @@
 ﻿{
-    "openapi":  "3.1.0",
-    "info":  {
-                 "title":  "SuvicharSathi API",
-                 "description":  "Daily Marathi Quote Delivery Service via WhatsApp",
-                 "version":  "1.0.0"
-             },
-    "paths":  {
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SuvicharSathi API",
+    "description": "Daily Marathi Quote Delivery Service via WhatsApp",
+    "version": "1.0.0"
+  },
+  "paths": {
                   "/auth/test-otp":  {
                                          "get":  {
                                                      "tags":  [

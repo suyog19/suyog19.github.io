@@ -181,14 +181,14 @@ class APIService {
 
   // User APIs
   async getUserProfile() {
-    return this.makeRequest('/user/profile', {
+    return this.makeRequest('/users/me', {
       method: 'GET'
     });
   }
 
   async updateUserProfile(updates) {
-    return this.makeRequest('/user/profile', {
-      method: 'PUT',
+    return this.makeRequest('/users/me', {
+      method: 'PATCH',
       body: JSON.stringify(updates)
     });
   }
@@ -207,7 +207,7 @@ class APIService {
   }
 
   async getCurrentSubscription() {
-    return this.makeRequest('/subscriptions/current', {
+    return this.makeRequest('/payments/subscription', {
       method: 'GET'
     });
   }

@@ -39,19 +39,29 @@ async function initializeDashboard() {
 
 async function loadUserProfile() {
   try {
+    console.log('🔄 Loading user profile...');
+    
     // Try to get user data from localStorage first
     let userData = api.getUserData();
+    console.log('📱 Cached user data:', userData);
     
     if (!userData) {
+      console.log('🌐 Fetching user data from API...');
       // Fetch from API if not in localStorage
       const result = await api.getUserProfile();
+      console.log('📊 API result:', result);
+      
       if (result.success) {
         userData = result.data;
         api.saveUserData(userData);
+        console.log('✅ User data saved to localStorage');
       } else {
-        throw new Error('Failed to load user profile');
+        console.error('❌ API call failed:', result);
+        throw new Error(`API Error: ${result.error || 'Failed to load user profile'}`);
       }
     }
+
+    console.log('👤 Final user data:', userData);
 
     // Update UI with user data
     document.getElementById('userName').textContent = userData.full_name || 'User';
@@ -60,9 +70,16 @@ async function loadUserProfile() {
     document.getElementById('editUserEmail').value = userData.email || '';
     document.getElementById('editUserPhone').value = userData.phone_number || '';
 
+    console.log('✅ User profile loaded successfully');
+
   } catch (error) {
-    console.error('Error loading user profile:', error);
-    showAlert('Failed to load user profile', 'danger');
+    console.error('💥 Error loading user profile:', error);
+    console.error('💥 Error details:', {
+      message: error.message,
+      stack: error.stack,
+      token: api.getToken() ? 'EXISTS' : 'MISSING'
+    });
+    showAlert(`Failed to load user profile: ${error.message}`, 'danger');
   }
 }
 
