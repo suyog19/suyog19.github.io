@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment + OTP Integration Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #3399cc;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .success { color: #28a745; margin: 10px 0; }
+        .error { color: #dc3545; margin: 10px 0; }
+        .info { color: #17a2b8; margin: 10px 0; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🚀 Payment + OTP Demo</h2>
+        
+        <!-- Step 1: Customer Details Form -->
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" value="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" value="9819667620" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="john@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <select id="amount" required>
+                    <option value="1">₹1 - Test</option>
+                    <option value="10">₹10</option>
+                    <option value="100">₹100</option>
+                    <option value="500">₹500</option>
+                </select>
+            </div>
+            <button type="submit" id="payBtn">Create Order & Pay</button>
+        </form>
+
+        <!-- Step 2: OTP Verification (Hidden initially) -->
+        <div id="otpSection" class="hidden">
+            <h3>Enter OTP</h3>
+            <div class="form-group">
+                <label for="otp">OTP sent to your phone:</label>
+                <input type="text" id="otp" maxlength="6" placeholder="Enter 6-digit OTP">
+            </div>
+            <button onclick="verifyOTP()" id="verifyBtn">Verify OTP</button>
+            <button onclick="resendOTP()" id="resendBtn">Resend OTP</button>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages"></div>
+    </div>
+
+    <!-- Load Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <!-- Load our Payment+OTP library -->
+    <script src="assets/js/payment-otp.js"></script>
+
+    <script>
+        // Initialize the Payment+OTP library
+        PaymentOTP.init({
+            razorpayKeyId: 'rzp_test_FxTSJ2PpEdW53N', // Replace with your key
+            backendUrl: 'http://localhost:5000', // Replace with your backend URL
+            
+            onSuccess: (data) => {
+                showMessage('Payment successful! OTP sent to your phone.', 'success');
+                document.getElementById('otpSection').classList.remove('hidden');
+            },
+            
+            onError: (error) => {
+                showMessage('Error: ' + error, 'error');
+            },
+            
+            onOTPSent: (data) => {
+                showMessage(`OTP sent to ${data.phone}`, 'info');
+            },
+            
+            onOTPVerified: (data) => {
+                showMessage('🎉 Complete! Payment and OTP verification successful!', 'success');
+                document.getElementById('otpSection').classList.add('hidden');
+                resetForm();
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const orderData = {
+                amount: parseFloat(document.getElementById('amount').value),
+                customer_name: document.getElementById('name').value,
+                customer_phone: document.getElementById('phone').value,
+                customer_email: document.getElementById('email').value
+            };
+
+            try {
+                showMessage('Creating order...', 'info');
+                await PaymentOTP.createOrder(orderData);
+                
+                showMessage('Order created! Opening payment gateway...', 'info');
+                PaymentOTP.openPaymentGateway();
+                
+            } catch (error) {
+                showMessage('Failed to create order: ' + error.message, 'error');
+            }
+        });
+
+        // Verify OTP
+        async function verifyOTP() {
+            const otp = document.getElementById('otp').value;
+            if (!otp || otp.length !== 6) {
+                showMessage('Please enter a valid 6-digit OTP', 'error');
+                return;
+            }
+
+            try {
+                await PaymentOTP.verifyOTP(otp);
+            } catch (error) {
+                // Error already handled by onError callback
+            }
+        }
+
+        // Resend OTP
+        async function resendOTP() {
+            try {
+                await PaymentOTP.resendOTP();
+            } catch (error) {
+                // Error already handled by onError callback
+            }
+        }
+
+        // Utility functions
+        function showMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function resetForm() {
+            document.getElementById('paymentForm').reset();
+            document.getElementById('otp').value = '';
+            PaymentOTP.resetSession();
+        }
+    </script>
+</body>
+</html>
