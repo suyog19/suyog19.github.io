@@ -13,6 +13,9 @@ function injectHeaderFooter() {
   navItems += '<li class="nav-item"><a class="nav-link fw-semibold" href="privacy.html">Privacy Policy</a></li>';
   navItems += '<li class="nav-item"><a class="nav-link fw-semibold" href="refund.html">Refund Policy</a></li>';
   
+  // Admin link (discrete - small shield icon for admin access)
+  navItems += '<li class="nav-item"><a class="nav-link" href="admin-login.html" title="Admin Portal" style="opacity: 0.7; font-size: 0.9rem;">🛡️</a></li>';
+  
   if (isAuthenticated) {
     navItems += '<li class="nav-item"><a class="nav-link fw-semibold" href="dashboard.html">Dashboard</a></li>';
     navItems += '<li class="nav-item dropdown">';
