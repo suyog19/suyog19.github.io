@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Debug Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #3399cc;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .success { color: #28a745; margin: 10px 0; padding: 10px; background: #d4edda; border-radius: 5px; }
+        .error { color: #dc3545; margin: 10px 0; padding: 10px; background: #f8d7da; border-radius: 5px; }
+        .info { color: #17a2b8; margin: 10px 0; padding: 10px; background: #d1ecf1; border-radius: 5px; }
+        .warning { color: #856404; margin: 10px 0; padding: 10px; background: #fff3cd; border-radius: 5px; }
+        .debug-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .config-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🔍 Razorpay Integration Debug</h2>
+        
+        <!-- Configuration Display -->
+        <div class="config-section">
+            <strong>🔧 Current Configuration:</strong><br>
+            Backend URL: <span id="backendUrl">https://crispy-chainsaw-wgwvrw755vx25rwg-5000.app.github.dev</span><br>
+            Razorpay Key: <span id="razorpayKey">rzp_test_FxTSJ2PpEdW53N</span><br>
+            Backend Status: <span id="backendStatus">Checking...</span><br>
+            Razorpay SDK: <span id="razorpaySDK">Loading...</span>
+        </div>
+        
+        <!-- Test Steps -->
+        <div class="debug-section">
+            <h3>🧪 Testing Steps</h3>
+            <button onclick="testBackend()" id="testBackendBtn">1. Test Backend Connection</button>
+            <button onclick="testOrderCreation()" id="testOrderBtn" disabled>2. Test Order Creation</button>
+            <button onclick="testRazorpayConfig()" id="testRazorpayBtn" disabled>3. Test Razorpay Configuration</button>
+            <button onclick="testPaymentFlow()" id="testPaymentBtn" disabled>4. Test Payment Flow</button>
+        </div>
+
+        <!-- Customer Form -->
+        <div class="debug-section">
+            <h3>👤 Customer Details</h3>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" value="Test User" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" value="9876543210" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" value="test@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount (₹):</label>
+                <input type="number" id="amount" value="1" min="1" required>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div id="messages"></div>
+
+        <!-- Debug Output -->
+        <div class="debug-section">
+            <h3>📋 Debug Output</h3>
+            <pre id="debugOutput">Ready to start debugging...</pre>
+        </div>
+    </div>
+
+    <!-- Load Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        const BACKEND_URL = 'https://crispy-chainsaw-wgwvrw755vx25rwg-5000.app.github.dev';
+        const RAZORPAY_KEY = 'rzp_test_FxTSJ2PpEdW53N';
+        let currentOrder = null;
+
+        // Check if Razorpay SDK loaded
+        window.addEventListener('load', () => {
+            if (typeof Razorpay !== 'undefined') {
+                document.getElementById('razorpaySDK').textContent = '✅ Loaded';
+                document.getElementById('razorpaySDK').style.color = 'green';
+            } else {
+                document.getElementById('razorpaySDK').textContent = '❌ Failed to load';
+                document.getElementById('razorpaySDK').style.color = 'red';
+                showMessage('Razorpay SDK failed to load. Please check your internet connection.', 'error');
+            }
+        });
+
+        // Test backend connection
+        async function testBackend() {
+            try {
+                addDebug('🔄 Testing backend connection...');
+                showMessage('Testing backend connection...', 'info');
+                
+                const response = await fetch(BACKEND_URL + '/', { 
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('backendStatus').textContent = '✅ Connected';
+                    document.getElementById('backendStatus').style.color = 'green';
+                    document.getElementById('testOrderBtn').disabled = false;
+                    
+                    addDebug('✅ Backend connection successful');
+                    addDebug(JSON.stringify(data, null, 2));
+                    showMessage('Backend connection successful!', 'success');
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                document.getElementById('backendStatus').textContent = '❌ Failed';
+                document.getElementById('backendStatus').style.color = 'red';
+                addDebug(`❌ Backend connection failed: ${error.message}`);
+                showMessage(`Backend connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Test order creation
+        async function testOrderCreation() {
+            try {
+                addDebug('🔄 Testing order creation...');
+                showMessage('Testing order creation...', 'info');
+                
+                const orderData = {
+                    amount: parseFloat(document.getElementById('amount').value),
+                    customer_name: document.getElementById('name').value,
+                    customer_phone: document.getElementById('phone').value,
+                    customer_email: document.getElementById('email').value
+                };
+                
+                addDebug('Order request data:');
+                addDebug(JSON.stringify(orderData, null, 2));
+                
+                const response = await fetch(BACKEND_URL + '/api/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+                addDebug('Order response:');
+                addDebug(JSON.stringify(result, null, 2));
+
+                if (!response.ok) {
+                    throw new Error(result.error || `HTTP ${response.status}: Order creation failed`);
+                }
+
+                currentOrder = result.order;
+                document.getElementById('testRazorpayBtn').disabled = false;
+                
+                addDebug('✅ Order created successfully');
+                showMessage(`Order created successfully! Order ID: ${currentOrder.id}`, 'success');
+                
+            } catch (error) {
+                addDebug(`❌ Order creation failed: ${error.message}`);
+                showMessage(`Order creation failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Test Razorpay configuration
+        async function testRazorpayConfig() {
+            try {
+                addDebug('🔄 Testing Razorpay configuration...');
+                showMessage('Testing Razorpay configuration...', 'info');
+                
+                if (!currentOrder) {
+                    throw new Error('No order created yet. Please create an order first.');
+                }
+                
+                if (typeof Razorpay === 'undefined') {
+                    throw new Error('Razorpay SDK not loaded');
+                }
+                
+                // Test creating Razorpay instance without opening
+                const testOptions = {
+                    key: RAZORPAY_KEY,
+                    amount: currentOrder.amount,
+                    currency: currentOrder.currency,
+                    order_id: currentOrder.id,
+                    name: 'Test Payment',
+                    description: 'Configuration test'
+                };
+                
+                addDebug('Razorpay options:');
+                addDebug(JSON.stringify(testOptions, null, 2));
+                
+                // Try to create Razorpay instance
+                const rzp = new Razorpay(testOptions);
+                
+                document.getElementById('testPaymentBtn').disabled = false;
+                addDebug('✅ Razorpay configuration test passed');
+                showMessage('Razorpay configuration looks good!', 'success');
+                
+            } catch (error) {
+                addDebug(`❌ Razorpay configuration failed: ${error.message}`);
+                showMessage(`Razorpay configuration failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Test payment flow with detailed error handling
+        async function testPaymentFlow() {
+            try {
+                addDebug('🔄 Starting payment flow test...');
+                showMessage('Opening Razorpay payment gateway...', 'info');
+                
+                if (!currentOrder) {
+                    throw new Error('No order available. Please create an order first.');
+                }
+                
+                const options = {
+                    key: RAZORPAY_KEY,
+                    amount: currentOrder.amount,
+                    currency: currentOrder.currency,
+                    order_id: currentOrder.id,
+                    name: 'Debug Payment Test',
+                    description: 'Testing payment integration',
+                    image: '', // Optional: add your logo URL
+                    
+                    // Customer prefill
+                    prefill: {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        contact: document.getElementById('phone').value
+                    },
+                    
+                    // Payment success handler
+                    handler: function (response) {
+                        addDebug('✅ Payment successful!');
+                        addDebug('Payment response:');
+                        addDebug(JSON.stringify(response, null, 2));
+                        showMessage('Payment successful! Check debug output for details.', 'success');
+                    },
+                    
+                    // Modal settings
+                    modal: {
+                        ondismiss: function() {
+                            addDebug('⚠️ Payment modal dismissed by user');
+                            showMessage('Payment cancelled by user', 'warning');
+                        }
+                    },
+                    
+                    // Theme
+                    theme: {
+                        color: '#3399cc'
+                    }
+                };
+                
+                addDebug('Final Razorpay options:');
+                addDebug(JSON.stringify(options, null, 2));
+                
+                const rzp = new Razorpay(options);
+                
+                // Add error handling for the payment gateway
+                rzp.on('payment.failed', function (response) {
+                    addDebug('❌ Payment failed!');
+                    addDebug('Payment failure response:');
+                    addDebug(JSON.stringify(response, null, 2));
+                    showMessage(`Payment failed: ${response.error.description}`, 'error');
+                });
+                
+                rzp.open();
+                addDebug('🚀 Razorpay payment gateway opened');
+                
+            } catch (error) {
+                addDebug(`❌ Payment flow failed: ${error.message}`);
+                addDebug(`Error stack: ${error.stack}`);
+                showMessage(`Payment flow failed: ${error.message}`, 'error');
+            }
+        }
+
+        // Utility functions
+        function showMessage(message, type = 'info') {
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        }
+
+        function addDebug(message) {
+            const debugDiv = document.getElementById('debugOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const newEntry = `[${timestamp}] ${message}\n`;
+            debugDiv.textContent = newEntry + debugDiv.textContent;
+        }
+
+        // Auto-start backend test
+        window.addEventListener('load', () => {
+            setTimeout(testBackend, 1000); // Wait 1 second for page to fully load
+        });
+    </script>
+</body>
+</html>
