@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Suyog Joshi — Start a thoughtful conversation about intelligent software systems, AI adoption, or engineering strategy.">
+  <title>Contact — suyogjoshi.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="brand-lockup" aria-label="suyogjoshi.com — Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../writing/" class="nav-link">Writing</a></li>
+          <li><a href="../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../about/" class="nav-link">About</a></li>
+          <li><a href="../contact/" class="nav-link" aria-current="page">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="contact-page-hero">
+      <div class="container">
+        <p class="eyebrow">Contact</p>
+        <h1 class="page-title">Let's start with a thoughtful note.</h1>
+        <p class="page-intro">If you're working on intelligent software systems, AI adoption, engineering strategy, technical learning, or a related collaboration, I'd be happy to hear from you.</p>
+      </div>
+    </section>
+
+    <section class="contact-page-content">
+      <div class="container">
+        <div class="contact-layout">
+
+          <div class="contact-form-panel">
+            <form class="contact-form" id="contact-form" novalidate>
+
+              <div class="form-field">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  autocomplete="name"
+                  required
+                >
+                <span class="field-error" id="name-error" role="alert" hidden></span>
+              </div>
+
+              <div class="form-field">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  autocomplete="email"
+                  required
+                >
+                <span class="field-error" id="email-error" role="alert" hidden></span>
+              </div>
+
+              <div class="form-field">
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="8"
+                  required
+                  aria-describedby="message-hint message-error"
+                ></textarea>
+                <span class="field-hint" id="message-hint">Share the context, what you're exploring, and how I may be able to help.</span>
+                <span class="field-error" id="message-error" role="alert" hidden></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Send message</button>
+
+            </form>
+
+            <div class="form-status" id="form-status" role="status" aria-live="polite" aria-atomic="true"></div>
+          </div>
+
+          <aside class="contact-context-panel">
+            <h2>Good reasons to reach out</h2>
+            <ul>
+              <li>AI adoption and software strategy</li>
+              <li>System architecture and engineering design</li>
+              <li>Technical writing, teaching, or collaboration</li>
+              <li>Consulting or speaking conversations</li>
+            </ul>
+            <p class="contact-note">A short, clear message works best. I'll respond when there is a meaningful fit.</p>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../writing/">Writing</a>
+          <a href="../systems/">Systems</a>
+          <a href="../about/">About</a>
+          <a href="../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://linkedin.com/in/suyog19" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/script.js"></script>
+  <script src="../js/contact.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.">
+  <title>AI, Machine Learning and Data Science — Explained Simply — suyogjoshi.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com — Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- Article Header -->
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">← Back to Writing</a>
+            <p class="article-tag">AI Foundations</p>
+            <h1 class="article-page-title">AI, Machine Learning and Data Science — Explained Simply</h1>
+            <p class="article-page-subtitle">A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Body -->
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+
+              <p>Many people hear AI, Machine Learning, and Data Science used together — often as if they mean the same thing. They are related, but they are not identical. This article explains the distinctions clearly using a single banking example to ground the ideas in practice.</p>
+
+              <h2>Why these terms are confusing</h2>
+              <p>The confusion is partly a marketing problem. Technology vendors apply these terms loosely. Analysts use them interchangeably in presentations. Journalists treat them as synonyms. Over time, the distinctions blur — even inside organisations that work with these systems every day. The result is that most people who work near AI cannot explain what it actually is.</p>
+
+              <h2>A simple banking example</h2>
+              <p>Imagine a bank that wants to reduce credit card fraud. It has tens of millions of transaction records. It wants to detect unusual patterns before customers are harmed. This is a real, common problem — and the solution touches all three disciplines in distinct ways. It is a useful lens for understanding how AI, ML, and Data Science actually relate to each other.</p>
+
+              <h2>What AI means</h2>
+              <p>Artificial Intelligence is the broad field concerned with building systems that can perform tasks typically requiring human-like reasoning: understanding language, recognising patterns, making decisions, or predicting outcomes. In the banking example, the goal — detecting fraud by reasoning about patterns — is an AI goal. It describes the ambition, not the specific technique used to pursue it.</p>
+
+              <h2>What Machine Learning means</h2>
+              <p>Machine Learning is a subset of AI. It is the technique of building systems that learn from data rather than being explicitly programmed with rules. In the banking example, a fraud detection model would be trained on historical transactions — learning which patterns are associated with fraud and which are not. The model improves as it is exposed to more data. The key distinction: the rules are not written by humans. They are inferred from examples.</p>
+
+              <h2>What Data Science means</h2>
+              <p>Data Science is the practice of extracting insight from data. It combines statistics, programming, and domain knowledge. In the banking example, a data scientist would explore the transaction records to understand which variables — merchant category, transaction amount, geographic location, time of day — are most predictive of fraud. That analysis informs what the machine learning model should focus on, and whether the data is clean and representative enough to learn from.</p>
+
+              <h2>How they relate</h2>
+              <p>AI is the goal. Machine Learning is one of the techniques used to pursue it. Data Science is the practice of understanding the data that feeds those techniques. They overlap, they depend on each other, but they are not the same thing. A useful mental model: Data Science explains the data. Machine Learning builds the model. AI describes the ambition.</p>
+              <p>A team building a fraud detection system needs all three — the data understanding, the learning technique, and the broader goal of building a system that reasons intelligently. Conflating them makes it harder to have clear conversations about what you are actually building and what it requires.</p>
+
+              <h2>Closing thought</h2>
+              <p>Understanding these distinctions matters not for technical precision alone — but for better conversations, better decisions, and better questions when working near these systems. Most misunderstandings about AI in organisations start here: with unclear language that makes a complicated thing feel more mysterious than it is.</p>
+
+            </div>
+
+            <div class="article-original-note">
+              <p>This article was originally published on Medium and is being adapted here as part of my long-term knowledge hub.</p>
+              <a href="#" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Reading -->
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../understanding-the-ai-ecosystem/" class="article-related-item">
+                  <span class="article-related-item-title">Understanding the AI Ecosystem</span>
+                  <span class="article-related-item-summary">A structured view of how models, data, infrastructure, and applications come together in real-world AI systems.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../how-i-used-two-ais-to-build-a-software-engineering-system/" class="article-related-item">
+                  <span class="article-related-item-title">How I Used Two AIs to Build a Software Engineering System</span>
+                  <span class="article-related-item-summary">A practical reflection on using ChatGPT for design, Claude for implementation, and human judgment to keep the system grounded.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://linkedin.com/in/suyog19" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>

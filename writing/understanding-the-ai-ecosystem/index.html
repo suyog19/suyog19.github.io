@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A structured view of how models, data, infrastructure, and applications come together in real-world AI systems.">
+  <title>Understanding the AI Ecosystem — suyogjoshi.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com — Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- Article Header -->
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">← Back to Writing</a>
+            <p class="article-tag">AI Systems</p>
+            <h1 class="article-page-title">Understanding the AI Ecosystem</h1>
+            <p class="article-page-subtitle">A structured view of how models, data, infrastructure, and applications come together in real-world AI systems.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Body -->
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+
+              <p>Most explanations of the AI ecosystem focus on models — the component that does the intelligent part. But the model is only one layer of a working AI system. Understanding how AI systems are actually built requires a broader view: layers of infrastructure, data pipelines, application logic, and organisational decisions that sit above and below the model itself.</p>
+
+              <h2>Why the AI ecosystem feels confusing</h2>
+              <p>The AI landscape is large and changes quickly. New models, platforms, services, and frameworks appear frequently. The terminology shifts. Vendors use the same words for different things. For software engineers and technical leaders trying to understand the space, it can feel like trying to read a map that keeps being redrawn. The answer is not to track every product — it is to understand the structural layers that persist beneath the noise.</p>
+
+              <h2>The model layer</h2>
+              <p>The model is the component that takes input and produces output using learned patterns. It can be a large language model, an image classifier, a recommendation engine, or a specialised predictor. The model is often the most visible part of an AI system, but it is not always the most expensive or complex to build. Today, many models are accessed as a service rather than trained from scratch — which shifts engineering effort toward integration and application design rather than model development.</p>
+
+              <h2>The data layer</h2>
+              <p>Data is what models learn from — and what AI systems operate on at runtime. This layer includes collection, storage, cleaning, labelling, and pipelines that move data into and through the system. The quality, volume, and structure of data fundamentally determines what a model can learn. In most real AI projects, data problems consume more time than model problems. A well-designed model on poor data produces poor results.</p>
+
+              <h2>The infrastructure layer</h2>
+              <p>Infrastructure includes compute, storage, networking, and the platforms that run training and inference workloads. This layer is mostly invisible to end users but drives a large share of costs and operational complexity. It also includes the MLOps tooling — model registries, deployment pipelines, monitoring, and versioning — that keeps AI systems running reliably in production. Without this layer, even the best model cannot serve users consistently at scale.</p>
+
+              <h2>The application layer</h2>
+              <p>The application layer is where AI capabilities become useful to people and downstream systems. It includes APIs, interfaces, workflows, and products that expose the model's outputs. This is where software engineering decisions dominate: how the system handles failures, how outputs are filtered or validated, how users experience the intelligence, and how the application integrates with existing infrastructure. The best models often fail at this layer due to poor application design.</p>
+
+              <h2>The human and organisational layer</h2>
+              <p>AI systems do not operate outside human and organisational context. Decisions about what to build, what data to collect, what outcomes to optimise, and how to handle failures all involve people. Legal, compliance, risk, and ethics considerations sit here. So do the teams responsible for maintaining and improving the system over time. Ignoring this layer is one of the most common reasons AI projects fail in practice — not because the model was wrong, but because the organisational conditions were not ready for it.</p>
+
+              <h2>How these layers connect</h2>
+              <p>Each layer depends on the others. A model with no data pipeline cannot be trained or retrained. An application with no infrastructure layer cannot serve users at scale. A system with no human oversight cannot correct for drift or failure over time. Building a real AI system means building across all these layers — and understanding which problems belong to which layer is the first step toward solving them clearly.</p>
+              <p>Most AI failures are not model failures. They are data failures, infrastructure failures, or application design failures. A structural view of the ecosystem makes these problems easier to identify and address.</p>
+
+              <h2>Closing thought</h2>
+              <p>The goal of understanding the AI ecosystem is not to become an expert in every tool and platform. It is to develop a structural mental model that allows you to reason clearly about where a problem lives, what it requires, and how the pieces connect. That model scales as the ecosystem evolves. Individual products do not.</p>
+
+            </div>
+
+            <div class="article-original-note">
+              <p>This article was originally published on Medium and is being adapted here as part of my long-term knowledge hub.</p>
+              <a href="#" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Reading -->
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../ai-ml-data-science-explained-simply/" class="article-related-item">
+                  <span class="article-related-item-title">AI, Machine Learning and Data Science — Explained Simply</span>
+                  <span class="article-related-item-summary">A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../how-i-used-two-ais-to-build-a-software-engineering-system/" class="article-related-item">
+                  <span class="article-related-item-title">How I Used Two AIs to Build a Software Engineering System</span>
+                  <span class="article-related-item-summary">A practical reflection on using ChatGPT for design, Claude for implementation, and human judgment to keep the system grounded.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://linkedin.com/in/suyog19" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>

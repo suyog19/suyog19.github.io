@@ -3,9 +3,258 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suyog Joshi</title>
+  <meta name="description" content="suyogjoshi.com — A knowledge hub by Suyog Joshi exploring AI, software engineering, systems thinking, and intelligent software systems.">
+  <title>suyogjoshi.com — Intelligent Software Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <p>Coming soon.</p>
+
+  <!-- ============================================================
+       Header
+       ============================================================ -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-lockup" aria-label="suyogjoshi.com — Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="writing/" class="nav-link">Writing</a></li>
+          <li><a href="systems/" class="nav-link">Systems</a></li>
+          <li><a href="about/" class="nav-link">About</a></li>
+          <li><a href="contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================================================
+         Hero
+         ============================================================ -->
+    <section class="hero" id="hero">
+      <div class="container">
+        <p class="eyebrow">AI systems &bull; Software architecture &bull; Real-world engineering</p>
+        <h1 class="hero-headline">
+          I help individuals and organizations understand, design, and build intelligent software systems.
+        </h1>
+        <div class="hero-subtext-wrap">
+          <p class="hero-subtext">
+            20+ years in software engineering, enterprise systems, and banking technology — now focused on AI, learning, systems thinking, and practical intelligent software.
+          </p>
+          <p class="hero-subtext hero-subtext--sharp">
+            Most software is still built as if it were deterministic. I explore what changes when systems become intelligent.
+          </p>
+        </div>
+        <div class="hero-ctas">
+          <a href="writing/" class="btn btn-primary">Explore Writing</a>
+          <a href="systems/" class="btn btn-secondary">View Systems</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Pillars
+         ============================================================ -->
+    <section class="pillars" id="pillars">
+      <div class="container">
+        <div class="pillars-intro">
+          <h2 class="pillars-heading">This is not a portfolio.</h2>
+          <p class="pillars-body">
+            It is a working knowledge hub where I explore how intelligent software systems are understood, designed, built, explained, and improved.
+          </p>
+        </div>
+        <div class="pillars-grid">
+          <div class="pillar-card">
+            <h3 class="pillar-title">Learning</h3>
+            <p class="pillar-text">Clear explanations of AI, ML, software engineering, and programming concepts.</p>
+          </div>
+          <div class="pillar-card">
+            <h3 class="pillar-title">Systems</h3>
+            <p class="pillar-text">Experiments, architectures, builds, and lessons from real software systems.</p>
+          </div>
+          <div class="pillar-card">
+            <h3 class="pillar-title">Practice</h3>
+            <p class="pillar-text">Applying systems thinking to AI adoption, engineering strategy, technical education, and selective consulting conversations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Featured Writing
+         ============================================================ -->
+    <section class="writing" id="writing">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Featured Writing</h2>
+          <p class="section-subtitle">Thoughts on AI, software engineering, learning, and systems that are becoming intelligent.</p>
+        </div>
+
+        <div class="writing-grid">
+          <article class="article-card article-card--featured">
+            <span class="article-tag">AI Foundations</span>
+            <h3 class="article-title">AI, Machine Learning and Data Science — Explained Simply</h3>
+            <p class="article-summary">A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.</p>
+            <a href="writing/ai-ml-data-science-explained-simply/" class="article-link">Read article <span aria-hidden="true">→</span></a>
+          </article>
+
+          <div class="article-cards-secondary">
+            <article class="article-card article-card--small">
+              <span class="article-tag">AI Systems</span>
+              <h3 class="article-title">Understanding the AI Ecosystem</h3>
+              <p class="article-summary">A structured view of how models, data, infrastructure, and applications come together in real-world AI systems.</p>
+              <a href="writing/understanding-the-ai-ecosystem/" class="article-link">Read article <span aria-hidden="true">→</span></a>
+            </article>
+            <article class="article-card article-card--small">
+              <span class="article-tag">Software Systems</span>
+              <h3 class="article-title">How I Used Two AIs to Build a Software Engineering System</h3>
+              <p class="article-summary">A practical reflection on using ChatGPT for design, Claude for implementation, and human judgment to keep the system grounded.</p>
+              <a href="writing/how-i-used-two-ais-to-build-a-software-engineering-system/" class="article-link">Read article <span aria-hidden="true">→</span></a>
+            </article>
+          </div>
+        </div>
+
+        <div class="section-cta">
+          <a href="writing/" class="btn btn-secondary">View all writing</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Systems & Experiments
+         ============================================================ -->
+    <section class="systems" id="systems">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Systems &amp; Experiments</h2>
+          <p class="section-subtitle">Selected explorations of how intelligent systems are designed, built, and understood in practice.</p>
+        </div>
+
+        <div class="systems-grid">
+          <article class="project-card">
+            <h3 class="project-title">AI Dev Orchestrator</h3>
+            <p class="project-desc">Exploring how AI agents can collaborate across the SDLC — from requirements and planning to code, review loops, and deployment.</p>
+            <div class="project-meta">
+              <span>Problem</span>
+              <span class="meta-sep" aria-hidden="true">→</span>
+              <span>Approach</span>
+              <span class="meta-sep" aria-hidden="true">→</span>
+              <span>What changed</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-title">Survey/Poll Serverless PoC</h3>
+            <p class="project-desc">A focused AWS serverless experiment to test API design, Lambda execution, DynamoDB persistence, and deployment discipline.</p>
+            <div class="project-meta">
+              <span>Problem</span>
+              <span class="meta-sep" aria-hidden="true">→</span>
+              <span>Approach</span>
+              <span class="meta-sep" aria-hidden="true">→</span>
+              <span>What changed</span>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <h3 class="project-title">AI-native Learning Platform</h3>
+            <p class="project-desc">Early exploration of how structured content, retrieval, and AI assistance can support deeper technical learning.</p>
+            <div class="project-meta">
+              <span>Problem</span>
+              <span class="meta-sep" aria-hidden="true">→</span>
+              <span>Approach</span>
+              <span class="meta-sep" aria-hidden="true">→</span>
+              <span>What changed</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="section-cta">
+          <a href="systems/" class="btn btn-secondary">View systems</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         About Snapshot
+         ============================================================ -->
+    <section class="about" id="about">
+      <div class="container">
+        <div class="about-inner">
+          <div class="about-heading">
+            <h2 class="section-title">About Suyog</h2>
+          </div>
+          <div class="about-body">
+            <p>I am a software engineer with 20+ years of experience building enterprise-grade systems, especially in banking and payments technology.</p>
+            <p>My current focus is on AI, software architecture, learning, and the design of intelligent software systems.</p>
+            <p class="about-belief">I believe AI is not just a feature. It is becoming a layer beneath software systems.</p>
+            <p>This site is where I bring those threads together through writing, systems, teaching, and ongoing exploration.</p>
+            <a href="about/" class="btn btn-secondary">Read more about me</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         Contact CTA
+         ============================================================ -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <div class="contact-inner">
+          <h2 class="contact-heading">Working on intelligent systems?</h2>
+          <p class="contact-subtext">I am open to thoughtful conversations around:</p>
+          <ul class="contact-list">
+            <li>AI adoption and software strategy</li>
+            <li>Engineering architecture</li>
+            <li>Learning systems and technical education</li>
+            <li>Consulting, collaboration, or speaking</li>
+          </ul>
+          <a href="contact/" class="btn btn-primary">Get in touch</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       Footer
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="writing/">Writing</a>
+          <a href="systems/">Systems</a>
+          <a href="about/">About</a>
+          <a href="contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://linkedin.com/in/suyog19" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
 </body>
 </html>

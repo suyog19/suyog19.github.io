@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical reflection on using ChatGPT for design, Claude for implementation, and human judgment to keep the system grounded.">
+  <title>How I Used Two AIs to Build a Software Engineering System — suyogjoshi.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com — Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- Article Header -->
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">← Back to Writing</a>
+            <p class="article-tag">Software Systems</p>
+            <h1 class="article-page-title">How I Used Two AIs to Build a Software Engineering System</h1>
+            <p class="article-page-subtitle">A practical reflection on using ChatGPT for design, Claude for implementation, and human judgment to keep the system grounded.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Body -->
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+
+              <p>In 2024, I set out to build a software engineering system using AI assistance throughout — not as a gimmick, but as a genuine experiment in how AI tools can change the way software is designed and built. I used two AI systems: ChatGPT for structural design and reasoning about requirements, and Claude for implementation. This is a reflection on what worked, what did not, and what I took from the experience.</p>
+
+              <h2>Why I built this system</h2>
+              <p>The project was a structured exploration of AI-assisted software development. I wanted to move beyond using AI as an autocomplete tool and instead treat it as a collaborator in the full software engineering process — from requirements and design through implementation and review. The goal was to understand where AI assistance genuinely adds value and where it requires careful oversight. That question interested me more than the specific thing I was building.</p>
+
+              <h2>The role of ChatGPT</h2>
+              <p>I used ChatGPT primarily in the design and planning phase. It was useful for generating structured requirements, thinking through system design options, and stress-testing architectural decisions through dialogue. The conversational format made it well-suited for open-ended design exploration — asking what would this look like if we changed a constraint, and working through trade-offs iteratively. It is less consistent when generating code for a specific, well-established technical context, but for reasoning about structure and intent, it was a productive tool.</p>
+
+              <h2>The role of Claude</h2>
+              <p>I used Claude primarily for implementation — writing code, reviewing it, and making targeted changes based on feedback. Claude's approach to long-context reasoning and structured code generation made it well-suited for working with an established codebase and producing coherent, consistent output. I found it more reliable for implementation tasks that required attention to a defined context. The difference between the two was not quality — it was the type of work each handled well.</p>
+
+              <h2>Where human judgment mattered</h2>
+              <p>AI assistance did not reduce the need for judgment — it changed where judgment was applied. I had to decide which outputs to accept, which to modify, and which to discard. I had to recognise when a generated design looked plausible but was subtly wrong. I had to maintain architectural coherence across sessions, since neither AI had persistent memory of the full context. Human judgment was the thread that connected everything. Without it, the work would have drifted.</p>
+
+              <h2>What worked well</h2>
+              <p>The combination of design-focused and implementation-focused AI assistance accelerated the early phases significantly. Requirements were clearer because I had to explain the problem well enough for an AI to engage with it usefully — that discipline improved my own thinking. Design options emerged faster. Implementation cycles were shorter. The constraint of working with AI imposed a useful precision on how I framed problems and described intent.</p>
+
+              <h2>What did not work perfectly</h2>
+              <p>Context management was a persistent challenge. Both systems have limits on how much context they can hold at once, which means long-running projects require careful management of what information is in scope at any point. There were also moments where outputs were confidently wrong — syntactically correct but semantically broken. Catching those required exactly the kind of careful review that AI was supposed to reduce. The time saved on generation was partially offset by the time required for verification.</p>
+
+              <h2>What this taught me about AI-assisted engineering</h2>
+              <p>AI is a force multiplier for engineers who already understand what they are building. It is not a substitute for that understanding. The engineers who will benefit most are those who can think clearly about requirements, architecture, and quality — and who can direct, review, and correct AI output with confidence. The value of AI assistance compounds with the quality of the engineer using it. In less experienced hands, it produces plausible-looking work that hides real problems.</p>
+
+              <h2>Closing thought</h2>
+              <p>Using two AI systems in the same project was not just a curiosity — it revealed something real about the current state of AI tooling. Different systems have different strengths. Combining them deliberately, with human judgment holding the thread, is a more honest and effective model than treating any single AI as a universal engineering partner. The question is not which AI to use. It is how to think clearly enough to use any of them well.</p>
+
+            </div>
+
+            <div class="article-original-note">
+              <p>This article was originally published on Medium and is being adapted here as part of my long-term knowledge hub.</p>
+              <a href="#" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Reading -->
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../ai-ml-data-science-explained-simply/" class="article-related-item">
+                  <span class="article-related-item-title">AI, Machine Learning and Data Science — Explained Simply</span>
+                  <span class="article-related-item-summary">A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../understanding-the-ai-ecosystem/" class="article-related-item">
+                  <span class="article-related-item-title">Understanding the AI Ecosystem</span>
+                  <span class="article-related-item-summary">A structured view of how models, data, infrastructure, and applications come together in real-world AI systems.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://linkedin.com/in/suyog19" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
