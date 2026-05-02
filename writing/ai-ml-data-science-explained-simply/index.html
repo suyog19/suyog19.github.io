@@ -59,35 +59,127 @@
           <div class="article-reading-col">
             <div class="article-body">
 
-              <p>Many people hear AI, Machine Learning, and Data Science used together — often as if they mean the same thing. They are related, but they are not identical. This article explains the distinctions clearly using a single banking example to ground the ideas in practice.</p>
+              <p>About 10 months ago, I was in a familiar position.</p> 
+              <p>I had heard terms like Artificial Intelligence and Machine Learning everywhere.</p>
+              <p>I knew they were important. I knew they had the potential to disrupt industries — especially software. But beyond that, my understanding was vague.</p>
+              <p>I didn’t really know what AI actually meant, how it worked, or where it was useful and where it wasn’t.</p>
+              <p>Over the past few months, I got the opportunity to explore this space more deeply — both hands-on and through structured learning in AI and Data Science. That helped me build a much clearer picture.</p>
+              <p>This write-up is for people like me from a few months ago — people who know AI is important, but don’t yet have a clear mental model of what it really is.</p>
+              <p>I’ll keep things simple, avoid heavy jargon, and use a relatable example from the banking domain.</p>
 
-              <h2>Why these terms are confusing</h2>
-              <p>The confusion is partly a marketing problem. Technology vendors apply these terms loosely. Analysts use them interchangeably in presentations. Journalists treat them as synonyms. Over time, the distinctions blur — even inside organisations that work with these systems every day. The result is that most people who work near AI cannot explain what it actually is.</p>
+              <h2>A simple banking system</h2>
+              <p>Let’s start with something very familiar.</p>
+              <p>Consider a banking system that maintains records of customer accounts and all the transactions — credits, debits, transfers — that happen on those accounts.</p>
+              <p>Now think about the kind of questions such a system is expected to answer.</p>
+              <p><i>Some questions are straightforward. For example: What is my account balance? What transactions happened on my account last month?</i></p>
+              <p>These are problems that traditional software systems handle very well.</p>
+              <p>We understand the problem, define the logic, write the code, and the system executes it. The input is structured, the logic is deterministic, and the output is predictable.</p>
+              <p>In such systems, the flow is simple: humans define the rules, and machines execute them efficiently.</p>
 
-              <h2>A simple banking example</h2>
-              <p>Imagine a bank that wants to reduce credit card fraud. It has tens of millions of transaction records. It wants to detect unusual patterns before customers are harmed. This is a real, common problem — and the solution touches all three disciplines in distinct ways. It is a useful lens for understanding how AI, ML, and Data Science actually relate to each other.</p>
+              <h2>When the problem is not so straightforward</h2>
+              <p>Now consider a slightly different question:</p>
+              <p><i>Did any suspicious transaction happen on my account?</i></p>
+              <p>At first glance, it may seem similar. But this problem is fundamentally different.</p>
+              <p>One way to approach it is to define rules — transactions above a certain amount, unusual locations, or odd timings. But in reality, fraud patterns are constantly evolving. Static rules quickly become outdated and require continuous manual updates.</p>
+              <p>More importantly, we don’t fully understand the exact relationship between input and output here. We don’t know precisely what combination of factors makes a transaction suspicious.</p>
+              <p>This is where traditional programming starts to fall short.</p>
 
-              <h2>What AI means</h2>
-              <p>Artificial Intelligence is the broad field concerned with building systems that can perform tasks typically requiring human-like reasoning: understanding language, recognising patterns, making decisions, or predicting outcomes. In the banking example, the goal — detecting fraud by reasoning about patterns — is an AI goal. It describes the ambition, not the specific technique used to pursue it.</p>
+              <h2>What if the system could learn on its own?</h2>
+              <p>This leads to a natural question.</p>
+              <p><i>Instead of us trying to define all possible rules, what if we could let the system learn patterns on its own?</i></p>
+              <p>Imagine we have historical data:</p>
+              <ul>
+                <li>Transactions that were later identified as fraudulent</li>
+                <li>Transactions that were normal</li>
+              </ul>
+              <p>If a system could analyze this data and identify patterns automatically, it could use those patterns to evaluate new transactions.</p>
+              <p>This is where Machine Learning comes into the picture.</p>
 
-              <h2>What Machine Learning means</h2>
-              <p>Machine Learning is a subset of AI. It is the technique of building systems that learn from data rather than being explicitly programmed with rules. In the banking example, a fraud detection model would be trained on historical transactions — learning which patterns are associated with fraud and which are not. The model improves as it is exposed to more data. The key distinction: the rules are not written by humans. They are inferred from examples.</p>
+              <h2>Understanding Machine Learning through a simple lens</h2>
+              <p>From a mathematical perspective, many problems can be expressed as:</p>
+              <p><i>y = f(x)</i></p>
+              <p>Here:</p>
+              <ul>
+                <li><i>x</i> represents the input (transaction details such as amount, location, time, frequency)</li>
+                <li><i>y</i> represents the output (fraud or not fraud)</li>
+                <li><i>f(x)</i> represents the relationship between them</li>
+              </ul>
+              <p>In traditional programming, we define this function f(x) explicitly.</p>
+              <p>In Machine Learning, we take a different approach.</p>
+              <p>
+                <img src="image1.webp" alt="Difference in Classical Programming and Machine Learning" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              </p>
+              <p>We assume that such a relationship exists, but we don’t know what it looks like. Instead of defining it ourselves, we allow the system to learn this relationship from historical transaction data.</p>
+              <p>By analyzing past examples — fraudulent and non-fraudulent — the system builds an internal representation of this relationship. Once it has learned enough, it can use that knowledge to evaluate new transactions.</p>
 
-              <h2>What Data Science means</h2>
-              <p>Data Science is the practice of extracting insight from data. It combines statistics, programming, and domain knowledge. In the banking example, a data scientist would explore the transaction records to understand which variables — merchant category, transaction amount, geographic location, time of day — are most predictive of fraud. That analysis informs what the machine learning model should focus on, and whether the data is clean and representative enough to learn from.</p>
+              <h2>AI, ML and Data Science — how they fit together</h2>
+              <p>At this point, it’s useful to clarify three terms that are often used interchangeably.</p>
+              <p>Artificial Intelligence, or AI, is the broader goal. It is about building systems that can perform tasks requiring intelligence — whether through rules, learning, or a combination of both.</p>
+              <p>Machine Learning is one way to achieve this goal. It focuses on learning patterns from data instead of relying on explicitly written rules.</p>
+              <p>Data Science, on the other hand, is about working with data — collecting it, cleaning it, analyzing it, and preparing it so that it can be used effectively.</p>
+              <p>In practice, Data Science sits at the intersection of three important areas.</p>
+              <p>Statistics helps us understand patterns in data — what is normal, what is unusual, and how confident we can be about our conclusions.</p>
+              <p>Engineering ensures that we can handle large volumes of data reliably and efficiently. In a banking system, this means processing millions of transactions across multiple systems without failures or delays.</p>
+              <p>Domain knowledge provides essential context. In banking, understanding what constitutes a “normal” transaction versus a suspicious one requires knowledge of customer behavior, transaction types, and financial systems. Without this context, even a well-built model may fail to capture what actually matters.</p>
 
-              <h2>How they relate</h2>
-              <p>AI is the goal. Machine Learning is one of the techniques used to pursue it. Data Science is the practice of understanding the data that feeds those techniques. They overlap, they depend on each other, but they are not the same thing. A useful mental model: Data Science explains the data. Machine Learning builds the model. AI describes the ambition.</p>
-              <p>A team building a fraud detection system needs all three — the data understanding, the learning technique, and the broader goal of building a system that reasons intelligently. Conflating them makes it harder to have clear conversations about what you are actually building and what it requires.</p>
+              <h2>What exactly is a model?</h2>
+              <p>When we say that a system “learns from data,” what does that really mean?</p>
+              <p>A model is essentially a mathematical or computational representation that captures patterns from data. As it processes historical transaction data, it adjusts its internal parameters to better reflect the patterns it observes.</p>
+              <p>In the context of fraud detection, the model may learn patterns such as unusual spending behavior, sudden spikes in transaction amounts, or deviations from a customer’s typical activity.</p>
+              <p>These learned parameters are what the model uses to make predictions.</p>
+              <p>
+                <img src="image2.webp" alt="Rule Based System vs Machine Learning Model" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              </p>
 
-              <h2>Closing thought</h2>
-              <p>Understanding these distinctions matters not for technical precision alone — but for better conversations, better decisions, and better questions when working near these systems. Most misunderstandings about AI in organisations start here: with unclear language that makes a complicated thing feel more mysterious than it is.</p>
+              <h2>Training and inference — two distinct phases</h2>
+              <p>The learning process happens during the training phase.</p>
+              <p>During training, the model is exposed to historical transaction data — some labeled as fraudulent and others as normal — and iteratively adjusts its parameters to improve its predictions. The goal is not just to learn the training data, but to generalize well to new, unseen transactions.</p>
+              <p>Once the model is trained, it enters the inference phase.</p>
+              <p>In this phase, the model is used to evaluate new transactions in real time. It does not learn or change its parameters here — it simply applies what it has already learned to predict whether a transaction is likely to be fraudulent.</p>
+            
+              <h2>A fundamental difference from traditional systems</h2>
+              <p>One of the most important things to understand is that AI systems are fundamentally different from traditional software systems.</p>
+              <p>Traditional systems are deterministic. Given the same input, they will always produce the same output.</p>
+              <p>AI systems, however, operate in a probabilistic world.</p>
+              <p>They do not give you the answer. They give you the most likely answer based on the data they have seen.</p>
+              <p>In our banking example, when a transaction is flagged as suspicious, the system is not saying it is definitely fraud. It is saying that, based on past patterns, this transaction has a high probability of being fraudulent.</p>
+              <p>This is why AI systems can make mistakes. It is not a flaw — it is a natural consequence of the type of problems they are designed to solve.</p>
 
+              <h2>Why is AI considered disruptive?</h2>
+              <p>For a long time, there was a clear boundary in the kind of work machines and humans did.</p>
+              <p>Machines were used for deterministic tasks — calculations, record-keeping, and rule-based processing. Humans were responsible for reasoning, judgment, and decision-making.</p>
+              <p>With the rise of Machine Learning, that boundary is starting to blur.</p>
+              <p>Machines can now learn from historical data — such as transaction patterns — and assist, or in some cases take over, tasks that involve pattern recognition and decision-making.</p>
+              <p>So the question is no longer whether machines can do such tasks. The more relevant question is: to what extent can they do them reliably?</p>
+
+              <h2>A practical reality check</h2>
+              <p>It is easy to assume that the power of AI lies in sophisticated models. But in real-world systems, the biggest challenge is often much more fundamental.</p>
+              <p><i>Data is messy.</i></p>
+              <p>In banking systems, data may come from multiple sources — different channels, formats, and systems. It may be incomplete, inconsistent, or noisy. Preparing this data in a usable form is often the most time-consuming part of building an AI system.</p>
+              <p>In many cases, improving the quality of data leads to better results than making the model more complex.</p>
+
+              <h2>Where do tools like ChatGPT fit in?</h2>
+              <p>Tools like ChatGPT or Gemini are based on what are called Large Language Models.</p>
+              <p>These are models trained on massive amounts of text data to understand and generate human language. They are a specific application of Machine Learning focused on language and reasoning tasks.</p>
+
+              <h2>Final thoughts</h2>
+              <p>AI can sometimes feel like a mysterious or magical concept. But at its core, it is built on a few simple ideas.</p>
+              <p>It is about learning from data, identifying patterns, and making decisions under uncertainty.</p>
+              <p>Once you understand this foundation, many of the buzzwords start to make sense — and the technology becomes much less intimidating.</p>
+              <p>If you found this useful, feel free to connect with me on <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>. I share similar thoughts on AI, software engineering, and learning in public.</p>
+
+              <h2>What’s next?</h2>
+              <p>In this article, we built a basic mental model of AI, Machine Learning, and Data Science using a simple banking example.</p>
+              <p>In the next article, instead of going deeper into one topic, we’ll step back and look at the bigger picture.</p>
+              <p><i>What does the overall AI/ML/Data Science ecosystem actually look like?</i></p>
+              <p>We’ll explore the different components involved — from data collection and preparation to model building, deployment, and monitoring — and how they fit together in real-world systems.</p>
+              <p>The goal is to build a clear landscape view, so that as we go deeper in future articles, you always know where each piece fits.</p>
+              
             </div>
 
             <div class="article-original-note">
               <p>This article was originally published on Medium and is being adapted here as part of my long-term knowledge hub.</p>
-              <a href="#" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
+              <a href="https://medium.com/@suyog19/ai-machine-learning-and-data-science-finally-explained-simply-using-a-banking-example-53f83758c6f4" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
             </div>
           </div>
         </div>
