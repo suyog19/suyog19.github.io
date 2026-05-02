@@ -1076,6 +1076,68 @@
   margin-bottom: 0;
 }
 
+.flow-sequence {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.25rem 1.75rem;
+  margin: 1.75rem 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.flow-sequence-step {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.flow-sequence-arrow {
+  font-size: 0.95rem;
+  color: #b91c1c;
+  font-weight: 600;
+  padding: 0 0.1rem;
+}
+
+.process-flow {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0;
+  display: inline-block;
+  min-width: 220px;
+}
+
+.process-flow-label {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #b91c1c;
+  margin-bottom: 0.6rem;
+}
+
+.process-flow-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.process-flow-steps li {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  padding: 0.2rem 0;
+}
+
+.process-flow-steps li::before {
+  content: "→ ";
+  color: #b91c1c;
+}
+
 .article-body ul {
   list-style: disc;
   padding-left: 1.5rem;

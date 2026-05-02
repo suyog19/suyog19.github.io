@@ -58,38 +58,335 @@
         <div class="container">
           <div class="article-reading-col">
             <div class="article-body">
+              <p>
+                <img src="ai-dev-orchestrator_how_I_built_it.png" alt="How I Built It" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              </p>
+              <p>I spent about three days building a fairly complex software system. I didn’t write a single line of code. Instead, I used two AI systems — ChatGPT and Claude Code — in a very deliberate way to design and build it end-to-end. Not as a demo. Not as a proof of concept. But as a working software engineering system. The goal was simple, but not easy:</p>
+              <p><i>Build an AI-powered, human-in-the-loop software engineering workflow — where AI can plan, implement, test, review, and deliver code… under control.</i></p>
+              <p>I call it the ‘AI Dev Orchestrator’. To understand it better, let’s first look at the goal it was trying to achieve.</p>
+              
+              <h2>The Goal: From Requirement to Delivery</h2>
+              <p>The goal was to build an AI assisted fully functional software engineering flow with human-in-the-loop by design.</p>
+              <p>Basically you give a requirement in Jira and AI picks up from there to finally deliver the software addressing that requirement.</p>
+              <p>
+                <img src="ai-dev-orchestrator_integrations_involved.png" alt="Integrations Involved" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              </p>
+              <p>At a high level:</p>
+              <ul>
+                <li>Jira captures requirements</li>
+                <li>AI breaks Epics → Stories (human-approved)</li>
+                <li>AI implements code</li>
+                <li>Tests run (with one fix attempt)</li>
+                <li>PR is created</li>
+                <li>Independent AI agents review</li>
+                <li>A release gate decides</li>
+                <li>GitHub enforces checks</li>
+                <li>Post-merge validation runs</li>
+                <li>Feedback is recorded for future runs</li>
+              </ul>
+              <p>So it’s not a coding assistant, not a prompt trick, it’s a system — where AI participates in software engineering under structure, constraints, and human control. To make this work in practice, I needed to think about how I would actually use AI systems — not just what they would do.</p>
+              <p>
+                <img src="ai-dev-orchestrator_workflow.png" alt="AI Dev Orchestrator Workflow" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              </p>
 
-              <p>In 2024, I set out to build a software engineering system using AI assistance throughout — not as a gimmick, but as a genuine experiment in how AI tools can change the way software is designed and built. I used two AI systems: ChatGPT for structural design and reasoning about requirements, and Claude for implementation. This is a reflection on what worked, what did not, and what I took from the experience.</p>
+              <h2>Two AIs, Two Roles: Separation by Design</h2>
+              <p>ChatGPT was used as a System Designer. It managed the architecture, guardrails, workflows. Whereas Claude Code worked as an Executor, being responsible for code, integration, debugging. The important part wasn’t the tools. It was context separation.</p>
+              <ul>
+                <li>ChatGPT did not see low-level code/debug logs</li>
+                <li>Claude did not hold product-level vision</li>
+              </ul>
+              <p>One AI thinks. One AI builds. Neither gets overloaded. This single decision kept the system stable as it grew. Once the roles were clear, the next question was: how do you actually build something like this without losing control?</p>
 
-              <h2>Why I built this system</h2>
-              <p>The project was a structured exploration of AI-assisted software development. I wanted to move beyond using AI as an autocomplete tool and instead treat it as a collaborator in the full software engineering process — from requirements and design through implementation and review. The goal was to understand where AI assistance genuinely adds value and where it requires careful oversight. That question interested me more than the specific thing I was building.</p>
+              <h2>The Build Method: Design → Execute → Refine</h2>
+              <p>This wasn’t “one big prompt”. Each phase followed a strict loop:</p>
+              <p>
+              <div class="process-flow">
+                <div class="process-flow-label">Design (ChatGPT)</div>
+                <ul class="process-flow-steps">
+                  <li>Execution Guide</li>
+                  <li>Implementation (Claude)</li>
+                  <li>Summary + Feedback</li>
+                  <li>Gap Analysis</li>
+                  <li>Next Phase</li>
+                </ul>
+              </div>
+              </p>
+              <p>Repeat this for each phase (18 phases, so far).</p>
+              <p>Execution guides were explicit: data models, APIs, constraints, non-goals. Claude executed. Then reported what actually happened. Design evolved from reality, not assumptions.</p>
+              <p>
+                <img src="ai-dev-orchestrator_feedback_loop.png" alt="AI Dev Orchestrator Feedback Loop" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              </p>
 
-              <h2>The role of ChatGPT</h2>
-              <p>I used ChatGPT primarily in the design and planning phase. It was useful for generating structured requirements, thinking through system design options, and stress-testing architectural decisions through dialogue. The conversational format made it well-suited for open-ended design exploration — asking what would this look like if we changed a constraint, and working through trade-offs iteratively. It is less consistent when generating code for a specific, well-established technical context, but for reasoning about structure and intent, it was a productive tool.</p>
+              <h2>How It Was Actually Built (Not Just Prompted)</h2>
+              <p>What surprised me the most was this:</p>
+              <p><i>This didn’t feel like prompting. It felt like engineering.</i></p>
+              <p>I didn’t sit down and write code. I didn’t try to generate the whole system in one go. Instead, I treated the two AI systems like members of a team. One of them designed the system. The other built it. And I sat in the loop — guiding both. The process looked simple on the surface:</p>
+              <p>
+                <div class="flow-sequence">
+                  <span class="flow-sequence-step">Design</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Execute</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Observe</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Refine</span>
+                </div>
+              </p>
+              <p>But what made it work was discipline. I would first ask ChatGPT to define what we are building:</p>
+              <ul>
+                <li>the problem</li>
+                <li>the constraints</li>
+                <li>what we should <i>not</i> do</li>
+              </ul>
+              <p>Then I would ask it to break that into a small, achievable phase. Not the whole system. Just the next step.</p>
+              <p>From there, ChatGPT would generate a detailed execution guide. Not ideas. Not suggestions. Actual instructions:</p>
+              <ul>
+                <li>what to build</li>
+                <li>how to structure it</li>
+                <li>what success looks like</li>
+              </ul>
+              <p>Then Claude took over. It would implement that phase — step by step — on a real codebase. And then came the most important part. It would tell me what actually happened. Not what it intended. Not what it assumed.</p>
+              <ul>
+                <li>What worked</li>
+                <li>What broke</li>
+                <li>What didn’t make sense</li>
+              </ul>
+              <p>I would take that back to ChatGPT and ask <i>“Given this reality, what should change?”</i> And that’s where the system evolved. This loop repeated again and again. Small phase, clear goal, real execution, honest feedback. Not everything at once. One decision at a time.</p>
+              <p>Over three days, this process ran through 18 phases. And somewhere along the way, it stopped feeling like <i>“using AI”</i> and started feeling like <i>“working with a team that just happens to be AI-driven”</i>.</p>
 
-              <h2>The role of Claude</h2>
-              <p>I used Claude primarily for implementation — writing code, reviewing it, and making targeted changes based on feedback. Claude's approach to long-context reasoning and structured code generation made it well-suited for working with an established codebase and producing coherent, consistent output. I found it more reliable for implementation tasks that required attention to a defined context. The difference between the two was not quality — it was the type of work each handled well.</p>
+              <h2>The Turning Points That Changed the System</h2>
+              <h3>1) Closing the Loop (Phase 5)</h3>
+              <p>Early versions of the system could generate code and create PRs — but they had no way to answer a critical question — Did the change actually work? So Phase 5 introduced a simple but powerful loop:</p>
+              <p>
+                <div class="flow-sequence">
+                  <span class="flow-sequence-step">Implement</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Test</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Fix</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Validate</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Decide</span>
+                </div>
+              </p>
+              <p>After generating code:</p>
+              <ul>
+                <li>tests were executed automatically</li>
+                <li>if they failed, the system made one focused fix attempt</li>
+                <li>tests were run again</li>
+                <li>and only then was a decision made</li>
+              </ul>
+              <p>Two important constraints made this reliable:</p>
+              <ul>
+                <li>bounded retries (no infinite loops)</li>
+                <li>no silent success (failures were explicit and visible)</li>
+              </ul>
+              <p>This was a turning point. The system stopped just producing output and started taking responsibility for outcomes.</p>
+              <h3>2) Think Before Acting (Phase 6)</h3>
+              <p>Until this point, the system only knew how to execute a Story. But real work doesn’t start with clean, well-defined Stories — it starts with messy requirements. So Phase 6 introduced a planning layer: Epic → Story (human-approved). I made a deliberate simplification here. Instead of Epic → Feature → Story, I chose Epic → Story.</p>
+              <p>Because more layers introduce more ambiguity — and ambiguity is where AI starts making things up.</p>
+              <p>Around the same time, I noticed something interesting. Claude would often fix the most obvious code issue, even if it had nothing to do with the Story. For example, a duplicate import would get fixed repeatedly across runs. It took me a while to realize what was happening. The system was optimizing for what was visible, not what was intended.</p>
+              <p>That insight led to a few important changes:</p>
+              <ul>
+                <li>tightening prompts to emphasize Story intent</li>
+                <li>improving context selection so relevant files were prioritized</li>
+                <li>refining sandbox behavior to avoid repeated “obvious fixes”</li>
+              </ul>
+              <p>These changes made a noticeable difference. The system became better at aligning with intent — not just reacting to surface-level issues.</p>
+              <h3>3) Learn, But Keep It Bounded (Phase 7)</h3>
+              <p>At this point, the system could plan and execute — but it treated every run in isolation. It had no memory of:</p>
+              <ul>
+                <li>what worked</li>
+                <li>what failed</li>
+                <li>what needed retries</li>
+              </ul>
+              <p>So Phase 7 introduced a feedback layer. We started capturing simple, structured signals:</p>
+              <ul>
+                <li>planning approvals and rejections</li>
+                <li>execution failures and retries</li>
+                <li>recurring patterns across runs</li>
+              </ul>
+              <p>But instead of building a complex “AI memory,” I kept it deliberately constrained. Maximum 5 bullets. Small, explicit, and relevant. No long histories. No hidden state. No “mystical memory engine.”</p>
+              <h3>4) Break the “Single AI” Model (Phase 8–10)</h3>
+              <p>Up to this point, a single AI was effectively doing everything. That’s a problem. A system that generates code and evaluates its own output cannot be trusted. So we split responsibilities into independent agents:</p>
+              <ul>
+                <li><b>Developer Agent</b> → writes code</li>
+                <li><b>Reviewer Agent</b> → checks story alignment</li>
+                <li><b>Test Quality Agent</b> → evaluates whether tests are meaningful</li>
+                <li><b>Architecture Agent</b> → checks system and design impact</li>
+                <li><b>Release Gate</b> → makes the final decision</li>
+              </ul>
+              <p>Each agent looks at the same change — but from a different perspective. One insight here was especially important:</p>
+              <p><i>Passing tests ≠ good tests.</i></p>
+              <p>Tests can pass and still miss critical behavior. So instead of relying only on test results, a separate agent evaluates:</p>
+              <ul>
+                <li>what the tests actually cover</li>
+                <li>whether they validate the intended behavior</li>
+              </ul>
+              <p>All of these signals are then combined by a Unified Release Gate. Instead of scattered checks, the system produces a single outcome:</p>
+              <ul>
+                <li>approved</li>
+                <li>skipped</li>
+                <li>blocked</li>
+              </ul>
+              <p>And most importantly — why. This is where the system started to resemble a real engineering team, not just a single AI tool.</p>
+              <h3>5) Make It Safe (Phase 11)</h3>
+              <p>By this point, the system could do something powerful — and risky. It could merge code. That’s where things change. Because once a system can modify real repositories, the problem is no longer capability — it’s control. So Phase 11 focused entirely on safety. We added:</p>
+              <ul>
+                <li>admin authentication</li>
+                <li>webhook validation</li>
+                <li>Telegram command controls</li>
+                <li>GitHub write guards</li>
+                <li>pause/resume kill switch</li>
+                <li>audit logs for every critical action</li>
+              </ul>
+              <p>These weren’t enhancements. They were necessary.</p>
+              <p><i>Power without control is just a faster failure mode.</i></p>
+              <h3>6) Make It Behave Like a Team (Phase 12–13)</h3>
+              <p>At this stage, the system could plan, build, and review. But it still had one major weakness — it would guess when things were unclear. So we fixed that. We introduced a clarification loop — instead of guessing, the system pauses and asks.</p>
+              <p>If something is ambiguous, the workflow moves into a waiting state until a human responds. Only then does it continue. At the same time, we made decisions visible and enforceable in GitHub. All internal checks — review, test quality, architecture, release — are published as native status checks on the PR. This ensures:</p>
+              <ul>
+                <li>decisions are transparent</li>
+                <li>merges cannot bypass the system accidentally</li>
+                <li>the source of truth lives where engineers actually work</li>
+              </ul>
+              <p><i>No hidden logic. No silent decisions.</i></p>
+              <h3>7) Make It Practical (Phase 14–16)</h3>
+              <p>By this point, the system was functionally complete. But it still needed to be usable. So Phase 14–16 focused on making it practical for real-world use. We added:</p>
+              <ul>
+                <li>an admin dashboard to inspect runs, failures, and decisions</li>
+                <li>multi-stack support (Python, Maven, Gradle, React, with safe fallback for unknown repos)</li>
+                <li>post-merge validation to verify whether the deployed system actually works</li>
+              </ul> 
+              <p>One design choice here was intentional. Deployment failures are observed — not automatically rolled back. Because the goal was not to hide problems, but to surface them clearly. The system moved from being technically capable to operationally usable.</p>
+              <h3>8) Make It Real (Phase 17)</h3>
+              <p>Until this point, everything operated in controlled environments. Phase 17 changed that. The system was pointed at a real project. But before touching any code, it first built an understanding of the repository:</p>
+              <ul>
+                <li>scanned the repo structure</li>
+                <li>detected the tech stack</li>
+                <li>generated an architecture summary</li>
+                <li>extracted coding conventions</li>
+              </ul>
+              <p>This was stored as project knowledge and used to guide all future decisions. AI stopped operating blindly — and started working with context.</p>
+              
+              <h2>Why Iteration Worked Better Than Planning</h2>
+              <p>If I had tried to design the entire system upfront, it would have looked very different. And it would have been wrong. Because the most important decisions didn’t come from design — they came from real execution gaps. For example:</p>
+              <ul>
+                <li>couldn’t validate correctness → added a test loop</li>
+                <li>couldn’t plan effectively → added Epic → Story decomposition</li>
+                <li>system forgot everything → added feedback and memory</li>
+                <li>risk of self-approval → split into independent agents</li>
+                <li>system became powerful → added safety and control</li>
+              </ul>
+              <p>None of these were obvious at the start. They only became clear after the system was actually used. Each phase wasn’t about adding features — it was about fixing what the previous phase got wrong. That’s why iteration worked better than planning. The system didn’t evolve from ideas — it evolved from reality.</p>
 
-              <h2>Where human judgment mattered</h2>
-              <p>AI assistance did not reduce the need for judgment — it changed where judgment was applied. I had to decide which outputs to accept, which to modify, and which to discard. I had to recognise when a generated design looked plausible but was subtly wrong. I had to maintain architectural coherence across sessions, since neither AI had persistent memory of the full context. Human judgment was the thread that connected everything. Without it, the work would have drifted.</p>
+              <h2>Rethinking How We Use AI in Engineering</h2>
+              <p>Most AI workflows look like this:</p>
+              <p>
+                <div class="flow-sequence">
+                  <span class="flow-sequence-step">Prompt</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Answer</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Done</span>
+                </div>
+              </p>
+              <p>Fast. Convenient. But shallow. This system worked differently:</p>
+              <p>
+                <div class="flow-sequence">
+                  <span class="flow-sequence-step">Design</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Execute</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Observe</span>
+                  <span class="flow-sequence-arrow">→</span>
+                  <span class="flow-sequence-step">Refine</span>
+                </div>
+              </p>
+              <p>Each step feeds into the next. Each outcome shapes the next decision. And more importantly, not one AI doing everything — but multiple AIs, each with a clear, bounded responsibility. That’s what makes the system stable.</p>
 
-              <h2>What worked well</h2>
-              <p>The combination of design-focused and implementation-focused AI assistance accelerated the early phases significantly. Requirements were clearer because I had to explain the problem well enough for an AI to engage with it usefully — that discipline improved my own thinking. Design options emerged faster. Implementation cycles were shorter. The constraint of working with AI imposed a useful precision on how I framed problems and described intent.</p>
+              <h2>What This Experience Actually Taught Me</h2>
+              <p>Over three days, the system generated:</p>
+              <ul>
+                <li>~14K lines of Python</li>
+                <li>a similar amount of documentation</li>
+              </ul>
+              <p>In a traditional setup, this would likely involve:</p>
+              <ul>
+                <li>multiple engineers</li>
+                <li>different roles (backend, testing, CI/CD)</li>
+                <li>several weeks, if not months</li>
+              </ul>
+              <p>But the real takeaway is not speed. It's this:</p>
+              <p><i>A structured, iterative approach with AI works far better than trying to do everything in one go.</i></p>
+              <p>Small, verifiable steps made all the difference.</p>
 
-              <h2>What did not work perfectly</h2>
-              <p>Context management was a persistent challenge. Both systems have limits on how much context they can hold at once, which means long-running projects require careful management of what information is in scope at any point. There were also moments where outputs were confidently wrong — syntactically correct but semantically broken. Catching those required exactly the kind of careful review that AI was supposed to reduce. The time saved on generation was partially offset by the time required for verification.</p>
+              <h2>Why I Stopped at Phase 18</h2>
+              <p>By this point, the system could:</p>
+              <ul>
+                <li>plan</li>
+                <li>build</li>
+                <li>review</li>
+                <li>validate</li>
+                <li>and learn</li>
+              </ul>
+              <p>The guardrails were in place. Observability was strong. It was no longer a prototype. At that stage, adding more features would not have made it better. It would have made it more complex. So I stopped. Because the next set of lessons won’t come from designing more. They will come from using the system in the real world.</p>
+              
+              <h2>Repository</h2>
+              <p>I have made the project repository available here: <a href="https://github.com/suyog19/ai-dev-orchestrator" target="_blank" rel="noopener noreferrer">GitHub Repository</a></p>
+              <p>This is not a polished product or framework yet — it’s a working artifact of this experiment, including the code, phase-wise evolution, and supporting documentation.</p>
 
-              <h2>What this taught me about AI-assisted engineering</h2>
-              <p>AI is a force multiplier for engineers who already understand what they are building. It is not a substitute for that understanding. The engineers who will benefit most are those who can think clearly about requirements, architecture, and quality — and who can direct, review, and correct AI output with confidence. The value of AI assistance compounds with the quality of the engineer using it. In less experienced hands, it produces plausible-looking work that hides real problems.</p>
+              <h2>What Happens Next</h2>
+              <p>Up to this point, the focus was on building the system. Now the focus shifts to using it. There are three directions I want to explore:</p>
+              <h3>1) Improve a real project</h3>
+              <p>The first step is to apply this workflow to an existing codebase. Not a sandbox. Not a controlled demo. A real project — with real constraints, real trade-offs, and real consequences. This will test:</p>
+              <ul>
+                <li>how well the system understands unfamiliar code</li>
+                <li>whether planning holds up beyond simple cases</li>
+                <li>how often clarifications are needed</li>
+                <li>how reliable the review and release gates actually are</li>
+              </ul>
+              <h3>2) Bootstrap a new project</h3>
+              <p>The second direction is to use the system from scratch. Start with a simple idea. Let the system:</p>
+              <ul>
+                <li>break it into Stories</li>
+                <li>generate the initial codebase</li>
+                <li>evolve it incrementally</li>
+              </ul>
+              <p>This will answer a different question — can this workflow act as a starting point — not just an improvement layer?</p>
+              <h3>3) Improve the orchestrator itself</h3>
+              <p>The third direction is the most interesting. Use the same system to improve the orchestrator. That means:</p>
+              <ul>
+                <li>creating Epics for enhancements</li>
+                <li>decomposing them into Stories</li>
+                <li>letting the system implement its own improvements</li>
+                <li>reviewing them through its own agents</li>
+                <li>merging changes under the same guardrails</li>
+              </ul>
+              <p>The system becomes both the tool… and the subject. Up to now, everything has been controlled. The real test begins when:</p>
+              <ul>
+                <li>the system encounters messy requirements</li>
+                <li>context is incomplete</li>
+                <li>decisions are not obvious</li>
+              </ul>
+              <p>That’s where you find out whether this is just a clever build… or a usable system.</p>
 
-              <h2>Closing thought</h2>
-              <p>Using two AI systems in the same project was not just a curiosity — it revealed something real about the current state of AI tooling. Different systems have different strengths. Combining them deliberately, with human judgment holding the thread, is a more honest and effective model than treating any single AI as a universal engineering partner. The question is not which AI to use. It is how to think clearly enough to use any of them well.</p>
+              <h2>Closing Thought</h2>
+              <p>This wasn’t about proving that AI can write code. We already know that. It was about building a system where:</p>
+              <ul>
+                <li>one AI designs</li>
+                <li>another executes</li>
+                <li>independent agents verify</li>
+                <li>humans stay in control</li>
+              </ul>
 
+              <p>Because without that, you’re not building an engineering system. You’re just automating chaos.</p>
             </div>
 
             <div class="article-original-note">
               <p>This article was originally published on Medium and is being adapted here as part of my long-term knowledge hub.</p>
-              <a href="#" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
+              <a href="https://medium.com/@suyog19/how-i-used-two-ais-to-build-a-software-engineering-system-c09474654e50" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
             </div>
           </div>
         </div>
