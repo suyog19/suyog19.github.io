@@ -5,7 +5,7 @@
   if (!form || !statusEl) return;
 
   const API_BASE_URL =
-    (window.location.hostname === 'next.suyogjoshi.com' ||
+    (window.location.hostname === 'dev.suyogjoshi.com' ||
      window.location.hostname === 'localhost' ||
      window.location.hostname === '127.0.0.1')
       ? 'https://api-dev.suyogjoshi.com'
