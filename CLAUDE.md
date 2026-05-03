@@ -26,13 +26,16 @@ No lint, test, or build commands exist.
 
 - **Writing** — articles live under `writing/<slug>/index.html`. Adding one means creating the file, then linking to it from `writing/index.html` and `index.html`.
 - **Systems** — system detail pages live under `systems/<slug>/index.html`. Adding one means creating the file, then linking to it from `systems/index.html`.
+- **About** — a single page at `about/index.html` with its own CSS class prefix `.ap-*` in [css/pages.css](css/pages.css). No subdirectories.
 
 **CSS is split into three files** — load order matters:
 - [css/base.css](css/base.css): CSS custom properties (color, typography, spacing tokens), reset, global typography
 - [css/components.css](css/components.css): Reusable UI patterns (cards, nav, buttons, tags)
-- [css/pages.css](css/pages.css): Page-specific layouts — Writing page (`.wp-*`), Systems page (`.sp-*`, `.system-card`), article/system detail pages, and inline diagram components
+- [css/pages.css](css/pages.css): Page-specific layouts — Writing page (`.wp-*`), Systems page (`.sp-*`, `.system-card`), About page (`.ap-*`), article/system detail pages, and inline diagram components
 
 All three are loaded in every page's `<head>` in that order.
+
+**Fonts** are loaded from Google Fonts via `<link rel="preconnect">` hints in each page's `<head>`. Two families: Playfair Display (weights 400, 600, 700) and Inter (weights 300, 400, 500, 600). Do not add new font families without updating every page's `<head>`.
 
 **JS is minimal and progressive** — [js/script.js](js/script.js) handles mobile nav toggle with keyboard support; [js/contact.js](js/contact.js) handles client-side form validation. No framework, no bundler.
 
@@ -40,7 +43,8 @@ All three are loaded in every page's `<head>` in that order.
 
 ## Conventions
 
-- Use existing CSS custom properties from [css/base.css](css/base.css) for colors, fonts, and spacing. The one hardcoded exception is the accent red `#b91c1c`, which is not a custom property but is used consistently across components.
+- Use existing CSS custom properties from [css/base.css](css/base.css) for colors, fonts, and spacing. The complete set: `--color-bg` (#fff), `--color-text` (#111), `--color-text-muted` (#6b7280), `--color-border` (#e5e7eb), `--color-surface` (#f8fafc), `--font-serif` (Playfair Display stack), `--font-sans` (Inter stack), `--max-width` (1120px), `--container-px` (2rem), `--section-py` (6rem). The one hardcoded exception is the accent red `#b91c1c`, which is not a custom property but is used consistently across components (arrows, error states, interactive accents).
+- Mark the active page in the nav with `aria-current="page"` on the `.nav-link` anchor. The animated underline active state in [css/components.css](css/components.css) targets `.nav-link[aria-current="page"]`.
 - `ul { list-style: none }` is applied globally in [css/base.css](css/base.css). To render a bulleted list inside article or system body content, use `.article-body ul` — the scoped override in [css/pages.css](css/pages.css) restores `list-style: disc` there.
 - **Article and system detail pages share the same CSS classes** — system detail pages reuse `.article-page-header`, `.article-body-section`, `.article-body`, `.article-reading-col`, `.article-back-link`, `.article-related`, etc. No separate CSS exists for system detail pages.
 - Article/system body template: header section (`.article-page-header`) → body section (`.article-body-section`) → related reading (`.article-related`). All wrapped in `.article-reading-col` for max-width centering.
