@@ -37,7 +37,7 @@ All three are loaded in every page's `<head>` in that order.
 
 **Fonts** are loaded from Google Fonts via `<link rel="preconnect">` hints in each page's `<head>`. Two families: Playfair Display (weights 400, 600, 700) and Inter (weights 300, 400, 500, 600). Do not add new font families without updating every page's `<head>`.
 
-**JS is minimal and progressive** — [js/script.js](js/script.js) handles mobile nav toggle with keyboard support; [js/contact.js](js/contact.js) handles client-side form validation. No framework, no bundler.
+**JS is minimal and progressive** — [js/script.js](js/script.js) handles mobile nav toggle with keyboard support (Escape closes nav, click-outside closes nav); [js/contact.js](js/contact.js) handles client-side form validation and POSTs to the backend API. No framework, no bundler.
 
 **URL structure mirrors directory structure** — each page is an `index.html` inside a named folder, giving clean URLs (`/writing/`, `/systems/`, `/about/`, `/contact/`).
 
@@ -49,4 +49,21 @@ All three are loaded in every page's `<head>` in that order.
 - **Article and system detail pages share the same CSS classes** — system detail pages reuse `.article-page-header`, `.article-body-section`, `.article-body`, `.article-reading-col`, `.article-back-link`, `.article-related`, etc. No separate CSS exists for system detail pages.
 - Article/system body template: header section (`.article-page-header`) → body section (`.article-body-section`) → related reading (`.article-related`). All wrapped in `.article-reading-col` for max-width centering.
 - Two inline diagram components exist in [css/pages.css](css/pages.css) for use inside article bodies: `.flow-sequence` (horizontal step → step layout) and `.process-flow` (vertical labelled list with arrow bullets). Use these instead of images where possible.
-- The contact form at [contact/index.html](contact/index.html) has client-side validation but no backend — form submissions are not sent anywhere.
+- The contact form at [contact/index.html](contact/index.html) validates client-side then POSTs to the backend API. Validation rules: name required, email must match `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`, message 20–5000 chars. The form has a hidden honeypot field (`#website`) to detect spam bots.
+
+## Contact Form Backend
+
+[js/contact.js](js/contact.js) selects the API base URL at runtime based on hostname:
+- `next.suyogjoshi.com`, `localhost`, or `127.0.0.1` → `https://api-dev.suyogjoshi.com`
+- All other hosts → `https://api.suyogjoshi.com`
+
+POST to `/messages` with JSON body:
+```json
+{ "name": "...", "email": "...", "message": "...", "type": "contact", "source": "contact_page", "website": "" }
+```
+
+Expected responses: `202` → success message shown; `400` with `VALIDATION_FAILED` → field-level errors displayed via `aria-invalid` + `aria-describedby`; any other error → fallback message shown.
+
+## Deployment
+
+Push to `main` triggers [.github/workflows/deploy-prod.yml](.github/workflows/deploy-prod.yml), which uploads the repo root (no build step) to GitHub Pages. The live domain is `suyogjoshi.com` (set via [CNAME](CNAME)). There is no staging CI — changes go straight to production on merge.
