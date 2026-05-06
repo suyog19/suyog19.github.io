@@ -74,6 +74,18 @@ Every new page must include the following in `<head>`, placed after `<meta name=
 
 **`og:image` / `twitter:image`:** omit these tags until a proper 1200×630 social image asset is added to the repo. Do not point them at the favicon.
 
+**Google Analytics — include on every new page:** add the GA4 snippet just before `</head>`, after the favicon links. Measurement ID is `G-PKL56GJ38H`. Use the correct relative path to the favicon as a guide for depth — the snippet itself has no paths so it's the same regardless of directory depth:
+
+```html
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+```
+
 **Sitemap — update on every new page:** add the new URL to [sitemap.xml](sitemap.xml) in the same commit as the new page. Use `<priority>0.8</priority>` for articles and system detail pages, `<priority>0.9</priority>` for new section index pages. Use production URLs only (`https://suyogjoshi.com/...`).
 
 ## Contact Form Backend
