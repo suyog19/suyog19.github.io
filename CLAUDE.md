@@ -79,7 +79,7 @@ Every new page must include the following in `<head>`, placed after `<meta name=
 ## Contact Form Backend
 
 [js/contact.js](js/contact.js) selects the API base URL at runtime based on hostname:
-- `next.suyogjoshi.com`, `localhost`, or `127.0.0.1` → `https://api-dev.suyogjoshi.com`
+- `dev.suyogjoshi.com`, `localhost`, or `127.0.0.1` → `https://api-dev.suyogjoshi.com`
 - All other hosts → `https://api.suyogjoshi.com`
 
 POST to `/messages` with JSON body:
