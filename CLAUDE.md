@@ -51,6 +51,31 @@ All three are loaded in every page's `<head>` in that order.
 - Two inline diagram components exist in [css/pages.css](css/pages.css) for use inside article bodies: `.flow-sequence` (horizontal step → step layout) and `.process-flow` (vertical labelled list with arrow bullets). Use these instead of images where possible.
 - The contact form at [contact/index.html](contact/index.html) validates client-side then POSTs to the backend API. Validation rules: name required, email must match `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`, message 20–5000 chars. The form has a hidden honeypot field (`#website`) to detect spam bots.
 
+## SEO Requirements
+
+Every new page must include the following in `<head>`, placed after `<meta name="description">` and before the Google Fonts `<link rel="preconnect">`:
+
+```html
+<link rel="canonical" href="https://suyogjoshi.com/PATH/" />
+<meta property="og:title" content="PAGE TITLE" />
+<meta property="og:description" content="DESCRIPTION" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://suyogjoshi.com/PATH/" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="PAGE TITLE" />
+<meta name="twitter:description" content="DESCRIPTION" />
+```
+
+**Title format:** `Page Name | Suyog Joshi` — for the home page use the full brand title (`Suyog Joshi | AI Systems, Software Architecture & Real-World Engineering`).
+
+**`og:type` rule:** use `article` for writing and system detail pages; use `website` for all section/index pages (home, writing index, systems index, about, contact).
+
+**Description length:** aim for 140–160 characters. Write for a human reader, not keyword density.
+
+**`og:image` / `twitter:image`:** omit these tags until a proper 1200×630 social image asset is added to the repo. Do not point them at the favicon.
+
+**Sitemap — update on every new page:** add the new URL to [sitemap.xml](sitemap.xml) in the same commit as the new page. Use `<priority>0.8</priority>` for articles and system detail pages, `<priority>0.9</priority>` for new section index pages. Use production URLs only (`https://suyogjoshi.com/...`).
+
 ## Contact Form Backend
 
 [js/contact.js](js/contact.js) selects the API base URL at runtime based on hostname:
