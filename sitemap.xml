@@ -38,6 +38,12 @@
   </url>
 
   <url>
+    <loc>https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://suyogjoshi.com/systems/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

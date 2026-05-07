@@ -41,6 +41,15 @@ All three are loaded in every page's `<head>` in that order.
 
 **URL structure mirrors directory structure** — each page is an `index.html` inside a named folder, giving clean URLs (`/writing/`, `/systems/`, `/about/`, `/contact/`).
 
+**Relative paths change with directory depth** — CSS, JS, and favicon links use different prefixes depending on where the page lives:
+- Root (`index.html`): `css/base.css`, `js/script.js`, `favicon.svg`
+- One level deep (`writing/index.html`, `about/index.html`): `../css/base.css`, `../js/script.js`
+- Two levels deep (`writing/<slug>/index.html`, `systems/<slug>/index.html`): `../../css/base.css`, `../../js/script.js`
+
+**Writing index has two update points** — when adding a new article, update `writing/index.html` in two places: the `.writing-grid` featured section at the top, and the appropriate thematic group inside `.wp-themes`. Also update the homepage `index.html` featured grid if promoting to the front page.
+
+**Detail pages wrap content in `<article>`** — both writing and system detail pages wrap the page header, body, and related reading blocks inside `<article>` (as a direct child of `<main>`).
+
 ## Conventions
 
 - Use existing CSS custom properties from [css/base.css](css/base.css) for colors, fonts, and spacing. The complete set: `--color-bg` (#fff), `--color-text` (#111), `--color-text-muted` (#6b7280), `--color-border` (#e5e7eb), `--color-surface` (#f8fafc), `--font-serif` (Playfair Display stack), `--font-sans` (Inter stack), `--max-width` (1120px), `--container-px` (2rem), `--section-py` (6rem). The one hardcoded exception is the accent red `#b91c1c`, which is not a custom property but is used consistently across components (arrows, error states, interactive accents).
@@ -49,11 +58,12 @@ All three are loaded in every page's `<head>` in that order.
 - **Article and system detail pages share the same CSS classes** — system detail pages reuse `.article-page-header`, `.article-body-section`, `.article-body`, `.article-reading-col`, `.article-back-link`, `.article-related`, etc. No separate CSS exists for system detail pages.
 - Article/system body template: header section (`.article-page-header`) → body section (`.article-body-section`) → related reading (`.article-related`). All wrapped in `.article-reading-col` for max-width centering.
 - Two inline diagram components exist in [css/pages.css](css/pages.css) for use inside article bodies: `.flow-sequence` (horizontal step → step layout) and `.process-flow` (vertical labelled list with arrow bullets). Use these instead of images where possible.
+- For articles cross-posted from Medium (or elsewhere), add a `.article-original-note` div after `.article-body` (inside `.article-reading-col`) crediting the original source with a link.
 - The contact form at [contact/index.html](contact/index.html) validates client-side then POSTs to the backend API. Validation rules: name required, email must match `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`, message 20–5000 chars. The form has a hidden honeypot field (`#website`) to detect spam bots.
 
 ## SEO Requirements
 
-Every new page must include the following in `<head>`, placed after `<meta name="description">` and before the Google Fonts `<link rel="preconnect">`:
+Every new page must include the following in `<head>`. The exact ordering within `<head>` is: `<meta charset>` → `<meta viewport>` → `<meta description>` → `<title>` → canonical + OG/Twitter → Google Fonts preconnect → CSS → favicon → GA4. The SEO block below goes between `<title>` and the Google Fonts `<link rel="preconnect">`:
 
 ```html
 <link rel="canonical" href="https://suyogjoshi.com/PATH/" />
@@ -86,7 +96,7 @@ Every new page must include the following in `<head>`, placed after `<meta name=
   </script>
 ```
 
-**Sitemap — update on every new page:** add the new URL to [sitemap.xml](sitemap.xml) in the same commit as the new page. Use `<priority>0.8</priority>` for articles and system detail pages, `<priority>0.9</priority>` for new section index pages. Use production URLs only (`https://suyogjoshi.com/...`).
+**Sitemap — update on every new page:** add the new URL to [sitemap.xml](sitemap.xml) in the same commit as the new page. Use `<priority>0.9</priority>` for new section index pages, `<priority>0.8</priority>` for writing detail pages, `<priority>0.7</priority>` for system detail pages (matching the existing entries). Use production URLs only (`https://suyogjoshi.com/...`).
 
 ## Contact Form Backend
 

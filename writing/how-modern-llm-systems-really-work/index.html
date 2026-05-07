@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical guide to how modern LLM systems work — from transformers, attention, and pretraining to inference runtimes, KV cache, RLHF, and AI agent orchestration." />
+  <title>How Modern LLM Systems Really Work | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/" />
+  <meta property="og:title" content="How Modern LLM Systems Really Work | Suyog Joshi" />
+  <meta property="og:description" content="A practical guide to how modern LLM systems work — from transformers, attention, and pretraining to inference runtimes, KV cache, RLHF, and AI agent orchestration." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="How Modern LLM Systems Really Work | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical guide to how modern LLM systems work — from transformers, attention, and pretraining to inference runtimes, KV cache, RLHF, and AI agent orchestration." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com — Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- Article Header -->
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">← Back to Writing</a>
+            <p class="article-tag">AI Systems</p>
+            <h1 class="article-page-title">How Modern LLM Systems Really Work</h1>
+            <p class="article-page-subtitle">From transformers and pretraining to runtime orchestration and AI agents.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Body -->
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <img src="cover2.png" alt="How Modern LLM Systems Really Work? The complete LLM pipeline from data filtering and pretraining to instruction tuning, inference runtime, and retrieval" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <p>You type a prompt into ChatGPT. A few seconds later, it responds with working code, architecture suggestions, debugging help, or maybe even a surprisingly decent explanation of distributed systems.</p>
+              <p>From the outside, it feels conversational. Almost intelligent. But underneath that simple chat box sits one of the most complex software systems ever built. Not just a model. A stack. Training pipelines. Massive GPU clusters. Transformer architectures. Alignment systems. Inference runtimes. Retrieval systems. Tool orchestration. Safety layers. Streaming infrastructure.</p>
+              <p>And when you press Enter, all of those layers wake up together. This article is an attempt to build a practical mental model of how modern Large Language Model (LLM) systems actually work as engineered systems.</p>
+
+              <h2>The Most Important Mental Model</h2>
+              <p>One of the biggest misconceptions around modern AI systems is treating "the LLM" as the entire product. In reality, modern AI products are usually made of three distinct layers:</p>
+              <p><strong>1. The Base Model:</strong> the pretrained neural network that predicts the next token.</p>
+              <p><strong>2. The Runtime System:</strong> everything involved in serving the model, including prompts, retrieval, KV cache, decoding, memory, tools, and orchestration.</p>
+              <p><strong>3. The Application Layer:</strong> the actual product layer: UI, permissions, business logic, monitoring, analytics, and workflows.</p>
+              <img src="three_layered_LLM-system_stack.png" alt="Three-Layer LLM System Stack showing the Application Layer, Runtime System, and Base Model" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <p>Most online explanations collapse these layers together. Separating them makes modern AI systems much easier to understand. Because ChatGPT-like systems are not "just models." They are runtime systems built around models. That distinction matters a lot.</p>
+              <p>To understand why modern LLM systems look the way they do today, it helps to briefly understand the problems earlier NLP systems struggled to solve.</p>
+
+              <h2>Why Earlier NLP Systems Struggled</h2>
+              <p>Before transformers and modern LLMs, Natural Language Processing went through several generations of approaches.</p>
+              <p>Early systems were heavily rule-based. Engineers manually defined grammar rules, keyword mappings, and task-specific logic. These systems worked in narrow domains but became brittle very quickly.</p>
+              <p>Then came statistical NLP. N-gram language models learned probabilities from large text corpora instead of relying purely on hand-written rules. This was a major improvement, but these models still struggled with long context and deeper understanding.</p>
+              <p>Then neural sequence models arrived. RNNs introduced the idea of processing language sequentially while maintaining an internal hidden state. This was important. For the first time, models could theoretically "remember" earlier context while processing later tokens.</p>
+              <p>But RNNs still struggled with several fundamental limitations. Training became unstable because gradients could either shrink too much (vanishing gradients) or grow uncontrollably large (exploding gradients). The architecture was also inherently sequential, forcing tokens to be processed one step at a time, which limited parallelization and slowed large-scale training significantly.</p>
+              <p>Perhaps most importantly, RNNs struggled to reliably preserve information across long sequences. Important context often degraded as the sequence grew longer.</p>
+              <p>LSTMs (Long Short-Term Memory) improved this significantly by introducing gating mechanisms that helped preserve information over longer sequences.</p>
+              <p>Then sequence-to-sequence models became popular, especially in machine translation. But even these models had a bottleneck: they often tried to compress an entire sentence into a single fixed-length vector representation. That limitation eventually led to one of the most important ideas in modern AI: Attention. And from attention came transformers.</p>
+
+              <h2>Why Transformers Changed Everything</h2>
+              <p>The limitations of earlier sequence models eventually pushed researchers toward a radically different idea: instead of forcing information to move step-by-step through a sequence, what if every token could directly attend to the parts of the context that mattered most? That idea became the foundation of transformers.</p>
+              <p>The transformer architecture fundamentally changed two things at once:</p>
+              <ul>
+                <li>how models handled context</li>
+                <li>how models scaled computationally</li>
+              </ul>
+              <p>That second point is often underappreciated. Transformers were not only a machine learning breakthrough. They were also a systems engineering breakthrough.</p>
+              <p>Before understanding how transformers process language, we first need to understand how language itself is represented inside these systems.</p>
+
+              <h2>Tokens, Not Words</h2>
+              <p>Modern LLMs do not think in words. They operate on tokens. A token may be a word, part of a word, punctuation, whitespace, code syntax, or subword fragments. For example: "understanding" might become: "under", "stand", "ing".</p>
+              <p>This approach balances flexibility and vocabulary efficiency.</p>
+              <p>Rare words no longer need their own dedicated entries. The model can compose meaning from smaller fragments.</p>
+              <p>This becomes especially useful in messy real-world environments such as programming languages, multilingual text, domain-specific terminology, and the chaotic structure of internet-scale data.</p>
+              <p>After tokenization, each token gets mapped into a high-dimensional vector representation called an embedding. Embeddings are where tokens start becoming semantic objects instead of raw text. Words with related meanings often end up closer together in embedding space. Once language is converted into token representations, the next challenge becomes understanding relationships between those tokens. This is where attention enters the picture.</p>
+
+              <h2>The Core Idea: Attention</h2>
+              <p>Attention is the conceptual heart of modern LLMs.</p>
+              <p>Instead of processing language strictly step-by-step like RNNs, transformers allow each token to directly "look at" other relevant tokens in the sequence.</p>
+              <p>Consider this sentence:</p>
+              <p><em>"The database crashed because it ran out of memory."</em></p>
+              <p>When interpreting "it," the model needs to connect that token back to "database." Attention makes that possible directly — without forcing information to survive through dozens or hundreds of sequential recurrent steps.</p>
+              <p>This dramatically shortens information paths. And that matters enormously at scale.</p>
+              <p>But modern transformers do not rely on a single attention mechanism. They use many attention patterns simultaneously.</p>
+
+              <h2>Multi-Head Attention</h2>
+              <p>Modern transformers use something called multi-head attention. Instead of learning a single relationship pattern, the model learns multiple relationship patterns simultaneously.</p>
+              <p>Different attention heads often learn very different relationship patterns. Some become sensitive to syntax, others to semantic similarity, delimiter matching in code, or long-range dependencies across a sequence.</p>
+              <p>The model effectively learns multiple "ways of relating tokens" simultaneously. That is one reason transformers became so powerful across language, code, vision, audio, and multimodal systems.</p>
+              <p>Attention improved contextual understanding. But transformers introduced another equally important advantage — they scaled extraordinarily well on modern hardware.</p>
+
+              <h2>Why Transformers Scaled So Well</h2>
+              <p>RNNs process sequences sequentially. Transformers process much of the sequence in parallel during training. The impact was profound. Parallelization allowed transformers to fully exploit modern GPU and TPU hardware. And once scaling became feasible, a new pattern emerged: larger models trained on larger datasets kept getting better. Sometimes unexpectedly better.</p>
+              <img src="inside_decoder_only_transformer_block.png" alt="Inside the Decoder-Only Transformer Block: token embeddings, masked multi-head self-attention, feed forward network, and next token prediction" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <p>Underneath all of this architectural complexity sits a surprisingly simple training objective.</p>
+
+              <h2>The Surprisingly Simple Training Objective</h2>
+              <p>At the center of modern LLM training sits an almost deceptively simple goal — predict the next token.</p>
+              <p>That's it.</p>
+              <p>Given: <em>"The capital of France is"</em>, predict: <em>"Paris"</em>.</p>
+              <p>Given: <em>"public class UserService"</em>, predict likely next code tokens.</p>
+              <p>Given enough data and enough scale, this simple objective starts producing surprisingly broad capabilities. To predict the next token well across trillions of examples, the model gradually internalizes a remarkable amount of structure: grammar, semantics, coding conventions, discourse patterns, reasoning traces, latent task formats, and fragments of world knowledge.</p>
+              <p>This is one of the most surprising properties of modern LLMs: broad capabilities emerge from an apparently simple probabilistic objective. At this point, an obvious question emerges — if these models learn from enormous amounts of internet-scale data, are they simply acting as giant databases?</p>
+              <p>Not quite.</p>
+
+              <h2>LLMs Are Not Databases</h2>
+              <p>This is a very important distinction. LLMs do store knowledge in their parameters. But they are not databases.</p>
+              <p>A database retrieves explicit records. An LLM compresses statistical patterns across massive amounts of text. That distinction explains many characteristic behaviors of LLMs: why models hallucinate, why retrieval systems are necessary, why knowledge becomes stale over time, and why responses can sound convincing while still being incorrect.</p>
+              <p>An LLM is better understood as a compressed probabilistic world model — not an indexed storage engine. And building these models requires infrastructure on a scale that is difficult to appreciate until you look behind the scenes.</p>
+
+              <h2>The Industrial Scale of Pretraining</h2>
+              <p>Modern training pipelines resemble industrial-scale data engineering systems more than traditional software training loops.</p>
+              <p>Massive web crawls must be filtered, deduplicated, cleaned, tokenized, distributed across training clusters, and continuously managed through sophisticated scheduling and memory optimization techniques. At frontier scale, even infrastructure concerns like GPU interconnect bandwidth and cluster utilization become critical engineering challenges.</p>
+              <p>Modern frontier training runs can involve thousands of GPUs, enormous power consumption, and multi-billion-dollar infrastructure investments. This is one reason only a small number of organizations can train frontier models from scratch. But raw capability alone does not automatically produce a useful AI assistant. This is where post-training enters the picture.</p>
+
+              <h2>How the Model Becomes an Assistant</h2>
+              <p>A pretrained model is not automatically a good assistant. This is another major misconception. Raw pretrained models can ignore instructions, generate toxic content, ramble incoherently, refuse unpredictably, or behave strangely in conversations.</p>
+              <p>Many organizations now release both base pretrained models and instruction-tuned assistant variants. Meta's Llama family is a good example. A base Llama model is primarily optimized for language continuation, while "Llama Instruct" variants are further tuned for conversational usefulness and instruction following. Similar distinctions exist across other modern model families such as Mistral, Pythia, GPT-NeoX, and others.</p>
+              <p>Pretraining creates capability. Post-training shapes behavior. That distinction is critical. The key challenge is that pretrained models are optimized for language continuation — not necessarily for helpful interaction.</p>
+
+              <h2>From Language Model to Instruction-Following Assistant</h2>
+              <p>A pretrained model is fundamentally optimized to continue text. That does not automatically make it a good assistant. For example, if you ask a raw pretrained model to explain Kubernetes networking, it may:</p>
+              <ul>
+                <li>continue the prompt strangely</li>
+                <li>imitate documentation</li>
+                <li>ramble incoherently</li>
+                <li>generate multiple unrelated styles</li>
+              </ul>
+              <p>This is where instruction tuning becomes important. During instruction tuning, the model is further trained on large collections of prompts, instructions, question-answer pairs, and demonstrations of desired behavior. The goal is not to teach entirely new knowledge. This stage reshapes interaction behavior. The model learns to answer more directly, follow task intent more reliably, structure responses clearly, maintain conversational flow, and behave more like an assistant than a pure autocomplete engine.</p>
+              <p>Instruction tuning improves interaction behavior. But modern AI assistants usually go several steps further.</p>
+
+              <h2>Supervised Fine-Tuning and RLHF</h2>
+              <p>The classic post-training pipeline usually looks something like this:</p>
+              <p><strong>Step 1 — Supervised Fine-Tuning (SFT):</strong> The model learns from examples of desirable interactions.</p>
+              <p><strong>Step 2 — Preference Optimization:</strong> Humans rank outputs. The system learns which responses people prefer.</p>
+              <p><strong>Step 3 — Reinforcement Learning:</strong> The model gets optimized toward more helpful and aligned behavior. This is often referred to as RLHF (Reinforcement Learning from Human Feedback).</p>
+              <p>This stage dramatically reshapes the user experience — influencing tone, helpfulness, formatting, refusal behavior, conversational style, and instruction following.</p>
+              <p>In many ways, post-training defines the "personality" users experience. Two systems with similar pretrained foundations can feel completely different after alignment.</p>
+
+              <h2>Alignment Is Also a Product Decision</h2>
+              <p>This is where AI systems become especially interesting. Because alignment is not purely technical. It encompasses product policy, safety policy, governance, ethics, and risk management.</p>
+              <p>Questions around refusal behavior, harmful content, safety boundaries, and uncertainty expression are no longer purely ML problems. They become organizational and product decisions.</p>
+              <p>And those decisions directly shape user experience.</p>
+              <img src="from_raw_text_to_interactive_AI_assistant.png" alt="From Raw Internet Text to Interactive AI Assistant: the complete LLM pipeline from data filtering and pretraining to instruction tuning, inference runtime, and retrieval" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <p>So far, we have mostly discussed how the model is trained and shaped. But an equally important story begins at inference time — the moment a real user sends a prompt.</p>
+
+              <h2>What Actually Happens When You Press Enter</h2>
+              <p>This is one of the most important parts for software engineers. When you send a prompt to an LLM system, inference usually happens in two broad phases:</p>
+              <p><strong>1. Prefill Phase:</strong> The model processes the entire input prompt. During this stage, it builds internal attention states called the KV cache. This is computationally expensive, especially for long prompts.</p>
+              <p><strong>2. Decode Phase:</strong> Now the model generates output one token at a time.</p>
+              <p>Predict.<br>Append.<br>Repeat.</p>
+              <p>This loop continues until stopping conditions are reached.</p>
+              <p>At the center of this runtime architecture sits one of the most important optimizations in modern LLM serving: the KV cache.</p>
+
+              <h2>The KV Cache: The Unsung Hero</h2>
+              <p>Without caching, inference would be painfully inefficient. Every generated token would require recomputing attention across the entire prior sequence from scratch. Instead, models cache previously computed keys and values from attention layers. That dramatically reduces redundant computation.</p>
+              <p>Modern LLM serving performance depends heavily on efficient cache management, batching strategies, memory layout optimization, and intelligent request scheduling. In many production systems, inference becomes as much a memory-management challenge as a raw compute problem.</p>
+              <img src="what_happens_after_you_press_enter.png" alt="Prefill vs Decode: What Happens After You Press Enter — showing the Prefill Phase, KV Cache, and Decode Phase of LLM inference" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <p>And this is exactly why modern AI products cannot be understood purely through model architecture alone. The surrounding runtime system plays an enormous role in the final user experience.</p>
+
+              <h2>Runtime Systems Are a Huge Part of the Product</h2>
+              <p>A modern AI product is not simply "model weights + API."</p>
+              <p>Runtime systems contribute massively to latency, throughput, reliability, cost, and responsiveness. This includes runtime optimizations such as batching, speculative decoding, cache management, token streaming, retrieval pipelines, orchestration loops, and tool execution systems.</p>
+              <p>Some of the biggest user experience improvements come not from changing the model itself, but from improving the serving architecture around it.</p>
+              <p>As modern AI systems evolved, another important shift began happening — models increasingly started interacting with external systems instead of operating in isolation.</p>
+
+              <h2>Tools, Retrieval, and Agents</h2>
+              <p>Modern LLM systems increasingly interact with external tools. This is another place where people confuse the model with the surrounding system.</p>
+              <p>When a model "uses a tool," it is usually participating in a controlled orchestration loop. The model emits a structured tool request, the surrounding runtime executes the tool, the results are fed back into the context window, and generation continues from there.</p>
+              <p>The model itself is not magically executing APIs. It is participating inside a controlled orchestration loop. The same principle applies to Retrieval-Augmented Generation (RAG), memory systems, and agent frameworks. These capabilities are built around the model at the runtime and application layers — rather than emerging directly from the pretrained network itself.</p>
+              <p>Of course, despite all of these advances, modern LLM systems still have important limitations. And one of the most visible is hallucination.</p>
+
+              <h2>Why Hallucinations Happen</h2>
+              <p>Hallucinations are not random glitches. They emerge naturally from the training objective. The model is optimized to produce plausible continuations — not guaranteed truth. That distinction matters enormously.</p>
+              <p>If the system lacks grounding, retrieval, verification, or uncertainty calibration, it may still generate highly confident but incorrect outputs. And larger models do not automatically eliminate this problem.</p>
+              <p>Modern mitigation approaches combine retrieval systems, tool usage, verification loops, stronger alignment strategies, instruction hierarchies, and uncertainty-aware behaviors. None fully eliminate hallucinations, but together they can significantly improve reliability.</p>
+              <img src="why_LLMs_hallucinate.png" alt="Why LLMs Hallucinate: Common Pathways — training data limitations, ambiguous prompts, overgeneralization, confident generation bias, and retrieval limitations" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+
+              <h2>The Future Is Becoming More Layered, Not Less</h2>
+              <p>The frontier is no longer just "bigger models." The industry is now simultaneously exploring multimodal systems, reasoning-focused models, long-context architectures, agent frameworks, orchestration systems, smaller local models, open-weight ecosystems, and on-device AI.</p>
+              <p>Interestingly, many frontier advances are no longer happening only inside the base model itself. Increasingly, innovation is shifting toward orchestration, runtime systems, memory architectures, retrieval pipelines, evaluation infrastructure, and tool ecosystems surrounding the model.</p>
+              <p>Which brings us back to the most important idea in this article: modern AI systems are layered engineering systems — not just giant neural networks.</p>
+
+              <h2>Final Thoughts</h2>
+              <p>Large Language Models can sometimes feel mystical from the outside.</p>
+              <p>But underneath the interface, they are built from a series of understandable engineering ideas:</p>
+              <ul>
+                <li>probabilistic language modeling</li>
+                <li>attention mechanisms</li>
+                <li>distributed training systems</li>
+                <li>alignment pipelines</li>
+                <li>inference runtimes</li>
+                <li>orchestration layers</li>
+              </ul>
+              <p>Understanding these systems does not remove the magic completely. But it does replace vague mystery with a much more useful mental model.</p>
+              <p>And perhaps the most important realization is this: the public conversation around AI often focuses on models — larger parameter counts, new benchmarks, better reasoning scores. But increasingly, the harder problems are becoming systems problems.</p>
+              <p>How do we:</p>
+              <ul>
+                <li>ground models in reality?</li>
+                <li>orchestrate tools safely?</li>
+                <li>manage latency at scale?</li>
+                <li>evaluate reliability?</li>
+                <li>build trustworthy user experiences?</li>
+              </ul>
+              <p>Modern AI assistants are not emerging from a single breakthrough. They are emerging from layers of engineering working together.</p>
+              <p>And understanding those layers may become one of the most valuable skills in software engineering over the next decade.</p>
+
+            </div>
+
+            <div class="article-original-note">
+              <p>This article was originally published on Medium and is being adapted here as part of my long-term knowledge hub.</p>
+              <a href="https://medium.com/@suyog19/how-modern-llm-systems-really-work-6b377222eb7c" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Reading -->
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../understanding-the-ai-ecosystem/" class="article-related-item">
+                  <span class="article-related-item-title">Understanding the AI Ecosystem</span>
+                  <span class="article-related-item-summary">A structured view of how models, data, infrastructure, and applications come together in real-world AI systems.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../ai-ml-data-science-explained-simply/" class="article-related-item">
+                  <span class="article-related-item-title">AI, Machine Learning and Data Science — Explained Simply</span>
+                  <span class="article-related-item-summary">A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
