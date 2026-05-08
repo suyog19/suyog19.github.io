@@ -31,7 +31,7 @@ No lint, test, or build commands exist.
 **CSS is split into three files** — load order matters:
 - [css/base.css](css/base.css): CSS custom properties (color, typography, spacing tokens), reset, global typography
 - [css/components.css](css/components.css): Reusable UI patterns (cards, nav, buttons, tags)
-- [css/pages.css](css/pages.css): Page-specific layouts — Writing page (`.wp-*`), Systems page (`.sp-*`, `.system-card`), About page (`.ap-*`), article/system detail pages, and inline diagram components
+- [css/pages.css](css/pages.css): Page-specific layouts — Home page (`.hero`, `.pillars`, `.writing`, `.systems`, `.project-card`, `.section-header`, etc.), Writing page (`.wp-*`), Systems page (`.sp-*`, `.system-card`), About page (`.ap-*`), article/system detail pages, and inline diagram components
 
 All three are loaded in every page's `<head>` in that order.
 
@@ -45,6 +45,12 @@ All three are loaded in every page's `<head>` in that order.
 - Root (`index.html`): `css/base.css`, `js/script.js`, `favicon.svg`
 - One level deep (`writing/index.html`, `about/index.html`): `../css/base.css`, `../js/script.js`
 - Two levels deep (`writing/<slug>/index.html`, `systems/<slug>/index.html`): `../../css/base.css`, `../../js/script.js`
+
+**Home page is structured into named sections** — each maps to a CSS class on the `<section>` element: `.hero` (headline + CTAs), `.pillars` (three `.pillar-card` items), `.writing` (featured articles), `.systems` (project previews), `.about` (snapshot), `.contact` (CTA block). The `.eyebrow` class styles small topic labels above headings; `.section-header` / `.section-title` / `.section-subtitle` is the standard section intro pattern; `.section-cta` wraps the "View all" button below a section grid.
+
+**Featured writing grid uses two card variants** — `.writing-grid` contains one `.article-card.article-card--featured` (the large lead card) and one `.article-cards-secondary` column (two `.article-card.article-card--small` stacked). When promoting an article to the home page, use this structure.
+
+**Home systems previews use `.project-card`, not `.system-card`** — `index.html` uses `.project-card` / `.project-title` / `.project-desc` / `.project-meta` for the three home-page system previews. `systems/index.html` uses `.system-card` / `.system-title` / `.system-desc` / `.system-context` / `.system-meta` (linkable `<a>` elements). Do not mix these class names across pages.
 
 **Writing index has two update points** — when adding a new article, update `writing/index.html` in two places: the `.writing-grid` featured section at the top, and the appropriate thematic group inside `.wp-themes`. Also update the homepage `index.html` featured grid if promoting to the front page.
 
