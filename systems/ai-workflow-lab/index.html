@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI Workflow Lab turns business documents into structured, reviewable data with evidence, confidence, and missing-field reporting." />
+  <title>AI Workflow Lab | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/systems/ai-workflow-lab/" />
+  <meta property="og:title" content="AI Workflow Lab | Suyog Joshi" />
+  <meta property="og:description" content="AI Workflow Lab turns business documents into structured, reviewable data with evidence, confidence, and missing-field reporting." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/systems/ai-workflow-lab/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AI Workflow Lab | Suyog Joshi" />
+  <meta name="twitter:description" content="AI Workflow Lab turns business documents into structured, reviewable data with evidence, confidence, and missing-field reporting." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link" aria-current="page">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <article>
+
+    <div class="article-page-header">
+      <div class="container">
+        <div class="article-reading-col">
+          <a href="../" class="article-back-link">Back to Systems</a>
+          <p class="article-tag">AI Systems</p>
+          <h1 class="article-page-title">AI Workflow Lab</h1>
+          <p class="article-page-subtitle">Turning everyday business documents into structured, reviewable data with evidence, confidence, and explicit missing-field reporting.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-body-section">
+      <div class="container">
+        <div class="article-reading-col">
+          <div class="article-body">
+
+            <h2>Problem</h2>
+            <p>Many business workflows still begin with unstructured documents: invoices, receipts, statements, forms, and messages. Extracting values is only part of the problem. The harder question is whether a person can review where each value came from and understand what was not found.</p>
+
+            <h2>Pipeline</h2>
+            <p>The Phase 4 demo focuses on the path from document text to structured, reviewable fields.</p>
+
+            <div class="flow-sequence" aria-label="AI Workflow Lab Phase 4 pipeline">
+              <span class="flow-sequence-step">Business document</span>
+              <span class="flow-sequence-arrow">-></span>
+              <span class="flow-sequence-step">Extracted text</span>
+              <span class="flow-sequence-arrow">-></span>
+              <span class="flow-sequence-step">Document type</span>
+              <span class="flow-sequence-arrow">-></span>
+              <span class="flow-sequence-step">Structured fields</span>
+              <span class="flow-sequence-arrow">-></span>
+              <span class="flow-sequence-step">Evidence and missing fields</span>
+            </div>
+
+            <h2>Demo 1: Vendor invoice extraction</h2>
+            <p>The invoice demo shows how synthetic vendor invoice text becomes structured fields such as invoice number, vendor name, invoice date, due date, totals, and payment terms.</p>
+            <p>The point is not that the fixture is complex. The point is that the output is structured enough for a downstream workflow to inspect.</p>
+
+            <h2>Demo 2: Expense receipt extraction</h2>
+            <p>The receipt demo applies the same Phase 4 idea to a different business document shape. It extracts merchant, date, category, subtotal, tax, tip, total, currency, and payment method from a synthetic receipt.</p>
+            <p>This shows that the workflow is not tied to one document template.</p>
+
+            <h2>Demo 3: Evidence and missing fields</h2>
+            <p>The evidence viewer shows why structured extraction needs review context. Fields are displayed with values, confidence levels, and supporting snippets. Missing fields are shown explicitly instead of being silently ignored.</p>
+            <p>That makes the output easier to inspect, explain, and route into the next workflow step.</p>
+
+            <h2>What this proves</h2>
+            <p>Phase 4 proves that AI Workflow Lab can produce reviewable structured data from everyday business documents.</p>
+            <ul>
+              <li>Document-type-aware field extraction.</li>
+              <li>Public-safe fixture outputs.</li>
+              <li>Confidence and evidence display.</li>
+              <li>Explicit missing-field reporting.</li>
+              <li>A clear boundary between extraction and workflow decisions.</li>
+            </ul>
+
+            <h2>What comes next in Phase 5</h2>
+            <p>Phase 5 should focus on what happens after extraction: human review, validation, exception handling, routing by confidence or missing fields, and audit-friendly workflow state.</p>
+            <p>Phase 4 does not decide whether a document should be approved, rejected, reimbursed, paid, or posted to accounting. It prepares data that can support those later workflow decisions.</p>
+
+            <div class="process-flow" aria-label="Phase 5 focus areas">
+              <div class="process-flow-label">Phase 5 focus</div>
+              <ul class="process-flow-steps">
+                <li>Human review screens</li>
+                <li>Validation and exception handling</li>
+                <li>Business-rule routing</li>
+                <li>Workflow state and audit trail</li>
+              </ul>
+            </div>
+
+            <h2>Limitations</h2>
+            <ul>
+              <li>The current demos use synthetic public-safe fixtures.</li>
+              <li>The examples are static and do not call production APIs.</li>
+              <li>The extraction outputs are demo artifacts, not a production review queue.</li>
+              <li>The demos do not approve payments, reimbursements, or accounting entries.</li>
+              <li>The demos do not make LLM-based decisions.</li>
+            </ul>
+
+            <h2>Source artifacts</h2>
+            <p>The source demo package is maintained in the platform repository so the website copy, fixture references, QA notes, and claims review remain traceable to the backend platform work.</p>
+            <ul>
+              <li><a href="https://github.com/suyog19/suyogjoshi-platform/tree/dev/demo/phase-4/vendor-invoice-field-extraction" target="_blank" rel="noopener noreferrer">Vendor invoice extraction package</a></li>
+              <li><a href="https://github.com/suyog19/suyogjoshi-platform/tree/dev/demo/phase-4/expense-receipt-field-extraction" target="_blank" rel="noopener noreferrer">Expense receipt extraction package</a></li>
+              <li><a href="https://github.com/suyog19/suyogjoshi-platform/tree/dev/demo/phase-4/evidence-and-missing-fields-viewer" target="_blank" rel="noopener noreferrer">Evidence and missing-fields viewer package</a></li>
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="article-related">
+      <div class="container">
+        <div class="article-reading-col">
+          <h2 class="article-related-title">Related reading</h2>
+          <ul class="article-related-list">
+            <li>
+              <a href="../ai-dev-orchestrator/" class="article-related-item">
+                <span class="article-related-item-title">AI Dev Orchestrator</span>
+                <span class="article-related-item-summary">A related system exploration about planning, building, reviewing, and coordinating AI-assisted software work.</span>
+              </a>
+            </li>
+            <li>
+              <a href="../../writing/how-i-used-two-ais-to-build-a-software-engineering-system/" class="article-related-item">
+                <span class="article-related-item-title">How I Used Two AIs to Build a Software Engineering System</span>
+                <span class="article-related-item-summary">A practical reflection on using AI tools in a structured software engineering workflow.</span>
+              </a>
+            </li>
+            <li>
+              <a href="../../writing/how-modern-llm-systems-really-work/" class="article-related-item">
+                <span class="article-related-item-title">How Modern LLM Systems Really Work</span>
+                <span class="article-related-item-summary">A systems-level explanation of how model behavior, retrieval, tools, and product constraints fit together.</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    </article>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
