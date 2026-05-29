@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="1220" viewBox="0 0 960 1220" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic invoice visual for AI Workflow Lab demo</title>
+  <desc id="desc">A synthetic invoice using the same public-safe values shown in the extracted fields on the AI Workflow Lab page.</desc>
+  <rect width="960" height="1220" fill="#f8fafc"/>
+  <rect x="90" y="70" width="780" height="1080" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="140" y="150" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="52" font-weight="700">INVOICE</text>
+  <text x="140" y="200" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="24">Synthetic public-safe demo document</text>
+
+  <rect x="640" y="130" width="170" height="44" fill="#111111"/>
+  <text x="665" y="160" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">AI WORKFLOW</text>
+
+  <line x1="140" y1="245" x2="820" y2="245" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="140" y="310" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">INVOICE NO</text>
+  <text x="140" y="344" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">INV-DEMO-2026-0042</text>
+
+  <text x="540" y="310" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">INVOICE DATE</text>
+  <text x="540" y="344" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26">15 Jan 2026</text>
+
+  <text x="540" y="405" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">DUE DATE</text>
+  <text x="540" y="439" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26">14 Feb 2026</text>
+
+  <line x1="140" y1="485" x2="820" y2="485" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="140" y="545" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">FROM</text>
+  <text x="140" y="580" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">Northstar Office Supplies LLC</text>
+  <text x="140" y="616" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="20">Synthetic vendor account</text>
+
+  <text x="140" y="700" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">BILL TO</text>
+  <text x="140" y="735" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">Blue Harbor Consulting LLC</text>
+  <text x="140" y="771" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="20">Synthetic buyer account</text>
+
+  <rect x="140" y="835" width="680" height="2" fill="#111111"/>
+  <text x="140" y="890" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">DESCRIPTION</text>
+  <text x="140" y="935" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="24">Office supply subscription and support package</text>
+
+  <line x1="140" y1="980" x2="820" y2="980" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="560" y="1025" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="22">Currency</text>
+  <text x="760" y="1025" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22" text-anchor="end">USD</text>
+
+  <text x="560" y="1068" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="22">Subtotal</text>
+  <text x="760" y="1068" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22" text-anchor="end">$1250.00</text>
+
+  <text x="560" y="1111" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="22">Tax Amount</text>
+  <text x="760" y="1111" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22" text-anchor="end">$100.00</text>
+
+  <line x1="560" y1="1135" x2="760" y2="1135" stroke="#111111" stroke-width="2"/>
+  <text x="560" y="1178" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">Total Amount</text>
+  <text x="760" y="1178" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700" text-anchor="end">$1350.00</text>
+</svg>
