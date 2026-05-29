@@ -91,17 +91,152 @@
               <span class="flow-sequence-step">Evidence and missing fields</span>
             </div>
 
+            <div class="demo-source-note">
+              <h2>What the examples use</h2>
+              <p>The visual reference below uses a public-domain invoice scan from Wikimedia Commons. The extracted fields shown in the demos come from synthetic Phase 4 transcripts maintained in the platform repository, because the current backend does not yet perform OCR on scanned images.</p>
+              <figure class="demo-scan-reference">
+                <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/1888_invoice.jpg?width=900" alt="Public-domain scanned invoice from 1888 used as a visual reference">
+                <figcaption><a href="https://commons.wikimedia.org/wiki/File:1888_invoice.jpg" target="_blank" rel="noopener noreferrer">Public-domain scanned invoice visual reference</a>. The structured extraction examples below use matching synthetic transcripts, not this historical scan.</figcaption>
+              </figure>
+            </div>
+
             <h2>Demo 1: Vendor invoice extraction</h2>
             <p>The invoice demo shows how synthetic vendor invoice text becomes structured fields such as invoice number, vendor name, invoice date, due date, totals, and payment terms.</p>
             <p>The point is not that the fixture is complex. The point is that the output is structured enough for a downstream workflow to inspect.</p>
+
+            <div class="demo-example" aria-label="Vendor invoice extraction example">
+              <div class="demo-example-header">
+                <span class="demo-example-kicker">Input transcript</span>
+                <span class="demo-example-status">invoice.v1</span>
+              </div>
+              <div class="demo-example-grid">
+                <pre class="demo-document-panel">INVOICE
+Invoice No: INV-DEMO-2026-0042
+Invoice Date: 15 Jan 2026
+Due Date: 14 Feb 2026
+From: Northstar Office Supplies LLC
+Bill To: Blue Harbor Consulting LLC
+Currency: USD
+Subtotal: $1250.00
+Tax Amount: $100.00
+Total Amount: $1350.00</pre>
+                <div class="demo-field-panel">
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Invoice number</span>
+                    <span class="demo-field-value">INV-DEMO-2026-0042</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">Invoice No: INV-DEMO-2026-0042</span>
+                  </div>
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Vendor</span>
+                    <span class="demo-field-value">Northstar Office Supplies LLC</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">From: Northstar Office Supplies LLC</span>
+                  </div>
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Due date</span>
+                    <span class="demo-field-value">2026-02-14</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">Due Date: 14 Feb 2026</span>
+                  </div>
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Total</span>
+                    <span class="demo-field-value">$1350.00</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">Total Amount: $1350.00</span>
+                  </div>
+                </div>
+              </div>
+              <div class="demo-missing-panel">
+                <span class="demo-missing-label">Missing fields</span>
+                <span>vendorAddress</span>
+                <span>buyerAddress</span>
+                <span>purchaseOrderNumber</span>
+                <span>lineItems</span>
+              </div>
+            </div>
 
             <h2>Demo 2: Expense receipt extraction</h2>
             <p>The receipt demo applies the same Phase 4 idea to a different business document shape. It extracts merchant, date, category, subtotal, tax, tip, total, currency, and payment method from a synthetic receipt.</p>
             <p>This shows that the workflow is not tied to one document template.</p>
 
+            <div class="demo-example" aria-label="Expense receipt extraction example">
+              <div class="demo-example-header">
+                <span class="demo-example-kicker">Input transcript</span>
+                <span class="demo-example-status">receipt.v1</span>
+              </div>
+              <div class="demo-example-grid demo-example-grid--receipt">
+                <pre class="demo-document-panel demo-document-panel--receipt">RECEIPT
+Merchant: Harbor Cafe Supplies
+Receipt No: RCP-DEMO-2026-019
+Transaction Date: 22 Jan 2026
+Currency: USD
+Subtotal: $42.50
+Tax Amount: $3.40
+Total Amount: $45.90
+Payment Method: card</pre>
+                <div class="demo-field-panel">
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Merchant</span>
+                    <span class="demo-field-value">Harbor Cafe Supplies</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">Merchant: Harbor Cafe Supplies</span>
+                  </div>
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Receipt number</span>
+                    <span class="demo-field-value">RCP-DEMO-2026-019</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">Receipt No: RCP-DEMO-2026-019</span>
+                  </div>
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Total</span>
+                    <span class="demo-field-value">$45.90</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">Total Amount: $45.90</span>
+                  </div>
+                  <div class="demo-field-row">
+                    <span class="demo-field-name">Payment method</span>
+                    <span class="demo-field-value">card</span>
+                    <span class="demo-confidence">high</span>
+                    <span class="demo-evidence">Payment Method: card</span>
+                  </div>
+                </div>
+              </div>
+              <div class="demo-missing-panel">
+                <span class="demo-missing-label">Missing fields</span>
+                <span>transactionTime</span>
+                <span>merchantAddress</span>
+                <span>items</span>
+              </div>
+            </div>
+
             <h2>Demo 3: Evidence and missing fields</h2>
             <p>The evidence viewer shows why structured extraction needs review context. Fields are displayed with values, confidence levels, and supporting snippets. Missing fields are shown explicitly instead of being silently ignored.</p>
             <p>That makes the output easier to inspect, explain, and route into the next workflow step.</p>
+
+            <div class="demo-review-panel" aria-label="Evidence and missing-fields example">
+              <div class="demo-review-item">
+                <span class="demo-field-name">Reviewed field</span>
+                <strong>Total amount: $1350.00</strong>
+                <span class="demo-confidence">high confidence</span>
+                <p>Evidence: <span>Total Amount: $1350.00</span></p>
+              </div>
+              <div class="demo-review-item demo-review-item--missing">
+                <span class="demo-field-name">Needs review</span>
+                <strong>Missing fields</strong>
+                <ul>
+                  <li>vendorAddress</li>
+                  <li>buyerAddress</li>
+                  <li>purchaseOrderNumber</li>
+                  <li>lineItems</li>
+                </ul>
+              </div>
+              <div class="demo-review-item">
+                <span class="demo-field-name">Invalid or ambiguous</span>
+                <strong>No invalid or ambiguous fields in this clean fixture.</strong>
+                <p>The display model still reserves these buckets so future workflows do not hide uncertainty.</p>
+              </div>
+            </div>
 
             <h2>What this proves</h2>
             <p>Phase 4 proves that AI Workflow Lab can produce reviewable structured data from everyday business documents.</p>
@@ -130,6 +265,8 @@
             <h2>Limitations</h2>
             <ul>
               <li>The current demos use synthetic public-safe fixtures.</li>
+              <li>The public invoice image is a visual reference; extracted fields shown here come from matching synthetic transcripts.</li>
+              <li>The current backend does not perform OCR on scanned image input.</li>
               <li>The examples are static and do not call production APIs.</li>
               <li>The extraction outputs are demo artifacts, not a production review queue.</li>
               <li>The demos do not approve payments, reimbursements, or accounting entries.</li>
