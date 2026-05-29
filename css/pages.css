@@ -1507,6 +1507,197 @@
   margin-bottom: 0.4rem;
 }
 
+/* AI Workflow Lab demo examples */
+.demo-source-note {
+  margin: 2rem 0 2.5rem;
+}
+
+.demo-scan-reference {
+  margin: 1.5rem 0 0;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: 1rem;
+}
+
+.demo-scan-reference img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: contain;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.demo-scan-reference figcaption {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin-top: 0.875rem;
+}
+
+.demo-example,
+.demo-review-panel {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  margin: 2rem 0 3rem;
+}
+
+.demo-example-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.demo-example-kicker,
+.demo-example-status,
+.demo-confidence,
+.demo-missing-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.demo-example-status,
+.demo-confidence {
+  color: var(--color-text);
+}
+
+.demo-example-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 0;
+}
+
+.demo-document-panel {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  color: var(--color-text);
+  background-color: #fffef8;
+  border-right: 1px solid var(--color-border);
+  padding: 1.25rem;
+  min-height: 100%;
+}
+
+.demo-document-panel--receipt {
+  background-color: #ffffff;
+}
+
+.demo-field-panel {
+  background-color: var(--color-bg);
+}
+
+.demo-field-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.demo-field-row:last-child {
+  border-bottom: none;
+}
+
+.demo-field-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.demo-field-value {
+  grid-column: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+  line-height: 1.45;
+}
+
+.demo-field-row .demo-confidence {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: 0.35rem 0.55rem;
+}
+
+.demo-evidence {
+  grid-column: 1 / -1;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.demo-missing-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.demo-missing-panel span:not(.demo-missing-label) {
+  font-size: 0.8125rem;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: 0.3rem 0.55rem;
+}
+
+.demo-missing-label {
+  flex-basis: 100%;
+}
+
+.demo-review-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background-color: var(--color-bg);
+}
+
+.demo-review-item {
+  padding: 1.25rem;
+  border-right: 1px solid var(--color-border);
+}
+
+.demo-review-item:last-child {
+  border-right: none;
+}
+
+.demo-review-item strong {
+  display: block;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  margin: 0.5rem 0;
+}
+
+.demo-review-item p,
+.demo-review-item li {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+}
+
+.demo-review-item ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.demo-review-item--missing {
+  background-color: var(--color-surface);
+}
+
 /* Original Publication Note */
 .article-original-note {
   margin-top: 3.5rem;
@@ -1595,5 +1786,30 @@
 
   .article-related {
     padding-block: 3.5rem;
+  }
+
+  .demo-example-grid,
+  .demo-review-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-document-panel,
+  .demo-review-item {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .demo-review-item:last-child {
+    border-bottom: none;
+  }
+
+  .demo-field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-field-row .demo-confidence {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
   }
 }
