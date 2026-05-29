@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="760" viewBox="0 0 960 760" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic evidence and missing-fields review visual</title>
+  <desc id="desc">A synthetic review card showing total amount evidence, high confidence, and missing invoice fields.</desc>
+  <rect width="960" height="760" fill="#f8fafc"/>
+  <rect x="70" y="70" width="820" height="620" rx="8" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="120" y="140" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">REVIEWABLE STRUCTURED OUTPUT</text>
+  <text x="120" y="190" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="700">Evidence and missing fields</text>
+  <text x="120" y="230" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="20">Synthetic public-safe review card for Phase 4 output</text>
+
+  <rect x="120" y="290" width="330" height="210" fill="#f8fafc" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="150" y="340" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">REVIEWED FIELD</text>
+  <text x="150" y="390" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Total amount</text>
+  <text x="150" y="440" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">$1350.00</text>
+  <rect x="150" y="462" width="170" height="34" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="172" y="485" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">HIGH CONFIDENCE</text>
+
+  <rect x="510" y="290" width="300" height="210" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="540" y="340" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">EVIDENCE</text>
+  <text x="540" y="395" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26">Total Amount:</text>
+  <text x="540" y="435" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">$1350.00</text>
+
+  <rect x="120" y="540" width="690" height="95" fill="#f8fafc" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="150" y="580" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700">MISSING FIELDS</text>
+  <text x="150" y="618" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="20">vendorAddress</text>
+  <text x="318" y="618" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="20">buyerAddress</text>
+  <text x="474" y="618" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="20">purchaseOrderNumber</text>
+  <text x="700" y="618" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="20" text-anchor="end">lineItems</text>
+
+  <text x="120" y="665" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18">Invalid or ambiguous fields: none in this clean fixture.</text>
+</svg>

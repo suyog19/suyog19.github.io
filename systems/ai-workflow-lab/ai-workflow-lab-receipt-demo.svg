@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1040" viewBox="0 0 760 1040" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic receipt visual for AI Workflow Lab demo</title>
+  <desc id="desc">A synthetic receipt using the same public-safe values shown in the receipt extracted fields on the AI Workflow Lab page.</desc>
+  <rect width="760" height="1040" fill="#f8fafc"/>
+  <path d="M150 70h460v900l-32-18-33 18-33-18-33 18-33-18-33 18-33-18-33 18-33-18-33 18-33-18-33 18-33-18-33 18z" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="380" y="155" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="700" text-anchor="middle">Harbor Cafe Supplies</text>
+  <text x="380" y="195" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="20" text-anchor="middle">Synthetic public-safe receipt</text>
+
+  <line x1="195" y1="245" x2="565" y2="245" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="195" y="305" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">RECEIPT NO</text>
+  <text x="195" y="340" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">RCP-DEMO-2026-019</text>
+
+  <text x="195" y="410" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">TRANSACTION DATE</text>
+  <text x="195" y="445" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="26">22 Jan 2026</text>
+
+  <line x1="195" y1="505" x2="565" y2="505" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="195" y="565" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22">Cafe supplies package</text>
+  <text x="565" y="565" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22" text-anchor="end">$42.50</text>
+
+  <line x1="195" y1="625" x2="565" y2="625" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="195" y="685" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="22">Currency</text>
+  <text x="565" y="685" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22" text-anchor="end">USD</text>
+
+  <text x="195" y="735" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="22">Subtotal</text>
+  <text x="565" y="735" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22" text-anchor="end">$42.50</text>
+
+  <text x="195" y="785" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="22">Tax Amount</text>
+  <text x="565" y="785" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="22" text-anchor="end">$3.40</text>
+
+  <line x1="195" y1="820" x2="565" y2="820" stroke="#111111" stroke-width="2"/>
+
+  <text x="195" y="875" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">Total Amount</text>
+  <text x="565" y="875" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700" text-anchor="end">$45.90</text>
+
+  <text x="195" y="930" fill="#6b7280" font-family="Inter, Arial, sans-serif" font-size="20">Payment Method</text>
+  <text x="565" y="930" fill="#111111" font-family="Inter, Arial, sans-serif" font-size="20" text-anchor="end">card</text>
+</svg>
