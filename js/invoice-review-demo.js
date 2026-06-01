@@ -70,7 +70,7 @@
 
       return `
         <li class="invoice-demo-timeline-step is-${state}">
-          <span class="invoice-demo-timeline-icon" aria-hidden="true">${state === 'complete' ? '✓' : index + 1}</span>
+          <span class="invoice-demo-timeline-icon" aria-hidden="true">${state === 'complete' ? '&#10003;' : index + 1}</span>
           <span>${escapeHtml(step)}</span>
         </li>
       `;
@@ -119,7 +119,25 @@
     return scenario.fields.find((field) => field.label === label);
   }
 
-  function renderInvoicePreview(scenario) {
+  function renderLineItems(scenario) {
+    if (!scenario.lineItems?.length) return '';
+
+    return `
+      <div class="invoice-demo-line-items" aria-label="Detected line items">
+        <strong>Detected line items</strong>
+        <ul>
+          ${scenario.lineItems.map((item) => `
+            <li>
+              <span>${escapeHtml(item.description)}</span>
+              <small>${escapeHtml(item.quantity)} &middot; ${escapeHtml(item.amount)}</small>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  function renderSyntheticPaper(scenario) {
     const vendor = getField(scenario, 'Vendor Name');
     const invoiceNumber = getField(scenario, 'Invoice Number');
     const invoiceDate = getField(scenario, 'Invoice Date');
@@ -127,30 +145,54 @@
     const total = getField(scenario, 'Total Amount');
     const gstin = getField(scenario, 'GSTIN');
     const terms = getField(scenario, 'Payment Terms');
+    const title = scenario.document.type === 'Vendor Bill' ? 'Vendor Bill' : 'Invoice';
 
+    return `
+      <div class="invoice-demo-paper" aria-label="Synthetic ${escapeHtml(title.toLowerCase())} preview">
+        <div class="invoice-demo-paper-header">
+          <span>${escapeHtml(title)}</span>
+          <strong>${escapeHtml(invoiceNumber.displayValue)}</strong>
+        </div>
+        <div class="invoice-demo-paper-row">
+          <span>Vendor</span>
+          <strong>${escapeHtml(vendor.displayValue)}</strong>
+        </div>
+        <div class="invoice-demo-paper-row">
+          <span>GSTIN</span>
+          <strong>${escapeHtml(gstin.displayValue)}</strong>
+        </div>
+        <div class="invoice-demo-paper-grid">
+          <div><span>Invoice date</span><strong>${escapeHtml(invoiceDate.displayValue)}</strong></div>
+          <div><span>Due date</span><strong>${escapeHtml(dueDate.displayValue)}</strong></div>
+          <div><span>Terms</span><strong>${escapeHtml(terms.displayValue)}</strong></div>
+          <div><span>Total</span><strong>${escapeHtml(total.displayValue)}</strong></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderImagePreview(scenario) {
+    if (scenario.document.syntheticDocumentName !== 'handwritten-vendor-bill.png') {
+      return renderSyntheticPaper(scenario);
+    }
+
+    return `
+      <figure class="invoice-demo-scan-preview">
+        <img
+          src="../../../public/images/demos/invoice-review/handwritten-vendor-bill.png"
+          alt="Synthetic scanned vendor cash bill from Shree Demo Enterprises used to demonstrate OCR fallback."
+          loading="lazy"
+        >
+        <figcaption>Synthetic demo image. No real vendor, customer, tax, or payment data is used.</figcaption>
+      </figure>
+    `;
+  }
+
+  function renderInvoicePreview(scenario) {
     return `
       <article class="invoice-demo-card invoice-demo-card--preview">
         <h3>Invoice Snapshot</h3>
-        <div class="invoice-demo-paper" aria-label="Synthetic invoice preview">
-          <div class="invoice-demo-paper-header">
-            <span>Invoice</span>
-            <strong>${escapeHtml(invoiceNumber.displayValue)}</strong>
-          </div>
-          <div class="invoice-demo-paper-row">
-            <span>Vendor</span>
-            <strong>${escapeHtml(vendor.displayValue)}</strong>
-          </div>
-          <div class="invoice-demo-paper-row">
-            <span>GSTIN</span>
-            <strong>${escapeHtml(gstin.displayValue)}</strong>
-          </div>
-          <div class="invoice-demo-paper-grid">
-            <div><span>Invoice date</span><strong>${escapeHtml(invoiceDate.displayValue)}</strong></div>
-            <div><span>Due date</span><strong>${escapeHtml(dueDate.displayValue)}</strong></div>
-            <div><span>Terms</span><strong>${escapeHtml(terms.displayValue)}</strong></div>
-            <div><span>Total</span><strong>${escapeHtml(total.displayValue)}</strong></div>
-          </div>
-        </div>
+        ${renderImagePreview(scenario)}
         <dl class="invoice-demo-metadata">
           ${metadataRows(scenario).map(([label, value]) => `
             <div>
@@ -159,6 +201,19 @@
             </div>
           `).join('')}
         </dl>
+        ${renderLineItems(scenario)}
+      </article>
+    `;
+  }
+
+  function renderOcrPreview(scenario) {
+    if (!scenario.ocrPreview) return '';
+
+    return `
+      <article class="invoice-demo-card invoice-demo-card--wide invoice-demo-ocr-card">
+        <h3>${escapeHtml(scenario.ocrPreview.title)}</h3>
+        <p>The original bill is an image. OCR converts the visible text into a rough text layer before field extraction.</p>
+        <pre>${escapeHtml(scenario.ocrPreview.text)}</pre>
       </article>
     `;
   }
@@ -184,7 +239,7 @@
                   <td data-label="Extracted Value">${escapeHtml(field.displayValue)}</td>
                   <td data-label="Confidence"><span class="invoice-demo-status is-${field.confidence.toLowerCase()}">${escapeHtml(field.confidence)}</span></td>
                   <td data-label="Evidence">
-                    ${field.evidence ? `<button type="button" class="invoice-demo-evidence-btn" data-evidence-field="${escapeHtml(field.label)}">View</button>` : '<span aria-label="No evidence">—</span>'}
+                    ${field.evidence ? `<button type="button" class="invoice-demo-evidence-btn" data-evidence-field="${escapeHtml(field.label)}">View</button>` : '<span aria-label="No evidence">&mdash;</span>'}
                   </td>
                 </tr>
               `).join('')}
@@ -293,6 +348,89 @@
     `;
   }
 
+  function renderAiValueLayer() {
+    return `
+      <section class="invoice-demo-ai-layer invoice-demo-card invoice-demo-card--wide" aria-labelledby="ai-value-title">
+        <div class="invoice-demo-section-header">
+          <p class="eyebrow">AI value</p>
+          <h3 id="ai-value-title">Where AI assists the review</h3>
+        </div>
+        <div class="invoice-demo-value-grid invoice-demo-comparison">
+          <article class="invoice-demo-value-card">
+            <h4>Manual Review vs AI-Assisted Review</h4>
+            <div class="invoice-demo-comparison-grid">
+              <div>
+                <strong>Manual invoice review</strong>
+                <ul>
+                  <li>Reviewer opens invoice manually</li>
+                  <li>Reviewer searches for invoice number, date, amount, GSTIN</li>
+                  <li>Reviewer checks policy manually</li>
+                  <li>Reviewer writes clarification email manually</li>
+                  <li>Review reasoning may stay informal</li>
+                </ul>
+              </div>
+              <div>
+                <strong>AI-assisted review</strong>
+                <ul>
+                  <li>System reads invoice text using native extraction or OCR fallback</li>
+                  <li>Extracted fields are shown directly with confidence and evidence</li>
+                  <li>Business checks highlight missing or risky information</li>
+                  <li>AI prepares a draft follow-up message</li>
+                  <li>Audit trail records review steps and human action</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+          <article class="invoice-demo-value-card">
+            <h4>Where AI Helps in This Workflow</h4>
+            <div class="invoice-demo-help-grid">
+              <div><strong>Reading scanned invoices</strong><p>OCR helps convert scanned, photographed, or image-based invoices into readable text when native document text is unavailable or weak.</p></div>
+              <div><strong>Extracting useful information</strong><p>Important invoice details such as invoice number, dates, amount, GSTIN, vendor name, and payment terms are surfaced as structured fields.</p></div>
+              <div><strong>Explaining review reasons</strong><p>AI-generated reviewer summaries explain why an invoice needs attention in plain business language.</p></div>
+              <div><strong>Drafting follow-up communication</strong><p>AI can prepare a first draft for requesting missing or corrected information, so the reviewer does not start from a blank page.</p></div>
+            </div>
+            <p class="invoice-demo-note">Business rules still make deterministic checks. AI assists reading, summarizing, and drafting; the human reviewer makes the final decision.</p>
+          </article>
+          <article class="invoice-demo-value-card">
+            <h4>Potential Workflow Improvement</h4>
+            <dl class="invoice-demo-metric-list">
+              <div><dt>Manual review effort</dt><dd>5-10 minutes per invoice</dd></div>
+              <div><dt>AI-assisted review effort</dt><dd>1-3 minutes for review and decision</dd></div>
+              <div><dt>Main improvement</dt><dd>Less manual searching, faster issue detection, clearer reviewer communication</dd></div>
+            </dl>
+            <p class="invoice-demo-note">These are illustrative estimates for demo purposes. Actual savings depend on invoice quality, business rules, and review process.</p>
+          </article>
+          <article class="invoice-demo-value-card">
+            <h4>Responsible AI Design</h4>
+            <ul>
+              <li>AI output is shown as assistance, not final authority.</li>
+              <li>Extracted fields include evidence where available.</li>
+              <li>Deterministic business rules decide when review is required.</li>
+              <li>Human reviewer actions remain explicit and auditable.</li>
+              <li>No real documents are uploaded in this public static demo.</li>
+            </ul>
+            <p>The goal is not blind automation. The goal is faster, clearer, and more controlled review.</p>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderDemonstrates() {
+    return `
+      <article class="invoice-demo-card invoice-demo-card--wide invoice-demo-explainer-card">
+        <h3>What This Demonstrates</h3>
+        <ul>
+          <li>Converts invoice documents into structured, reviewable fields</li>
+          <li>Highlights missing or risky information before approval</li>
+          <li>Combines deterministic business rules with AI-assisted explanation</li>
+          <li>Keeps humans in control through review actions and audit history</li>
+        </ul>
+        <a class="btn btn-secondary" href="../">Read the build notes</a>
+      </article>
+    `;
+  }
+
   function renderResults() {
     if (!selectedScenario) {
       resultsEl.innerHTML = '';
@@ -316,11 +454,14 @@
         </div>
         <div class="invoice-demo-result-grid">
           ${renderInvoicePreview(selectedScenario)}
+          ${renderOcrPreview(selectedScenario)}
           ${renderFields(selectedScenario)}
           ${renderBusinessChecks(selectedScenario)}
           ${renderAiSummary(selectedScenario)}
           ${renderActions()}
           ${renderAuditTrail(selectedScenario)}
+          ${renderAiValueLayer()}
+          ${renderDemonstrates()}
         </div>
       </div>
     `;
