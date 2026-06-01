@@ -1,0 +1,186 @@
+{
+  "demoId": "vendor-onboarding-rag-assistant",
+  "title": "AI Business Process Knowledge Assistant",
+  "subtitle": "Ask questions about approved vendor onboarding process documents and get grounded answers with source references.",
+  "version": "1.0",
+  "mode": "Static website demo",
+  "responsibleAiNote": "Answers are based only on the synthetic approved process documents included in this demo. If the documents do not contain the answer, the assistant says so instead of guessing.",
+  "collection": {
+    "collectionId": "vendor-onboarding",
+    "name": "Vendor Onboarding Process",
+    "documents": [
+      {
+        "id": "vendor-onboarding-sop",
+        "title": "Vendor Onboarding SOP",
+        "description": "Step-by-step vendor onboarding process, maker/checker responsibilities, approval conditions, and escalation path.",
+        "sourcePath": "source-documents/vendor-onboarding-sop.md"
+      },
+      {
+        "id": "vendor-document-checklist",
+        "title": "Vendor Document Checklist",
+        "description": "Mandatory and conditional document requirements, quality checks, name-match rules, and bank proof validation.",
+        "sourcePath": "source-documents/vendor-document-checklist.md"
+      },
+      {
+        "id": "invoice-approval-policy",
+        "title": "Invoice Approval Policy",
+        "description": "Invoice thresholds, high-value approval, tax identity checks, and manual review conditions.",
+        "sourcePath": "source-documents/invoice-approval-policy.md"
+      },
+      {
+        "id": "vendor-exception-handling-guide",
+        "title": "Vendor Exception Handling Guide",
+        "description": "Handling rules for missing tax details, missing PAN, bank proof mismatch, incomplete documents, and non-auto-approval cases.",
+        "sourcePath": "source-documents/vendor-exception-handling-guide.md"
+      }
+    ]
+  },
+  "sampleQuestions": [
+    {
+      "id": "required-documents",
+      "question": "What documents are required to onboard a new vendor?",
+      "answer": "A new vendor must submit PAN, GST certificate when applicable, bank proof, signed onboarding form, registered address, and contact details. Conditional documents may be required depending on vendor type.",
+      "confidence": "high",
+      "sources": [
+        {
+          "sourceRef": "Vendor Onboarding SOP, Section 2.1 Required Documents",
+          "title": "Vendor Onboarding SOP",
+          "snippet": "New vendors must submit PAN, GST certificate when GST is applicable, bank proof, signed onboarding form, registered business address, and primary contact details."
+        },
+        {
+          "sourceRef": "Vendor Document Checklist, Section 1.1 Mandatory Documents",
+          "title": "Vendor Document Checklist",
+          "snippet": "Every new vendor must provide PAN, bank proof, signed onboarding form, registered address, and contact details."
+        }
+      ],
+      "limitations": [
+        "Answer is based only on approved demo process documents."
+      ]
+    },
+    {
+      "id": "missing-gstin",
+      "question": "What happens if GSTIN is missing?",
+      "answer": "If GSTIN is missing and GST applies, the vendor or invoice cannot be auto-approved. The maker must request the GST certificate or a documented tax exception, and finance operations must confirm before checker approval.",
+      "confidence": "high",
+      "sources": [
+        {
+          "sourceRef": "Vendor Exception Handling Guide, Section 1.1 Missing GSTIN",
+          "title": "Vendor Exception Handling Guide",
+          "snippet": "If GSTIN is missing and GST is applicable, the vendor cannot be auto-approved."
+        },
+        {
+          "sourceRef": "Invoice Approval Policy, Section 3.1 Tax Identity Checks",
+          "title": "Invoice Approval Policy",
+          "snippet": "If GSTIN is missing from an invoice where GST applies, the invoice must be routed to manual review."
+        }
+      ],
+      "limitations": [
+        "Answer is based only on approved demo process documents."
+      ]
+    },
+    {
+      "id": "high-value-invoices",
+      "question": "Who approves high-value invoices?",
+      "answer": "High-value invoices require approval from the department owner and finance approver before payment processing, with checker confirmation that vendor, bank, and tax details are valid.",
+      "confidence": "high",
+      "sources": [
+        {
+          "sourceRef": "Invoice Approval Policy, Section 2.1 High-Value Invoices",
+          "title": "Invoice Approval Policy",
+          "snippet": "High-value invoices require approval from the department owner and finance approver before payment processing."
+        },
+        {
+          "sourceRef": "Invoice Approval Policy, Section 4.1 Manual Review Conditions",
+          "title": "Invoice Approval Policy",
+          "snippet": "Manual review is required for high-value invoices, missing GSTIN where GST applies, inactive vendor status, bank proof mismatch, missing PAN, unreadable invoice scans, or any unresolved onboarding exception."
+        }
+      ],
+      "limitations": [
+        "Answer is based only on approved demo process documents."
+      ]
+    },
+    {
+      "id": "bank-proof-mismatch",
+      "question": "What should be done when bank proof and vendor name do not match?",
+      "answer": "When bank proof and vendor name do not match, the maker must request corrected proof or documented justification, finance operations must validate it, and checker approval waits until the mismatch is resolved.",
+      "confidence": "high",
+      "sources": [
+        {
+          "sourceRef": "Vendor Document Checklist, Section 3.2 Bank Proof Validation",
+          "title": "Vendor Document Checklist",
+          "snippet": "If bank proof and vendor name do not match, the maker must request corrected proof or documented justification and route the case to finance operations."
+        },
+        {
+          "sourceRef": "Vendor Exception Handling Guide, Section 2.1 Bank Proof Mismatch",
+          "title": "Vendor Exception Handling Guide",
+          "snippet": "Finance operations must validate the explanation, and checker approval must wait until the mismatch is resolved."
+        }
+      ],
+      "limitations": [
+        "Answer is based only on approved demo process documents."
+      ]
+    },
+    {
+      "id": "missing-pan",
+      "question": "Can a vendor be approved without PAN?",
+      "answer": "A domestic vendor cannot be approved without PAN. The maker must return the case to the requester, ask for PAN, and checker approval is blocked until PAN and name checks are complete.",
+      "confidence": "high",
+      "sources": [
+        {
+          "sourceRef": "Vendor Exception Handling Guide, Section 1.2 Missing PAN",
+          "title": "Vendor Exception Handling Guide",
+          "snippet": "A vendor cannot be approved without PAN for domestic onboarding."
+        },
+        {
+          "sourceRef": "Vendor Exception Handling Guide, Section 4.1 Non-Auto-Approval Exceptions",
+          "title": "Vendor Exception Handling Guide",
+          "snippet": "Missing PAN, unresolved GSTIN exception, material name mismatch, bank proof mismatch, and unreadable mandatory documents cannot be auto-approved."
+        }
+      ],
+      "limitations": [
+        "Answer is based only on approved demo process documents."
+      ]
+    },
+    {
+      "id": "incomplete-documents-escalation",
+      "question": "What is the escalation path for incomplete documents?",
+      "answer": "Incomplete documents are returned to the requester first. If not resolved within two business days, the maker escalates to procurement operations, adding finance operations when tax or bank validation is affected.",
+      "confidence": "high",
+      "sources": [
+        {
+          "sourceRef": "Vendor Onboarding SOP, Section 4.1 Escalation Path",
+          "title": "Vendor Onboarding SOP",
+          "snippet": "If the requester cannot resolve the gap within two business days, the case is escalated to procurement operations."
+        },
+        {
+          "sourceRef": "Vendor Exception Handling Guide, Section 3.1 Incomplete Documents",
+          "title": "Vendor Exception Handling Guide",
+          "snippet": "Finance operations is added when the missing item affects tax or bank validation."
+        }
+      ],
+      "limitations": [
+        "Answer is based only on approved demo process documents."
+      ]
+    },
+    {
+      "id": "wifi-password-no-answer",
+      "question": "What is the vendor office Wi-Fi password?",
+      "answer": "I could not find this in the approved process documents.",
+      "confidence": "low",
+      "expectedNoAnswer": true,
+      "sources": [],
+      "limitations": [
+        "The approved demo documents do not include office Wi-Fi password information.",
+        "The assistant should not guess or use outside knowledge."
+      ]
+    }
+  ],
+  "howItWorks": [
+    "Approved process documents are split into sections with stable source references.",
+    "Each section can be embedded and stored as a vector for semantic retrieval.",
+    "The user's question is embedded and matched against the indexed document chunks.",
+    "The assistant answers only from retrieved chunks and returns source references.",
+    "Unsupported questions return a no-answer response instead of an invented answer."
+  ]
+}
+
