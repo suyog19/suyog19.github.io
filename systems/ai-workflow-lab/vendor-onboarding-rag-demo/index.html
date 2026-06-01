@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A static RAG demo showing how AI can answer vendor onboarding process questions from approved documents with source references." />
+  <title>AI Business Process Knowledge Assistant | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/systems/ai-workflow-lab/vendor-onboarding-rag-demo/" />
+  <meta property="og:title" content="AI Business Process Knowledge Assistant | Suyog Joshi" />
+  <meta property="og:description" content="A static RAG demo showing how AI can answer vendor onboarding process questions from approved documents with source references." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/systems/ai-workflow-lab/vendor-onboarding-rag-demo/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AI Business Process Knowledge Assistant | Suyog Joshi" />
+  <meta name="twitter:description" content="A static RAG demo showing how AI can answer vendor onboarding process questions from approved documents with source references." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../../writing/" class="nav-link">Writing</a></li>
+          <li><a href="../../../systems/" class="nav-link" aria-current="page">Systems</a></li>
+          <li><a href="../../../about/" class="nav-link">About</a></li>
+          <li><a href="../../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="rag-demo-page">
+    <section class="rag-demo-hero">
+      <div class="container">
+        <a href="../" class="article-back-link">Back to AI Workflow Lab</a>
+        <p class="article-tag">AI Workflow Lab Demo</p>
+        <h1 class="rag-demo-title">AI Business Process Knowledge Assistant</h1>
+        <p class="rag-demo-subtitle">Ask questions about approved vendor onboarding process documents and get grounded answers with source references.</p>
+        <p class="rag-demo-explainer">This demo shows how embeddings and vector search can retrieve relevant process sections before an LLM writes a grounded answer.</p>
+        <div class="rag-demo-hero-actions">
+          <a href="#sample-questions" class="btn btn-primary" data-scroll-target="sample-questions">Try Demo</a>
+          <a href="#how-rag-works" class="rag-demo-text-link" data-scroll-target="how-rag-works">How RAG works here</a>
+        </div>
+        <p class="rag-demo-trust-note">Static demo using synthetic process documents. No real business documents are uploaded or queried.</p>
+      </div>
+    </section>
+
+    <section class="rag-demo-section" aria-labelledby="approved-documents-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Document set</p>
+          <h2 id="approved-documents-title">Approved Process Documents</h2>
+        </div>
+        <div class="rag-demo-documents" id="rag-demo-documents" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section rag-demo-questions-section" id="sample-questions" aria-labelledby="sample-questions-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Sample questions</p>
+          <h2 id="sample-questions-title">Ask a process question</h2>
+        </div>
+        <div class="rag-demo-questions" id="rag-demo-questions" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section rag-demo-processing" aria-labelledby="retrieval-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Retrieval</p>
+          <h2 id="retrieval-title">Question grounding progress</h2>
+        </div>
+        <ol class="rag-demo-timeline" id="rag-demo-timeline" aria-live="polite"></ol>
+      </div>
+    </section>
+
+    <section class="rag-demo-section rag-demo-results" id="rag-demo-results" aria-live="polite"></section>
+
+    <section class="rag-demo-section" aria-labelledby="why-rag-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Why this matters</p>
+          <h2 id="why-rag-title">Manual Search vs RAG-Assisted Process Knowledge</h2>
+        </div>
+        <div class="rag-demo-comparison">
+          <article class="rag-demo-card">
+            <h3>Manual process lookup</h3>
+            <ul>
+              <li>Employee searches PDFs or asks colleagues</li>
+              <li>Answers may depend on memory</li>
+              <li>Missing policy details can be overlooked</li>
+              <li>Unsupported questions may get guessed</li>
+            </ul>
+          </article>
+          <article class="rag-demo-card">
+            <h3>RAG-assisted process knowledge</h3>
+            <ul>
+              <li>Assistant retrieves relevant approved sections</li>
+              <li>Answer is grounded in source documents</li>
+              <li>Sources and limitations are shown</li>
+              <li>Assistant says when answer is not found</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section rag-demo-how" id="how-rag-works" aria-labelledby="how-rag-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">How it works</p>
+          <h2 id="how-rag-title">How RAG Works in This Demo</h2>
+        </div>
+        <ol class="rag-demo-how-list">
+          <li>Process documents are converted into chunks.</li>
+          <li>Each chunk is converted into an embedding.</li>
+          <li>The user question is embedded and matched against the vector database.</li>
+          <li>The LLM answers using only the retrieved chunks and source references.</li>
+        </ol>
+        <p class="rag-demo-note">The public page uses precomputed static demo answers. The backend implementation is designed to support real embedding-based retrieval and grounded LLM answers from indexed process documents.</p>
+      </div>
+    </section>
+
+    <section class="rag-demo-section" aria-labelledby="responsible-ai-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Responsible AI</p>
+          <h2 id="responsible-ai-title">Responsible AI Design</h2>
+        </div>
+        <div class="rag-demo-card rag-demo-card--wide">
+          <ul>
+            <li>The assistant answers from approved process documents, not generic memory.</li>
+            <li>Source references are shown with each answer.</li>
+            <li>Unsupported questions return a no-answer response.</li>
+            <li>Demo documents are synthetic and safe for public display.</li>
+            <li>Public demo does not upload or process real business documents.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../../writing/">Writing</a>
+          <a href="../../../systems/">Systems</a>
+          <a href="../../../about/">About</a>
+          <a href="../../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../../js/script.js"></script>
+  <script src="../../../js/vendor-onboarding-rag-demo.js" data-demo-src="../../../data/demos/vendor-onboarding-rag-demo.json"></script>
+</body>
+</html>
