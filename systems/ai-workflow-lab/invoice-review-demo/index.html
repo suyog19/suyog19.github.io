@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Try a static AI-assisted invoice review demo with synthetic invoices, extracted fields, business checks, and human review actions." />
+  <title>AI-Assisted Invoice Review Workflow | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/systems/ai-workflow-lab/invoice-review-demo/" />
+  <meta property="og:title" content="AI-Assisted Invoice Review Workflow | Suyog Joshi" />
+  <meta property="og:description" content="Try a static AI-assisted invoice review demo with synthetic invoices, extracted fields, business checks, and human review actions." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/systems/ai-workflow-lab/invoice-review-demo/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AI-Assisted Invoice Review Workflow | Suyog Joshi" />
+  <meta name="twitter:description" content="Try a static AI-assisted invoice review demo with synthetic invoices, extracted fields, business checks, and human review actions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../../writing/" class="nav-link">Writing</a></li>
+          <li><a href="../../../systems/" class="nav-link" aria-current="page">Systems</a></li>
+          <li><a href="../../../about/" class="nav-link">About</a></li>
+          <li><a href="../../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="invoice-demo-page">
+    <section class="invoice-demo-hero">
+      <div class="container">
+        <a href="../" class="article-back-link">Back to AI Workflow Lab</a>
+        <p class="article-tag">AI Workflow Lab Demo</p>
+        <h1 class="invoice-demo-title">AI-Assisted Invoice Review Workflow</h1>
+        <p class="invoice-demo-subtitle">A practical demo showing how invoices can be read, converted into structured fields, checked against business rules, and routed for human review with an AI-generated summary.</p>
+        <div class="invoice-demo-hero-actions">
+          <a href="#sample-invoices" class="btn btn-primary" data-scroll-target="sample-invoices">Try Demo</a>
+          <a href="#how-it-works" class="invoice-demo-text-link" data-scroll-target="how-it-works">How it works</a>
+        </div>
+        <p class="invoice-demo-trust-note">Demo uses synthetic sample invoices only. No real documents are uploaded or processed.</p>
+      </div>
+    </section>
+
+    <section class="invoice-demo-section" id="sample-invoices" aria-labelledby="sample-invoices-title">
+      <div class="container">
+        <div class="invoice-demo-section-header">
+          <p class="eyebrow">Sample invoices</p>
+          <h2 id="sample-invoices-title">Select a sample invoice</h2>
+        </div>
+        <div class="invoice-demo-samples" id="invoice-demo-samples" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="invoice-demo-section invoice-demo-processing" aria-labelledby="processing-title">
+      <div class="container">
+        <div class="invoice-demo-section-header">
+          <p class="eyebrow">Processing</p>
+          <h2 id="processing-title">Review progress</h2>
+        </div>
+        <ol class="invoice-demo-timeline" id="invoice-demo-timeline" aria-live="polite"></ol>
+      </div>
+    </section>
+
+    <section class="invoice-demo-section invoice-demo-results" id="invoice-demo-results" aria-live="polite"></section>
+
+    <section class="invoice-demo-section invoice-demo-explainer" id="how-it-works" aria-labelledby="how-it-works-title">
+      <div class="container">
+        <div class="invoice-demo-section-header">
+          <p class="eyebrow">How it works</p>
+          <h2 id="how-it-works-title">What This Demonstrates</h2>
+        </div>
+        <div class="invoice-demo-card invoice-demo-explainer-card">
+          <ul>
+            <li>Converts invoice documents into structured, reviewable fields</li>
+            <li>Highlights missing or risky information before approval</li>
+            <li>Combines deterministic business rules with AI-assisted explanation</li>
+            <li>Keeps humans in control through review actions and audit history</li>
+          </ul>
+          <a class="btn btn-secondary" href="../">Read the build notes</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../../writing/">Writing</a>
+          <a href="../../../systems/">Systems</a>
+          <a href="../../../about/">About</a>
+          <a href="../../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../../js/script.js"></script>
+  <script src="../../../js/invoice-review-demo.js" data-demo-src="../../../data/demos/invoice-review-demo.json"></script>
+</body>
+</html>
