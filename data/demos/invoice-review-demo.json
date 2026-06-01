@@ -1,0 +1,430 @@
+{
+  "demoId": "ai-assisted-invoice-review",
+  "title": "AI-Assisted Invoice Review Workflow",
+  "version": "1.0",
+  "scenarios": [
+    {
+      "id": "clean-invoice",
+      "title": "Clean Invoice",
+      "description": "All key fields are present and the amount is below the review threshold.",
+      "expectedOutcome": "Low Risk",
+      "document": {
+        "type": "Invoice",
+        "classificationConfidence": "High",
+        "textSource": "Native extraction",
+        "processingMode": "Static website demo",
+        "syntheticDocumentName": "clean-invoice.md"
+      },
+      "fields": [
+        {
+          "label": "Vendor Name",
+          "value": "Demo Supplies Pvt Ltd",
+          "displayValue": "Demo Supplies Pvt Ltd",
+          "confidence": "High",
+          "evidence": "Vendor: Demo Supplies Pvt Ltd",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Invoice Number",
+          "value": "DEMO-INV-2026-001",
+          "displayValue": "DEMO-INV-2026-001",
+          "confidence": "High",
+          "evidence": "Invoice Number: DEMO-INV-2026-001",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Invoice Date",
+          "value": "2026-05-05",
+          "displayValue": "05 May 2026",
+          "confidence": "High",
+          "evidence": "Invoice Date: 05 May 2026",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Due Date",
+          "value": "2026-05-20",
+          "displayValue": "20 May 2026",
+          "confidence": "High",
+          "evidence": "Due Date: 20 May 2026",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Total Amount",
+          "value": 33040,
+          "displayValue": "₹33,040",
+          "confidence": "High",
+          "evidence": "Total Amount: INR 33,040",
+          "sourceLabel": "Invoice totals section"
+        },
+        {
+          "label": "GSTIN",
+          "value": "99DEMO1234F1Z5",
+          "displayValue": "99DEMO1234F1Z5",
+          "confidence": "High",
+          "evidence": "GSTIN: 99DEMO1234F1Z5",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Payment Terms",
+          "value": "Net 15",
+          "displayValue": "Net 15",
+          "confidence": "Medium",
+          "evidence": "Payment Terms: Net 15",
+          "sourceLabel": "Invoice header"
+        }
+      ],
+      "businessChecks": [
+        {
+          "check": "Vendor name present",
+          "result": "Passed",
+          "meaning": "Vendor identity was detected in the invoice header."
+        },
+        {
+          "check": "GSTIN present",
+          "result": "Passed",
+          "meaning": "Vendor tax identity is available for review."
+        },
+        {
+          "check": "Invoice date present",
+          "result": "Passed",
+          "meaning": "Invoice date is available for aging and payment checks."
+        },
+        {
+          "check": "Due date present",
+          "result": "Passed",
+          "meaning": "Due date is available for payment planning."
+        },
+        {
+          "check": "Total amount below ₹50,000",
+          "result": "Passed",
+          "meaning": "Invoice amount is below the manual review threshold."
+        },
+        {
+          "check": "Required fields have acceptable confidence",
+          "result": "Passed",
+          "meaning": "Required fields were extracted with High or Medium confidence."
+        }
+      ],
+      "decision": {
+        "label": "Ready for Approval",
+        "reasons": [
+          "Required fields are available",
+          "No review-blocking business rule was triggered"
+        ]
+      },
+      "aiSummary": {
+        "summary": "This invoice appears ready for approval. Required vendor, invoice, GSTIN, date, due date, amount, and payment terms fields were detected, and the total is below the ₹50,000 review threshold.",
+        "suggestedNextAction": "Approve through the normal payment review process.",
+        "draftMessage": "Hi,\n\nWe reviewed the invoice and the required details are available for approval. We will continue with the standard payment review process.\n\nThanks."
+      },
+      "auditTrail": [
+        {
+          "time": "00:00",
+          "event": "Invoice selected"
+        },
+        {
+          "time": "00:01",
+          "event": "Text extracted"
+        },
+        {
+          "time": "00:02",
+          "event": "Document classified as Invoice"
+        },
+        {
+          "time": "00:03",
+          "event": "Fields extracted with evidence"
+        },
+        {
+          "time": "00:04",
+          "event": "Business rules checked"
+        },
+        {
+          "time": "00:05",
+          "event": "AI reviewer summary generated"
+        }
+      ]
+    },
+    {
+      "id": "missing-gstin",
+      "title": "Missing GSTIN",
+      "description": "Vendor and amount are detected, but GSTIN is missing.",
+      "expectedOutcome": "Human Review",
+      "document": {
+        "type": "Invoice",
+        "classificationConfidence": "High",
+        "textSource": "OCR fallback",
+        "processingMode": "Static website demo",
+        "syntheticDocumentName": "missing-gstin.md"
+      },
+      "fields": [
+        {
+          "label": "Vendor Name",
+          "value": "Sample Retail Services",
+          "displayValue": "Sample Retail Services",
+          "confidence": "High",
+          "evidence": "Vendor: Sample Retail Services",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Invoice Number",
+          "value": "SRS-2026-118",
+          "displayValue": "SRS-2026-118",
+          "confidence": "High",
+          "evidence": "Invoice Number: SRS-2026-118",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Invoice Date",
+          "value": "2026-05-08",
+          "displayValue": "08 May 2026",
+          "confidence": "High",
+          "evidence": "Invoice Date: 08 May 2026",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Due Date",
+          "value": "2026-05-23",
+          "displayValue": "23 May 2026",
+          "confidence": "High",
+          "evidence": "Due Date: 23 May 2026",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Total Amount",
+          "value": 20060,
+          "displayValue": "₹20,060",
+          "confidence": "High",
+          "evidence": "Total Amount: INR 20,060",
+          "sourceLabel": "Invoice totals section"
+        },
+        {
+          "label": "GSTIN",
+          "value": null,
+          "displayValue": "Missing",
+          "confidence": "Missing",
+          "evidence": null,
+          "sourceLabel": null
+        },
+        {
+          "label": "Payment Terms",
+          "value": "Net 15",
+          "displayValue": "Net 15",
+          "confidence": "Medium",
+          "evidence": "Payment Terms: Net 15",
+          "sourceLabel": "Invoice header"
+        }
+      ],
+      "businessChecks": [
+        {
+          "check": "Vendor name present",
+          "result": "Passed",
+          "meaning": "Vendor identity was detected in the invoice header."
+        },
+        {
+          "check": "GSTIN present",
+          "result": "Failed",
+          "meaning": "Vendor tax identity is missing."
+        },
+        {
+          "check": "Invoice date present",
+          "result": "Passed",
+          "meaning": "Invoice date is available for aging and payment checks."
+        },
+        {
+          "check": "Due date present",
+          "result": "Passed",
+          "meaning": "Due date is available for payment planning."
+        },
+        {
+          "check": "Total amount below ₹50,000",
+          "result": "Passed",
+          "meaning": "Invoice amount is below the manual review threshold."
+        },
+        {
+          "check": "Required fields have acceptable confidence",
+          "result": "Failed",
+          "meaning": "GSTIN is required but was not found."
+        }
+      ],
+      "decision": {
+        "label": "Human Review Required",
+        "reasons": [
+          "GSTIN is missing",
+          "Reviewer should verify vendor tax identity before approval"
+        ]
+      },
+      "aiSummary": {
+        "summary": "This invoice requires human review because GSTIN is missing. The vendor name, invoice number, dates, amount, and payment terms were detected, but the reviewer should verify vendor tax identity before approval.",
+        "suggestedNextAction": "Request corrected invoice with GSTIN details.",
+        "draftMessage": "Hi,\n\nWe reviewed your invoice and noticed that GSTIN details are missing. Please share a corrected invoice with GSTIN included so that the review can proceed.\n\nThanks."
+      },
+      "auditTrail": [
+        {
+          "time": "00:00",
+          "event": "Invoice selected"
+        },
+        {
+          "time": "00:01",
+          "event": "Text extracted"
+        },
+        {
+          "time": "00:02",
+          "event": "Document classified as Invoice"
+        },
+        {
+          "time": "00:03",
+          "event": "Fields extracted with evidence"
+        },
+        {
+          "time": "00:04",
+          "event": "Business rules checked"
+        },
+        {
+          "time": "00:05",
+          "event": "AI reviewer summary generated"
+        }
+      ]
+    },
+    {
+      "id": "high-value-invoice",
+      "title": "High-Value Invoice",
+      "description": "Invoice amount exceeds the automatic approval threshold and some fields need verification.",
+      "expectedOutcome": "Human Review",
+      "document": {
+        "type": "Invoice",
+        "classificationConfidence": "Medium",
+        "textSource": "OCR fallback",
+        "processingMode": "Static website demo",
+        "syntheticDocumentName": "high-value-invoice.md"
+      },
+      "fields": [
+        {
+          "label": "Vendor Name",
+          "value": "Acme Office Solutions",
+          "displayValue": "Acme Office Solutions",
+          "confidence": "High",
+          "evidence": "Vendor: Acme Office Solutions",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Invoice Number",
+          "value": "AOS-26-7781",
+          "displayValue": "AOS-26-7781",
+          "confidence": "Medium",
+          "evidence": "Invoice Number: AOS-26-7781",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Invoice Date",
+          "value": "2026-05-10",
+          "displayValue": "10 May 2026",
+          "confidence": "High",
+          "evidence": "Invoice Date: 10 May 2026",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Due Date",
+          "value": "2026-05-25",
+          "displayValue": "25 May 2026",
+          "confidence": "Medium",
+          "evidence": "Due Date: 25 May 2026",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Total Amount",
+          "value": 78500,
+          "displayValue": "₹78,500",
+          "confidence": "Medium",
+          "evidence": "Total Amount: INR 78,500",
+          "sourceLabel": "Invoice totals section"
+        },
+        {
+          "label": "GSTIN",
+          "value": "99FAKE5678A1Z2",
+          "displayValue": "99FAKE5678A1Z2",
+          "confidence": "Medium",
+          "evidence": "GSTIN: 99FAKE5678A1Z2",
+          "sourceLabel": "Invoice header"
+        },
+        {
+          "label": "Payment Terms",
+          "value": "Net 15",
+          "displayValue": "Net 15",
+          "confidence": "Low",
+          "evidence": "Payment Terms: Net 15",
+          "sourceLabel": "Invoice header"
+        }
+      ],
+      "businessChecks": [
+        {
+          "check": "Vendor name present",
+          "result": "Passed",
+          "meaning": "Vendor identity was detected in the invoice header."
+        },
+        {
+          "check": "GSTIN present",
+          "result": "Warning",
+          "meaning": "GSTIN is present but should be verified before approval."
+        },
+        {
+          "check": "Invoice date present",
+          "result": "Passed",
+          "meaning": "Invoice date is available for aging and payment checks."
+        },
+        {
+          "check": "Due date present",
+          "result": "Passed",
+          "meaning": "Due date is available for payment planning."
+        },
+        {
+          "check": "Total amount below ₹50,000",
+          "result": "Failed",
+          "meaning": "Invoice amount exceeds the manual review threshold."
+        },
+        {
+          "check": "Required fields have acceptable confidence",
+          "result": "Warning",
+          "meaning": "Payment terms were extracted with Low confidence and require verification."
+        }
+      ],
+      "decision": {
+        "label": "Human Review Required",
+        "reasons": [
+          "Invoice amount exceeds ₹50,000 approval threshold",
+          "Some extracted fields require verification"
+        ]
+      },
+      "aiSummary": {
+        "summary": "This invoice requires human review because the total amount is above the ₹50,000 threshold and some extracted fields need verification. The reviewer should confirm the invoice number, GSTIN, payment terms, and total before approval.",
+        "suggestedNextAction": "Manually verify invoice totals and vendor tax details before approving.",
+        "draftMessage": "Hi,\n\nThis invoice is queued for manual review because the total amount exceeds the automatic approval threshold. We are verifying the invoice totals and vendor details before taking the next action.\n\nThanks."
+      },
+      "auditTrail": [
+        {
+          "time": "00:00",
+          "event": "Invoice selected"
+        },
+        {
+          "time": "00:01",
+          "event": "Text extracted"
+        },
+        {
+          "time": "00:02",
+          "event": "Document classified as Invoice"
+        },
+        {
+          "time": "00:03",
+          "event": "Fields extracted with evidence"
+        },
+        {
+          "time": "00:04",
+          "event": "Business rules checked"
+        },
+        {
+          "time": "00:05",
+          "event": "AI reviewer summary generated"
+        }
+      ]
+    }
+  ]
+}
