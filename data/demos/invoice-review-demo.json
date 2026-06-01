@@ -425,6 +425,175 @@
           "event": "AI reviewer summary generated"
         }
       ]
+    },
+    {
+      "id": "handwritten-vendor-bill",
+      "title": "Handwritten / Scanned Vendor Bill",
+      "description": "A photographed vendor cash bill where OCR fallback is needed and some fields require human verification.",
+      "expectedOutcome": "Human Review",
+      "document": {
+        "type": "Vendor Bill",
+        "classificationConfidence": "Medium",
+        "textSource": "OCR fallback",
+        "processingMode": "Static website demo",
+        "syntheticDocumentName": "handwritten-vendor-bill.png"
+      },
+      "ocrPreview": {
+        "title": "OCR Extracted Text Preview",
+        "description": "Short OCR-style text extracted from the scanned vendor bill.",
+        "text": "Shree Demo Enterprises\nCash Bill\nBill No: 1187\nDate: 28/05/2026\nCustomer: Walk-in Customer\nA4 Copier Paper 5 Ream 2300.00\nBlue Ball Pen 3 Pkt 180.00\nFile Folder 20 Pcs 1000.00\nTotal Amount: INR 3480\nPayment Mode: Cash"
+      },
+      "fields": [
+        {
+          "label": "Vendor Name",
+          "value": "Shree Demo Enterprises",
+          "displayValue": "Shree Demo Enterprises",
+          "confidence": "Medium",
+          "evidence": "Shree Demo Enterprises",
+          "sourceLabel": "Bill header"
+        },
+        {
+          "label": "Invoice Number",
+          "value": "1187",
+          "displayValue": "1187",
+          "confidence": "Low",
+          "evidence": "Bill No.: 1187",
+          "sourceLabel": "Header section"
+        },
+        {
+          "label": "Invoice Date",
+          "value": "2026-05-28",
+          "displayValue": "28 May 2026",
+          "confidence": "Medium",
+          "evidence": "Date: 28/05/2026",
+          "sourceLabel": "Header section"
+        },
+        {
+          "label": "Due Date",
+          "value": null,
+          "displayValue": "Missing",
+          "confidence": "Missing",
+          "evidence": null,
+          "sourceLabel": null
+        },
+        {
+          "label": "Total Amount",
+          "value": 3480,
+          "displayValue": "₹3,480",
+          "confidence": "Medium",
+          "evidence": "Total Amount: INR 3480",
+          "sourceLabel": "Totals section"
+        },
+        {
+          "label": "GSTIN",
+          "value": null,
+          "displayValue": "Missing",
+          "confidence": "Missing",
+          "evidence": null,
+          "sourceLabel": null
+        },
+        {
+          "label": "Payment Terms",
+          "value": "Cash",
+          "displayValue": "Cash",
+          "confidence": "Low",
+          "evidence": "Payment Mode: Cash",
+          "sourceLabel": "Payment section"
+        }
+      ],
+      "lineItems": [
+        {
+          "description": "A4 Copier Paper 75 GSM (500 Sheets)",
+          "quantity": "5 Ream",
+          "amount": "₹2,300"
+        },
+        {
+          "description": "Blue Ball Pen (Pack of 10)",
+          "quantity": "3 Pkt",
+          "amount": "₹180"
+        },
+        {
+          "description": "File Folder (Assorted)",
+          "quantity": "20 Pcs",
+          "amount": "₹1,000"
+        }
+      ],
+      "businessChecks": [
+        {
+          "check": "Vendor name present",
+          "result": "Passed",
+          "meaning": "Vendor name was detected from the scanned bill."
+        },
+        {
+          "check": "GSTIN present",
+          "result": "Failed",
+          "meaning": "GSTIN is missing, so tax identity cannot be verified."
+        },
+        {
+          "check": "Invoice date present",
+          "result": "Passed",
+          "meaning": "Bill date was detected through OCR."
+        },
+        {
+          "check": "Due date present",
+          "result": "Warning",
+          "meaning": "Due date is not present on this cash bill."
+        },
+        {
+          "check": "Total amount below ₹50,000",
+          "result": "Passed",
+          "meaning": "Amount is below the automatic review threshold."
+        },
+        {
+          "check": "Required fields have acceptable confidence",
+          "result": "Warning",
+          "meaning": "Some OCR-extracted fields have low confidence and need review."
+        },
+        {
+          "check": "OCR source requires human verification",
+          "result": "Warning",
+          "meaning": "This document was processed through OCR fallback and should be checked against the image."
+        }
+      ],
+      "decision": {
+        "label": "Human Review Required",
+        "reasons": [
+          "OCR-based extraction contains low-confidence fields",
+          "GSTIN is missing",
+          "Reviewer should verify invoice number and payment details against the scanned bill"
+        ]
+      },
+      "aiSummary": {
+        "summary": "This document appears to be a scanned or handwritten vendor bill processed through OCR fallback. Key information such as vendor name, bill number, date, total amount, and payment mode was identified, but some fields have lower confidence and GSTIN is missing. A reviewer should verify the extracted values against the source image before approval.",
+        "suggestedNextAction": "Review the scanned bill image and request a cleaner or tax-compliant invoice if GSTIN is required for processing.",
+        "draftMessage": "Hi,\n\nWe reviewed the submitted vendor bill. Some details were extracted through OCR and need verification, and GSTIN details are not available on the bill. Please share a clearer or tax-compliant invoice with GSTIN details if this expense needs GST-compliant processing.\n\nThanks."
+      },
+      "auditTrail": [
+        {
+          "time": "00:00",
+          "event": "Scanned vendor bill selected"
+        },
+        {
+          "time": "00:01",
+          "event": "OCR fallback used to read document image"
+        },
+        {
+          "time": "00:02",
+          "event": "Document classified as Vendor Bill"
+        },
+        {
+          "time": "00:03",
+          "event": "Fields extracted with OCR evidence"
+        },
+        {
+          "time": "00:04",
+          "event": "Business rules checked"
+        },
+        {
+          "time": "00:05",
+          "event": "AI reviewer summary generated"
+        }
+      ]
     }
   ]
 }
