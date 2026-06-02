@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A static AI Workflow Lab demo showing how product documentation PDFs can become LLM-friendly Knowledge Markdown with visual descriptions and diagnostics." />
+  <title>PDF to Knowledge Markdown | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/systems/ai-workflow-lab/knowledge-markdown-demo/" />
+  <meta property="og:title" content="PDF to Knowledge Markdown | Suyog Joshi" />
+  <meta property="og:description" content="A static AI Workflow Lab demo showing how product documentation PDFs can become LLM-friendly Knowledge Markdown with visual descriptions and diagnostics." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/systems/ai-workflow-lab/knowledge-markdown-demo/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="PDF to Knowledge Markdown | Suyog Joshi" />
+  <meta name="twitter:description" content="A static AI Workflow Lab demo showing how product documentation PDFs can become LLM-friendly Knowledge Markdown with visual descriptions and diagnostics." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../../writing/" class="nav-link">Writing</a></li>
+          <li><a href="../../../systems/" class="nav-link" aria-current="page">Systems</a></li>
+          <li><a href="../../../about/" class="nav-link">About</a></li>
+          <li><a href="../../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="km-demo-page">
+    <section class="rag-demo-hero">
+      <div class="container">
+        <a href="../" class="article-back-link">Back to AI Workflow Lab</a>
+        <p class="article-tag">AI Workflow Lab Demo</p>
+        <h1 class="rag-demo-title">PDF to Knowledge Markdown</h1>
+        <p class="rag-demo-subtitle">A static walkthrough of a document-understanding pipeline that turns product documentation into LLM-friendly Markdown, with Bedrock visual descriptions and diagnostics.</p>
+        <p class="rag-demo-explainer">The public page uses pre-generated sample output. The live backend pipeline is designed for private document processing behind authenticated workflows.</p>
+        <div class="rag-demo-hero-actions">
+          <a href="#artifact-preview" class="btn btn-primary" data-scroll-target="artifact-preview">View artifacts</a>
+          <a href="#pipeline" class="rag-demo-text-link" data-scroll-target="pipeline">How it works</a>
+        </div>
+        <p class="rag-demo-trust-note" id="km-demo-trust-note">Static demo using pre-generated sample outputs. No real documents are uploaded or processed on this page.</p>
+      </div>
+    </section>
+
+    <section class="rag-demo-section" id="pipeline" aria-labelledby="pipeline-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Pipeline</p>
+          <h2 id="pipeline-title">From PDF to inspectable knowledge artifacts</h2>
+        </div>
+        <div class="km-demo-pipeline" id="km-demo-pipeline" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section rag-demo-processing" aria-labelledby="metrics-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Sample run</p>
+          <h2 id="metrics-title">What the pipeline produced</h2>
+        </div>
+        <div class="km-demo-sample-grid">
+          <article class="rag-demo-card">
+            <h3 id="km-demo-primary-title">Product documentation PDF</h3>
+            <p id="km-demo-primary-description">A sample product documentation PDF processed through the Knowledge Markdown pipeline.</p>
+            <div class="km-demo-metrics" id="km-demo-primary-metrics" aria-live="polite"></div>
+            <ul class="km-demo-note-list" id="km-demo-primary-notes"></ul>
+          </article>
+          <article class="rag-demo-card">
+            <h3>Secondary sample</h3>
+            <p>A larger guide was used as a comparison run to check fallback behavior on longer product documentation.</p>
+            <div class="km-demo-metrics" id="km-demo-comparison-metrics" aria-live="polite"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section" id="artifact-preview" aria-labelledby="artifact-preview-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Artifacts</p>
+          <h2 id="artifact-preview-title">Three outputs, three purposes</h2>
+        </div>
+        <div class="km-demo-artifact-tabs" id="km-demo-artifact-tabs" role="tablist" aria-label="Knowledge Markdown artifacts"></div>
+        <div class="km-demo-artifact-panel" id="km-demo-artifact-panel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section" aria-labelledby="demonstrates-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">What this demonstrates</p>
+          <h2 id="demonstrates-title">A document pipeline that remains reviewable</h2>
+        </div>
+        <div class="rag-demo-comparison" id="km-demo-demonstrates" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section rag-demo-how" aria-labelledby="limits-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Limits and next steps</p>
+          <h2 id="limits-title">Static now, authenticated upload later</h2>
+        </div>
+        <div class="rag-demo-card rag-demo-card--wide">
+          <ul id="km-demo-limits"></ul>
+          <p class="rag-demo-note">Richer PDF layout and table extraction is tracked separately in the backend follow-up work.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../../writing/">Writing</a>
+          <a href="../../../systems/">Systems</a>
+          <a href="../../../about/">About</a>
+          <a href="../../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../../js/script.js"></script>
+  <script src="../../../js/knowledge-markdown-demo.js" data-demo-src="../../../data/demos/knowledge-markdown-demo.json"></script>
+</body>
+</html>
