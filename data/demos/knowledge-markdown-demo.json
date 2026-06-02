@@ -1,0 +1,122 @@
+{
+  "demoId": "knowledge-markdown-document-understanding",
+  "title": "PDF to Knowledge Markdown",
+  "subtitle": "A static walkthrough of a document-understanding pipeline that turns product documentation into LLM-friendly Markdown, with Bedrock visual descriptions and diagnostics.",
+  "version": "1.0",
+  "mode": "Static website demo",
+  "trustNote": "Static demo using pre-generated sample outputs. No real documents are uploaded or processed on this page.",
+  "primarySample": {
+    "label": "Product documentation PDF",
+    "description": "A 32-page corporate accounts user manual processed through the Knowledge Markdown pipeline.",
+    "metrics": [
+      {
+        "label": "Pages processed",
+        "value": "32"
+      },
+      {
+        "label": "Visual pages described",
+        "value": "20"
+      },
+      {
+        "label": "Tables detected",
+        "value": "2"
+      },
+      {
+        "label": "Repeated lines removed",
+        "value": "72"
+      },
+      {
+        "label": "Extraction errors",
+        "value": "0"
+      }
+    ],
+    "notes": [
+      "20 visual pages were described by Bedrock using page-level PDF fallback.",
+      "12 additional visual candidates were skipped by the configured visual-page limit.",
+      "The generated UTF-8 output was clean in local verification."
+    ]
+  },
+  "comparisonSample": {
+    "label": "Extensibility guide PDF",
+    "metrics": [
+      {
+        "label": "Pages processed",
+        "value": "104"
+      },
+      {
+        "label": "Visual pages described",
+        "value": "20"
+      },
+      {
+        "label": "Tables detected",
+        "value": "8"
+      },
+      {
+        "label": "Repeated lines removed",
+        "value": "308"
+      },
+      {
+        "label": "Extraction errors",
+        "value": "0"
+      }
+    ]
+  },
+  "pipeline": [
+    {
+      "title": "PDF input",
+      "description": "Dense product or user documentation with headings, lists, tables, screenshots, and repeated page chrome."
+    },
+    {
+      "title": "Deterministic extraction",
+      "description": "The parser builds a structured model with source pages, repeated-content cleanup, table candidates, and visual-page signals."
+    },
+    {
+      "title": "Bedrock visual descriptions",
+      "description": "When embedded image bytes are unavailable, bounded single-page PDF fallback lets Bedrock describe visual page content."
+    },
+    {
+      "title": "Knowledge Markdown",
+      "description": "The final Markdown keeps headings, source comments, visual descriptions, tables, and readable narrative close together."
+    },
+    {
+      "title": "Diagnostics",
+      "description": "A separate quality report records selected pages, skipped pages, fallbacks, warnings, and extraction summary counts."
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "knowledge",
+      "label": "knowledge.md",
+      "language": "markdown",
+      "description": "The final LLM-friendly artifact.",
+      "excerpt": "---\ndocument_id: test-pdf-rerun-20260602\nsource_file: \"product-documentation.pdf\"\ncontent_type: application/pdf\nsource_format: pdf\npage_count: 32\nconversion_profile: product_documentation\nschema_version: \"1\"\n---\n\n# Corporate Accounts User Manual\n\n## Patchset Release 22.2.6.0.0\n<!-- source: page 1 -->\n\n### Figure: Page 1 visual content\n<!-- source: page 1 -->\n\nCorporate Accounts User Manual for a digital banking product release. The page identifies the guide, release number, part number, and publication month.\n\n## Current & Savings Overview\n<!-- source: page 7 -->\n\nThe account overview screen summarizes current and savings accounts, balances, quick links, offers, and account details available to the user."
+    },
+    {
+      "id": "document",
+      "label": "document.json",
+      "language": "json",
+      "description": "The structured intermediate model before Markdown rendering.",
+      "excerpt": "{\n  \"documentId\": \"test-pdf-rerun-20260602\",\n  \"source\": {\n    \"filename\": \"product-documentation.pdf\",\n    \"format\": \"pdf\",\n    \"pageCount\": 32\n  },\n  \"elements\": [\n    {\n      \"type\": \"heading\",\n      \"text\": \"Current & Savings Overview\",\n      \"sourceLocation\": { \"page\": 7 }\n    }\n  ],\n  \"images\": [\n    {\n      \"imageId\": \"img_007\",\n      \"sourceType\": \"page_pdf\",\n      \"sourceLocation\": { \"page\": 7 },\n      \"caption\": \"Page 7 visual content\",\n      \"descriptionConfidence\": \"bedrock\"\n    }\n  ]\n}"
+    },
+    {
+      "id": "diagnostics",
+      "label": "diagnostics.json",
+      "language": "json",
+      "description": "The quality and warning report for the conversion.",
+      "excerpt": "{\n  \"summary\": {\n    \"errorCount\": 0,\n    \"warningCount\": 54,\n    \"pageCount\": 32,\n    \"tableCount\": 2,\n    \"imageCount\": 20,\n    \"describedImageCount\": 20,\n    \"visualPageFallbackCount\": 20,\n    \"removedRepeatedLineCount\": 72\n  },\n  \"warningCounts\": {\n    \"VISUAL_PAGE_SELECTED\": 20,\n    \"VISUAL_PAGE_FALLBACK_USED\": 20,\n    \"VISUAL_PAGE_SKIPPED_LIMIT\": 12,\n    \"EMBEDDED_IMAGE_BYTES_UNAVAILABLE\": 1\n  }\n}"
+    }
+  ],
+  "demonstrates": [
+    "Converts large documentation into a cleaner LLM knowledge artifact.",
+    "Keeps visual context near the related page or section instead of appending all notes at the end.",
+    "Produces structured intermediate JSON for inspection or alternate renderers.",
+    "Produces diagnostics so extraction quality is visible.",
+    "Keeps the public demo static; authenticated upload can be added later."
+  ],
+  "limits": [
+    "This public page is static and does not accept uploads.",
+    "Visual page description is capped for cost and latency control.",
+    "Some complex table and layout extraction still needs a richer PDF backend.",
+    "A future authenticated version should add private uploads, job status, artifact expiry, per-user access control, and cost controls."
+  ]
+}
