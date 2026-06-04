@@ -22,10 +22,11 @@ No lint, test, or build commands exist.
 
 ## Architecture
 
-**Content is hand-authored HTML** — not Markdown, not a CMS. The site has two content sections that follow parallel patterns:
+**Content is hand-authored HTML** — not Markdown, not a CMS. The site has three content sections that follow parallel patterns:
 
 - **Writing** — articles live under `writing/<slug>/index.html`. Adding one means creating the file, then linking to it from `writing/index.html` and `index.html`.
-- **Systems** — system detail pages live under `systems/<slug>/index.html`. Adding one means creating the file, then linking to it from `systems/index.html`.
+- **Systems** — system detail pages live under `systems/<slug>/index.html`. Adding one means creating the file, then linking to it from `systems/index.html`. Some systems contain nested **demo pages** at `systems/<slug>/<demo>/index.html` (three levels deep); see the demo section below.
+- **Research** — standalone landing pages at `research/<slug>/index.html`. There is no `research/index.html` index; each page is self-contained. Adding one only requires creating the file and adding it to `sitemap.xml`.
 - **About** — a single page at `about/index.html` with its own CSS class prefix `.ap-*` in [css/pages.css](css/pages.css). No subdirectories.
 
 **CSS is split into three files** — load order matters:
@@ -37,14 +38,15 @@ All three are loaded in every page's `<head>` in that order.
 
 **Fonts** are loaded from Google Fonts via `<link rel="preconnect">` hints in each page's `<head>`. Two families: Playfair Display (weights 400, 600, 700) and Inter (weights 300, 400, 500, 600). Do not add new font families without updating every page's `<head>`.
 
-**JS is minimal and progressive** — [js/script.js](js/script.js) handles mobile nav toggle with keyboard support (Escape closes nav, click-outside closes nav); [js/contact.js](js/contact.js) handles client-side form validation and POSTs to the backend API. No framework, no bundler.
+**JS is minimal and progressive** — [js/script.js](js/script.js) handles mobile nav toggle with keyboard support (Escape closes nav, click-outside closes nav); [js/contact.js](js/contact.js) handles client-side form validation and POSTs to the backend API. Demo pages load their own dedicated scripts ([js/invoice-review-demo.js](js/invoice-review-demo.js), [js/vendor-onboarding-rag-demo.js](js/vendor-onboarding-rag-demo.js)) that fetch pre-authored JSON from [data/demos/](data/demos/) and drive the interactive UI entirely client-side with no external API calls. No framework, no bundler.
 
 **URL structure mirrors directory structure** — each page is an `index.html` inside a named folder, giving clean URLs (`/writing/`, `/systems/`, `/about/`, `/contact/`).
 
 **Relative paths change with directory depth** — CSS, JS, and favicon links use different prefixes depending on where the page lives:
 - Root (`index.html`): `css/base.css`, `js/script.js`, `favicon.svg`
 - One level deep (`writing/index.html`, `about/index.html`): `../css/base.css`, `../js/script.js`
-- Two levels deep (`writing/<slug>/index.html`, `systems/<slug>/index.html`): `../../css/base.css`, `../../js/script.js`
+- Two levels deep (`writing/<slug>/index.html`, `systems/<slug>/index.html`, `research/<slug>/index.html`): `../../css/base.css`, `../../js/script.js`
+- Three levels deep (`systems/<slug>/<demo>/index.html`): `../../../css/base.css`, `../../../js/script.js`
 
 **Home page is structured into named sections** — each maps to a CSS class on the `<section>` element: `.hero` (headline + CTAs), `.pillars` (three `.pillar-card` items), `.writing` (featured articles), `.systems` (project previews), `.about` (snapshot), `.contact` (CTA block). The `.eyebrow` class styles small topic labels above headings; `.section-header` / `.section-title` / `.section-subtitle` is the standard section intro pattern; `.section-cta` wraps the "View all" button below a section grid.
 
@@ -88,7 +90,7 @@ Every new page must include the following in `<head>`. The exact ordering within
 
 **Description length:** aim for 140–160 characters. Write for a human reader, not keyword density.
 
-**`og:image` / `twitter:image`:** omit these tags until a proper 1200×630 social image asset is added to the repo. Do not point them at the favicon.
+**`og:image` / `twitter:image`:** omit these tags unless a page-specific 1200×630 social image asset exists in the page's directory (e.g., `research/ai-teaching-workflows/ai-assisted-teaching-workflows-research.png`). When an image exists, use both `og:image` and `twitter:image` with the full production URL and upgrade `twitter:card` to `summary_large_image`. Do not point them at the favicon.
 
 **Google Analytics — include on every new page:** add the GA4 snippet just before `</head>`, after the favicon links. Measurement ID is `G-PKL56GJ38H`. Use the correct relative path to the favicon as a guide for depth — the snippet itself has no paths so it's the same regardless of directory depth:
 
@@ -102,7 +104,7 @@ Every new page must include the following in `<head>`. The exact ordering within
   </script>
 ```
 
-**Sitemap — update on every new page:** add the new URL to [sitemap.xml](sitemap.xml) in the same commit as the new page. Use `<priority>0.9</priority>` for new section index pages, `<priority>0.8</priority>` for writing detail pages, `<priority>0.7</priority>` for system detail pages (matching the existing entries). Use production URLs only (`https://suyogjoshi.com/...`).
+**Sitemap — update on every new page:** add the new URL to [sitemap.xml](sitemap.xml) in the same commit as the new page. Priority values by page type: `1.0` home, `0.9` section index pages, `0.8` writing detail pages and research pages, `0.7` system detail pages and demo pages, `0.5` contact/about. Use production URLs only (`https://suyogjoshi.com/...`).
 
 ## Contact Form Backend
 
