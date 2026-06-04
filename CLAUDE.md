@@ -1,6 +1,30 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides repository memory for Claude Code and Codex when working in
+this repository.
+
+## Shared Agent Contract
+
+Read `AGENTS.md` first.
+
+`AGENTS.md` is the source of truth for repository-wide agent workflow, branch
+rules, issue-first development, PR traceability, approval policy, and merge
+authority.
+
+This file contains implementation notes for the static site itself. Claude Code
+is the primary implementer for most HTML, CSS, JS, and docs changes. Codex may
+coordinate, review, QA, and implement small or fallback changes, but both tools
+must follow `AGENTS.md`.
+
+Important workflow reminders:
+
+- Do not make changes without a corresponding GitHub issue.
+- If no issue exists, create one before editing files.
+- Do not commit or push directly to `main` or `dev`.
+- Create feature branches from `dev`.
+- Open PRs into `dev` and link the issue.
+- Agents may merge accepted PRs into `dev`.
+- PRs from `dev` to `main` must be merged by a human.
 
 ## Project Overview
 
@@ -120,5 +144,13 @@ POST to `/messages` with JSON body:
 Expected responses: `202` → success message shown; `400` with `VALIDATION_FAILED` → field-level errors displayed via `aria-invalid` + `aria-describedby`; any other error → fallback message shown.
 
 ## Deployment
+
+Branch workflow:
+
+- `dev` is the integration branch for accepted site changes.
+- `main` is the production branch.
+- Feature branches must be created from `dev`.
+- PRs should target `dev` first.
+- Only a human should merge the promotion PR from `dev` to `main`.
 
 Push to `main` triggers [.github/workflows/deploy-prod.yml](.github/workflows/deploy-prod.yml), which uploads the repo root (no build step) to GitHub Pages. The live domain is `suyogjoshi.com` (set via [CNAME](CNAME)). There is no staging CI — changes go straight to production on merge.
