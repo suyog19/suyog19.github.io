@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Upload a PDF, DOCX, or HTML file and compare Markdown output from document ingestion tools in AI Workflow Lab." />
+  <title>Document Ingestion Comparator | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/systems/ai-workflow-lab/ingestion-comparator/" />
+  <meta property="og:title" content="Document Ingestion Comparator | Suyog Joshi" />
+  <meta property="og:description" content="Upload a PDF, DOCX, or HTML file and compare Markdown output from document ingestion tools in AI Workflow Lab." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/systems/ai-workflow-lab/ingestion-comparator/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Document Ingestion Comparator | Suyog Joshi" />
+  <meta name="twitter:description" content="Upload a PDF, DOCX, or HTML file and compare Markdown output from document ingestion tools in AI Workflow Lab." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../../writing/" class="nav-link">Writing</a></li>
+          <li><a href="../../../systems/" class="nav-link" aria-current="page">Systems</a></li>
+          <li><a href="../../../about/" class="nav-link">About</a></li>
+          <li><a href="../../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="ingestion-demo-page">
+    <section class="rag-demo-hero ingestion-demo-hero">
+      <div class="container">
+        <a href="../" class="article-back-link">Back to AI Workflow Lab</a>
+        <p class="article-tag">AI Workflow Lab Tool</p>
+        <h1 class="rag-demo-title">Document Ingestion Comparator</h1>
+        <p class="rag-demo-subtitle">Upload a PDF, DOCX, or HTML document and compare Markdown output from multiple ingestion adapters.</p>
+        <p class="rag-demo-explainer">This production-facing tool uploads your document to the AI Workflow Lab backend, runs selected parsers, and returns short-lived Markdown result links.</p>
+      </div>
+    </section>
+
+    <section class="rag-demo-section ingestion-demo-workspace" aria-labelledby="upload-title">
+      <div class="container">
+        <div class="ingestion-demo-layout">
+          <form class="ingestion-demo-form rag-demo-card" id="ingestion-comparator-form">
+            <div class="rag-demo-section-header">
+              <p class="eyebrow">Upload</p>
+              <h2 id="upload-title">Choose a document and parsers</h2>
+            </div>
+
+            <label class="ingestion-demo-file-drop" for="ingestion-file">
+              <span class="ingestion-demo-file-title">Select PDF, DOCX, or HTML</span>
+              <span class="ingestion-demo-file-meta" id="ingestion-file-meta">Maximum file size: 10 MB</span>
+              <input id="ingestion-file" name="file" type="file" accept=".pdf,.docx,.html,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/html" required>
+            </label>
+
+            <fieldset class="ingestion-demo-fieldset">
+              <legend>Parser selection</legend>
+              <p>Select up to three parsers. Some adapters may be accepted by the API but return skipped until enabled in the backend.</p>
+              <div class="ingestion-demo-parser-grid" id="ingestion-parser-grid"></div>
+            </fieldset>
+
+            <label class="ingestion-demo-check">
+              <input id="ingestion-llm" type="checkbox">
+              <span>
+                <strong>Request AI-generated comparison</strong>
+                <small>Clearly labeled as advisory. The backend may reject this if the live provider is disabled.</small>
+              </span>
+            </label>
+
+            <div class="ingestion-demo-actions">
+              <button class="btn btn-primary" id="ingestion-submit" type="submit">Convert and compare</button>
+              <button class="btn btn-secondary" id="ingestion-reset" type="button">Reset</button>
+            </div>
+
+            <div class="ingestion-demo-notice" role="note">
+              <strong>Privacy and retention</strong>
+              <p>Uploaded documents and generated Markdown are document-derived sensitive artifacts. Upload links expire after 15 minutes; result metadata expires logically after 24 hours.</p>
+            </div>
+          </form>
+
+          <aside class="ingestion-demo-status rag-demo-card" aria-labelledby="status-title">
+            <p class="eyebrow">Status</p>
+            <h2 id="status-title">Run state</h2>
+            <div class="ingestion-demo-progress" id="ingestion-progress" aria-live="polite"></div>
+            <div class="ingestion-demo-job" id="ingestion-job"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section ingestion-demo-results-section" id="ingestion-results-section" aria-labelledby="results-title" hidden>
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Results</p>
+          <h2 id="results-title">Markdown outputs and comparison</h2>
+        </div>
+        <div class="ingestion-demo-result-grid" id="ingestion-result-grid"></div>
+        <div class="ingestion-demo-tabs" id="ingestion-tabs" role="tablist" aria-label="Markdown result views"></div>
+        <div class="ingestion-demo-panel" id="ingestion-panel" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="rag-demo-section rag-demo-how" aria-labelledby="guidance-title">
+      <div class="container">
+        <div class="rag-demo-section-header">
+          <p class="eyebrow">Guidance</p>
+          <h2 id="guidance-title">How to read the output</h2>
+        </div>
+        <div class="rag-demo-comparison">
+          <article class="rag-demo-card">
+            <h3>What to inspect</h3>
+            <ul>
+              <li>Heading hierarchy and section boundaries.</li>
+              <li>Table preservation and list formatting.</li>
+              <li>Missing, duplicated, or repeated page text.</li>
+              <li>Parser warnings and unsupported-format failures.</li>
+            </ul>
+          </article>
+          <article class="rag-demo-card">
+            <h3>What not to assume</h3>
+            <ul>
+              <li>AI comparison is advisory, not ground truth.</li>
+              <li>Parser outputs can contain extraction errors.</li>
+              <li>Result links are temporary and should not be shared broadly.</li>
+              <li>Expired results must be regenerated with a new upload.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../../writing/">Writing</a>
+          <a href="../../../systems/">Systems</a>
+          <a href="../../../about/">About</a>
+          <a href="../../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../../js/script.js"></script>
+  <script src="../../../js/ingestion-comparator.js"></script>
+</body>
+</html>
