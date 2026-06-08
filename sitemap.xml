@@ -92,6 +92,12 @@
   </url>
 
   <url>
+    <loc>https://suyogjoshi.com/systems/ai-workflow-lab/ingestion-comparator/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://suyogjoshi.com/systems/survey-poll-serverless/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
