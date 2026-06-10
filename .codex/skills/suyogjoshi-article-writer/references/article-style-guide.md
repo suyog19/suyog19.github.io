@@ -1,0 +1,185 @@
+# Article Style Guide
+
+## Corpus Read
+
+This guide is based on the current long-form article corpus:
+
+- `writing/ai-ml-data-science-explained-simply/`
+- `writing/understanding-the-ai-ecosystem/`
+- `writing/how-modern-llm-systems-really-work/`
+- `writing/coding-assistants-are-not-junior-developers/`
+- `writing/ai-stress-testing-agile/`
+- `writing/how-i-used-two-ais-to-build-a-software-engineering-system/`
+
+System detail pages also inform the publishing pattern because they reuse article classes, but article voice should primarily come from `writing/`.
+
+## Voice
+
+Write like a practitioner explaining a system after working through it, not like a marketer announcing a trend.
+
+Core qualities:
+
+- Practical and explanatory.
+- Calmly opinionated.
+- Grounded in software engineering, AI systems, and learning.
+- Friendly to beginners without flattening the technical truth.
+- Skeptical of hype, but optimistic about disciplined use.
+- Focused on mental models, context, feedback loops, validation, and human judgment.
+
+Common moves:
+
+- Start with a problem readers already feel: confusion, speed, AI hype, weak context, vague requirements.
+- Name the misconception: "AI is not replacing Agile", "coding assistants are not junior developers", "LLMs are not databases".
+- Replace the misconception with a better mental model.
+- Move from simple example to broader system.
+- Explain both capability and limitation.
+- End with what the reader should understand or do differently.
+
+## Sentence And Paragraph Rhythm
+
+- Use short paragraphs, often one to three sentences.
+- Use occasional single-sentence paragraphs for emphasis.
+- Repeat parallel statements when sharpening a point:
+  - "Generated does not mean correct."
+  - "Generated does not mean secure."
+  - "Generated does not mean maintainable."
+- Use plain transitions: "This is where...", "The result?", "The key point is this:", "That distinction matters."
+- Avoid dense academic prose unless explaining a precise technical concept.
+
+## Topic Patterns
+
+Good SuyogJoshi.com articles usually fit one of these patterns:
+
+- Beginner mental model: explain a confusing AI or software idea with a concrete domain example.
+- Systems stack: separate a noisy topic into layers such as model, runtime, application, governance, and infrastructure.
+- Practice shift: show how AI changes bottlenecks, roles, quality bars, or delivery workflows.
+- Builder reflection: describe how a system was built, what changed across iterations, and what was learned.
+- Tool mental model: explain what a tool is good for, what it is not, and how practitioners should use it responsibly.
+
+## Structure Patterns
+
+Use one of these patterns when outlining.
+
+Beginner explainer:
+
+1. Personal or reader-facing confusion.
+2. Simple example.
+3. Traditional approach.
+4. Where traditional logic breaks down.
+5. AI/ML/data/system concept.
+6. Practical reality check.
+7. Final thoughts and next step.
+
+Systems explainer:
+
+1. Surface experience.
+2. "It is not just X; it is a stack."
+3. Layer-by-layer breakdown.
+4. Runtime or operational constraints.
+5. Reliability and governance issues.
+6. Future direction.
+7. Final thoughts.
+
+Practice essay:
+
+1. Observed shift in teams or tools.
+2. Counterintuitive claim.
+3. What changed in the workflow.
+4. New bottlenecks.
+5. Roles, metrics, or quality implications.
+6. What strong teams do differently.
+7. Final thoughts.
+
+Builder reflection:
+
+1. What was built and why.
+2. Goal and constraints.
+3. Roles, workflow, and architecture.
+4. Turning points.
+5. What worked and what failed.
+6. What the experience taught.
+7. What happens next.
+
+## HTML Page Template Notes
+
+Article pages are hand-authored HTML under `writing/<slug>/index.html`.
+
+Use this page skeleton:
+
+```html
+<article>
+  <div class="article-page-header">
+    <div class="container">
+      <div class="article-reading-col">
+        <a href="../" class="article-back-link">Back to writing</a>
+        <p class="eyebrow">Writing</p>
+        <h1 class="article-page-title">ARTICLE TITLE</h1>
+        <p class="article-page-subtitle">Short human summary.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-body-section">
+    <div class="container">
+      <div class="article-reading-col">
+        <div class="article-body">
+          <!-- Article content -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="article-related">
+    <div class="container">
+      <div class="article-reading-col">
+        <h2 class="article-related-title">Continue reading</h2>
+        <ul class="article-related-list">
+          <!-- Related articles -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</article>
+```
+
+For adapted external posts, place this after `.article-body` and before closing `.article-reading-col`:
+
+```html
+<div class="article-original-note">
+  <p>This article was originally published on Medium and is being adapted here as part of my long-term knowledge hub.</p>
+  <a href="SOURCE_URL" target="_blank" rel="noopener noreferrer">Read original on Medium</a>
+</div>
+```
+
+## SEO And Metadata
+
+For article pages:
+
+- Title format: `Article Title | Suyog Joshi`.
+- Description: aim for 140 to 160 characters, human-readable, no keyword stuffing.
+- Canonical URL: `https://suyogjoshi.com/writing/<slug>/`.
+- `og:type`: `article`.
+- `twitter:card`: `summary`, unless a real page-specific 1200x630 image exists.
+- Include GA4 measurement ID `G-PKL56GJ38H`.
+- Do not add new social image tags unless the asset exists and is appropriate.
+
+## Visuals And Diagrams
+
+- Reuse existing images when adapting an article with assets.
+- Use meaningful `alt` text that explains the diagram or image.
+- Prefer existing inline diagram classes for simple process explanations:
+  - `.flow-sequence`
+  - `.process-flow`
+- Do not add new dependencies, frameworks, fonts, or build tooling.
+
+## Final QA
+
+Before handing off a publishable article:
+
+- Confirm issue, branch, and scope are correct.
+- Check relative paths for the article depth.
+- Check nav active state.
+- Check article links and related reading links.
+- Check `writing/index.html`, root `index.html` if promoted, and `sitemap.xml`.
+- Check that GA4 and favicon links are present.
+- Serve locally or open the HTML when practical and mention any skipped browser checks.
