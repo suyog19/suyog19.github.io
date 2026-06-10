@@ -2977,3 +2977,342 @@
     max-width: calc(100vw - (var(--container-px) * 2));
   }
 }
+
+/* Document ingestion comparator */
+.ingestion-demo-page {
+  overflow-x: hidden;
+}
+
+.ingestion-demo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.ingestion-demo-form,
+.ingestion-demo-status,
+.ingestion-demo-result-card,
+.ingestion-demo-markdown-card,
+.ingestion-demo-ai-card {
+  min-width: 0;
+}
+
+.ingestion-demo-file-drop {
+  display: grid;
+  gap: 0.55rem;
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.ingestion-demo-file-drop:hover,
+.ingestion-demo-file-drop:focus-within {
+  border-color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+.ingestion-demo-file-title,
+.ingestion-demo-fieldset legend,
+.ingestion-demo-check strong,
+.ingestion-demo-job-list dt,
+.ingestion-demo-ai-notes dt {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.ingestion-demo-file-meta,
+.ingestion-demo-fieldset p,
+.ingestion-demo-check small,
+.ingestion-demo-job-list dd,
+.ingestion-demo-ai-notes dd {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.ingestion-demo-file-drop input {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+}
+
+.ingestion-demo-fieldset {
+  border: 0;
+  padding: 0;
+  margin: 1.5rem 0 0;
+}
+
+.ingestion-demo-parser-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.ingestion-demo-parser,
+.ingestion-demo-check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-bg);
+  padding: 1rem;
+}
+
+.ingestion-demo-parser input,
+.ingestion-demo-check input {
+  margin-top: 0.2rem;
+}
+
+.ingestion-demo-parser strong,
+.ingestion-demo-parser small,
+.ingestion-demo-check strong,
+.ingestion-demo-check small {
+  display: block;
+}
+
+.ingestion-demo-parser small {
+  margin-top: 0.35rem;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.ingestion-demo-check,
+.ingestion-demo-actions,
+.ingestion-demo-notice {
+  margin-top: 1rem;
+}
+
+.ingestion-demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ingestion-demo-notice,
+.ingestion-demo-message,
+.ingestion-demo-job-list div,
+.ingestion-demo-picker,
+.ingestion-demo-ai-notes div {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  padding: 1rem;
+}
+
+.ingestion-demo-notice p,
+.ingestion-demo-message p {
+  margin-top: 0.4rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+
+.ingestion-demo-message {
+  margin-top: 1rem;
+}
+
+.ingestion-demo-message.is-success {
+  border-color: #bbf7d0;
+  background-color: #f0fdf4;
+}
+
+.ingestion-demo-message.is-warn {
+  border-color: #fde68a;
+  background-color: #fffbeb;
+}
+
+.ingestion-demo-message.is-error,
+.ingestion-demo-error {
+  border-color: #fecaca;
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+.ingestion-demo-job-list,
+.ingestion-demo-ai-notes {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.ingestion-demo-job-list dd,
+.ingestion-demo-ai-notes dd {
+  margin: 0.25rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.ingestion-demo-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.ingestion-demo-result-card {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-bg);
+  padding: 1.25rem;
+}
+
+.ingestion-demo-result-card.is-ready {
+  border-color: #bbf7d0;
+}
+
+.ingestion-demo-result-card.is-failed,
+.ingestion-demo-result-card.is-skipped {
+  border-color: #fed7aa;
+}
+
+.ingestion-demo-result-head,
+.ingestion-demo-markdown-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.ingestion-demo-result-head h3,
+.ingestion-demo-markdown-actions h3,
+.ingestion-demo-ai-card h3 {
+  color: var(--color-text);
+  font-size: 1.125rem;
+  margin-top: 0.75rem;
+}
+
+.ingestion-demo-result-card p,
+.ingestion-demo-result-card li,
+.ingestion-demo-markdown-preview p,
+.ingestion-demo-ai-card li,
+.ingestion-demo-ai-card p {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+.ingestion-demo-error {
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.ingestion-demo-tabs,
+.ingestion-demo-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+}
+
+.ingestion-demo-tab,
+.ingestion-demo-picker-button {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.65rem 0.9rem;
+}
+
+.ingestion-demo-tab:hover,
+.ingestion-demo-tab:focus-visible,
+.ingestion-demo-tab.is-selected,
+.ingestion-demo-picker-button:hover,
+.ingestion-demo-picker-button:focus-visible,
+.ingestion-demo-picker-button.is-selected {
+  border-color: var(--color-text);
+  outline: none;
+}
+
+.ingestion-demo-tab.is-selected,
+.ingestion-demo-picker-button.is-selected {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.ingestion-demo-panel {
+  margin-top: 1rem;
+}
+
+.ingestion-demo-markdown-card {
+  max-width: 100%;
+}
+
+.ingestion-demo-markdown-actions > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ingestion-demo-markdown-preview {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  padding: 1.25rem;
+  margin-top: 1rem;
+  max-height: 34rem;
+  overflow: auto;
+}
+
+.ingestion-demo-markdown-preview h2,
+.ingestion-demo-markdown-preview h3,
+.ingestion-demo-markdown-preview h4 {
+  color: var(--color-text);
+  margin: 1rem 0 0.5rem;
+}
+
+.ingestion-demo-markdown-preview h2:first-child,
+.ingestion-demo-markdown-preview h3:first-child,
+.ingestion-demo-markdown-preview h4:first-child {
+  margin-top: 0;
+}
+
+.ingestion-demo-compare-grid,
+.ingestion-demo-ai-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+
+.ingestion-demo-ai-grid section {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  padding: 1rem;
+}
+
+.ingestion-demo-ai-grid h4 {
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 880px) {
+  .ingestion-demo-layout,
+  .ingestion-demo-compare-grid,
+  .ingestion-demo-ai-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .ingestion-demo-result-head,
+  .ingestion-demo-markdown-actions {
+    flex-direction: column;
+  }
+
+  .ingestion-demo-parser-grid,
+  .ingestion-demo-result-grid {
+    grid-template-columns: 1fr;
+  }
+}
