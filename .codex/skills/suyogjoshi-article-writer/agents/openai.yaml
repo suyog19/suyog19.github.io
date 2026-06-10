@@ -1,0 +1,7 @@
+interface:
+  display_name: "SuyogJoshi Article Writer"
+  short_description: "Write articles in the site voice."
+  default_prompt: "Use $suyogjoshi-article-writer to write or adapt an article for suyogjoshi.com using the site's existing voice, structure, and static HTML publishing rules."
+
+policy:
+  allow_implicit_invocation: true
