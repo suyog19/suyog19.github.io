@@ -59,6 +59,7 @@ For a new article page:
 - Use correct relative paths for two-level pages: `../../css/...`, `../../js/script.js`, `../../favicon.svg`.
 - Include SEO metadata, canonical URL, Open Graph/Twitter tags, favicon links, and GA4.
 - Use `og:type` of `article`.
+- Show article metadata in the page header: `Author: Suyog Joshi` and `Published On: dd MMM yyyy` using the current publication date.
 - Add the article to `writing/index.html` in the featured grid or relevant thematic group.
 - Add or promote it on root `index.html` only when requested or clearly in scope.
 - Add the production URL to `sitemap.xml` with priority `0.8`.

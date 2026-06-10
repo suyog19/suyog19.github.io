@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Why AI-assisted software engineering depends less on clever prompts and more on giving coding assistants the right context, constraints, and working memory." />
+  <title>Stop Prompting Harder. Start Giving Better Context. | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/" />
+  <meta property="og:title" content="Stop Prompting Harder. Start Giving Better Context. | Suyog Joshi" />
+  <meta property="og:description" content="Why AI-assisted software engineering depends less on clever prompts and more on giving coding assistants the right context, constraints, and working memory." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Stop Prompting Harder. Start Giving Better Context. | Suyog Joshi" />
+  <meta name="twitter:description" content="Why AI-assisted software engineering depends less on clever prompts and more on giving coding assistants the right context, constraints, and working memory." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <!-- Article Header -->
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Stop Prompting Harder. Start Giving Better Context.</h1>
+            <p class="article-page-subtitle">AI assistants do not succeed only because of better prompts. They succeed when the right requirements, constraints, code, and decisions are available at the right time.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 10 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article Body -->
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+
+              <img src="cover.png" alt="A code assistant driving with requirements, architecture, codebase, tests, constraints, tools, and data feeding into the dashboard for better direction and control." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+
+              <p>One day your AI assistant feels like a senior engineer.</p>
+              <p>It understands the architecture. It generates clean code. It suggests improvements you had not considered. It seems to understand exactly what you are trying to build.</p>
+              <p>The next day, the same assistant appears completely lost.</p>
+              <p>It misunderstands requirements. It proposes solutions that violate architectural principles. It generates code that clearly does not fit the system.</p>
+              <p>Many developers conclude that AI is unreliable.</p>
+              <p>I think they are often diagnosing the wrong problem.</p>
+              <p>The model did not suddenly become smart yesterday and weak today.</p>
+              <p>The context changed.</p>
+              <p>Understanding that distinction may be one of the most important skills in AI-assisted software development.</p>
+
+              <h2>The Biggest Misconception About AI</h2>
+              <p>When AI-generated code is poor, many engineers immediately start tweaking prompts.</p>
+              <p>They add more instructions. They try different wording. They search for better prompting techniques.</p>
+              <p>Sometimes that helps.</p>
+              <p>But in many cases, the prompt was never the real problem.</p>
+              <p>The context was.</p>
+              <p>Consider a simple request:</p>
+              <p><i>Implement customer onboarding.</i></p>
+              <p>Most experienced engineers would immediately have questions.</p>
+              <ul>
+                <li>Which customer?</li>
+                <li>What type of onboarding?</li>
+                <li>What systems are involved?</li>
+                <li>What security requirements exist?</li>
+                <li>What integrations are required?</li>
+                <li>What are the acceptance criteria?</li>
+              </ul>
+              <p>Without this information, even a strong engineer would struggle to produce the right solution.</p>
+              <p>Yet we often expect AI to succeed with exactly this level of ambiguity.</p>
+              <p>The reality is simple:</p>
+              <p><i>A prompt is the question. Context is everything needed to answer that question correctly.</i></p>
+              <p>That difference matters.</p>
+              <p>A better prompt may improve wording. Better context improves understanding.</p>
+
+              <img src="prompt-vs-context.png" alt="Diagram showing that the prompt is only one piece of context, alongside system instructions, memory, retrieved information, conversation history, and the current request." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>What Exactly Is Context?</h2>
+              <p>Before talking about AI, it helps to talk about context itself.</p>
+              <p>In simple terms, context is the surrounding information that helps determine meaning.</p>
+              <p>Consider the statement:</p>
+              <p><i>The bank is closed.</i></p>
+              <p>Without additional information, the meaning is ambiguous. Are we talking about a financial institution, or the side of a river?</p>
+              <p>Now add context:</p>
+              <p><i>The bank is closed because of a public holiday.</i></p>
+              <p>Suddenly the meaning becomes clear.</p>
+              <p>The statement did not change. The surrounding information changed.</p>
+              <p>Humans rely on context constantly. It helps us interpret information, remove ambiguity, and make better decisions.</p>
+              <p>The same principle applies to AI systems.</p>
+
+              <h2>Context in AI Systems</h2>
+              <p>When we ask ChatGPT, Claude, Gemini, Codex, Claude Code, or any coding assistant a question, the model does not answer from some permanent understanding of our project.</p>
+              <p>It answers from the information available to it at that moment.</p>
+              <p>Depending on the platform and tools being used, that context may include several layers:</p>
+              <ul>
+                <li><strong>System instructions:</strong> rules that define how the assistant should behave.</li>
+                <li><strong>Memory:</strong> preferences, project details, repeated corrections, or longer-term continuity.</li>
+                <li><strong>Retrieved information:</strong> repository files, documentation, wiki pages, schemas, API specs, or search results.</li>
+                <li><strong>Conversation history:</strong> earlier clarifications, constraints, corrections, and examples.</li>
+                <li><strong>Current request:</strong> the task being asked right now.</li>
+              </ul>
+              <p>Interestingly, the current request is often the smallest part of the full context.</p>
+              <p>That leads to an important observation:</p>
+              <p><i>AI does not answer based only on your prompt. It answers based on the entire context available at that moment.</i></p>
+              <p>The prompt is one part of the context, not the whole context.</p>
+
+              <h2>Context in Software Engineering</h2>
+              <p>Now bring this closer to software development.</p>
+              <p>When we ask an AI assistant to implement a feature, the context extends far beyond the task itself.</p>
+              <p>Consider another simple request:</p>
+              <p><i>Implement customer search.</i></p>
+              <p>To generate a high-quality solution, the assistant may need information from many layers of software engineering context.</p>
+
+              <img src="software-engineering-context-stack.png" alt="Software engineering context stack showing business goal, work item, requirements, architecture, relevant code, standards, tests, and past decisions around a current task." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <p>It may need functional context:</p>
+              <ul>
+                <li>What problem are we solving?</li>
+                <li>What are the acceptance criteria?</li>
+                <li>What business rules apply?</li>
+                <li>What should happen in edge cases?</li>
+              </ul>
+              <p>It may need technical context:</p>
+              <ul>
+                <li>Programming language</li>
+                <li>Frameworks</li>
+                <li>Databases</li>
+                <li>API patterns</li>
+                <li>Error handling conventions</li>
+              </ul>
+              <p>It may also need system, organizational, work, and tribal context: architecture decisions, security rules, JIRA stories, Definition of Done, team conventions, past incidents, and the unwritten assumptions that everyone on the team already knows.</p>
+              <p>The actual prompt may contain only a few words.</p>
+              <p>The supporting context may require thousands.</p>
+              <p>Coding assistants do not magically understand a repository. They build working context from what is available to them: open files, selected code, project instructions, retrieved files, tool results, terminal output, and the current request.</p>
+              <p>They do not know the whole codebase equally.</p>
+              <p>They work from the context assembled for the current task.</p>
+              <p>This is why I increasingly view AI-assisted development not as a prompting problem, but as a context management problem.</p>
+
+              <h2>Context Has Always Been an Engineering Problem</h2>
+              <p>Context engineering is not entirely new.</p>
+              <p>Software teams have been solving context problems for decades.</p>
+              <p>Think about why we create:</p>
+              <ul>
+                <li>README files</li>
+                <li>Architecture diagrams</li>
+                <li>Design documents</li>
+                <li>ADRs</li>
+                <li>Coding standards</li>
+                <li>Test cases</li>
+                <li>JIRA stories</li>
+                <li>Knowledge bases</li>
+              </ul>
+              <p>These artifacts exist because humans need context before they can make good decisions.</p>
+              <p>Now AI assistants need similar context.</p>
+              <p>The difference is that AI exposes the importance of context more clearly.</p>
+              <p>When a new engineer joins a team, we spend weeks helping them understand the system. We explain architecture, review design decisions, share documentation, and pass along tribal knowledge.</p>
+              <p>AI assistants require a similar onboarding process.</p>
+              <p>The better the onboarding, the better the output.</p>
+              <p>But there is one important difference.</p>
+              <p>A human engineer gradually builds long-term understanding over months or years. An AI assistant usually works with a limited working context assembled for the current interaction.</p>
+              <p>That changes how we need to think about documentation, work items, repository structure, and project knowledge.</p>
+
+              <h2>Context Is a Limited Resource</h2>
+              <p>There is another reason context needs engineering attention.</p>
+              <p>Context is limited.</p>
+              <p>Every AI model has a maximum amount of information it can consider at one time. This is usually called the context window.</p>
+              <p>You can think of it as the model's working memory budget.</p>
+              <p>Once that budget is full, something has to give.</p>
+              <p>Older conversation may be truncated. Large files may be summarized. Some retrieved documents may be excluded. Important details may compete with irrelevant details.</p>
+              <p>Context is not just information.</p>
+              <p>It is a limited workspace.</p>
+
+              <img src="context-window-limited-workspace.png" alt="A suitcase-like context window showing high-value requirements, constraints, code, and tests competing with low-value old logs, deprecated documents, unrelated files, and long chat history." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <p>Software engineers already understand this kind of problem.</p>
+              <p>We manage limited resources all the time:</p>
+              <ul>
+                <li>CPU</li>
+                <li>memory</li>
+                <li>network bandwidth</li>
+                <li>database connections</li>
+                <li>developer attention</li>
+              </ul>
+              <p>Context is becoming another such resource.</p>
+              <p>If we spend that resource on irrelevant files, noisy logs, outdated documentation, or long discussions that no longer matter, we leave less room for the information that actually affects the current task.</p>
+              <p>This is why "just give the AI everything" is not a reliable strategy.</p>
+              <p>More context can help.</p>
+              <p>But only when the added context is relevant, current, and well organized.</p>
+              <p>The better question is not:</p>
+              <p><i>How do I give the AI more context?</i></p>
+              <p>The better question is:</p>
+              <p><i>What context deserves space right now?</i></p>
+
+              <h2>Common Context Problems</h2>
+              <p>Once we understand that context drives AI behavior, another question appears.</p>
+              <p>If context is so important, why do AI assistants still produce poor results even when we provide lots of information?</p>
+              <p>In practice, I repeatedly see four context problems.</p>
+
+              <h2>Problem 1: Missing Context</h2>
+              <p>When important information is missing, AI has only one option.</p>
+              <p>It makes assumptions.</p>
+              <p>Consider this request:</p>
+              <p><i>Build a notification service.</i></p>
+              <p>The assistant might assume:</p>
+              <ul>
+                <li>Notifications are asynchronous.</li>
+                <li>Email delivery is sufficient.</li>
+                <li>Eventual consistency is acceptable.</li>
+                <li>Redis is available.</li>
+                <li>Kafka exists in the platform.</li>
+              </ul>
+              <p>Some assumptions may be correct. Others may not.</p>
+              <p>The assistant is not behaving irrationally. It is filling gaps in the information provided.</p>
+              <p>Humans do the same thing.</p>
+              <p>The difference is that AI can make many assumptions very quickly, and those assumptions may appear as confident code, confident explanations, or confident architecture suggestions.</p>
+              <p>Missing context often gets converted into hidden assumptions.</p>
+
+              <h2>Problem 2: Hidden Assumptions</h2>
+              <p>Some context exists only inside people's heads.</p>
+              <p>For example, everyone on the team may know:</p>
+              <ul>
+                <li>Kafka is mandatory.</li>
+                <li>RabbitMQ is not approved.</li>
+                <li>Notifications must be asynchronous.</li>
+                <li>Customer data cannot leave the region.</li>
+                <li>Audit logging is required for every customer profile change.</li>
+                <li>All external calls must go through the API gateway.</li>
+              </ul>
+              <p>None of these rules may exist in documentation.</p>
+              <p>Humans learn them through experience.</p>
+              <p>AI cannot.</p>
+              <p>This is one of the most common reasons AI-generated solutions appear wrong. The assistant is operating without knowledge that the team considers obvious.</p>
+              <p>This is also why experienced engineers often get better results from AI than beginners.</p>
+              <p>They know what assumptions need to be made explicit. They know what constraints are missing. They know where the traps are.</p>
+              <p>The AI may generate the code, but the engineer still understands the system.</p>
+              <p>That understanding is what shapes the context.</p>
+
+              <h2>Problem 3: Too Much Context</h2>
+              <p>Once developers understand the importance of context, they often make another mistake.</p>
+              <p>They provide everything.</p>
+              <p>Entire repositories. Thousands of files. Large design documents. Years of historical information.</p>
+              <p>More context sounds useful.</p>
+              <p>But remember: context is a limited resource.</p>
+              <p>Every irrelevant file consumes space. Every outdated document consumes attention. Every unnecessary log line competes with useful information.</p>
+              <p>Imagine asking a developer to make a small API change and handing them:</p>
+              <ul>
+                <li>500 pages of documentation</li>
+                <li>10 architecture documents</li>
+                <li>4 years of design history</li>
+                <li>old release notes</li>
+                <li>deprecated module descriptions</li>
+                <li>unrelated incident reports</li>
+              </ul>
+              <p>The information exists.</p>
+              <p>Finding what matters becomes difficult.</p>
+              <p>The same principle applies to AI.</p>
+              <p>The goal is not maximum context.</p>
+              <p>The goal is relevant context.</p>
+
+              <h2>Problem 4: Lost in the Middle</h2>
+              <p>Many developers assume that if information exists somewhere in the context, the AI will use it correctly.</p>
+              <p>The reality is more nuanced.</p>
+              <p>The paper <a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener noreferrer">Lost in the Middle</a> showed that language models often use information near the beginning and end of long contexts more effectively than information buried in the middle.</p>
+              <p>That has an important practical implication.</p>
+              <p>Even if the right information is present, its position and structure can affect how useful it becomes.</p>
+
+              <img src="lost-in-the-middle.png" alt="Diagram showing a long context window where the beginning and end receive more attention while a critical constraint in the middle can be missed." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <p>Imagine providing requirements, architecture documents, coding standards, and design discussions, but hiding the most important constraint halfway through:</p>
+              <p><i>Customer data must never leave the region.</i></p>
+              <p>Technically, the assistant has the information.</p>
+              <p>Practically, it may not influence the generated solution as much as you expect.</p>
+              <p>This means context optimization is not only about providing information.</p>
+              <p>It is also about organizing information.</p>
+              <p>Critical constraints should not be buried. Important decisions should not be hidden in long documents. Acceptance criteria should not be scattered across ten comments.</p>
+              <p>Context has structure.</p>
+              <p>And structure matters.</p>
+
+              <h2>What Context Engineering Really Means</h2>
+              <p>Context engineering does not mean dumping more information into the AI.</p>
+              <p>It means deliberately deciding:</p>
+              <ul>
+                <li>what context is needed</li>
+                <li>where it should come from</li>
+                <li>how it should be structured</li>
+                <li>what should be excluded</li>
+                <li>what should be preserved for future tasks</li>
+              </ul>
+              <p>In software development, this includes README files, architecture documents, ADRs, work item descriptions, repository conventions, coding standards, and AI-specific instruction files.</p>
+              <p>In simple terms:</p>
+              <p><i>Context engineering is the discipline of making the right information available to AI at the right time, in the right form.</i></p>
+              <p>That definition matters because it changes the engineering mindset.</p>
+              <p>The goal is no longer:</p>
+              <p><i>Write a clever prompt.</i></p>
+              <p>The goal becomes:</p>
+              <p><i>Build an environment where good AI output becomes more likely.</i></p>
+
+              <h2>How to Optimize Context</h2>
+              <p>If context quality determines output quality, then context deserves the same engineering attention we give to code, architecture, and requirements.</p>
+              <p>Over time, I have found five principles particularly useful.</p>
+
+              <h2>Principle 1: Provide Context Before Tasks</h2>
+              <p>Instead of:</p>
+              <p><i>Implement login.</i></p>
+              <p>Provide context first:</p>
+              <ul>
+                <li>System: Spring Boot microservice, PostgreSQL, JWT authentication, existing user table.</li>
+                <li>Task: Implement login endpoint.</li>
+              </ul>
+              <p>A small amount of context can dramatically improve output quality.</p>
+              <p>This mirrors how humans work. If you give a developer a task without explaining the system, they will ask questions.</p>
+              <p>AI may not ask. It may simply proceed.</p>
+
+              <h2>Principle 2: Make Assumptions Explicit</h2>
+              <p>Many critical decisions exist only in people's heads.</p>
+              <p>Examples:</p>
+              <ul>
+                <li>Availability is more important than consistency.</li>
+                <li>Notifications are eventually consistent.</li>
+                <li>Database writes must be auditable.</li>
+                <li>Customer data must remain within the region.</li>
+              </ul>
+              <p>These statements may be obvious to the team.</p>
+              <p>They are invisible to the AI unless explicitly provided.</p>
+              <p>A useful habit is to ask yourself before giving a task to AI:</p>
+              <p><i>What do I know about this system that is not obvious from the task?</i></p>
+              <p>That answer is usually valuable context.</p>
+
+              <h2>Principle 3: Externalize Tribal Knowledge</h2>
+              <p>Knowledge that lives only in people's heads cannot help AI.</p>
+              <p>Good repositories increasingly include documents such as:</p>
+              <ul>
+                <li>README.md</li>
+                <li>ARCHITECTURE.md</li>
+                <li>AGENTS.md</li>
+                <li>CLAUDE.md</li>
+                <li>ADRs</li>
+                <li>Coding standards</li>
+                <li>API guidelines</li>
+              </ul>
+              <p>These documents help humans.</p>
+              <p>They help AI as well.</p>
+              <p>This is why I increasingly view documentation as an AI-enablement activity, not merely a documentation activity.</p>
+              <p>A well-written architecture document is context infrastructure. A clear ADR is decision context. A good work item is task context.</p>
+              <p>Good engineering practices are becoming good AI practices.</p>
+
+              <h2>Principle 4: Optimize Signal-to-Noise Ratio</h2>
+              <p>Every context contains signal and noise.</p>
+              <p><i>Signal is relevant information. Noise is irrelevant information.</i></p>
+              <p>The goal is not to maximize information.</p>
+              <p>The goal is to maximize useful information.</p>
+              <p>Providing the three relevant classes is often better than providing the entire repository. Providing the relevant design decision is often better than providing the entire architecture history.</p>
+              <p>Context quality matters more than context quantity.</p>
+              <p>Because context is limited, every unnecessary piece of information has a cost.</p>
+              <p>It may not cost money directly.</p>
+              <p>But it consumes attention, space, and model capacity.</p>
+              <p>That is enough.</p>
+
+              <h2>Principle 5: Structure Important Context Deliberately</h2>
+              <p>Not all context is equally influential.</p>
+              <p>Important constraints should be easy to find.</p>
+              <ul>
+                <li>Put architectural constraints near the beginning.</li>
+                <li>Keep acceptance criteria close to the task.</li>
+                <li>Summarize large documents.</li>
+                <li>Repeat critical constraints when necessary.</li>
+                <li>Separate current decisions from historical discussion.</li>
+                <li>Remove outdated context when it no longer applies.</li>
+              </ul>
+              <p>A useful pattern is:</p>
+              <div class="process-flow">
+                <div class="process-flow-label">Context-first task shape</div>
+                <ul class="process-flow-steps">
+                  <li>Goal</li>
+                  <li>Constraints</li>
+                  <li>Relevant system context</li>
+                  <li>Relevant files</li>
+                  <li>Acceptance criteria</li>
+                  <li>Task</li>
+                </ul>
+              </div>
+              <p>This structure helps both humans and AI.</p>
+              <p>It tells the assistant what matters before it starts generating.</p>
+
+              <h2>A Small Before and After Example</h2>
+              <p>Let's take a simple request.</p>
+              <p><strong>Weak version:</strong></p>
+              <p><i>Implement customer search.</i></p>
+              <p>This looks clear, but it leaves too much open. The assistant may choose any endpoint design, any search strategy, any database assumptions, and any error handling approach.</p>
+              <p>Now compare it with a context-optimized version.</p>
+              <ul>
+                <li><strong>Goal:</strong> Implement customer search for the customer support portal.</li>
+                <li><strong>System context:</strong> Java Spring Boot microservice, PostgreSQL database, REST APIs under `/api/v1/*`, standard `ApiResponse` wrapper.</li>
+                <li><strong>Constraints:</strong> search only active customers, keep customer data in-region, exact mobile search, partial name search, case-insensitive email search.</li>
+                <li><strong>Relevant files:</strong> `CustomerController.java`, `CustomerService.java`, `CustomerRepository.java`, `CustomerSearchRequest.java`.</li>
+                <li><strong>Acceptance criteria:</strong> support name, email, and mobile search; return paginated results; do not expose internal customer IDs; add service and API tests.</li>
+                <li><strong>Task:</strong> Implement the customer search endpoint following existing API patterns.</li>
+              </ul>
+              <p>Notice what changed.</p>
+              <p>The task is still the same.</p>
+              <p>But the context is now doing real work.</p>
+              <p>It reduces ambiguity. It exposes constraints. It identifies relevant files. It limits unnecessary exploration.</p>
+              <p>That is the difference between prompting and context engineering.</p>
+
+              <img src="curated-context-better-output.png" alt="Diagram showing messy raw information becoming curated context, which leads to more accurate code, better requirement alignment, fewer assumptions, and higher quality." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>Context Engineering Is Becoming a Real Skill</h2>
+              <p>The industry spent the last few years talking about prompt engineering.</p>
+              <p>Prompt engineering matters.</p>
+              <p>But I believe the more important skill is becoming context engineering.</p>
+              <p>Prompt engineering asks:</p>
+              <p><i>How do I ask the question better?</i></p>
+              <p>Context engineering asks:</p>
+              <p><i>What information does the AI need in order to answer correctly?</i></p>
+              <p>That is a deeper question.</p>
+              <p>The ability to capture, organize, maintain, and provide relevant context is increasingly becoming a competitive advantage for software teams.</p>
+              <p>This includes better documentation, better architecture records, better work item descriptions, better repository organization, better coding standards, better knowledge management, and better AI-specific project instructions.</p>
+              <p>Interestingly, these are not entirely new skills.</p>
+              <p>They are good engineering practices viewed through a new lens.</p>
+
+              <h2>A Practical Test</h2>
+              <p>The next time AI gives a poor answer, do not immediately rewrite the prompt.</p>
+              <p>Ask:</p>
+              <p><i>What assumptions are you making?</i></p>
+              <p>The answer is often revealing.</p>
+              <p>You may discover missing requirements, incorrect technical assumptions, ignored constraints, unclear acceptance criteria, misunderstood architecture, or hidden business rules.</p>
+              <p>Then ask yourself:</p>
+              <p><i>Which of these assumptions should have been context?</i></p>
+              <p>That question turns AI failure into engineering feedback.</p>
+              <p>Sometimes the fix is not a better prompt.</p>
+              <p>Sometimes it is a better README. Sometimes it is a clearer JIRA story. Sometimes it is an ADR. Sometimes it is an AGENTS.md or CLAUDE.md file.</p>
+              <p>Sometimes it is simply removing irrelevant information so the important details have room to breathe.</p>
+
+              <h2>Final Thoughts</h2>
+              <p>Most discussions about AI focus on model capability.</p>
+              <p>Which model is better? Which benchmark score is higher? Which assistant writes the best code?</p>
+              <p>These questions matter.</p>
+              <p>But in day-to-day software development, I have found another factor to be equally important:</p>
+              <p><i>AI output quality is shaped by model capability and context quality.</i></p>
+              <p>Most engineers spend their time optimizing one side of that equation by choosing a better model.</p>
+              <p>Fewer engineers spend time optimizing the context around the model.</p>
+              <p>Yet improving context quality often produces a bigger improvement in outcomes than switching models.</p>
+              <p>Because context is not just background information.</p>
+              <p>Context is the AI's working environment.</p>
+              <p>And that environment is limited.</p>
+              <p>So the future skill may not be merely asking AI better questions.</p>
+              <p>It may be providing AI better context.</p>
+              <p>The engineers and teams who learn how to manage context well will consistently get better results from AI systems than those who simply keep trying new prompts.</p>
+              <p>Because when an AI assistant seems smart one day and lost the next, the model usually is not the thing that changed.</p>
+              <p>The context is.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Reading -->
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../coding-assistants-are-not-junior-developers/" class="article-related-item">
+                  <span class="article-related-item-title">Coding Assistants Are Not Junior Developers</span>
+                  <span class="article-related-item-summary">AI coding assistants can write code, explain frameworks, and generate useful solutions. But they do not work like people.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../ai-stress-testing-agile/" class="article-related-item">
+                  <span class="article-related-item-title">AI Is Not Replacing Agile. It Is Stress-Testing It.</span>
+                  <span class="article-related-item-summary">AI reveals an uncomfortable truth about software delivery: strong practices accelerate, while weak practices create more work faster.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
