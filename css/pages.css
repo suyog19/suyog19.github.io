@@ -1400,6 +1400,25 @@
   line-height: 1.7;
 }
 
+.article-page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.article-page-meta span {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.article-page-meta strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
 /* Body */
 .article-body-section {
   padding-block: 4.5rem;

@@ -115,6 +115,10 @@ Use this page skeleton:
         <p class="eyebrow">Writing</p>
         <h1 class="article-page-title">ARTICLE TITLE</h1>
         <p class="article-page-subtitle">Short human summary.</p>
+        <div class="article-page-meta" aria-label="Article metadata">
+          <span><strong>Author:</strong> Suyog Joshi</span>
+          <span><strong>Published On:</strong> 10 Jun 2026</span>
+        </div>
       </div>
     </div>
   </div>
@@ -157,6 +161,7 @@ For article pages:
 
 - Title format: `Article Title | Suyog Joshi`.
 - Description: aim for 140 to 160 characters, human-readable, no keyword stuffing.
+- Visible page metadata: show `Author: Suyog Joshi` and `Published On: dd MMM yyyy` in the article header. Use the current publication date, for example `10 Jun 2026`.
 - Canonical URL: `https://suyogjoshi.com/writing/<slug>/`.
 - `og:type`: `article`.
 - `twitter:card`: `summary`, unless a real page-specific 1200x630 image exists.
