@@ -171,11 +171,29 @@ For article pages:
 ## Visuals And Diagrams
 
 - Reuse existing images when adapting an article with assets.
+- Preserve supplied images as-is unless the user explicitly asks for edits, crops, overlays, annotations, or regeneration.
 - Use meaningful `alt` text that explains the diagram or image.
 - Prefer existing inline diagram classes for simple process explanations:
   - `.flow-sequence`
   - `.process-flow`
 - Do not add new dependencies, frameworks, fonts, or build tooling.
+
+## Layout-Aware Authoring
+
+Prevent predictable rendering issues while writing the page, before validation.
+
+- Keep article body elements aligned to the same reading column unless the existing site pattern clearly uses a different treatment.
+- Do not rely on browser-default rendering for unusual elements. If adding lists, tables, code blocks, figures, or diagrams, confirm the existing article CSS supports them; add scoped article styling when needed.
+- Use bullets for unordered sets, examples, criteria, and parallel ideas.
+- Use numbered lists only when sequence, priority, or the number of steps is meaningful.
+- Keep list style consistent within a section. Do not switch between bullets and numbering for the same kind of idea.
+- Ensure bullets and numbered markers align cleanly with the article reading column and do not drift awkwardly left or right of paragraph text.
+- Use tables only when a comparison or mapping is clearer than prose. Keep column labels short and table content concise.
+- Ensure tables fit the reading column on desktop and either fit or scroll inside their own container on mobile without creating page-level horizontal overflow.
+- Keep code examples short enough for the reading column when possible. Style article `pre` and `code` blocks so long lines scroll inside the code block instead of widening the page.
+- Check long headings, long URLs, long inline code, and long file paths for mobile wrapping.
+- Treat image placement as part of the prose rhythm: cover image, first in-article image, image-heavy sections, and related reading should all have intentional spacing.
+- Do not use inline one-off layout styles when a scoped article CSS rule would make the pattern safer for future articles.
 
 ## Final QA
 
@@ -187,4 +205,11 @@ Before handing off a publishable article:
 - Check article links and related reading links.
 - Check `writing/index.html`, root `index.html` if promoted, and `sitemap.xml`.
 - Check that GA4 and favicon links are present.
-- Serve locally or open the HTML when practical and mention any skipped browser checks.
+- Serve locally and complete visual QA before handoff.
+- Check at least mobile narrow, tablet/medium, and desktop viewports. Use about 390px, 768-820px, and 1280-1440px as the default viewport set; add about 360px when content includes tables, code blocks, diagrams, or long headings.
+- Inspect by element type, not just by page position: article header, cover image, first body content, lists, tables, code blocks, all distinct image patterns, related reading, and mobile navigation.
+- Confirm there is no document-level horizontal overflow on mobile.
+- Confirm tables and code blocks are readable and contained on mobile.
+- Capture screenshots or record precise browser notes for the PR/final handoff.
+- If the in-app Browser is unavailable, use a local browser or headless screenshot fallback.
+- If visual QA cannot be completed, do not hand off the article as ready. State what could not be checked and the residual risk.
