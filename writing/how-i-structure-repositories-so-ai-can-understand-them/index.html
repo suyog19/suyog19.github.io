@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical guide to structuring repositories with README files, architecture docs, ADRs, standards, maps, and AGENTS.md so AI assistants can work well." />
+  <title>How I Structure Repositories So AI Can Actually Understand Them | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/" />
+  <meta property="og:title" content="How I Structure Repositories So AI Can Actually Understand Them | Suyog Joshi" />
+  <meta property="og:description" content="A practical guide to structuring repositories with README files, architecture docs, ADRs, standards, maps, and AGENTS.md so AI assistants can work well." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How I Structure Repositories So AI Can Actually Understand Them | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical guide to structuring repositories with README files, architecture docs, ADRs, standards, maps, and AGENTS.md so AI assistants can work well." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">How I Structure Repositories So AI Can Actually Understand Them</h1>
+            <p class="article-page-subtitle">Better prompts help. Better repositories help more.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 12 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+
+              <img src="cover.png" alt="An AI assistant standing outside a repository entrance with README, architecture, ADR, coding standards, repository map, and AGENTS.md signs." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+
+              <p>Over the last year, coding assistants have become part of everyday software engineering.</p>
+              <p>Whether you use Claude Code, ChatGPT, GitHub Copilot, Cursor, Windsurf, Codex, or something else, the workflow is increasingly familiar.</p>
+              <ul>
+                <li>A human describes the change.</li>
+                <li>The AI reads the repository.</li>
+                <li>The AI generates code.</li>
+                <li>The human reviews and approves.</li>
+              </ul>
+              <p>Simple enough.</p>
+              <p>But many teams run into a frustrating pattern.</p>
+              <p>One day the assistant produces excellent code. The next day it ignores existing patterns, violates architecture decisions, or introduces complexity that does not belong in the system.</p>
+              <p>Developers often blame the model.</p>
+              <p>Sometimes that is fair. But in many cases, the repository is the real problem.</p>
+              <p><i>The AI is only as good as the context it can discover.</i></p>
+              <p>If architecture exists only inside senior engineers' heads, the AI cannot use it. If standards are hidden in old wiki pages, the AI cannot follow them. If important decisions were made six months ago but never documented, the AI will happily reinvent them.</p>
+              <p>In my previous article, I wrote about the context problem and why AI can seem brilliant one day and lost the next.</p>
+              <p>This article is the practical next step.</p>
+              <p>Increasingly, a repository is no longer just source code. It is the knowledge base from which AI learns how your system works.</p>
+
+              <img src="human-ai-working-together.png" alt="A developer and AI assistant organizing README, architecture, ADR, standards, repository map, and AGENTS.md documents on a workbench." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>What AI Actually Needs</h2>
+              <p>Most repositories contain something like this:</p>
+              <pre><code>src/
+tests/
+pom.xml
+README.md</code></pre>
+              <p>That may be enough for a human who already knows the organization, the product, and the team's habits.</p>
+              <p>It is often not enough for AI.</p>
+              <p>A coding assistant needs answers to questions like:</p>
+              <ul>
+                <li>What does this system do?</li>
+                <li>How is it structured?</li>
+                <li>What architectural patterns are allowed?</li>
+                <li>Which patterns are forbidden?</li>
+                <li>How should code be written?</li>
+                <li>Where should new functionality go?</li>
+                <li>Why were certain decisions made?</li>
+                <li>What should an AI agent do before making changes?</li>
+              </ul>
+              <p>If these answers are missing, the assistant fills the gaps with assumptions.</p>
+              <p>And assumptions are expensive.</p>
+
+              <img src="context-is-not-magic.png" alt="An AI assistant comparing messy undocumented project context with an organized repository shelf of README, architecture, ADRs, standards, maps, tests, examples, and guides." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>The Layers of AI-Friendly Repository Context</h2>
+              <p>I think of repository documentation as five basic layers of context.</p>
+              <p>Each layer answers a different question.</p>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Layer</th>
+                    <th>Question answered</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>README</td>
+                    <td>What is this system?</td>
+                  </tr>
+                  <tr>
+                    <td>Architecture docs</td>
+                    <td>How is it structured?</td>
+                  </tr>
+                  <tr>
+                    <td>ADRs</td>
+                    <td>Why was it designed this way?</td>
+                  </tr>
+                  <tr>
+                    <td>Coding standards</td>
+                    <td>How should code be written?</td>
+                  </tr>
+                  <tr>
+                    <td>Repository map</td>
+                    <td>Where does everything belong?</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>None of these are new ideas. The shift is that they now have two audiences.</p>
+              <p>Humans need them.</p>
+              <p>AI agents need them too.</p>
+
+              <h2>Layer 1: README as Purpose</h2>
+              <p>Most READMEs are written for GitHub visitors.</p>
+              <p>I now write them for both humans and AI.</p>
+              <p>A weak README says:</p>
+              <pre><code>Customer Management System
+
+Built using Spring Boot.</code></pre>
+              <p>A useful README says:</p>
+              <pre><code>Customer Management System
+
+Purpose:
+Manage customer onboarding, profile maintenance,
+document verification, and lifecycle management.
+
+Architecture:
+- Spring Boot microservices
+- Event-driven integration
+- PostgreSQL
+- Kafka
+
+Key Services:
+- customer-service
+- onboarding-service
+- document-service
+
+Important Constraints:
+- Customer data is immutable after approval
+- All external communication happens through events
+- No direct service-to-service database access</code></pre>
+              <p>Notice what changed.</p>
+              <p>The second version explains business purpose, architecture, services, and constraints. That is the kind of context that changes the output.</p>
+              <p>If you ask:</p>
+              <p><i>Add customer approval functionality.</i></p>
+              <p>With a poor README, the assistant has to guess. Maybe it adds an approval status column. Maybe it creates a REST endpoint. Maybe it writes directly to the database.</p>
+              <p>With a richer README, the assistant can see that approval should trigger an event, customer data becomes immutable, and Kafka integration matters.</p>
+              <p>Same prompt. Different repository. Completely different output quality.</p>
+
+              <h2>Layer 2: Architecture Documentation as Structure</h2>
+              <p>An architecture document is one of the most valuable files in an AI-assisted repository.</p>
+              <p>Humans learn architecture slowly through experience. AI usually has only minutes.</p>
+              <p>Help it.</p>
+              <pre><code># System Architecture
+
+## Style
+Microservices
+
+## Communication
+Synchronous:
+- REST APIs
+
+Asynchronous:
+- Kafka events
+
+## Data Ownership
+Each service owns its database.
+Cross-service database access is forbidden.
+
+## Security
+JWT authentication
+
+## Deployment
+Kubernetes</code></pre>
+              <p>This single document eliminates many bad suggestions.</p>
+              <p>Without it, a model may generate code where <code>CustomerService</code> directly queries the order database because it has seen that pattern elsewhere.</p>
+              <p>The architecture document tells it: not in this repository.</p>
+              <p>Simple diagrams help too. They do not need to be polished. A small text or Mermaid diagram can be enough to show service boundaries, data ownership, and message flow.</p>
+
+              <h2>Layer 3: ADRs as Decision Memory</h2>
+              <p>Architecture Decision Records are still underrated.</p>
+              <p>Many teams document architecture. Fewer document the decisions that created it.</p>
+              <p>AI needs both.</p>
+              <p>An ADR captures the problem, alternatives, decision, and consequences:</p>
+              <pre><code>ADR-001
+
+Title:
+Use Event-Driven Integration
+
+Status:
+Accepted
+
+Context:
+Services need loose coupling.
+
+Options:
+1. REST
+2. Shared database
+3. Kafka events
+
+Decision:
+Kafka events
+
+Consequences:
+- Eventual consistency is required
+- Consumers must handle duplicate events</code></pre>
+              <p>Suppose an assistant sees Kafka, RabbitMQ, and REST references inside a repository.</p>
+              <p>Which integration mechanism should it choose?</p>
+              <p>Without ADRs, it guesses.</p>
+              <p>With ADRs, it knows what the team chose and why.</p>
+              <p>That reduces architectural drift.</p>
+
+              <h2>Layer 4: Coding Standards as Operating Rules</h2>
+              <p>Most organizations already have coding standards.</p>
+              <p>The problem is that they often exist only in people's memories.</p>
+              <p>AI cannot read memories.</p>
+              <pre><code># Java Standards
+
+Naming:
+- Classes: PascalCase
+- Methods: camelCase
+
+Controllers:
+- Thin controllers only
+
+Services:
+- Business logic belongs here
+
+Repositories:
+- No custom SQL unless approved
+
+Logging:
+- Structured logging only
+
+Testing:
+- Minimum 80% coverage</code></pre>
+              <p>Without standards, an assistant may produce a 500-line controller, use <code>System.out.println</code>, or invent naming conventions that do not fit the codebase.</p>
+              <p>With standards, output becomes more consistent.</p>
+              <p>I also like including good examples under something like <code>docs/examples/</code>:</p>
+              <pre><code>docs/examples/
+- good-rest-controller.md
+- good-event-publisher.md
+- good-unit-test.md</code></pre>
+              <p>Then I explicitly tell the assistant to follow those examples.</p>
+              <p>Models learn heavily from concrete examples. Give them the examples you actually want copied.</p>
+
+              <h2>Layer 5: Repository Map as Navigation</h2>
+              <p>Large repositories are difficult for humans.</p>
+              <p>They are difficult for AI too.</p>
+              <p>A repository map acts as a guide.</p>
+              <pre><code># Repository Map
+
+/customer-service
+Customer lifecycle management
+
+/order-service
+Order processing
+
+/payment-service
+Payment handling
+
+/common-lib
+Shared utilities
+
+/docs
+Architecture and standards
+
+/tests
+Integration tests</code></pre>
+              <p>For larger repositories, the map can go one level deeper:</p>
+              <pre><code>/customer-service
+- controller
+- service
+- repository
+- events
+- config
+- security</code></pre>
+              <p>Now the assistant has a better chance of putting new functionality in the right place.</p>
+              <p>Without a map, a prompt like <i>Add fraud check functionality</i> starts with exploration and guessing. With a map, the assistant can start from the right module, spend fewer tokens searching, and make a more focused change.</p>
+
+              <img src="ai-choosing-the-right-door.png" alt="An AI assistant using a repository map to choose the correct module door among API, service, database, tests, and docs." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>The Sixth Layer: AGENTS.md</h2>
+              <p>Everything so far is good engineering practice even without AI.</p>
+              <p><code>AGENTS.md</code> is different.</p>
+              <p>It exists specifically for AI agents.</p>
+              <p>A README explains the system. An <code>AGENTS.md</code> explains how an AI should operate inside the system.</p>
+              <pre><code># AGENTS.md
+
+Before making changes:
+1. Read architecture.md
+2. Review relevant ADRs
+3. Follow coding-standards.md
+
+Architecture Constraints:
+- Event-driven architecture
+- No shared databases
+- PostgreSQL only
+
+Development Rules:
+- Add tests for new functionality
+- Follow existing package structure
+- Reuse existing libraries
+
+Forbidden Actions:
+- Do not introduce new frameworks
+- Do not bypass event publishing
+- Do not modify public APIs without approval
+
+Pull Request Checklist:
+- Tests passing
+- Documentation updated
+- Architecture constraints respected</code></pre>
+              <p>This file reduces the chance of AI going off in unexpected directions.</p>
+              <p>Imagine asking an assistant:</p>
+              <p><i>Implement customer onboarding workflow.</i></p>
+              <p>Without <code>AGENTS.md</code>, the model explores, infers patterns, and makes assumptions.</p>
+              <p>With <code>AGENTS.md</code>, it already knows what to read first, which constraints matter, what actions are prohibited, and what a complete change should include.</p>
+
+              <img src="repository-as-onboarding.png" alt="A repository reception desk where a human developer and AI assistant receive onboarding documents for code, docs, architecture, tests, standards, and AGENTS.md." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>My Typical Repository Template</h2>
+              <p>Today, a new project of mine usually starts with a structure like this:</p>
+              <pre><code>repo/
+|-- README.md
+|-- AGENTS.md
+|
+|-- docs/
+|   |-- architecture.md
+|   |-- repository-map.md
+|   |-- coding-standards.md
+|   |
+|   `-- adr/
+|       |-- 001-event-driven-architecture.md
+|       |-- 002-postgres-choice.md
+|       `-- ...
+|
+|-- src/
+|-- tests/
+`-- scripts/</code></pre>
+              <p>Nothing here is complicated.</p>
+              <p>Most of these files are simply good engineering practices. The difference is that they are now written with two readers in mind.</p>
+              <p>Humans.</p>
+              <p>And AI agents.</p>
+
+              <h2>The Bigger Lesson</h2>
+              <p>Most discussions about AI-assisted development revolve around prompts.</p>
+              <p>Prompt engineering matters.</p>
+              <p>But repository engineering matters more than many teams realize.</p>
+              <p>A well-structured repository provides:</p>
+              <ul>
+                <li>Purpose</li>
+                <li>Structure</li>
+                <li>Decisions</li>
+                <li>Rules</li>
+                <li>Navigation</li>
+                <li>Instructions</li>
+              </ul>
+              <p>When those things are documented, AI becomes more predictable.</p>
+              <p>When they are missing, the model fills the gaps with assumptions.</p>
+              <p>Software engineering has always been expensive when assumptions replace documentation.</p>
+              <p>Ten years ago, we onboarded developers.</p>
+              <p>Today, we onboard developers and AI agents.</p>
+              <p>The best repositories are starting to recognize that both need documentation.</p>
+              <p>The only difference is that one reads it with coffee in hand.</p>
+              <p>The other reads it one token at a time.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../stop-prompting-harder-start-giving-better-context/" class="article-related-item">
+                  <span class="article-related-item-title">Stop Prompting Harder. Start Giving Better Context.</span>
+                  <span class="article-related-item-summary">AI assistants do not succeed only because of better prompts. They succeed when the right context is available at the right time.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../coding-assistants-are-not-junior-developers/" class="article-related-item">
+                  <span class="article-related-item-title">Coding Assistants Are Not Junior Developers</span>
+                  <span class="article-related-item-summary">AI coding assistants can write code, explain frameworks, and generate useful solutions. But they do not work like people.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
