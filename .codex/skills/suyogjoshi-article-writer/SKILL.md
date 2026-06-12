@@ -17,8 +17,9 @@ description: Write, adapt, or publish long-form articles for suyogjoshi.com in S
    - Work from `dev` on a feature branch.
    - Keep the scope tied to the issue.
 4. Draft the article around a practical mental model, not a newsy take.
-5. Validate the draft against the voice checklist and publishing checklist.
-6. For publishable pages, update required indexes and `sitemap.xml`, then run a local render check when practical.
+5. Author publishable pages with layout-aware HTML from the start; do not rely on validation to discover predictable list, table, code-block, image, or mobile overflow issues.
+6. Validate the draft against the voice checklist, layout-aware authoring checklist, and publishing checklist.
+7. For publishable pages, update required indexes and `sitemap.xml`, then complete local visual QA before handoff.
 
 ## Article Shape
 
@@ -47,6 +48,7 @@ Prefer section headings that name the idea directly:
 - Explain AI and software systems as layered systems, feedback loops, trade-offs, and operational constraints.
 - Make contrastive claims when useful: "generated does not mean verified", "models are not the whole product", "the effort has moved".
 - Use lists for concrete criteria, responsibilities, workflows, risks, or examples.
+- Choose bullets or numbering intentionally: use bullets for sets and examples; use numbering only when sequence, priority, or count matters.
 - Use italics for key distilled claims, not for decoration.
 - Avoid generic thought-leadership filler, breathless predictions, and keyword-stuffed SEO phrasing.
 
@@ -65,6 +67,11 @@ For a new article page:
 - Add the production URL to `sitemap.xml` with priority `0.8`.
 - Preserve `aria-current="page"` in navigation.
 - Add `.article-original-note` when adapting a Medium or external post.
+- Preserve supplied images as-is unless the user explicitly asks for edits, crops, annotations, or regeneration.
+- Before handoff, visually check desktop, tablet, and mobile viewports. Confirm article header, cover image, lists, tables, code blocks, meaningful in-article images, related reading, and mobile navigation render correctly.
+- Confirm body text, lists, tables, code blocks, and images align to the article reading column unless a deliberate full-width treatment is already established.
+- Confirm mobile pages have no document-level horizontal overflow. Code blocks and tables may scroll within their own containers, but must not widen the page.
+- If the in-app Browser is unavailable, use a local browser or headless screenshot fallback. If visual QA cannot be completed, do not present the page as ready; state the skipped check and residual risk.
 
 ## References
 
