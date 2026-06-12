@@ -1355,6 +1355,8 @@
 
 .article-reading-col {
   max-width: 720px;
+  width: 100%;
+  min-width: 0;
   margin-inline: auto;
 }
 
@@ -1392,6 +1394,7 @@
   letter-spacing: -0.025em;
   color: var(--color-text);
   margin-bottom: 1.5rem;
+  overflow-wrap: break-word;
 }
 
 .article-page-subtitle {
@@ -1524,6 +1527,50 @@
   line-height: 1.85;
   color: var(--color-text);
   margin-bottom: 0.4rem;
+}
+
+.article-body pre {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.article-body code {
+  font-family: Consolas, Monaco, "Courier New", monospace;
+}
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0 2rem;
+  display: block;
+  overflow-x: auto;
+  font-family: var(--font-sans);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.article-body th,
+.article-body td {
+  border: 1px solid var(--color-border);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-body th {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.article-body td {
+  color: var(--color-text);
 }
 
 /* AI Workflow Lab demo examples */
