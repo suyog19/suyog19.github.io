@@ -56,7 +56,7 @@
   </header>
 
   <main>
-    <article>
+    <article data-feedback-target="how-i-structure-repositories-so-ai-can-understand-them">
 
       <div class="article-page-header">
         <div class="container">
@@ -422,6 +422,21 @@ Pull Request Checklist:
         </div>
       </div>
 
+      <!-- Article Feedback -->
+      <div class="article-feedback">
+        <div class="container">
+          <div class="article-reading-col">
+            <p class="article-feedback-prompt">Was this article helpful?</p>
+            <div class="article-feedback-buttons">
+              <button type="button" class="feedback-btn" data-rating="THUMBS_UP" aria-label="Yes, this was helpful">&#128077; Yes</button>
+              <button type="button" class="feedback-btn" data-rating="THUMBS_DOWN" aria-label="No, this was not helpful">&#128078; No</button>
+            </div>
+            <p class="article-feedback-status" hidden></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Reading -->
       <div class="article-related">
         <div class="container">
           <div class="article-reading-col">
@@ -470,5 +485,6 @@ Pull Request Checklist:
   </footer>
 
   <script src="../../js/script.js"></script>
+  <script src="../../js/feedback.js"></script>
 </body>
 </html>
