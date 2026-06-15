@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Why AI-assisted development needs work context from stories, acceptance criteria, constraints, traceability, and governance, not only repository context." />
+  <title>Beyond the Repository: Why AI Needs Work Context Too | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/" />
+  <meta property="og:title" content="Beyond the Repository: Why AI Needs Work Context Too | Suyog Joshi" />
+  <meta property="og:description" content="Why AI-assisted development needs work context from stories, acceptance criteria, constraints, traceability, and governance, not only repository context." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Beyond the Repository: Why AI Needs Work Context Too | Suyog Joshi" />
+  <meta name="twitter:description" content="Why AI-assisted development needs work context from stories, acceptance criteria, constraints, traceability, and governance, not only repository context." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Beyond the Repository: Why AI Needs Work Context Too</h1>
+            <p class="article-page-subtitle">Repositories tell AI how a system works. Work items tell AI why the system is changing.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 15 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+
+              <img src="cover.png" alt="AI assistant between repository context and work context, showing that repositories explain how a system works while work items explain why it is changing." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+
+              <p>In my previous article, I argued that repositories should be structured not only for human developers, but also for AI assistants.</p>
+              <p>Architecture documentation, repository maps, coding standards, ADRs, README files, and <code>AGENTS.md</code> documents all help AI understand how a system is built.</p>
+              <p>That repository context matters.</p>
+              <p>A lot.</p>
+              <p>But after spending months using coding assistants on real software projects, I have noticed another pattern.</p>
+              <p>Sometimes the AI understands the repository perfectly.</p>
+              <p>It finds the right services. It follows existing patterns. It writes clean code. It generates reasonable tests.</p>
+              <p>And yet the solution is still wrong.</p>
+              <p>Not because the AI misunderstood the code.</p>
+              <p>Because it misunderstood the change.</p>
+              <p>The repository tells the AI how the system is built.</p>
+              <p>But software changes are not driven by code. They are driven by business needs, customer problems, compliance requirements, operational concerns, and product decisions.</p>
+              <p>The AI also needs to know why the system is being changed.</p>
+              <p>That second layer is what I call <strong>work context</strong>.</p>
+              <p>If repository context explains how a system works, work context explains why the system must change.</p>
+              <p>Together, they form the two primary context layers required for effective AI-assisted development.</p>
+
+              <h2>A Failure I See Repeatedly</h2>
+              <p>Imagine a team working on a banking platform.</p>
+              <p>A developer asks a coding assistant:</p>
+              <p><i>Implement transaction limits for customers.</i></p>
+              <p>The AI explores the repository. It discovers the transaction service. It finds validation patterns. It identifies where customer profiles are stored. It updates APIs. It writes tests.</p>
+              <p>Everything looks good.</p>
+              <p>The pull request passes. The code review looks clean.</p>
+              <p>But a few days later, the solution is rejected.</p>
+              <p>Why?</p>
+              <p>Because the actual requirement was:</p>
+              <p><i>Introduce transaction limits only for retail customers.</i></p>
+              <p>Corporate customers were intentionally excluded.</p>
+              <p>The AI had no way of knowing that. The repository never contained that information.</p>
+              <p>The implementation was technically correct.</p>
+              <p>The business outcome was wrong.</p>
+              <p>The missing piece was not repository context. The missing piece was work context.</p>
+
+              <img src="ai-context-clarity-comparison.png" alt="Comparison of a vague story where AI guesses against a clear context-rich story where AI understands business goal, acceptance criteria, constraints, scope, and release priority." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>Repository Context Is Only Half the Picture</h2>
+              <p>Suppose you ask an AI assistant:</p>
+              <p><i>Implement customer transaction limits.</i></p>
+              <p>The repository can tell the AI:</p>
+              <ul>
+                <li>where the transaction service lives</li>
+                <li>how APIs are structured</li>
+                <li>which database tables exist</li>
+                <li>testing conventions</li>
+                <li>security frameworks</li>
+                <li>deployment patterns</li>
+              </ul>
+              <p>But it cannot answer:</p>
+              <ul>
+                <li>Why are limits being introduced?</li>
+                <li>Which customers are affected?</li>
+                <li>Is this regulatory?</li>
+                <li>Is this country-specific?</li>
+                <li>What must remain unchanged?</li>
+                <li>What is explicitly out of scope?</li>
+                <li>Which tests define success?</li>
+              </ul>
+              <p>Those answers usually exist somewhere else.</p>
+              <p>Most often inside JIRA, Azure DevOps, Rally, GitHub Issues, Linear, ServiceNow, or another ALM and work-tracking system.</p>
+              <p>Historically, developers carried much of this context in their heads.</p>
+              <p>AI assistants cannot.</p>
+              <p>If context is not explicitly available, AI fills the gaps with assumptions.</p>
+              <p>And assumptions eventually become code.</p>
+
+              <h2>What a Ticket Really Contains</h2>
+              <p>Many teams think of a ticket as a tracking mechanism.</p>
+              <p>In reality, a good work item is a structured container of business intent.</p>
+              <p>Consider this example.</p>
+              <pre><code>Story: Add transaction limits for retail customers
+
+Business Goal:
+Reduce fraud exposure on high-value transactions.
+
+Acceptance Criteria:
+- Retail customers cannot transfer more than $10,000/day.
+- Corporate customers are unaffected.
+- Existing scheduled transfers continue working.
+- Limit breaches return error code TXN-403.
+
+Out of Scope:
+- Branch transactions
+- ATM transactions
+
+Release:
+2026-Q3 Fraud Reduction Initiative</code></pre>
+              <p>Notice how little of this information exists in the repository itself.</p>
+              <p>Yet almost every line influences implementation decisions.</p>
+              <p>The business goal explains intent. Acceptance criteria define success. Constraints protect important qualities. Out-of-scope items prevent accidental expansion. Comments and decisions often explain why one approach was chosen over another.</p>
+              <p>A hotfix, a regulatory deadline, and a six-month enhancement all carry different risk profiles.</p>
+              <p>The ticket is not only a task.</p>
+              <p>It is task context.</p>
+
+              <h2>Why Vague Stories Produce Vague AI Output</h2>
+              <p>Consider two stories.</p>
+              <p><strong>Story A:</strong></p>
+              <pre><code>Add transaction limits.</code></pre>
+              <p>That is not a requirement.</p>
+              <p>It is effectively a prompt.</p>
+              <p>The AI now has to guess limit values, affected customer types, error handling, edge cases, and testing strategy.</p>
+              <p>Every guess introduces risk.</p>
+              <p><strong>Story B:</strong></p>
+              <pre><code>Business Goal:
+Reduce fraud exposure.
+
+Acceptance Criteria:
+- Retail customers limited to $10,000/day.
+- Corporate customers unaffected.
+- Existing transfers continue functioning.
+- Error TXN-403 returned on breach.
+
+Out of Scope:
+- ATM channels
+- Branch channels</code></pre>
+              <p>Now the AI is implementing instead of guessing.</p>
+              <p>That distinction matters.</p>
+              <p>Historically, weak stories were often rescued by conversation. A developer would ask questions. A tech lead would clarify assumptions. A product owner would provide missing information.</p>
+              <p>AI changes that dynamic.</p>
+              <p>AI assistants consume whatever context is available. If the story is vague, the AI fills the gaps itself.</p>
+              <p>This means story quality is no longer just a product management concern.</p>
+              <p>It becomes an engineering concern.</p>
+              <p>Poor requirements no longer create occasional misunderstandings. They create incorrect implementations at machine speed.</p>
+
+              <img src="ai-work-context-maturity-model.png" alt="Work context maturity model showing AI moving from ticket context to repository context, architecture context, and integrated workflow context." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>How I Actually Give Work Context to AI</h2>
+              <p>At this point, a practical question naturally appears.</p>
+              <p>How does the AI actually receive this context?</p>
+              <p>The answer is simpler than many people expect.</p>
+
+              <h2>Level 1: Copy the Story Into the Prompt</h2>
+              <p>The easiest approach is also surprisingly effective.</p>
+              <pre><code>Implement story ABC-142.
+
+Business Goal:
+Reduce fraud exposure.
+
+Acceptance Criteria:
+...
+
+Constraints:
+...
+
+Out of Scope:
+...</code></pre>
+              <p>Most teams can start here today.</p>
+              <p>No tools required.</p>
+
+              <h2>Level 2: Story Plus Repository Context</h2>
+              <p>Now combine work context with repository context.</p>
+              <pre><code>Implement story ABC-142.
+
+Acceptance Criteria:
+...
+
+Relevant Components:
+- TransferService
+- CustomerProfileService
+- TransactionValidator</code></pre>
+              <p>Now the AI understands both why the change is needed and where the change belongs.</p>
+              <p>The quality of output usually improves significantly.</p>
+
+              <h2>Level 3: Story Plus Architecture Context</h2>
+              <p>Provide additional implementation guidance.</p>
+              <pre><code>Story:
+ABC-142
+
+Acceptance Criteria:
+...
+
+Architecture Constraints:
+- Reuse CustomerProfileService
+- No new database tables
+- Follow existing validation framework</code></pre>
+              <p>At this point, the AI is operating with much richer context.</p>
+
+              <h2>Level 4: Integrated Workflows</h2>
+              <p>More advanced teams automate this process.</p>
+              <pre><code>JIRA Story
+  |
+  v
+AI retrieves story details
+  |
+  v
+AI retrieves architecture documentation
+  |
+  v
+AI retrieves repository map
+  |
+  v
+AI proposes implementation approach
+  |
+  v
+AI writes code
+  |
+  v
+AI validates against acceptance criteria</code></pre>
+              <p>The mechanism may vary.</p>
+              <p>The principle remains the same.</p>
+              <p>The AI should have access to the same context a developer would use before starting implementation.</p>
+
+              <h2>My Preferred Workflow</h2>
+              <p>One practice has consistently improved results for me.</p>
+              <p>I rarely ask the AI to start coding immediately.</p>
+              <p>Instead, I first ask it to explain the work item back to me.</p>
+              <pre><code>Story:
+ABC-142
+
+Acceptance Criteria:
+...
+
+Repository Context:
+...
+
+Before writing code:
+
+1. Summarize the requirement.
+2. Identify impacted components.
+3. Identify constraints.
+4. Identify risks.
+5. Propose implementation approach.
+6. Propose test scenarios.</code></pre>
+              <p>This often exposes misunderstandings before any code is generated.</p>
+              <p>I would rather discover a misunderstanding during planning than during code review.</p>
+
+              <h2>Making Work Items AI-Ready</h2>
+              <p>One of the simplest improvements teams can make is adopting a consistent structure.</p>
+              <p>A useful template might look like this:</p>
+              <ul>
+                <li>Business goal</li>
+                <li>Problem statement</li>
+                <li>Acceptance criteria</li>
+                <li>Technical constraints</li>
+                <li>Out of scope</li>
+                <li>Dependencies</li>
+                <li>Testing requirements</li>
+                <li>Release target</li>
+              </ul>
+              <p>Interestingly, the same structure that helps AI usually helps humans too.</p>
+              <p>That is rarely a coincidence.</p>
+
+              <img src="traceability-chain.png" alt="Traceability chain showing one work item ID flowing through the work item, branch, commit, pull request, tests and QA, and merge or release." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>Connecting Work Items to Code</h2>
+              <p>Work context becomes dramatically more valuable when it remains visible throughout the delivery process.</p>
+              <p>The goal is simple:</p>
+              <p><i>Every code change should be traceable back to a work item.</i></p>
+              <p>That traceability starts with small habits.</p>
+              <p><strong>Branch names:</strong></p>
+              <pre><code>feature/ABC-142-transaction-limits
+bugfix/ABC-291-invalid-currency-validation
+hotfix/ABC-401-login-timeout</code></pre>
+              <p><strong>Commit messages:</strong></p>
+              <pre><code>ABC-142 Add transaction limit validation
+
+ABC-142 Add integration tests for daily limit checks
+
+ABC-142 Refactor transfer validation workflow</code></pre>
+              <p><strong>Pull request titles:</strong></p>
+              <pre><code>ABC-142 Implement retail transaction limits</code></pre>
+              <p><strong>Pull request bodies:</strong></p>
+              <pre><code>Story:
+ABC-142
+
+Business Goal:
+Reduce fraud exposure.
+
+Acceptance Criteria Covered:
+[x] Retail limit enforcement
+[x] Corporate customers unaffected
+[x] TXN-403 returned
+[x] Integration tests added
+
+Out of Scope:
+[x] ATM transactions
+[x] Branch transactions
+
+Risks:
+Potential impact to transfer validation service.</code></pre>
+              <p>Now the relationship between requirements and implementation becomes explicit.</p>
+              <p>That helps humans review the work.</p>
+              <p>It also helps AI reason about whether the work actually satisfies the requirement.</p>
+
+              <h2>AI-Assisted Pull Request Reviews</h2>
+              <p>One of the most useful review questions is not:</p>
+              <p><i>Is the code good?</i></p>
+              <p>It is:</p>
+              <p><i>Does the implementation satisfy the acceptance criteria?</i></p>
+              <p>For example:</p>
+              <pre><code>Acceptance Criteria:
+AC1
+AC2
+AC3
+
+Tests:
+T1
+T2
+
+AI Finding:
+AC3 has no corresponding test coverage.</code></pre>
+              <p>This kind of review frequently finds issues that traditional code review can miss.</p>
+              <p>A reviewer may see clean code. An AI review that has the ticket, implementation, and tests together may see missing coverage against the actual requirement.</p>
+
+              <img src="ai-review-acceptance-criteria-coverage.png" alt="AI review diagram showing acceptance criteria, implementation, and tests being checked for coverage, with one uncovered criterion identified as a gap." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>Governance and Gates</h2>
+              <p>As AI accelerates development, governance becomes more important, not less.</p>
+              <p>One principle I increasingly favor is:</p>
+              <p><i>No ticket, no merge.</i></p>
+              <p>Not because process matters for its own sake.</p>
+              <p>Because traceability matters.</p>
+              <p>Every implementation should be linked to a business need. Every decision should be explainable later.</p>
+              <p>Example merge rules might include:</p>
+              <ul>
+                <li>PR must reference a valid work item.</li>
+                <li>PR title must include the work item ID.</li>
+                <li>At least one acceptance criterion must have corresponding test coverage.</li>
+                <li>CI checks must pass.</li>
+                <li>Human reviewer approval is required.</li>
+                <li>AI review gate must pass.</li>
+              </ul>
+              <p>These rules are not bureaucracy.</p>
+              <p>They are context preservation mechanisms.</p>
+
+              <h2>Human Accountability Does Not Go Away</h2>
+              <p>AI can generate code.</p>
+              <p>AI can generate tests.</p>
+              <p>AI can review pull requests.</p>
+              <p>AI can validate requirements.</p>
+              <p>But AI does not own outcomes.</p>
+              <p>Humans remain accountable for:</p>
+              <ul>
+                <li>business correctness</li>
+                <li>regulatory compliance</li>
+                <li>security decisions</li>
+                <li>production risk</li>
+                <li>architectural trade-offs</li>
+                <li>release decisions</li>
+              </ul>
+              <p>The more AI participates in software delivery, the more important human accountability becomes.</p>
+              <p>Not less.</p>
+
+              <img src="ai-ready-sdlc-lifecycle.png" alt="AI-ready software delivery lifecycle showing AI adding value from idea and story creation through planning, implementation, testing, review, release, monitoring, and feedback." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+
+              <h2>Building an AI-Ready SDLC</h2>
+              <p>Many discussions about AI-assisted development focus on prompts.</p>
+              <p>Others focus on models.</p>
+              <p>Some focus on IDE integrations.</p>
+              <p>Those things matter.</p>
+              <p>But they are not the foundation.</p>
+              <p>The foundation is context.</p>
+              <p>In the previous article, we explored repository context: architecture, documentation, standards, repository maps, and AI agent instructions.</p>
+              <p>Those artifacts tell AI how the system works.</p>
+              <p>This article adds the second half: stories, acceptance criteria, constraints, decisions, traceability, and governance.</p>
+              <p>These artifacts tell AI why the system is changing.</p>
+              <p>For years we optimized repositories for human developers.</p>
+              <p>Now we must optimize them for humans and AI.</p>
+              <p>The same is becoming true for our work management systems.</p>
+              <p>Stories, acceptance criteria, decisions, constraints, and traceability are no longer just project management artifacts.</p>
+              <p>They are becoming part of the development context itself.</p>
+              <p>AI-ready development is not just about better prompts.</p>
+              <p>It is about making the entire software delivery lifecycle context-rich.</p>
+              <p>And that context must flow all the way from idea to production.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../how-i-structure-repositories-so-ai-can-understand-them/" class="article-related-item">
+                  <span class="article-related-item-title">How I Structure Repositories So AI Can Actually Understand Them</span>
+                  <span class="article-related-item-summary">Better prompts help, but better repositories help more. Here is how repository structure gives AI the context it needs.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../stop-prompting-harder-start-giving-better-context/" class="article-related-item">
+                  <span class="article-related-item-title">Stop Prompting Harder. Start Giving Better Context.</span>
+                  <span class="article-related-item-summary">AI assistants do not succeed only because of better prompts. They succeed when the right context is available at the right time.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
