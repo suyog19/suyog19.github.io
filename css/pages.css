@@ -1354,7 +1354,7 @@
    ============================================================ */
 
 .article-reading-col {
-  max-width: 720px;
+  max-width: min(720px, calc(100vw - (var(--container-px) * 2)));
   width: 100%;
   min-width: 0;
   margin-inline: auto;
@@ -1452,6 +1452,11 @@
 
 .article-body p:last-child {
   margin-bottom: 0;
+}
+
+.article-body img {
+  max-width: 100%;
+  height: auto;
 }
 
 .flow-sequence {
@@ -1844,6 +1849,11 @@
   .article-page-header {
     padding-top: 3rem;
     padding-bottom: 3.5rem;
+  }
+
+  .article-page-title {
+    font-size: clamp(2rem, 10vw, 2.75rem);
+    overflow-wrap: anywhere;
   }
 
   .article-body-section {
