@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical guide to controlling AI agents with context, constraints, plans, scope, tests, review separation, and human accountability." />
+  <title>How To Tame Your Agent? | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/how-to-tame-your-agent/" />
+  <meta property="og:title" content="How To Tame Your Agent? | Suyog Joshi" />
+  <meta property="og:description" content="A practical guide to controlling AI agents with context, constraints, plans, scope, tests, review separation, and human accountability." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/how-to-tame-your-agent/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/how-to-tame-your-agent/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How To Tame Your Agent? | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical guide to controlling AI agents with context, constraints, plans, scope, tests, review separation, and human accountability." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/how-to-tame-your-agent/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">How To Tame Your Agent?</h1>
+            <p class="article-page-subtitle">Context helps AI understand. Constraints help it behave.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 15 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="A human operator setting scope while an AI agent feeds unbounded prompts into a token furnace." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>AI assistants are slowly changing shape.</p>
+              <p>In my earlier articles, I have mostly used the term AI Assistant. That still works when we are talking about tools that suggest code, explain errors, generate tests, or help us think through design.</p>
+              <p>But something changes when the assistant starts acting.</p>
+              <p>When it can read files, edit repositories, run commands, execute tests, create commits, open pull requests, or continue across multiple steps, it is no longer just assisting in the old sense. It starts behaving more like an agent.</p>
+              <p>That sounds powerful.</p>
+              <p>It also sounds slightly dangerous.</p>
+              <p>Because the moment an AI system starts acting on your codebase, your documents, your workflows, or your production-adjacent systems, the problem changes. You are no longer only asking, “Is the AI intelligent?” You are now asking a more practical engineering question:</p>
+              <p>Can I control what it does?</p>
+              <p>That, to me, is the real challenge with agents.</p>
+              <p>The goal is not to blindly trust the agent. The goal is not to make it fully independent. And the goal is definitely not to sit back while it burns through half your repository, twenty tool calls, and a mountain of tokens to fix one validation bug.</p>
+              <p>The real goal is to tame this new action-taking form of AI assistant: the agent.</p>
+              <p>A useful agent is not a magical autonomous developer. A useful agent is a fast execution system operating inside human-designed boundaries.</p>
+              <p>In this article, I will use the word agent for this action-taking form of AI assistant. The distinction matters. If an AI assistant only suggests, you can ignore it. If it starts acting, you need to control it.</p>
+              <figure class="article-figure" style="margin:0;">
+                <img src="ai-assistant-vs-ai-agent-workflow.png" alt="A comparison between an AI assistant suggesting code and an AI agent moving through repository, terminal, tests, and pull request steps." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <h2>The Assistant Looks Smart Until It Starts Acting</h2>
+              <p>Imagine this.</p>
+              <p>You ask an AI coding assistant to fix a small bug in a payment validation flow.</p>
+              <p>This is not a simple autocomplete assistant anymore. It can inspect files, edit code, run tests, and continue working through multiple steps. In other words, it is behaving like an agent.</p>
+              <p>The bug is simple: when the transfer amount is missing, the API should return a proper validation error instead of throwing a generic exception.</p>
+              <p>You give the agent the ticket and ask it to fix the issue.</p>
+              <p>A few minutes later, it comes back confidently.</p>
+              <p>It has changed the validator, modified the service class, updated two test files, renamed a helper method, adjusted some formatting, and “improved” the error handling structure. It also tells you that all tests are passing.</p>
+              <p>At first glance, this looks impressive.</p>
+              <p>Then you open the diff.</p>
+              <p>The original bug was in one validation path, but now the agent has touched unrelated logic. It changed behavior for another payment type. It introduced a new helper that may not follow the existing project convention. It added tests, but the tests mostly check that “some error is returned,” not the exact business behavior. And now, instead of reviewing a focused fix, you are reviewing the agent’s interpretation of your entire validation design.</p>
+              <p>This is where the excitement starts becoming expensive.</p>
+              <p>The assistant did not necessarily fail because it was stupid. It failed because, once it started acting like an agent, it was unconstrained.</p>
+              <p>It acted like a developer who was told, “Fix this,” but was not told what not to touch, what assumptions not to make, what decisions required approval, and what level of change was acceptable.</p>
+              <p>This is the first uncomfortable truth about agents:</p>
+              <p>An agent that can act without boundaries can create as much work as it saves.</p>
+              <figure class="article-figure" style="margin:0;">
+                <img src="untamed-vs-tamed-agent-comparison.png" alt="A comparison of an untamed agent touching many areas of a codebase and a tamed agent working inside an approved scope." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <h2>Taming Is Not About Making the Agent Less Powerful</h2>
+              <p>When people hear the word “tame,” they may think it means limiting the agent or reducing its usefulness.</p>
+              <p>I see it differently.</p>
+              <p>Taming an agent means making its power usable.</p>
+              <p>A powerful agent without boundaries is like a very enthusiastic junior developer with admin access, no onboarding, no code ownership map, no understanding of production risks, and unlimited coffee. It will move fast. It will produce output. Some of that output may even be good. But you will not always know why it made a decision, how much it changed, or what it misunderstood.</p>
+              <p>A tamed agent is different.</p>
+              <p>It has a job. It has context. It has scope. It knows when to act, when to stop, when to ask, and how its work will be reviewed. It is not “free.” It is productive because it is not free to do everything.</p>
+              <p>This distinction matters.</p>
+              <p>In traditional software engineering, we do not allow developers to push random changes directly to production just because they are talented. We create branches, pull requests, coding standards, automated tests, review gates, deployment pipelines, rollback plans, and access controls. We do this not because we do not trust developers, but because serious systems need serious control mechanisms.</p>
+              <p>Agents need the same thinking.</p>
+              <p>Not because they are useless.</p>
+              <p>Because they are useful enough to create real consequences.</p>
+              <h2>Give the Agent a Job Description</h2>
+              <p>One of the most common mistakes teams make is treating “agent” as a single generic role.</p>
+              <p>But in real teams, we do not work like that. We do not tell everyone to “just do software.” We have developers, reviewers, architects, testers, product owners, security reviewers, release managers, and support engineers. Each role has a different responsibility.</p>
+              <p>Agents should be treated the same way.</p>
+              <p>A Developer Agent should have a clear responsibility: implement the accepted story with minimal, relevant code changes. It should not independently redesign the module. It should not upgrade dependencies. It should not refactor unrelated files because it “noticed an opportunity.” Its job is to implement the requested change within the agreed scope.</p>
+              <p>A Reviewer Agent should have a different job. It should compare the implementation against the story, acceptance criteria, edge cases, and non-goals. It should ask whether the change is correct, whether it is too broad, whether tests are meaningful, and whether anything risky has been introduced.</p>
+              <p>A Test Quality Agent can have yet another job. Its purpose is not to celebrate that tests exist, but to check whether the tests actually prove the intended behavior. A test that only checks that a method returns a non-null response may increase coverage, but it may not increase confidence.</p>
+              <p>This role separation is important because agents tend to become vague when their responsibility is vague.</p>
+              <p>If you say, “Improve this code,” you may get anything.</p>
+              <p>If you say, “Act as a Developer Agent. Implement only the acceptance criteria. Do not refactor unrelated code. If a public interface change appears necessary, stop and explain why,” you have created a boundary.</p>
+              <p>That boundary may look small, but it changes the nature of the interaction.</p>
+              <p>The agent is no longer a mysterious intelligence roaming the codebase. It is now an execution role inside a system.</p>
+              <h2>Context Helps the Agent Understand</h2>
+              <p>A lot of AI advice today focuses on context, and rightly so.</p>
+              <p>An agent cannot understand your system if you give it only a one-line instruction. It needs to know the repository structure, coding conventions, architectural boundaries, testing practices, and the business reason behind the change.</p>
+              <p>A ticket that says “Add validation for payment amount” is not enough.</p>
+              <p>What does “validation” mean in this system? Should the validation happen at the API layer, service layer, domain layer, or all of them? Is zero allowed? Are negative values possible? Are decimal places currency-specific? Should the error response follow an existing error-code standard? Does this impact domestic transfers, cross-border transfers, wallet transfers, bill payments, or all payment types?</p>
+              <p>A human developer may ask these questions because they understand organizational risk. An agent may not. It may simply fill in the gaps.</p>
+              <p>And that is where things become dangerous.</p>
+              <p>Agents are very good at continuing from incomplete information. That is useful in writing, brainstorming, and exploration. But in software engineering, missing context often represents missing decisions. If the agent silently makes those decisions, you may get clean code that implements the wrong behavior.</p>
+              <p>So yes, context is essential.</p>
+              <p>The repository should tell the agent how the system is built. The work item should tell the agent why the system is changing. The acceptance criteria should tell the agent what must be true when the change is complete. The non-goals should tell the agent what it must not do.</p>
+              <p>Without this, the agent is not really implementing your requirement.</p>
+              <p>It is implementing its interpretation of your requirement.</p>
+              <p>And those are not always the same thing.</p>
+              <h2>Constraints Help the Agent Behave</h2>
+              <p>Context alone is not enough.</p>
+              <p>This is where many teams go wrong. They give the agent more and more context, hoping that better understanding will automatically produce better behavior.</p>
+              <p>It helps, but it does not solve the full problem.</p>
+              <p>An agent may understand the codebase and still make the change too broad. It may understand the story and still modify unrelated files. It may understand the architecture and still decide that this is a good time to “clean up” a few things.</p>
+              <p>That is why constraints matter.</p>
+              <p>Context helps the agent understand. Constraints help the agent behave.</p>
+              <p>A good agent instruction should define the blast radius. Which folders can it inspect first? Which files are likely in scope? Which areas are off-limits? Is it allowed to change public APIs? Is it allowed to update dependencies? Is it allowed to reformat files? Should it create new abstractions, or prefer minimal change? Should it ask before modifying shared components?</p>
+              <p>These constraints may sound restrictive, but they actually make the agent more useful.</p>
+              <p>Consider a real-life example from a large enterprise codebase. A small customer onboarding feature may touch API contracts, validation rules, workflow states, audit logging, notification templates, and database records. If an agent is allowed to freely explore and modify everything, the change can quickly become unreviewable. But if the task says, “For this story, change only the validation layer and related unit tests. Do not modify workflow state transitions or notification logic,” the agent has a much better chance of producing a focused, reviewable diff.</p>
+              <p>In software engineering, reviewability is not a luxury.</p>
+              <p>If humans cannot understand the change, humans cannot responsibly approve the change.</p>
+              <figure class="article-figure" style="margin:0;">
+                <img src="plan-review-and-approval-flow.png" alt="A workflow showing request, agent plan, human review, and implementation after approval." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <h2>Make the Agent Plan Before It Acts</h2>
+              <p>One of the simplest ways to control an agent is to make it explain its plan before it starts making changes.</p>
+              <p>This is not just a prompting trick. It is a workflow control.</p>
+              <p>Before allowing the agent to edit code, ask it to summarize the requirement, list assumptions, identify the files it expects to change, describe the test strategy, and call out any uncertainty. Then review that plan.</p>
+              <p>This small step can prevent a surprising amount of damage.</p>
+              <p>For example, suppose the agent says:</p>
+              <p>“I will update the payment validation service, modify the API error response mapper, update the transfer controller, add unit tests, and adjust the integration test suite.”</p>
+              <p>That may be fine.</p>
+              <p>But if the original task was only to fix a missing null check in one validator, this plan is already telling you that the agent may be expanding the scope. You can stop it before it creates a large diff.</p>
+              <p>Or suppose the agent says:</p>
+              <p>“I assume the minimum payment amount should be greater than zero.”</p>
+              <p>That assumption may be correct. Or it may be wrong. But now it is visible.</p>
+              <p>The important point is this: a plan reveals the agent’s mental model before that mental model becomes code.</p>
+              <p>Humans do this naturally in good engineering teams. Before a developer makes a risky change, they often discuss the approach. Before a team changes an architecture pattern, they review options. Before touching production behavior, they align on impact.</p>
+              <p>Agents should not get a free pass just because they can type faster.</p>
+              <h2>Do Not Let the Agent Become a Token-Eating Beast</h2>
+              <p>There is another reason to tame agents: cost.</p>
+              <p>Not just money, although money matters. Cost also includes time, attention, review effort, compute usage, and cognitive load.</p>
+              <p>An untamed agent can become a token-eating beast.</p>
+              <p>You ask it to fix one issue. It scans too many files. Then it summarizes too much. Then it makes a broad change. Then it runs tests. Then it finds a failure. Then it changes something else. Then it explains everything in a long essay. Then it discovers a new “improvement.” Then it asks to continue.</p>
+              <p>At some point, you are no longer using an agent.</p>
+              <p>You are feeding a token furnace.</p>
+              <p>This usually happens when the task is vague, the scope is undefined, and there is no stopping rule. The agent keeps exploring because it has not been told where to stop. It keeps explaining because it has not been told what level of summary is useful. It keeps improving because it has not been told that the goal is a minimal, story-aligned change.</p>
+              <p>Token waste is often a symptom of poor engineering control.</p>
+              <p>If the agent needs half the repository, twenty tool calls, and three long explanations to fix a simple validation bug, the issue may not be the model. The issue may be the operating model around the model.</p>
+              <p>There are practical ways to control this.</p>
+              <p>Tell the agent where to start. Give it the likely files or folders. Ask it to inspect only those first. Tell it not to scan unrelated modules unless it can explain why. Ask it for a short plan before implementation. Tell it to summarize only the delta after the change, not narrate every step. Set a stopping rule: once the requested change is implemented and relevant tests pass, stop.</p>
+              <p>This matters even more in large repositories. Enterprise codebases are full of historical layers, old conventions, generated files, integration points, configuration files, and test utilities. An agent without direction can spend a lot of tokens simply discovering what an experienced engineer already knows: most of the repository is irrelevant to the current task.</p>
+              <p>A well-tamed agent is not only safer.</p>
+              <p>It is more economical.</p>
+              <figure class="article-figure" style="margin:0;">
+                <img src="builder-reviewer-human-owner-process.png" alt="A workflow separating builder agent, reviewer agent, and human owner responsibilities." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <h2>Separate Implementation From Review</h2>
+              <p>Another important principle is this: do not let the implementing agent be the only reviewer of its own work.</p>
+              <p>This is not because agents cannot review. They can be quite useful in review. They can compare code against acceptance criteria. They can find missing tests. They can notice inconsistency. They can ask whether a change is too broad.</p>
+              <p>But self-review has limits.</p>
+              <p>When the same agent implements a solution and then explains why the solution is correct, it may defend its own assumptions. It may focus on what it changed rather than what it missed. It may produce a confident summary that sounds more complete than the actual work.</p>
+              <p>This is not very different from human behavior. Developers can review their own code, but serious teams still use peer review. Not because developers are careless, but because a second perspective catches different problems.</p>
+              <p>A healthier agent workflow separates responsibilities.</p>
+              <p>Let one agent implement the change. Let another review it against the story. Let a test-focused agent inspect whether the tests are meaningful. Then let the human make the final decision.</p>
+              <p>This does not remove the human from the loop. It makes the human review better informed.</p>
+              <p>The human should not have to manually discover every obvious issue from scratch. Agents can help surface risks, summarize diffs, compare against requirements, and identify missing cases. But the final judgment must remain human because accountability remains human.</p>
+              <p>The agent can write code.</p>
+              <p>It cannot carry production responsibility.</p>
+              <h2>Tests Are Not Just Validation. They Are Boundaries.</h2>
+              <p>Tests are often discussed as a way to verify the agent’s work after implementation. That is true, but incomplete.</p>
+              <p>Tests also shape the agent’s behavior.</p>
+              <p>A strong test suite tells the agent what must remain true. It defines expected behavior in executable form. It protects important flows from accidental damage. It gives the agent immediate feedback when a change breaks something.</p>
+              <p>In that sense, tests are not just quality checks. They are executable boundaries.</p>
+              <p>But this only works if the tests are meaningful.</p>
+              <p>An agent can easily write shallow tests. It can create a test that calls a method and checks that the response is not null. It can increase coverage without increasing confidence. It can mock away the very behavior that should have been tested.</p>
+              <p>That is why test quality matters.</p>
+              <p>For a payment validation bug, a useful test should not merely check that an error exists. It should check the exact condition, the expected error code, the message or response structure if relevant, and any important boundary cases. What happens when the amount is null? What happens when it is zero? What happens when it has too many decimals? What happens for different currencies? What happens for an existing valid payment request?</p>
+              <p>These tests do two things.</p>
+              <p>They verify the fix.</p>
+              <p>They also tell future agents, future developers, and future reviewers what behavior the system cares about.</p>
+              <p>A weak test says, “Something should happen.”</p>
+              <p>A strong test says, “This exact behavior must remain true.”</p>
+              <p>Agents need more of the second kind.</p>
+              <h2>Every Agent Mistake Should Improve the System</h2>
+              <p>When an agent makes a mistake, the obvious response is to fix the output.</p>
+              <p>The better response is to fix the environment that produced the output.</p>
+              <p>If the agent changed unrelated files, maybe your agent instructions need a stronger scope rule. If it invented a requirement, maybe your story template needs a section for assumptions and non-goals. If it wrote shallow tests, maybe your pull request template needs a test-quality checklist. If it misunderstood the architecture, maybe your repository needs a clearer architecture guide. If it repeatedly runs expensive or irrelevant commands, maybe your agent operating rules need command restrictions.</p>
+              <p>This is how teams should evolve their agent usage.</p>
+              <p>Do not treat every agent failure as a one-off mistake. Treat repeated failures as signals that your system is missing a boundary.</p>
+              <p>This is similar to how good engineering teams improve delivery. If production incidents repeatedly happen because configuration is unclear, you improve configuration management. If defects repeatedly escape because test coverage is weak, you improve test strategy. If releases are risky because rollback is manual, you improve deployment design.</p>
+              <p>Agents should be handled with the same mindset.</p>
+              <p>The goal is not to scold the agent.</p>
+              <p>The goal is to improve the system in which the agent operates.</p>
+              <h2>Practical Tools for Taming Agents</h2>
+              <p>A team does not need a complex platform to start taming agents. Even simple artifacts can help.</p>
+              <p>An <code>AGENTS.md</code> file can define how agents should behave in the repository. It can explain project structure, coding rules, testing expectations, allowed commands, forbidden actions, and escalation rules. For example, it can say that agents must not update dependencies unless explicitly asked, must avoid unrelated refactoring, must run specific tests before completion, and must stop when architectural changes seem necessary.</p>
+              <p>A good story template can also make a big difference. Instead of only describing the requested feature, the story should include context, acceptance criteria, non-goals, affected modules, expected tests, and known risks. This helps prevent the agent from filling gaps with assumptions.</p>
+              <p>A pull request template can force useful discipline. It can ask what changed, why it changed, which files were touched, what tests were run, what risks exist, and whether any agent-generated code was used. This is not bureaucracy. It is traceability.</p>
+              <p>CI/CD gates are another important part of agent control. Linting, unit tests, integration tests, coverage checks, dependency scans, security scans, and architecture checks can stop bad changes before they move forward. Agents are fast, but pipelines are consistent. Use both.</p>
+              <p>These artifacts may look ordinary. That is the point.</p>
+              <p>Taming agents is not only about futuristic AI orchestration. Much of it is just good software engineering applied to a new kind of worker.</p>
+              <h2>A Bad Workflow and a Better Workflow</h2>
+              <p>A bad agent workflow looks like this:</p>
+              <p>“Fix this bug.”</p>
+              <p>The agent reads some files, edits code, changes tests, explains what it did, and says everything is done. The human then spends thirty to forty-five minutes trying to understand whether the change is correct, why unrelated files were touched, and whether the tests prove anything meaningful.</p>
+              <p>A better workflow looks like this:</p>
+              <p>“Read this story. Summarize your understanding. List assumptions. Identify the minimal files likely to change. Propose a test strategy. Do not edit anything until the plan is approved.”</p>
+              <p>The agent responds with a plan. The human corrects one assumption and narrows the scope. The agent implements only the approved change. It runs the relevant tests. It summarizes the exact delta. A separate review step checks the code against the acceptance criteria. The human reviews the final result with much less confusion.</p>
+              <p>The second workflow may appear slower at first.</p>
+              <p>In practice, it is often faster because it reduces cleanup, review noise, token waste, and rework.</p>
+              <p>Speed is not just how fast the agent produces code.</p>
+              <p>Speed is how quickly the team can safely accept the change.</p>
+              <h2>Humans Still Own the Important Decisions</h2>
+              <p>Agents can help with many tasks. They can draft code, inspect diffs, generate tests, summarize logs, explain failures, and review against checklists. Used well, they can make software teams faster and more thoughtful.</p>
+              <p>But there are decisions humans should continue to own.</p>
+              <p>Humans should own requirements clarity. Humans should own architecture trade-offs. Humans should own security acceptance. Humans should own production risk. Humans should own customer impact. Humans should own the final merge decision.</p>
+              <p>This is especially important in serious systems: banking, payments, healthcare, infrastructure, enterprise platforms, and any software where small mistakes can have large consequences.</p>
+              <p>An agent may understand syntax. It may even understand patterns. But it does not understand accountability the way a human team does. It does not get called during a production incident. It does not explain the decision to a regulator. It does not face the customer whose transaction failed. It does not live with long-term maintenance consequences unless humans design that memory into the process.</p>
+              <p>That is why the human role does not disappear.</p>
+              <p>It changes.</p>
+              <p>The human becomes less of a line-by-line typist and more of a system designer, reviewer, constraint setter, and decision owner.</p>
+              <figure class="article-figure" style="margin:0;">
+                <img src="output-vs-value.png" alt="A comparison showing untamed agents producing noisy output and tamed agents producing focused value." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <h2>So, How Do You Tame Your Agent?</h2>
+              <p>You tame your agent by designing the environment in which it is allowed to act.</p>
+              <p>You give it context so it understands the system.</p>
+              <p>You give it constraints so it behaves within boundaries.</p>
+              <p>You give it a role so it knows what kind of work it is doing.</p>
+              <p>You ask for a plan so its assumptions become visible before they become code.</p>
+              <p>You restrict scope so the change remains reviewable.</p>
+              <p>You separate implementation from review so the agent is not the only judge of its own work.</p>
+              <p>You use tests as executable boundaries.</p>
+              <p>You control token usage so the agent does not become an expensive exploration machine.</p>
+              <p>You build feedback loops so every mistake improves the operating model.</p>
+              <p>The terminology is not the main point. Whether we call it an AI assistant, coding assistant, or agent, the important question is the same: once it can act, how do we make that action safe, focused, economical, and reviewable?</p>
+              <p>This is not about distrusting AI.</p>
+              <p>It is about respecting the fact that powerful tools need operating discipline.</p>
+              <p>The future of software engineering is not humans versus agents. It is not even humans simply “using” agents. It is humans designing systems where agents can act safely, usefully, economically, and under control.</p>
+              <p>Because an untamed agent can produce a lot of output.</p>
+              <p>A tamed agent can produce value.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../beyond-the-repository-why-ai-needs-work-context-too/" class="article-related-item">
+                  <span class="article-related-item-title">Beyond the Repository: Why AI Needs Work Context Too</span>
+                  <span class="article-related-item-summary">Repositories tell AI how a system works. Work items, acceptance criteria, constraints, and traceability tell AI why the system is changing.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../how-i-structure-repositories-so-ai-can-understand-them/" class="article-related-item">
+                  <span class="article-related-item-title">How I Structure Repositories So AI Can Actually Understand Them</span>
+                  <span class="article-related-item-summary">Better prompts help, but better repositories help more when AI assistants need to understand how your system works.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
