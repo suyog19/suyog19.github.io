@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical matrix for deciding which software engineering tasks AI can handle, where humans must guide it, and where judgment remains essential." />
+  <title>Not All Engineering Tasks Belong to AI | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/" />
+  <meta property="og:title" content="Not All Engineering Tasks Belong to AI | Suyog Joshi" />
+  <meta property="og:description" content="A practical matrix for deciding which software engineering tasks AI can handle, where humans must guide it, and where judgment remains essential." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Not All Engineering Tasks Belong to AI | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical matrix for deciding which software engineering tasks AI can handle, where humans must guide it, and where judgment remains essential." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Not All Engineering Tasks Belong to AI</h1>
+            <p class="article-page-subtitle">A task-by-task look at where AI helps, where it needs guidance, and where human judgment remains essential.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 19 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="Three control levers labelled AI, AI, and HUMAN, showing that AI can help with many tasks while human control remains essential." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>In the earlier articles of this series, we looked at AI assistants primarily as productivity tools rather than replacements for software engineers. We explored why context matters, how repositories can be structured to help AI understand a codebase better, and how engineering practices can be used to keep AI-generated work reliable and under control.</p>
+
+              <p>Having established that foundation, it is worth stepping back and asking a broader question: where exactly do AI assistants fit within the software engineering process?</p>
+
+              <p>Software engineering is not a single activity. Over several decades, the industry has evolved a structured set of practices to transform business ideas into working software systems. Whether a team follows Agile, Scrum, SAFe, or a more traditional SDLC, the overall process is typically broken down into activities such as requirements analysis, solution design, implementation, testing, deployment, and documentation. Each activity has a distinct purpose, expected outcomes, and often requires different skills and perspectives.</p>
+
+              <p>Traditionally, all of these activities have been performed by humans. Today, AI assistants are capable of contributing to almost every stage of this process. They can help analyze requirements, suggest designs, generate code, create tests, review changes, and draft documentation. This naturally raises a set of important questions.</p>
+
+              <p>Do AI assistants add equal value across all software engineering activities? Are some tasks better suited for AI than others? Should every task be delegated to AI whenever possible, or are there areas where human ownership remains essential? More importantly, is there a practical framework that can help us decide?</p>
+
+              <p>There is another, much larger discussion about whether AI fundamentally changes the software engineering paradigm itself. That is an important topic, and we will return to it later in this series. For the purpose of this article, however, we will make a simpler assumption. We will assume that the software development process remains largely unchanged and that AI assistants are introduced as a new tool within it.</p>
+
+              <p>Under that assumption, let us examine which software engineering tasks AI handles particularly well, where human judgment continues to matter most, and how the two can work together effectively.</p>
+
+              <h2>All Engineering Tasks Are Not Equal</h2>
+
+              <p>Software engineering involves many different kinds of work. Some tasks are highly structured and repetitive. Others require judgment, experience, and business understanding. Activities such as requirements analysis, architecture, coding, testing, deployment, documentation, and production support may all belong to the same software development process, but they are fundamentally different in nature.</p>
+
+              <p>Because these tasks are different, it would be unreasonable to expect a single tool to perform equally well across all of them.</p>
+
+              <p>Using AI for every engineering task is a little like using a power drill for every job in a workshop. A power drill is an extremely useful tool, but its effectiveness depends on the task at hand. You would not use it to measure dimensions, inspect quality, or decide what should be built in the first place. Similarly, AI assistants can be remarkably effective in some areas of software engineering while providing only limited value in others.</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="different-tools-different-jobs.png" alt="Different tools on a wall labelled tighten, adjust, measure, transform, and protect, illustrating that different engineering tasks need different tools." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <p>Another important consideration is that AI performs best when tasks are clearly defined. Well-structured tasks often have explicit objectives, constraints, acceptance criteria, and examples of expected outcomes. The more clearly a task can be described, the easier it becomes for an AI assistant to contribute effectively. As tasks become more ambiguous, involve trade-offs, or require business judgment, the importance of human involvement increases.</p>
+
+              <p>At this point, it is also useful to distinguish between automation and AI assistance, as the two are often confused.</p>
+
+              <p>Automation follows predefined rules to produce predictable outcomes. A CI/CD pipeline that automatically builds software after a commit is an example of automation. The system is not making decisions; it is executing a sequence of instructions defined by humans.</p>
+
+              <p>AI assistance is different. Instead of following a fixed set of rules, an AI assistant interprets context and generates an output based on patterns learned from data. When an AI assistant proposes a refactoring, generates a unit test, summarizes a requirement, or suggests an architectural approach, the exact output is not predetermined. The AI is effectively making a prediction about what a useful outcome might look like.</p>
+
+              <p>This distinction is important because software engineering tasks vary not only in complexity but also in the amount of judgment they require. As we will see, tasks that are repetitive, well-structured, and easy to verify tend to be good candidates for AI assistance. Tasks involving business context, trade-offs, accountability, and decision-making typically require stronger human ownership.</p>
+
+              <h2>A Practical AI-Human Task Matrix</h2>
+
+              <p>The discussion so far has been largely conceptual. Let us now make it more concrete.</p>
+
+              <p>One of the most common questions teams ask when adopting AI assistants is:</p>
+
+              <blockquote><p>Which software engineering tasks should we actively delegate to AI, and which tasks should remain under human ownership?</p></blockquote>
+
+              <p>There is rarely a simple yes-or-no answer. In most cases, AI and humans contribute together, with different levels of responsibility and oversight. The goal is therefore not to replace human involvement, but to determine how work can be divided most effectively.</p>
+
+              <p>The following matrix examines a broad range of software engineering activities and evaluates them from four perspectives:</p>
+
+              <ul>
+                <li><strong>Task</strong> — The activity being performed.</li>
+                <li><strong>AI Capability</strong> — How effectively an AI assistant can contribute today.</li>
+                <li><strong>Human Role</strong> — The level of human ownership and involvement required.</li>
+                <li><strong>Context Needed by AI</strong> — The information required for the AI assistant to produce useful outcomes.</li>
+              </ul>
+
+              <p>Rather than viewing AI as a replacement for software engineers, it is more useful to think of it as an additional participant in the software development process. The matrix below can help identify where that participant is likely to be most effective. The matrix is intentionally detailed. Readers need not agree with every individual assessment. The more important observation is the pattern that emerges across categories of work.</p>
+
+              <h3>Requirements &amp; Planning</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Requirements Summarization</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Requirements documents, meeting notes</td>
+                  </tr>
+                  <tr>
+                    <td>Requirements Clarification Questions</td>
+                    <td>Good</td>
+                    <td>Answer &amp; Prioritize</td>
+                    <td>Requirements, business goals</td>
+                  </tr>
+                  <tr>
+                    <td>User Story Drafting</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Epics, requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Acceptance Criteria Drafting</td>
+                    <td>Good</td>
+                    <td>Approve</td>
+                    <td>User stories, business rules</td>
+                  </tr>
+                  <tr>
+                    <td>Use Case Identification</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Business requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Functional Decomposition</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Business process descriptions</td>
+                  </tr>
+                  <tr>
+                    <td>Impact Analysis</td>
+                    <td>Assist</td>
+                    <td>Confirm</td>
+                    <td>Existing system knowledge</td>
+                  </tr>
+                  <tr>
+                    <td>Effort Estimation</td>
+                    <td>Limited</td>
+                    <td>Own</td>
+                    <td>Historical data, team capability</td>
+                  </tr>
+                  <tr>
+                    <td>Sprint Planning Suggestions</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Backlog, velocity data</td>
+                  </tr>
+                  <tr>
+                    <td>Prioritization</td>
+                    <td>Limited</td>
+                    <td>Own</td>
+                    <td>Business goals, roadmap</td>
+                  </tr>
+                  <tr>
+                    <td>Dependency Identification</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Requirements, architecture</td>
+                  </tr>
+                  <tr>
+                    <td>Risk Identification</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Requirements, project context</td>
+                  </tr>
+                  <tr>
+                    <td>Release Planning</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Roadmap, dependencies</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Architecture &amp; Design</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Architecture Alternatives</td>
+                    <td>Good</td>
+                    <td>Evaluate &amp; Decide</td>
+                    <td>Requirements, NFRs</td>
+                  </tr>
+                  <tr>
+                    <td>High-Level Architecture</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Business objectives, constraints</td>
+                  </tr>
+                  <tr>
+                    <td>Technology Selection</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Team skills, constraints</td>
+                  </tr>
+                  <tr>
+                    <td>Design Pattern Suggestions</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Functional requirements</td>
+                  </tr>
+                  <tr>
+                    <td>API Design</td>
+                    <td>Very Good</td>
+                    <td>Review</td>
+                    <td>Requirements, standards</td>
+                  </tr>
+                  <tr>
+                    <td>Data Model Design</td>
+                    <td>Very Good</td>
+                    <td>Review</td>
+                    <td>Domain model</td>
+                  </tr>
+                  <tr>
+                    <td>Database Schema Design</td>
+                    <td>Very Good</td>
+                    <td>Review</td>
+                    <td>Data requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Event Design</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Business workflows</td>
+                  </tr>
+                  <tr>
+                    <td>Sequence Diagram Drafting</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Requirements, architecture</td>
+                  </tr>
+                  <tr>
+                    <td>Component Identification</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>System requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Scalability Recommendations</td>
+                    <td>Good</td>
+                    <td>Evaluate</td>
+                    <td>NFRs, expected load</td>
+                  </tr>
+                  <tr>
+                    <td>Resiliency Recommendations</td>
+                    <td>Good</td>
+                    <td>Evaluate</td>
+                    <td>Architecture, SLAs</td>
+                  </tr>
+                  <tr>
+                    <td>Integration Design</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>System interfaces</td>
+                  </tr>
+                  <tr>
+                    <td>Trade-off Analysis</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Business and technical constraints</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Implementation &amp; Coding</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Boilerplate Code Generation</td>
+                    <td>Excellent</td>
+                    <td>Minimal Review</td>
+                    <td>Coding standards</td>
+                  </tr>
+                  <tr>
+                    <td>CRUD Implementation</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Data model, requirements</td>
+                  </tr>
+                  <tr>
+                    <td>API Endpoint Development</td>
+                    <td>Very Good</td>
+                    <td>Review</td>
+                    <td>API contracts</td>
+                  </tr>
+                  <tr>
+                    <td>Business Logic Implementation</td>
+                    <td>Good</td>
+                    <td>Review Thoroughly</td>
+                    <td>Requirements, domain rules</td>
+                  </tr>
+                  <tr>
+                    <td>Code Translation Between Languages</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Existing source code</td>
+                  </tr>
+                  <tr>
+                    <td>SDK Usage Examples</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>API documentation</td>
+                  </tr>
+                  <tr>
+                    <td>SQL Query Generation</td>
+                    <td>Very Good</td>
+                    <td>Review</td>
+                    <td>Schema, business requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Configuration Generation</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Framework standards</td>
+                  </tr>
+                  <tr>
+                    <td>Infrastructure as Code</td>
+                    <td>Very Good</td>
+                    <td>Review</td>
+                    <td>Cloud architecture</td>
+                  </tr>
+                  <tr>
+                    <td>Migration Script Generation</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Database schema</td>
+                  </tr>
+                  <tr>
+                    <td>Legacy Code Understanding</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Existing codebase</td>
+                  </tr>
+                  <tr>
+                    <td>Code Refactoring</td>
+                    <td>Good</td>
+                    <td>Approve</td>
+                    <td>Existing code, architecture</td>
+                  </tr>
+                  <tr>
+                    <td>Code Modernization</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Legacy implementation</td>
+                  </tr>
+                  <tr>
+                    <td>Technical Debt Identification</td>
+                    <td>Good</td>
+                    <td>Prioritize</td>
+                    <td>Codebase, architecture</td>
+                  </tr>
+                  <tr>
+                    <td>Coding Standard Compliance</td>
+                    <td>Excellent</td>
+                    <td>Review Exceptions</td>
+                    <td>Coding standards</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Testing &amp; Quality Assurance</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Unit Test Generation</td>
+                    <td>Excellent</td>
+                    <td>Verify Quality</td>
+                    <td>Code, acceptance criteria</td>
+                  </tr>
+                  <tr>
+                    <td>Integration Test Generation</td>
+                    <td>Good</td>
+                    <td>Verify Coverage</td>
+                    <td>APIs, workflows</td>
+                  </tr>
+                  <tr>
+                    <td>Test Data Generation</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Data model</td>
+                  </tr>
+                  <tr>
+                    <td>Boundary Test Identification</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Business rules</td>
+                  </tr>
+                  <tr>
+                    <td>Negative Test Generation</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Regression Test Suggestions</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Existing tests</td>
+                  </tr>
+                  <tr>
+                    <td>Test Case Documentation</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Test scenarios</td>
+                  </tr>
+                  <tr>
+                    <td>Coverage Gap Identification</td>
+                    <td>Good</td>
+                    <td>Confirm</td>
+                    <td>Code, test suite</td>
+                  </tr>
+                  <tr>
+                    <td>Mock Generation</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Interfaces</td>
+                  </tr>
+                  <tr>
+                    <td>Performance Test Scenario Generation</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>NFRs</td>
+                  </tr>
+                  <tr>
+                    <td>Security Test Suggestions</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Security requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Exploratory Testing Ideas</td>
+                    <td>Good</td>
+                    <td>Evaluate</td>
+                    <td>Application context</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Security &amp; Compliance</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Static Security Review</td>
+                    <td>Good</td>
+                    <td>Own Risk Decision</td>
+                    <td>Code, standards</td>
+                  </tr>
+                  <tr>
+                    <td>OWASP Vulnerability Detection</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Source code</td>
+                  </tr>
+                  <tr>
+                    <td>Secure Coding Recommendations</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Technology stack</td>
+                  </tr>
+                  <tr>
+                    <td>Threat Modeling Assistance</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Architecture, trust boundaries</td>
+                  </tr>
+                  <tr>
+                    <td>Vulnerability Remediation Suggestions</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Findings, codebase</td>
+                  </tr>
+                  <tr>
+                    <td>Security Documentation Drafting</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Architecture</td>
+                  </tr>
+                  <tr>
+                    <td>Compliance Mapping</td>
+                    <td>Assist</td>
+                    <td>Own Accountability</td>
+                    <td>Regulations</td>
+                  </tr>
+                  <tr>
+                    <td>Audit Evidence Preparation</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Controls, processes</td>
+                  </tr>
+                  <tr>
+                    <td>Risk Assessment</td>
+                    <td>Assist</td>
+                    <td>Own Decision</td>
+                    <td>Business impact</td>
+                  </tr>
+                  <tr>
+                    <td>Privacy Impact Review</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Data flows, regulations</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Operations &amp; Reliability</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Log Analysis</td>
+                    <td>Excellent</td>
+                    <td>Confirm Findings</td>
+                    <td>Logs</td>
+                  </tr>
+                  <tr>
+                    <td>Incident Summary Generation</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Incident records</td>
+                  </tr>
+                  <tr>
+                    <td>Root Cause Analysis</td>
+                    <td>Good</td>
+                    <td>Confirm</td>
+                    <td>Logs, telemetry</td>
+                  </tr>
+                  <tr>
+                    <td>Production Incident Investigation</td>
+                    <td>Assist</td>
+                    <td>Lead Investigation</td>
+                    <td>Monitoring data</td>
+                  </tr>
+                  <tr>
+                    <td>Monitoring Rule Suggestions</td>
+                    <td>Good</td>
+                    <td>Approve</td>
+                    <td>Architecture, SLOs</td>
+                  </tr>
+                  <tr>
+                    <td>Alert Tuning Suggestions</td>
+                    <td>Good</td>
+                    <td>Approve</td>
+                    <td>Monitoring history</td>
+                  </tr>
+                  <tr>
+                    <td>Runbook Drafting</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Operational procedures</td>
+                  </tr>
+                  <tr>
+                    <td>Capacity Planning Suggestions</td>
+                    <td>Good</td>
+                    <td>Review</td>
+                    <td>Usage metrics</td>
+                  </tr>
+                  <tr>
+                    <td>Performance Optimization Suggestions</td>
+                    <td>Good</td>
+                    <td>Benchmark &amp; Decide</td>
+                    <td>Metrics</td>
+                  </tr>
+                  <tr>
+                    <td>Cost Optimization Suggestions</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Cloud usage data</td>
+                  </tr>
+                  <tr>
+                    <td>Release Notes Generation</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Commits, PRs</td>
+                  </tr>
+                  <tr>
+                    <td>Deployment Checklist Generation</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Deployment process</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Collaboration &amp; Documentation</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>README Creation</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Repository structure</td>
+                  </tr>
+                  <tr>
+                    <td>Technical Documentation Drafting</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Codebase, architecture</td>
+                  </tr>
+                  <tr>
+                    <td>Architecture Documentation</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Architecture diagrams</td>
+                  </tr>
+                  <tr>
+                    <td>Meeting Notes Summarization</td>
+                    <td>Excellent</td>
+                    <td>Validate</td>
+                    <td>Meeting transcripts</td>
+                  </tr>
+                  <tr>
+                    <td>Decision Record Drafting</td>
+                    <td>Good</td>
+                    <td>Approve</td>
+                    <td>Design discussions</td>
+                  </tr>
+                  <tr>
+                    <td>Knowledge Base Article Creation</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Existing documentation</td>
+                  </tr>
+                  <tr>
+                    <td>Release Communication Drafting</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Release scope</td>
+                  </tr>
+                  <tr>
+                    <td>Onboarding Guides</td>
+                    <td>Good</td>
+                    <td>Validate</td>
+                    <td>Team practices</td>
+                  </tr>
+                  <tr>
+                    <td>FAQ Generation</td>
+                    <td>Excellent</td>
+                    <td>Review</td>
+                    <td>Product documentation</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Leadership, Product &amp; Governance</h3>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>AI Capability</th>
+                    <th>Human Role</th>
+                    <th>Context Needed by AI</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Product Roadmap Decisions</td>
+                    <td>Poor</td>
+                    <td>Own Completely</td>
+                    <td>Market, customers</td>
+                  </tr>
+                  <tr>
+                    <td>Feature Prioritization</td>
+                    <td>Limited</td>
+                    <td>Own</td>
+                    <td>Business strategy</td>
+                  </tr>
+                  <tr>
+                    <td>Stakeholder Alignment</td>
+                    <td>Poor</td>
+                    <td>Human-Led</td>
+                    <td>Organizational context</td>
+                  </tr>
+                  <tr>
+                    <td>Trade-off Decisions</td>
+                    <td>Assist</td>
+                    <td>Own</td>
+                    <td>Business and technical constraints</td>
+                  </tr>
+                  <tr>
+                    <td>Budget Decisions</td>
+                    <td>Poor</td>
+                    <td>Own</td>
+                    <td>Financial context</td>
+                  </tr>
+                  <tr>
+                    <td>Vendor Evaluation</td>
+                    <td>Limited</td>
+                    <td>Own</td>
+                    <td>Commercial factors</td>
+                  </tr>
+                  <tr>
+                    <td>Hiring Decisions</td>
+                    <td>Assist</td>
+                    <td>Human Owns</td>
+                    <td>Interviews, requirements</td>
+                  </tr>
+                  <tr>
+                    <td>Performance Reviews</td>
+                    <td>Assist</td>
+                    <td>Human Owns</td>
+                    <td>Team context</td>
+                  </tr>
+                  <tr>
+                    <td>Mentoring Engineers</td>
+                    <td>Assist</td>
+                    <td>Human Owns</td>
+                    <td>Individual growth goals</td>
+                  </tr>
+                  <tr>
+                    <td>Conflict Resolution</td>
+                    <td>Poor</td>
+                    <td>Human-Led</td>
+                    <td>People dynamics</td>
+                  </tr>
+                  <tr>
+                    <td>Team Leadership</td>
+                    <td>Poor</td>
+                    <td>Human-Led</td>
+                    <td>Human relationships</td>
+                  </tr>
+                  <tr>
+                    <td>Organizational Change Management</td>
+                    <td>Poor</td>
+                    <td>Human-Led</td>
+                    <td>Organizational context</td>
+                  </tr>
+                  <tr>
+                    <td>Executive Communication</td>
+                    <td>Assist</td>
+                    <td>Human Owns</td>
+                    <td>Business strategy</td>
+                  </tr>
+                  <tr>
+                    <td>Accountability for Outcomes</td>
+                    <td>Human Only</td>
+                    <td>Human Owns</td>
+                    <td>Real-world consequences</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h2>A Simple Mental Model</h2>
+
+              <p>While the matrix provides a detailed view, most day-to-day decisions can be reduced to a simple question:</p>
+
+              <blockquote><p>Is this task primarily about execution, or is it primarily about judgment?</p></blockquote>
+
+              <p>Tasks that are repetitive, structured, pattern-based, and easy to verify are generally good candidates for AI assistance. These tasks often have clear inputs, clear outputs, and well-defined acceptance criteria.</p>
+
+              <p>Examples include:</p>
+
+              <ul>
+                <li>Boilerplate code generation</li>
+                <li>Unit test generation</li>
+                <li>Documentation drafting</li>
+                <li>Log analysis</li>
+                <li>API implementation</li>
+              </ul>
+
+              <p>On the other hand, tasks involving ambiguity, trade-offs, business context, organizational alignment, or accountability continue to require stronger human ownership.</p>
+
+              <p>Examples include:</p>
+
+              <ul>
+                <li>Requirements prioritization</li>
+                <li>Architecture decisions</li>
+                <li>Security risk acceptance</li>
+                <li>Product strategy</li>
+                <li>Team leadership</li>
+              </ul>
+
+              <p>Another useful way to think about this is that AI performs best when the question has many acceptable answers but the outcome can still be verified. Humans remain essential when the problem itself must first be defined or when someone must ultimately be accountable for the outcome.</p>
+
+              <p>As a rule of thumb:</p>
+
+              <p><strong>The more a task resembles execution, the more AI can help.</strong></p>
+
+              <p><strong>The more a task resembles judgment, the more human ownership matters.</strong></p>
+
+              <p>This distinction explains most of the patterns observed in the matrix and provides a practical framework for deciding where AI assistants can add value within your own software engineering process.</p>
+
+              <h2>An Important Observation: The Matrix Is Not Fixed</h2>
+
+              <p>One important caveat is that the matrix should not be interpreted as a permanent ranking of AI capabilities.</p>
+
+              <p>The effectiveness of an AI assistant is heavily influenced by the quality of context available to it.</p>
+
+              <p>In other words, the same task can move up or down the matrix depending on the information provided.</p>
+
+              <p>Consider architecture design as an example.</p>
+
+              <p>If an AI assistant is asked to design a system with little more than a one-sentence requirement, the results are likely to be generic and of limited practical value.</p>
+
+              <p>However, if the same assistant is provided with detailed requirements, non-functional requirements, existing architecture diagrams, team constraints, deployment considerations, and regulatory requirements, its recommendations often become significantly more useful.</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="context-driven-ai-outputs-comparison.png" alt="A low-context AI request producing generic architecture contrasted with a high-context request producing useful architecture." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <p>The same pattern can be observed across many engineering activities.</p>
+
+              <p>Requirements become easier to analyze when business objectives are clearly documented. Code generation improves when coding standards and examples are available. Test generation improves when acceptance criteria are precise. Documentation becomes more accurate when architecture and implementation details are well understood.</p>
+
+              <p>This observation helps explain why context has been a recurring theme throughout this series.</p>
+
+              <p>Better prompts help.</p>
+
+              <p>Better repositories help more.</p>
+
+              <p>Better work context helps even more.</p>
+
+              <p>The quality of AI outcomes is often determined less by the capability of the model and more by the quality of information available to it.</p>
+
+              <p>Viewed this way, the matrix is not simply a classification of tasks. It is also a reflection of context maturity.</p>
+
+              <p>Organizations that provide rich context to their AI assistants will often find that more tasks become suitable for AI assistance. Organizations that provide little context will discover the opposite.</p>
+
+              <p>The question is therefore not only:</p>
+
+              <blockquote><p>Which tasks are suitable for AI?</p></blockquote>
+
+              <p>but also:</p>
+
+              <blockquote><p>What context must we provide to make AI successful at those tasks?</p></blockquote>
+
+              <h2>Where AI Truly Excels: Context Transformation</h2>
+
+              <p>The matrix reveals an interesting pattern.</p>
+
+              <p>Many discussions about AI focus on specific activities such as coding, testing, or documentation. However, these activities are not what AI is fundamentally good at.</p>
+
+              <p>The real strength of AI lies elsewhere.</p>
+
+              <p>AI is exceptionally good at transforming information from one representation into another.</p>
+
+              <p>Software engineering is full of such transformations. Throughout the software development lifecycle, information continuously moves between different forms.</p>
+
+              <p>For example:</p>
+
+              <pre><code>Business Requirement
+        ↓
+User Story
+        ↓
+Acceptance Criteria
+        ↓
+Solution Design
+        ↓
+Code
+        ↓
+Tests
+        ↓
+Documentation</code></pre>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="context-transformation-engine.png" alt="A context transformation engine showing AI helping transform requirements into stories, acceptance criteria, code, tests, and documentation." style="max-width:100%;height:auto;display:block;margin:2rem auto;border-radius:4px;">
+              </figure>
+
+              <p>At every stage, engineers are taking information that already exists and reshaping it into a different artifact that is useful for the next stage of the process.</p>
+
+              <p>This turns out to be a task that AI handles remarkably well.</p>
+
+              <p>Consider some common examples:</p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Input</th>
+                    <th>Output</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Meeting Notes</td>
+                    <td>Requirements Summary</td>
+                  </tr>
+                  <tr>
+                    <td>Requirements</td>
+                    <td>User Stories</td>
+                  </tr>
+                  <tr>
+                    <td>User Stories</td>
+                    <td>Acceptance Criteria</td>
+                  </tr>
+                  <tr>
+                    <td>Acceptance Criteria</td>
+                    <td>Test Cases</td>
+                  </tr>
+                  <tr>
+                    <td>Solution Design</td>
+                    <td>Code Skeleton</td>
+                  </tr>
+                  <tr>
+                    <td>Existing Code</td>
+                    <td>Documentation</td>
+                  </tr>
+                  <tr>
+                    <td>Logs &amp; Alerts</td>
+                    <td>Incident Summary</td>
+                  </tr>
+                  <tr>
+                    <td>Pull Requests</td>
+                    <td>Release Notes</td>
+                  </tr>
+                  <tr>
+                    <td>Architecture Diagrams</td>
+                    <td>Technical Documentation</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p>In each of these examples, the AI is not inventing business intent. It is transforming existing information into another useful form.</p>
+
+              <p>This observation also explains why context is so important.</p>
+
+              <p>The quality of the output is directly influenced by the quality of the input. Poor requirements often produce poor user stories. Incomplete architecture descriptions often produce incomplete implementations. Missing business rules often produce incorrect test cases.</p>
+
+              <p>The AI can only transform the information it receives.</p>
+
+              <p>This is one of the reasons we spent so much time discussing context in the earlier articles of this series. Better repositories, better work context, and better engineering controls all improve the quality of information available to the AI. As a result, the transformations it performs become more accurate and more useful.</p>
+
+              <h3>High-Volume Artifact Generation</h3>
+
+              <p>Another area where AI performs exceptionally well is producing large quantities of engineering artifacts quickly.</p>
+
+              <p>Examples include:</p>
+
+              <ul>
+                <li>Boilerplate code</li>
+                <li>CRUD APIs</li>
+                <li>Unit tests</li>
+                <li>Mock implementations</li>
+                <li>Configuration files</li>
+                <li>Documentation drafts</li>
+                <li>Release notes</li>
+              </ul>
+
+              <p>These tasks are often repetitive and time-consuming for humans, but they contain patterns that AI can reproduce efficiently.</p>
+
+              <p>The value is not simply faster typing. The value is reducing the amount of engineering effort spent on routine artifact creation.</p>
+
+              <h3>Information Synthesis</h3>
+
+              <p>AI is also highly effective at consuming large amounts of information and producing concise summaries.</p>
+
+              <p>Examples include:</p>
+
+              <ul>
+                <li>Summarizing requirements documents</li>
+                <li>Reviewing lengthy pull requests</li>
+                <li>Analyzing large log files</li>
+                <li>Creating incident summaries</li>
+                <li>Generating architecture overviews</li>
+                <li>Producing executive updates</li>
+              </ul>
+
+              <p>Humans are often constrained by the amount of information they can process in a limited period of time. AI assistants can rapidly consume and organize large volumes of information, helping engineers focus their attention on decision-making rather than information gathering.</p>
+
+              <p>Viewed through this lens, the matrix becomes easier to understand.</p>
+
+              <p>AI is not primarily a replacement for engineers.</p>
+
+              <p>It is a highly capable transformation and synthesis engine that can help move information through the software engineering lifecycle more efficiently.</p>
+
+              <h2>Where AI Is Useful but Dangerous</h2>
+
+              <p>The matrix reveals a middle category of work that deserves special attention.</p>
+
+              <p>These are tasks where AI can provide substantial value, but where blindly accepting its output can create significant problems. In these situations, the AI often produces results that look reasonable and professionally written, yet may be incomplete, contextually incorrect, or based on faulty assumptions.</p>
+
+              <p>This is where many teams get into trouble.</p>
+
+              <h3>Refactoring</h3>
+
+              <p>AI assistants are often excellent at local refactoring. They can identify duplication, simplify conditional logic, extract methods, and modernize code structures.</p>
+
+              <p>The challenge is that AI usually sees only a portion of the system at a time. A refactoring that appears cleaner in isolation may introduce subtle side effects elsewhere in the application.</p>
+
+              <p>AI can suggest refactorings effectively.</p>
+
+              <p>Humans must determine whether those refactorings are actually safe.</p>
+
+              <h3>Debugging and Root Cause Analysis</h3>
+
+              <p>AI is remarkably good at interpreting logs, stack traces, and error messages. It can quickly generate plausible explanations and suggest possible fixes.</p>
+
+              <p>The danger is that plausibility is not the same as correctness.</p>
+
+              <p>Many engineers have experienced situations where the AI produces a convincing diagnosis, only for the actual root cause to lie somewhere completely different.</p>
+
+              <p>AI can accelerate investigations.</p>
+
+              <p>Humans must validate conclusions.</p>
+
+              <h3>Architecture Suggestions</h3>
+
+              <p>Given a set of requirements, AI can generate architecture diagrams, service decompositions, integration patterns, and technology recommendations in seconds.</p>
+
+              <p>However, architecture is not simply about identifying technically possible solutions. It is about selecting the most appropriate solution within a specific business context.</p>
+
+              <p>Factors such as team capability, budget, timelines, operational maturity, and organizational constraints are often invisible to the AI.</p>
+
+              <p>AI can propose options.</p>
+
+              <p>Humans must make trade-offs.</p>
+
+              <h3>Performance Optimization</h3>
+
+              <p>AI understands many common optimization techniques and can suggest improvements involving caching, databases, infrastructure, and application design.</p>
+
+              <p>The challenge is that optimization decisions always involve trade-offs. A technically superior solution may increase operational complexity, development effort, or infrastructure costs.</p>
+
+              <p>AI can identify opportunities.</p>
+
+              <p>Humans must decide whether those opportunities are worth pursuing.</p>
+
+              <h3>The Common Pattern</h3>
+
+              <p>Notice the pattern across all of these examples.</p>
+
+              <p>The AI is not failing because it lacks technical knowledge.</p>
+
+              <p>The risk arises because the task requires context, trade-offs, or assumptions that may not be fully visible to the model.</p>
+
+              <p>A useful rule of thumb is:</p>
+
+              <blockquote><p>The more a task involves judgment rather than execution, the more carefully AI-generated outputs should be reviewed.</p></blockquote>
+
+              <p>These tasks are often where AI delivers some of its highest value. They are also where human oversight becomes most important.</p>
+
+              <h2>Where Humans Must Remain in Charge</h2>
+
+              <p>As we move further toward activities involving judgment, accountability, and business context, human ownership becomes increasingly important.</p>
+
+              <h3>Requirements and Business Intent</h3>
+
+              <p>AI can summarize requirements.</p>
+
+              <p>AI can identify ambiguities.</p>
+
+              <p>AI can suggest missing acceptance criteria.</p>
+
+              <p>What AI cannot reliably determine is what the business actually wants.</p>
+
+              <p>Requirements often contain hidden assumptions, competing priorities, organizational politics, and unstated constraints.</p>
+
+              <p>These are areas where human stakeholders must continue to provide direction.</p>
+
+              <p>The role of AI is to assist understanding, not define intent.</p>
+
+              <h3>Architecture and Trade-Offs</h3>
+
+              <p>Architecture is frequently misunderstood as a purely technical exercise.</p>
+
+              <p>In reality, architecture is the process of making trade-offs under constraints.</p>
+
+              <p>Questions such as:</p>
+
+              <ul>
+                <li>Build versus buy</li>
+                <li>Monolith versus microservices</li>
+                <li>Performance versus simplicity</li>
+                <li>Speed versus maintainability</li>
+              </ul>
+
+              <p>cannot be answered through technical knowledge alone.</p>
+
+              <p>They require business context and accountability.</p>
+
+              <p>AI can contribute valuable options, but humans must own the final decision.</p>
+
+              <h3>Security and Risk Acceptance</h3>
+
+              <p>AI can identify vulnerabilities.</p>
+
+              <p>AI can recommend mitigations.</p>
+
+              <p>AI can explain security best practices.</p>
+
+              <p>What AI cannot do is accept risk on behalf of an organization.</p>
+
+              <p>Every security decision ultimately represents a business decision.</p>
+
+              <p>Someone must decide whether a risk is acceptable, whether a mitigation is worth the cost, and whether a control is sufficient.</p>
+
+              <p>Those responsibilities remain firmly human.</p>
+
+              <h3>Governance and Compliance</h3>
+
+              <p>The same principle applies to governance activities.</p>
+
+              <p>Whether the topic is banking regulation, privacy requirements, internal controls, or audit obligations, AI can assist interpretation and implementation.</p>
+
+              <p>However, accountability for compliance outcomes cannot be delegated.</p>
+
+              <p>Organizations are held accountable for the decisions they make, not for the recommendations generated by their tools.</p>
+
+              <h2>From Executor to Decision Maker</h2>
+
+              <p>A common concern surrounding AI is that software engineers may become less relevant as AI capabilities continue to improve.</p>
+
+              <p>The task matrix suggests a different conclusion.</p>
+
+              <p>Many engineering activities are becoming easier to execute. Boilerplate code, routine testing, documentation, and a variety of implementation tasks can increasingly be delegated to AI assistants.</p>
+
+              <p>At the same time, the activities that require judgment, context, trade-offs, leadership, and accountability remain difficult to automate.</p>
+
+              <p>This suggests that the role of software engineers may gradually evolve rather than disappear.</p>
+
+              <p>Engineers may spend less time producing artifacts and more time:</p>
+
+              <ul>
+                <li>Understanding requirements</li>
+                <li>Defining constraints</li>
+                <li>Evaluating trade-offs</li>
+                <li>Managing risk</li>
+                <li>Reviewing outcomes</li>
+                <li>Providing direction</li>
+              </ul>
+
+              <p>In other words, the value of software engineers may shift from execution toward decision-making.</p>
+
+              <p>AI changes how software is built.</p>
+
+              <p>Human judgment determines whether the right software gets built.</p>
+
+              <h2>Conclusion</h2>
+
+              <p>AI is becoming increasingly capable of performing software engineering tasks. The real challenge is no longer deciding whether AI can do the work.</p>
+
+              <p>The challenge is deciding which work should be delegated, which should be guided, and which responsibilities must remain firmly human.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../stop-prompting-harder-start-giving-better-context/" class="article-related-item">
+                  <span class="article-related-item-title">Stop Prompting Harder. Start Giving Better Context.</span>
+                  <span class="article-related-item-summary">AI assistants do not succeed only because of better prompts. They succeed when the right context is available at the right time.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../beyond-the-repository-why-ai-needs-work-context-too/" class="article-related-item">
+                  <span class="article-related-item-title">Beyond the Repository: Why AI Needs Work Context Too</span>
+                  <span class="article-related-item-summary">Repositories tell AI how a system works. Work items and acceptance criteria tell AI why the system is changing.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
