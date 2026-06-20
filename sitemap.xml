@@ -86,6 +86,12 @@
   </url>
 
   <url>
+    <loc>https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://suyogjoshi.com/systems/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
