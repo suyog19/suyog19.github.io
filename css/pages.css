@@ -1459,6 +1459,15 @@
   height: auto;
 }
 
+.article-body figure {
+  margin: 0 0 2rem;
+}
+
+.article-body figure img {
+  display: block;
+  border-radius: 8px;
+}
+
 .flow-sequence {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
