@@ -994,6 +994,122 @@
 }
 
 /* ============================================================
+   Article Series
+   ============================================================ */
+
+.series-index-hero,
+.series-page-hero {
+  padding-top: 5rem;
+  padding-bottom: 5.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.series-index-heading,
+.series-page-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--color-text);
+  max-width: 34ch;
+  margin-bottom: 1.5rem;
+}
+
+.series-index-sub,
+.series-page-subtitle,
+.series-page-intro {
+  font-size: 1.0625rem;
+  color: var(--color-text-muted);
+  max-width: 62ch;
+  line-height: 1.75;
+}
+
+.series-index-list,
+.series-page-section {
+  padding-block: 5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.series-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  border: 1px solid var(--color-border);
+}
+
+.series-card {
+  background-color: var(--color-bg);
+  padding: 2.25rem;
+  transition: background-color 0.15s;
+}
+
+.series-card:hover {
+  background-color: var(--color-surface);
+}
+
+.series-card-kicker,
+.series-stage-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.series-card-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+}
+
+.series-card-desc {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  max-width: 64ch;
+  margin-bottom: 1.5rem;
+}
+
+.series-card-meta {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+}
+
+.series-index-note {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .series-index-hero,
+  .series-page-hero {
+    padding-top: 3.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .series-index-list,
+  .series-page-section {
+    padding-block: 3.5rem;
+  }
+
+  .series-card {
+    padding: 1.75rem;
+  }
+}
+
+/* ============================================================
    Systems Page
    ============================================================ */
 
