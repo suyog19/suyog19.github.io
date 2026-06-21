@@ -2080,6 +2080,102 @@
   border-color: var(--color-text);
 }
 
+/* Article Series Navigation */
+.article-series-note {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: 1rem 1.125rem;
+  margin: 0 0 2rem;
+}
+
+.article-series-note p {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.article-series-note a {
+  color: var(--color-text);
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-border);
+  transition: border-color 0.15s;
+}
+
+.article-series-note a:hover {
+  border-color: var(--color-text);
+}
+
+.article-series-nav-section {
+  padding-bottom: 4.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.article-body-section + .article-series-nav-section {
+  margin-top: -1px;
+}
+
+.article-series-nav {
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.article-series-nav-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.article-series-nav-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.article-series-nav-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 1.25rem;
+  border-right: 1px solid var(--color-border);
+  transition: background-color 0.15s;
+}
+
+.article-series-nav-item:last-child {
+  border-right: none;
+}
+
+.article-series-nav-item:hover {
+  background-color: var(--color-surface);
+}
+
+.article-series-nav-item span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.article-series-nav-item strong {
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.article-series-nav-item--static {
+  background-color: var(--color-surface);
+}
+
+.article-series-nav-item--static:hover {
+  background-color: var(--color-surface);
+}
+
 /* Related Reading */
 .article-related {
   padding-block: 4.5rem;
@@ -2147,6 +2243,23 @@
 
   .article-related {
     padding-block: 3.5rem;
+  }
+
+  .article-series-nav-section {
+    padding-bottom: 3.5rem;
+  }
+
+  .article-series-nav-links {
+    grid-template-columns: 1fr;
+  }
+
+  .article-series-nav-item {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .article-series-nav-item:last-child {
+    border-bottom: none;
   }
 
   .demo-example-grid,
