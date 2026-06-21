@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical guide to AI-assisted software engineering through context, repositories, reviews, agents, governance, and orchestration." />
+  <title>AI-Assisted Software Engineering Series | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/series/ai-assisted-software-engineering/" />
+  <meta property="og:title" content="AI-Assisted Software Engineering Series | Suyog Joshi" />
+  <meta property="og:description" content="A practical guide to AI-assisted software engineering through context, repositories, reviews, agents, governance, and orchestration." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/series/ai-assisted-software-engineering/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="AI-Assisted Software Engineering Series | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical guide to AI-assisted software engineering through context, repositories, reviews, agents, governance, and orchestration." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../../about/" class="nav-link">About</a></li>
+          <li><a href="../../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="series-page-hero">
+      <div class="container">
+        <p class="eyebrow">Article Series</p>
+        <h1 class="series-page-title">AI-Assisted Software Engineering</h1>
+        <p class="series-page-subtitle">A practical guide to context, codebases, reviews, agents, and the changing role of software engineers in the AI-assisted era.</p>
+        <p class="series-page-intro">AI is not simply changing how software is written. It is changing where engineering judgment is needed. This series explores how software engineers can work with AI assistants responsibly by improving context, structuring repositories, reviewing generated work, managing agents, and moving from implementation toward orchestration.</p>
+        <div class="series-page-actions">
+          <a href="../../coding-assistants-are-not-junior-developers/" class="btn btn-primary">Start reading</a>
+          <a href="../" class="btn btn-secondary">Back to all series</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="series-page-section">
+      <div class="container">
+        <div class="series-page-grid">
+          <div>
+            <h2 class="series-section-title">Who this series is for</h2>
+            <p class="series-section-body">This series is for software engineers using AI coding assistants, senior engineers and architects thinking about engineering process, engineering leads trying to introduce AI without lowering quality, and early-career developers trying to understand what remains valuable as AI improves.</p>
+          </div>
+          <div>
+            <h2 class="series-section-title">The problem this series addresses</h2>
+            <p class="series-section-body">Most AI-assisted development discussion focuses too much on code generation. The harder problems are providing useful context, setting engineering boundaries, reviewing generated output, deciding which tasks belong to AI, and governing fast-moving AI-assisted change.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="series-page-section series-page-section--surface">
+      <div class="container">
+        <div class="series-statement">
+          <h2 class="series-section-title">The central idea</h2>
+          <p>AI does not remove software engineering. It moves the center of gravity from implementation toward context, review, architecture, governance, and orchestration.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="series-page-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Recommended reading path</h2>
+        </div>
+
+        <ol class="series-reading-path">
+          <li class="series-reading-item">
+            <span class="series-stage-label">Mindset</span>
+            <h3 class="series-reading-title"><a href="../../coding-assistants-are-not-junior-developers/">Coding Assistants Are Not Junior Developers</a></h3>
+            <p class="series-reading-desc">A clearer mental model for working with AI coding assistants without treating them like human teammates.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Context</span>
+            <h3 class="series-reading-title"><a href="../../stop-prompting-harder-start-giving-better-context/">Stop Prompting Harder. Start Giving Better Context.</a></h3>
+            <p class="series-reading-desc">Why stronger context matters more than clever prompt wording when AI systems work on real software.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Repositories</span>
+            <h3 class="series-reading-title"><a href="../../how-i-structure-repositories-so-ai-can-understand-them/">How I Structure Repositories So AI Can Actually Understand Them</a></h3>
+            <p class="series-reading-desc">A practical way to organize repositories so AI assistants can navigate architecture, intent, and constraints.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Work context</span>
+            <h3 class="series-reading-title"><a href="../../beyond-the-repository-why-ai-needs-work-context-too/">Beyond the Repository: Why AI Needs Work Context Too</a></h3>
+            <p class="series-reading-desc">Why tickets, decisions, stakeholders, and business context matter as much as code when AI helps with change.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Task allocation</span>
+            <h3 class="series-reading-title"><a href="../../not-all-engineering-tasks-belong-to-ai/">Not All Engineering Tasks Belong to AI</a></h3>
+            <p class="series-reading-desc">A practical matrix for deciding where AI helps, where it needs guidance, and where human judgment remains essential.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Review</span>
+            <h3 class="series-reading-title"><a href="../../why-reviewing-ai-generated-work-is-a-different-skill/">Why Reviewing AI-Generated Work Is a Different Skill</a></h3>
+            <p class="series-reading-desc">How review changes when generated work is polished, plausible, and still dependent on hidden assumptions.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Constraints</span>
+            <h3 class="series-reading-title"><a href="../../how-to-tame-your-agent/">How To Tame Your Agent?</a></h3>
+            <p class="series-reading-desc">How context and constraints make AI agents safer, more focused, more economical, and easier to review.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Agents</span>
+            <h3 class="series-reading-title"><a href="../../using-multiple-ai-agents-as-a-software-engineering-team/">Using Multiple AI Agents as a Software Engineering Team</a></h3>
+            <p class="series-reading-desc">A model for separating agent responsibilities across architecture, coding, testing, review, security, documentation, and governance.</p>
+          </li>
+          <li class="series-reading-item">
+            <span class="series-stage-label">Orchestration</span>
+            <h3 class="series-reading-title"><a href="../../from-developer-to-ai-orchestrator/">From Developer to AI Orchestrator</a></h3>
+            <p class="series-reading-desc">Why AI moves software engineering from implementation toward judgment, governance, and orchestration.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="series-page-section series-page-section--surface">
+      <div class="container">
+        <div class="series-page-grid">
+          <div>
+            <h2 class="series-section-title">How to use this series</h2>
+            <p class="series-section-body">Read in order if you are new to the topic. If you already use AI assistants, jump to the context and repository articles. If you are already experimenting with generated work, start with the review and agent articles. You can also use the whole series as a checklist for making AI-assisted development more reliable.</p>
+          </div>
+          <div>
+            <h2 class="series-section-title">Related independent articles</h2>
+            <p class="series-section-body">Some AI and software engineering essays are intentionally kept outside this series because they are standalone explorations.</p>
+            <ul class="series-independent-list">
+              <li><a href="../../ai-stress-testing-agile/">Independent: AI Is Not Replacing Agile. It Is Stress-Testing It.</a></li>
+              <li><a href="../../how-i-used-two-ais-to-build-a-software-engineering-system/">Independent: How I Used Two AIs to Build a Software Engineering System</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="series-page-section">
+      <div class="container">
+        <div class="series-final-note">
+          <h2 class="series-section-title">What the series argues</h2>
+          <p>The future software engineer will not merely prompt harder. They will design better context, review more carefully, and orchestrate systems of tools, agents, and human judgment.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../../writing/">Writing</a>
+          <a href="../../../systems/">Systems</a>
+          <a href="../../../about/">About</a>
+          <a href="../../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../../js/script.js"></script>
+</body>
+</html>
