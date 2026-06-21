@@ -20,6 +20,18 @@
   </url>
 
   <url>
+    <loc>https://suyogjoshi.com/writing/series/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/writing/series/ai-assisted-software-engineering/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
