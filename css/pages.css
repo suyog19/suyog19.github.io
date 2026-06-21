@@ -207,6 +207,16 @@
 }
 
 /* ============================================================
+   Featured Series
+   ============================================================ */
+.featured-series {
+  padding-block: 5.5rem;
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ============================================================
    Systems
    ============================================================ */
 .systems {
@@ -379,6 +389,7 @@
 @media (max-width: 768px) {
   /* Reset per-section padding to unified mobile rhythm */
   .pillars,
+  .featured-series,
   .writing,
   .systems,
   .about,
@@ -876,6 +887,20 @@
   padding-block: 5.5rem;
   background-color: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
+}
+
+/* Article Series */
+.wp-series {
+  padding-block: 5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.wp-series .section-header {
+  margin-bottom: 2.5rem;
+}
+
+.wp-series .section-cta {
+  margin-top: 2rem;
 }
 
 /* Thematic Sections */
