@@ -1730,6 +1730,23 @@
   margin-bottom: 0;
 }
 
+.article-body a {
+  color: #8f1d1d;
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+  text-decoration-color: rgba(185, 28, 28, 0.45);
+  transition: color 0.15s ease, text-decoration-color 0.15s ease, background-color 0.15s ease;
+}
+
+.article-body a:hover,
+.article-body a:focus-visible {
+  color: #6f1515;
+  text-decoration-color: currentColor;
+  background-color: rgba(185, 28, 28, 0.08);
+}
+
 .article-body img {
   max-width: 100%;
   height: auto;
