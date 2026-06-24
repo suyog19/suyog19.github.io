@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice." />
+  <title>Process as Code: Making Engineering Standards Visible to Humans and AI Assistants | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" />
+  <meta property="og:title" content="Process as Code: Making Engineering Standards Visible to Humans and AI Assistants | Suyog Joshi" />
+  <meta property="og:description" content="How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Process as Code: Making Engineering Standards Visible to Humans and AI Assistants | Suyog Joshi" />
+  <meta name="twitter:description" content="How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</h1>
+            <p class="article-page-subtitle">How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 24 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="A pull request review conversation turning into repository artifacts such as contributing guidance, checks, pull request templates, ADRs, and code owners." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>The first sign was not a production incident. It was the code review queue.</p>
+
+              <p>A team had started using AI coding assistants across a few services. At first, the changes looked faster. Developers generated scaffolding quickly. Tests appeared sooner. Refactors that used to feel tedious became easier to start.</p>
+
+              <p>Then reviewers noticed a pattern.</p>
+
+              <p>The pull requests were not obviously broken, but they kept missing local expectations. Tests covered the happy path but skipped the edge cases the team cared about. Error handling did not follow the service convention. A change crossed a module boundary that senior engineers usually guarded. Database migrations had no rollback notes. API changes forgot to update the OpenAPI spec. PR descriptions explained what changed, but not why.</p>
+
+              <p>Senior engineers kept writing the same review comments:</p>
+
+              <p>“Please add the failure case.”</p>
+
+              <p>“Use the domain service instead of calling the repository directly.”</p>
+
+              <p>“Document the migration risk.”</p>
+
+              <p>“This needs an ADR update.”</p>
+
+              <p>“Follow the existing error handling convention.”</p>
+
+              <p>It would be easy to blame the AI assistant. Sometimes the assistant did miss context. Sometimes it produced code that looked plausible but did not fit the system.</p>
+
+              <p>But the assistant was not the whole problem.</p>
+
+              <p>New human contributors missed the same expectations too. The team’s standards were real, but they lived in scattered places: old pull requests, Slack threads, onboarding calls, stale wiki pages, and the memory of a few senior engineers.</p>
+
+              <p>AI-assisted development made the gap more visible.</p>
+
+              <p>That is where I find “process as code” useful as a framing. It is not a new methodology or a tooling category. It is a practical way to move repeatable engineering expectations into versioned, reviewable, and sometimes executable artifacts that live close to the code.</p>
+
+              <p>The goal is simple: make the standards visible where the work happens.</p>
+
+              <h2>AI assistants expose standards you never wrote down</h2>
+
+              <p>AI coding assistants do not remove the need for engineering standards. They put more pressure on teams to make those standards explicit.</p>
+
+              <p>A human developer can learn team conventions over time. They hear comments in planning. They pair with senior engineers. They remember why a shortcut caused problems last year. Even then, knowledge spreads unevenly.</p>
+
+              <p>An AI assistant works from the context available to it: the prompt, the surrounding code, the repository, configured instructions, tool behavior, and whatever files it can read. Some tools can use repository-level instruction files. GitHub documents ways to customize Copilot with repository-wide and path-specific instructions in <a href="https://docs.github.com/en/copilot/customizing-copilot/about-customizing-github-copilot-responses" target="_blank" rel="noopener noreferrer">custom instructions</a>. OpenAI has described how Codex can use instruction files such as <code>AGENTS.md</code> as part of the agent workflow in <a href="https://openai.com/index/unrolling-the-codex-agent-loop/" target="_blank" rel="noopener noreferrer">Unrolling the Codex agent loop</a>. Claude Code documents project memory through files such as <code>CLAUDE.md</code>, while also treating this kind of memory as guidance rather than guaranteed behavior in its <a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener noreferrer">memory documentation</a>.</p>
+
+              <p>That distinction matters.</p>
+
+              <p>Repository instructions can guide assistants. They do not enforce correctness.</p>
+
+              <p>DORA’s work on AI-assisted software development is useful here because it frames AI adoption as part of a broader software delivery system, not as an isolated tool decision. In practical terms, AI tools operate inside the engineering system a team already has. Clear standards, fast feedback, and disciplined review give both humans and assistants better working conditions. If the system depends mostly on tacit knowledge, AI-assisted work tends to expose that weakness faster.</p>
+
+              <p>This is not an anti-AI argument. It is an engineering systems argument.</p>
+
+              <p>If a team has never written down what “good tests” mean for a service, an assistant may generate tests that look fine but miss the important cases. If architecture boundaries exist only in senior engineers’ heads, an assistant may follow a dependency path that compiles but violates the intended design. If rollback expectations are discussed only during review, migrations will keep arriving without rollback notes.</p>
+
+              <p>The assistant is often revealing an old process gap.</p>
+
+              <h2>The real problem is scattered standards</h2>
+
+              <p>Most teams have standards. Fewer teams have a durable source of truth for them.</p>
+
+              <p>A team may expect controllers to avoid direct repository access, API changes to update contract files, migrations to include rollback notes, and security-sensitive changes to involve the platform team. These are useful expectations. The problem is where they live.</p>
+
+              <p>Some live in senior engineers’ memory. Some live in a wiki page that nobody trusts. Some are buried in old pull request comments. Some exist only as “we usually do it this way.” Some are visible in the code, but the codebase contains both old and new patterns, so inference becomes unreliable.</p>
+
+              <p>AI assistants can infer patterns from nearby code, and humans can do the same. But inference is not the same as an agreed standard.</p>
+
+              <p>If the standard matters, it should be visible.</p>
+
+              <p>Repository-level artifacts help because they put local expectations near the work. Documentation that is tightly coupled to a codebase is easier to maintain when it is owned, reviewed, and updated as part of normal engineering work. The documentation chapter in <a href="https://abseil.io/resources/swe-book/html/ch10.html" target="_blank" rel="noopener noreferrer">Software Engineering at Google</a> makes a similar point: docs work better when they have ownership, review, and a canonical place in the workflow.</p>
+
+              <p>Architecture decisions have the same issue. Thoughtworks describes <a href="https://www.thoughtworks.com/radar/techniques/lightweight-architecture-decision-records" target="_blank" rel="noopener noreferrer">Lightweight Architecture Decision Records</a> as a way to capture important decisions, context, and consequences, ideally close to the source of change. ADRs do not enforce architecture by themselves, but they preserve the “why” behind boundaries and trade-offs.</p>
+
+              <p>A repository should not contain every company policy. Cross-team strategy, compliance policy, incident process, and people-related guidance may belong elsewhere. But standards that affect how code is changed, tested, reviewed, deployed, or understood often deserve to live near the code.</p>
+
+              <h2>A three-layer model for process as code</h2>
+
+              <p>Process as code is easiest to reason about in three layers:</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="process-as-code-layers.png" alt="A layered process-as-code model showing code changes flowing through guidance, executable checks, and review gates." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <ol>
+                <li>Guidance</li>
+                <li>Executable checks</li>
+                <li>Review gates</li>
+              </ol>
+
+              <p>Each layer does a different job. Problems start when teams confuse them.</p>
+
+              <h3>Layer 1: Guidance</h3>
+
+              <p>Guidance explains expectations.</p>
+
+              <p>This is where files such as <code>CONTRIBUTING.md</code>, <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>, <code>CLAUDE.md</code>, README files, coding conventions, review rubrics, and examples can help.</p>
+
+              <p>Good guidance answers practical questions:</p>
+
+              <ul>
+                <li>How do I build and test this project locally?</li>
+                <li>Which test commands should I run before opening a PR?</li>
+                <li>What error handling pattern should this service use?</li>
+                <li>Which files are generated and should not be edited directly?</li>
+                <li>What architecture boundaries should contributors avoid crossing?</li>
+                <li>What does a good PR description include?</li>
+                <li>When should an ADR be added or updated?</li>
+              </ul>
+
+              <p>The important word is “guidance.”</p>
+
+              <p>Natural-language files help humans and assistants understand the local way of working. They are useful for context, examples, conventions, and workflow expectations. They are not enforcement.</p>
+
+              <p>This is why vague instruction files disappoint teams.</p>
+
+              <p>“Write good tests” is weak.</p>
+
+              <p>“Service changes should include tests for validation failures, permission failures, and downstream timeout behavior. See <code>tests/orders/error-handling.spec.ts</code> for examples” is better.</p>
+
+              <p>“Follow our architecture” is weak.</p>
+
+              <p>“Handlers in <code>api/</code> should call application services in <code>app/</code>. They should not import repositories from <code>infra/</code> directly” is better.</p>
+
+              <p>Specific guidance helps humans. It also gives AI assistants a better starting point when the tool supports repository instructions.</p>
+
+              <h3>Layer 2: Executable checks</h3>
+
+              <p>Executable checks handle repeatable rules.</p>
+
+              <p>This includes tests, linters, formatters, type checks, build checks, dependency scans, secret scans, generated-code drift checks, schema validation, architecture boundary checks, and CI pipelines.</p>
+
+              <p>This layer is where process becomes more than a reminder.</p>
+
+              <p>DORA describes <a href="https://dora.dev/devops-capabilities/technical/continuous-integration/" target="_blank" rel="noopener noreferrer">continuous integration</a> as frequent integration supported by automated builds and tests that provide fast feedback. That is a core example of this idea. The team is not just saying, “Please make sure the build works.” The repository contains the commands, checks, and pipeline that verify repeatable expectations before changes are merged.</p>
+
+              <p>Suppose the team requires API schema updates when controllers change. A PR template can ask, “Did you update the OpenAPI spec?” That is useful. But if schema drift can be detected automatically, a CI check is stronger.</p>
+
+              <p>Or suppose the team wants to protect module boundaries. A written rule helps. A static analysis check or architecture test that fails when <code>api/</code> imports <code>infra/</code> directly is better.</p>
+
+              <p>This does not mean everything should become a gate. Some checks are expensive. Some are flaky. Some rules are too context-dependent. But when a rule is mandatory, repeatable, and cheap enough to check, automation is usually better than repeated review comments.</p>
+
+              <h3>Layer 3: Review gates</h3>
+
+              <p>Some parts of the process need human accountability.</p>
+
+              <p>Repository platforms can enforce pieces of this workflow. For example, GitHub <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches" target="_blank" rel="noopener noreferrer">protected branches</a> can require pull request reviews, status checks, code owner approval, conversation resolution, and other merge conditions before changes reach protected branches.</p>
+
+              <p>The principle is not GitHub-specific: sensitive changes should be routed through the right checks and the right people.</p>
+
+              <p>Review gates are useful for areas such as authentication, authorization, billing, customer data handling, production infrastructure, database migrations, public API contracts, and core architecture boundaries.</p>
+
+              <p>A <code>CODEOWNERS</code> rule or required review does not guarantee quality. It makes ownership visible and harder to bypass accidentally.</p>
+
+              <p>This matters with AI-assisted work because AI-generated code can contain flaws or miss local risk context, just as human-written code can. It should go through the same review, scanning, and validation path as any other change.</p>
+
+              <p>NIST’s <a href="https://www.nist.gov/itl/ai-risk-management-framework/generative-ai-profile" target="_blank" rel="noopener noreferrer">Generative AI Profile</a> emphasizes governance, documentation, human review, oversight, and risk management for generative AI systems. In software delivery, that does not have to mean heavyweight bureaucracy. It can mean clear ownership, traceable decisions, and risk-appropriate review.</p>
+
+              <h2>Guidance and enforcement are different</h2>
+
+              <p>A common mistake is to put every standard into a document and stop there.</p>
+
+              <p>That improves visibility, but it does not create consistency by itself.</p>
+
+              <p>Take this instruction:</p>
+
+              <blockquote>
+                <p>Always add tests for edge cases.</p>
+              </blockquote>
+
+              <p>It is better than saying nothing. But it still leaves questions open. Which edge cases? Where are examples? Which test style should be used? What should block a merge?</p>
+
+              <p>A stronger setup might include test examples for common failure modes, test helpers that make the right thing easy, a PR template prompt asking which cases were tested, CI running the test suite, and a review rubric for risk-heavy changes.</p>
+
+              <p>The instruction explains intent. The tests and CI provide executable feedback. The reviewer checks whether the change is meaningful and whether the chosen cases match the risk.</p>
+
+              <p>This separation is important.</p>
+
+              <p>Natural-language guidance is good for context. Executable checks are better for repeatable rules. Human review is still needed for judgment.</p>
+
+              <p>A test can verify that a migration rollback file exists. It cannot decide whether the migration is safe to run on Friday afternoon.</p>
+
+              <p>A linter can enforce an import boundary. It cannot decide whether the boundary itself should change.</p>
+
+              <p>A PR template can ask for customer impact. It cannot know whether the team understood the customer problem correctly.</p>
+
+              <p>Passing checks are useful feedback. They are not proof that the change is the right change.</p>
+
+              <h2>What belongs near the code</h2>
+
+              <p>A useful rule of thumb:</p>
+
+              <p>If a standard affects how code is changed, tested, reviewed, deployed, or understood, it probably deserves a place near the code.</p>
+
+              <p>That does not mean every team needs a large process framework. Start with the expectations reviewers already repeat.</p>
+
+              <p><code>CONTRIBUTING.md</code> should answer the questions a new contributor would ask in the first few days: how to set up the project, how to run tests, how to run formatting and linting, what a good PR description includes, and which areas need special care. Keep it short enough to maintain. A document nobody updates is just another stale wiki page in a different location.</p>
+
+              <p>For AI coding assistants, use repository instruction files where your tools support them. This might include <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>, <code>CLAUDE.md</code>, or other tool-specific files. Put the most important local context up front: project structure, build and test commands, preferred libraries, generated files, testing expectations, error handling conventions, architecture boundaries, and security-sensitive areas. Treat these files as helpful context, not a contract.</p>
+
+              <p>Pull request templates are simple but useful. GitHub supports repository-level <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/creating-a-pull-request-template-for-your-repository" target="_blank" rel="noopener noreferrer">pull request templates</a>, and most platforms have similar mechanisms. A good template brings review expectations to the point of change by asking what changed, why it changed, how it was tested, what risks exist, whether rollback is needed, and whether docs or contracts changed. Templates are prompts. People and assistants can still fill them poorly. But they give reviewers a consistent starting point.</p>
+
+              <p>ADRs are useful when future contributors will need to understand why a decision was made. Good candidates include service boundaries, major technology choices, dependency direction, data ownership, integration patterns, and rejected alternatives. An ADR should not become a long design document unless the decision needs that depth. The value is in capturing context while it is still fresh.</p>
+
+              <p>CI is where many repeated expectations should end up. Start with the basics: build, unit tests, formatting, linting, type checks, dependency scanning, and secret scanning. Then add domain-specific checks where they pay for themselves: OpenAPI spec drift, migration validation, generated code checks, architecture boundary checks, contract tests, or backward compatibility checks.</p>
+
+              <p>Avoid building a slow, fragile pipeline that everyone learns to ignore. Fast, reliable feedback is more useful than an impressive checklist.</p>
+
+              <p>Some changes need the right humans involved. Use code ownership and required reviews for areas where mistakes are costly: authentication, authorization, encryption, billing, customer data exports, production infrastructure, shared libraries, and public API contracts.</p>
+
+              <p>This is not about distrusting developers or AI tools. It is about making ownership explicit.</p>
+
+              <h2>What process as code does not solve</h2>
+
+              <p>Process as code helps with repeatable expectations. It does not remove the hard parts of engineering.</p>
+
+              <p>It cannot decide whether a feature solves the right customer problem. It cannot settle architecture trade-offs. It cannot understand every abuse case or business risk. It cannot mentor a new engineer through judgment that only comes from context and feedback.</p>
+
+              <p>It can, however, make senior review more useful.</p>
+
+              <p>When repetitive reminders move into guidance and checks, reviewers can spend more time on design, intent, risk, and trade-offs. That does not make review easy. It makes review less wasteful.</p>
+
+              <p>There is also a maintenance cost. Every instruction file, template, ADR, and CI check can become stale. Process as code only works if the artifacts are treated like part of the system: owned, reviewed, updated, and deleted when they stop helping.</p>
+
+              <p>Too much process creates noise. A PR template with twenty required sections will be ignored. A brittle CI gate will train people to look for bypasses. A long <code>AGENTS.md</code> full of vague rules may be less useful than a short file with concrete examples.</p>
+
+              <p>The point is not to encode everything.</p>
+
+              <p>The point is to encode the repeatable expectations that keep coming up.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, if reviewers repeat the same comment often, treat it as a signal. The expectation may belong in the repository as guidance, an example, a test, a check, or a review rule.</p>
+
+              <p>Second, separate guidance from enforcement. Use instructions and templates for context. Use tests, linters, scanners, CI, required reviews, and branch protection for repeatable rules where practical.</p>
+
+              <p>Third, keep humans accountable for judgment. AI assistants can use repository guidance, and automation can catch known issues, but people still own intent, architecture trade-offs, product risk, and production impact.</p>
+
+              <h2>Start small</h2>
+
+              <p>A team does not need to redesign its whole engineering process.</p>
+
+              <p>Start with one repository and one repeated pain point.</p>
+
+              <p>Look at the last ten pull requests and ask:</p>
+
+              <ul>
+                <li>Which comments appeared more than once?</li>
+                <li>Which comments were about repeatable rules?</li>
+                <li>Which expectations were unclear to new contributors?</li>
+                <li>Which issues could be caught before human review?</li>
+                <li>Which decisions should have been captured in an ADR?</li>
+                <li>Which areas need explicit ownership?</li>
+              </ul>
+
+              <p>Then encode one or two improvements.</p>
+
+              <p>Add a PR template section for migration risk. Add an architecture boundary test. Add examples of good error handling. Add an instruction file with build commands and local conventions. Add a code owner rule for authentication changes. Update <code>CONTRIBUTING.md</code> so new contributors know which checks to run.</p>
+
+              <p>Small, useful artifacts beat large process documents.</p>
+
+              <h2>Make the standard visible where the work happens</h2>
+
+              <p>Process as code is not about making engineering more rigid. It is about reducing the amount of important knowledge that lives only in someone’s head.</p>
+
+              <p>Humans need that clarity. AI coding assistants need it too.</p>
+
+              <p>If the standard matters, put it where contributors can see it. If the rule is repeatable, automate it where practical. If the decision requires judgment, route it to the right humans.</p>
+
+              <p>The repository is not just a place to store code. For many engineering standards, it can also store the way the team works: versioned, reviewed, executable where possible, and close to the code being changed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../how-i-structure-repositories-so-ai-can-understand-them/" class="article-related-item">
+                  <span class="article-related-item-title">How I Structure Repositories So AI Can Actually Understand Them</span>
+                  <span class="article-related-item-summary">Better prompts help, but better repositories help more when AI assistants need to understand how your system works.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../stop-prompting-harder-start-giving-better-context/" class="article-related-item">
+                  <span class="article-related-item-title">Stop Prompting Harder. Start Giving Better Context.</span>
+                  <span class="article-related-item-summary">AI assistants do not succeed only because of better prompts. They succeed when the right context is available at the right time.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
