@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work." />
+  <title>Enterprise AI Adoption Is a Context Problem | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/" />
+  <meta property="og:title" content="Enterprise AI Adoption Is a Context Problem | Suyog Joshi" />
+  <meta property="og:description" content="Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Enterprise AI Adoption Is a Context Problem | Suyog Joshi" />
+  <meta name="twitter:description" content="Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Enterprise AI Adoption Is a Context Problem</h1>
+            <p class="article-page-subtitle">Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 25 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="Enterprise AI context workflow showing tickets, code, review, CI/CD, production, ADRs, API guidance, security, tests, and runbooks connected around software delivery." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>The first AI coding assistant demo usually looks clean.</p>
+
+              <p>A developer asks for a small function, a test, a refactor, or a documentation draft. The assistant responds quickly. The code looks reasonable. The test passes. Everyone can see why teams are interested.</p>
+
+              <p>Then the same assistant is used on real enterprise work.</p>
+
+              <p>A developer picks up a ticket to add a new endpoint to an internal service. The assistant understands the local code style well enough. It generates a handler, a few tests, and a short documentation update. Locally, everything passes.</p>
+
+              <p>During review, the problems appear.</p>
+
+              <p>The assistant used an API pattern that was deprecated months ago. The current guidance exists, but it is buried in a platform wiki page. The relevant architecture decision record is not linked from the repository. A recent incident changed the recommended retry behavior, but that lesson lives in an incident review document. The ticket does not clearly connect to the owning service, runbook, or deployment constraints. The generated code passes local tests but violates a security rule around authorization checks.</p>
+
+              <p>The organization has the knowledge. It is just not cleanly connected to the work.</p>
+
+              <p>This article is about AI-assisted engineering workflows, not every form of enterprise AI adoption. In software delivery, adoption often starts as a developer tooling rollout. But real work depends on context spread across repositories, tickets, API specifications, runbooks, incidents, tests, architecture decisions, standards, dashboards, security policies, and review history.</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> points to this practical reality: AI tools are more useful when they can securely access relevant internal context such as codebases, documentation, operational metrics, architecture diagrams, wikis, and style guides.</p>
+
+              <p>That does not mean &quot;connect everything to the assistant.&quot;</p>
+
+              <p>The real adoption work is making engineering context usable, trusted, permission-aware, and available where people and AI assistants actually do the work.</p>
+
+              <h2>AI needs context, not just prompts</h2>
+
+              <p>A prompt describes what the developer wants.</p>
+
+              <p>Context explains what &quot;good&quot; means in this codebase, on this platform, in this organization, at this point in time.</p>
+
+              <p>For a simple utility function, the local file and a short prompt may be enough. Enterprise software work is rarely that isolated. A useful change often depends on service ownership, architecture boundaries, platform constraints, API conventions, test strategy, deployment rules, security requirements, incident history, and review expectations.</p>
+
+              <p>If a developer asks, &quot;Add a new endpoint for this workflow,&quot; the assistant may need to know which API style is current, which authorization checks are required, which ADR explains the service boundary, which runbook describes operational constraints, and which CI checks are expected before merge.</p>
+
+              <p>Without that context, the assistant may still produce code. Some of it may compile and pass local tests. But it may be misaligned with the way the system is supposed to work.</p>
+
+              <p>Better context can make AI output more relevant and easier to review. It does not make the output automatically correct. Correctness still depends on design judgment, tests, review, security checks, runtime behavior, and production feedback.</p>
+
+              <p>Repository-level guidance is one practical example. GitHub documents <a href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot" target="_blank" rel="noopener noreferrer">repository custom instructions</a> as a way to give Copilot project-specific guidance about how to understand, build, test, and validate changes. That can help an assistant follow local conventions, but it is still guidance. It needs ownership, maintenance, and normal engineering controls around it.</p>
+
+              <p>Security expectations are similar. The OpenSSF guidance on <a href="https://openssf.org/blog/2025/09/16/new-openssf-guidance-on-ai-code-assistant-instructions/" target="_blank" rel="noopener noreferrer">AI code assistant instructions</a> recommends making security concerns explicit, including input validation, authorization, secrets management, secure defaults, dependency review, and CI/CD security. Security guidance hidden far away from the coding workflow is easy for both humans and assistants to miss.</p>
+
+              <h2>Most enterprises already have useful context</h2>
+
+              <p>It is tempting to say, &quot;Our AI tools need more knowledge.&quot;</p>
+
+              <p>That is partly true, but incomplete.</p>
+
+              <p>Most enterprises already have useful engineering context. It lives in repositories, tickets, API specs, runbooks, incident reviews, tests, ADRs, design documents, deployment records, platform standards, dashboards, security policies, pull request discussions, and code review history.</p>
+
+              <p>The problem is fragmentation.</p>
+
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="enterprise-ai-context.png" alt="Diagram contrasting scattered enterprise engineering context with context connected to the software delivery workflow." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>The current API standard is in a wiki page. The superseding architecture decision is in a different repository. The migration note is attached to an old ticket. The runbook is accurate, but nobody linked it from the service README. The security rule is known by reviewers, but not encoded in tests, templates, instructions, or review checklists. The incident review contains an important lesson, but it never made its way into design guidance.</p>
+
+              <p>Humans already struggle with this. AI assistants make the problem more visible.</p>
+
+              <p>The documentation chapter in <a href="https://abseil.io/resources/swe-book/html/ch10.html" target="_blank" rel="noopener noreferrer">Software Engineering at Google</a> describes familiar problems with documentation: weak ownership, obsolete information, competing documents, and difficulty knowing which source to trust. It also argues that documentation should be treated as part of engineering work, with ownership, review, freshness, and canonical sources where possible. DORA's work on <a href="https://dora.dev/devops-capabilities/process/documentation-quality/" target="_blank" rel="noopener noreferrer">documentation quality</a> uses similar attributes: clarity, findability, and reliability.</p>
+
+              <p>These are software delivery concerns, not only documentation concerns.</p>
+
+              <p>When a developer cannot find the current standard, delivery slows down. When reviewers need to explain the same hidden rule repeatedly, review quality suffers. When an old page ranks higher than the current decision, teams repeat past mistakes. When incident learning does not flow back into implementation guidance, the organization pays for the same lesson more than once.</p>
+
+              <p>Architecture Decision Records are a good example of valuable context that often gets disconnected from daily work. Martin Fowler describes an <a href="https://martinfowler.com/bliki/ArchitectureDecisionRecord.html" target="_blank" rel="noopener noreferrer">Architecture Decision Record</a> as a short document that captures a decision, its context, and its consequences. He also notes that when decisions change, old ADRs should be superseded rather than silently rewritten.</p>
+
+              <p>That matters for AI-assisted work because the assistant does not only need to know what pattern exists. It needs help understanding whether the pattern still applies.</p>
+
+              <h2>What good engineering context looks like</h2>
+
+              <p>Good engineering context is not the same as having more documents.</p>
+
+              <p>More documents can make the problem worse if they are stale, duplicated, or unowned. A large searchable pile of conflicting guidance is still a pile of conflicting guidance.</p>
+
+              <p>Useful context has a few practical properties.</p>
+
+              <p>First, people and tools can discover it when they need it. A security standard that exists only in a forgotten wiki page is not really available to the workflow. A runbook that is not linked from the service repository may be technically present, but operationally absent.</p>
+
+              <p>Second, the context makes freshness visible. Deprecated API patterns point to replacements. Old ADRs link to superseding decisions. Migration notes say whether they are active, completed, or obsolete. This matters because search can find both old and new guidance. The assistant may retrieve either. The developer then has to guess which one is current.</p>
+
+              <p>Important context also has an owner. A service README, platform standard, ADR index, runbook, or assistant instruction file does not need heavy process around it, but it does need a clear path for updates.</p>
+
+              <p>Permissions need the same care. Enterprise context is not all equally safe to expose. Incident records may contain sensitive details. Security documents may describe vulnerabilities or controls. Operational dashboards may expose customer-related information. Tickets may include confidential business context. DORA's guidance warns against broad shared access patterns such as &quot;super user mode&quot; and recommends least-privilege retrieval using the user's own credentials where possible.</p>
+
+              <p>Placement matters too. Context is more useful when it appears where decisions are made: repository instructions, service READMEs, linked ADRs, PR templates, review checklists, CI/CD messages, ticket links, platform templates, or runbook links. If a developer only sees the security standard after a reviewer rejects the pull request, the context arrived too late.</p>
+
+              <p>For tools, sources need enough structure to be useful. Not every organization needs a knowledge graph. Not every document needs strict metadata. But if tools are expected to retrieve and use engineering context, clear titles, visible owners, superseded guidance, and intentional links between services, tickets, ADRs, runbooks, and standards all help.</p>
+
+              <p>Finally, the workflow should remain reviewable by humans. When an assistant suggests a change based on internal context, reviewers should be able to inspect the relevant sources or understand which guidance is being applied. If nobody can see the basis for a recommendation, the workflow becomes harder to trust.</p>
+
+              <p>Good context helps humans first. If the system only works for the AI tool, it is probably fragile.</p>
+
+              <h2>&quot;Just connect everything to AI&quot; is risky</h2>
+
+              <p>Once teams understand the context problem, the obvious reaction is to connect more systems.</p>
+
+              <p>That can help, but it needs care.</p>
+
+              <p>Connecting AI to internal systems is a security design problem, not just an integration task. Enterprise context may include sensitive information, customer data, security details, incident history, privileged operational knowledge, and internal business plans.</p>
+
+              <p>More context is not automatically better.</p>
+
+              <p>The <a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf" target="_blank" rel="noopener noreferrer">NIST Generative AI Profile</a> emphasizes governance, risk mapping, measurement, and lifecycle management for generative AI systems. OWASP's <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications" target="_blank" rel="noopener noreferrer">Top 10 for Large Language Model Applications</a> also highlights risks such as prompt injection, sensitive information disclosure, and excessive agency.</p>
+
+              <p>These risks do not mean teams should avoid AI-assisted workflows. They mean the access model matters.</p>
+
+              <p>A coding assistant helping with a local refactor does not need the same access as an agent proposing a production configuration change. A tool summarizing public API docs has a different risk profile from one reading incident reports and security exceptions. A workflow that drafts code for human review is different from one that can open pull requests, modify infrastructure, or trigger deployment steps.</p>
+
+              <p>Good governance should clarify safe paths:</p>
+
+              <ul>
+                <li>Which workflows are approved?</li>
+                <li>Which data can be accessed?</li>
+                <li>Under whose identity?</li>
+                <li>Where is human review required?</li>
+                <li>What should be logged or auditable?</li>
+                <li>What happens when retrieval fails or access is denied?</li>
+              </ul>
+
+              <p>This is not bureaucracy for its own sake. It is how teams make AI adoption safer and easier to reason about.</p>
+
+              <h2>A practical adoption path</h2>
+
+              <p>Trying to organize all enterprise knowledge before using AI is too large and too slow.</p>
+
+              <p>Start with one real workflow.</p>
+
+              <p>Pick something concrete: adding a new API endpoint, fixing a production bug, onboarding to a service, reviewing a pull request, creating a service from a platform template, handling a dependency upgrade, or responding to a recurring incident type.</p>
+
+              <p>Then map the context needed to do that workflow safely.</p>
+
+              <p>For example, if the workflow is &quot;add a new API endpoint,&quot; ask which repository contains the service, which ticket defines the behavior, which API standard applies, which authentication and authorization rules matter, which ADRs explain the service boundary, which tests are expected, and which deployment checks apply.</p>
+
+              <p>This exercise usually reveals the real adoption work. Some sources are clear. Some are stale. Some conflict. Some are accurate but disconnected. Some require permissions that are not obvious. Some exist only in the heads of experienced reviewers.</p>
+
+              <p>Then clean the path.</p>
+
+              <p>If three documents describe the API standard, decide which one wins. Archive or label the others. If an ADR has been superseded, link it to the current decision. If a wiki page is still useful, give it an owner. If a standard matters during coding, surface it in the repository, PR template, assistant instructions, or CI feedback.</p>
+
+              <p>Do not index confusion and call it context.</p>
+
+              <p>After that, make permissions explicit. Decide what the assistant can retrieve, under whose identity, for which workflow, and with what audit expectations. Avoid broad shared accounts where possible. Keep access tied to the user and the task.</p>
+
+              <p>Finally, measure the workflow.</p>
+
+              <p>Usage alone is a weak signal. Prompt volume and generated lines of code do not tell you whether adoption is improving delivery.</p>
+
+              <p>Better questions are more practical: Are reviews easier? Are fewer changes rejected for known standards violations? Are developers finding the right guidance faster? Are security and platform expectations clearer? Are production risks being caught earlier? Are reviewers spending less time correcting basic context and more time reviewing design?</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/healthy-data-ecosystems/" target="_blank" rel="noopener noreferrer">healthy data ecosystems</a> recommends ownership, sources of truth, quality checks, and governed access. That is a useful framing here. Treat engineering context as part of the delivery system, not as exhaust from previous work.</p>
+
+              <h2>Limitations and counterpoints</h2>
+
+              <p>Context work will not fix every AI adoption problem.</p>
+
+              <p>Some tasks are still a poor fit for AI assistance. Some systems are too sensitive for broad retrieval. Some codebases have design problems that better documentation cannot hide. Some generated changes will still be wrong, insecure, or hard to maintain.</p>
+
+              <p>There is also a cost to maintaining context. Teams can create too many documents, too many checklists, and too many instruction files. If every workflow requires reading a long process page, developers will work around it. If assistant instructions become a dumping ground for every preference, they will become noisy and contradictory.</p>
+
+              <p>The goal is not to document everything.</p>
+
+              <p>The goal is to make the important context for a workflow findable, current, owned, permission-aware, and reviewable.</p>
+
+              <p>Tools can help. Retrieval systems, repository instructions, platform templates, internal developer portals, knowledge graphs, and coding agents can all be useful. But none of them remove the harder work: deciding which sources are authoritative, who owns them, what access is appropriate, and how humans review the output.</p>
+
+              <p>Better context improves the conditions for AI-assisted work. It does not remove engineering accountability.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <ol>
+                <li><strong>Start from workflows, not tools.</strong> Pick one real engineering workflow and map the context needed to do it safely.</li>
+                <li><strong>Better context means more than better search.</strong> Context needs ownership, freshness, permissions, and clear sources of truth.</li>
+                <li><strong>AI access should be scoped and reviewable.</strong> More context is useful only when it is tied to permissions, workflow boundaries, and human accountability.</li>
+              </ol>
+
+              <h2>Make the engineering system legible</h2>
+
+              <p>Return to the opening scenario.</p>
+
+              <p>The assistant did not struggle because the enterprise had no knowledge. The organization had the API standard, the ADR, the incident review, the runbook, the security policy, and the review expectation. They were scattered across tools, unevenly maintained, and unavailable at the point of work.</p>
+
+              <p>That is the real adoption problem.</p>
+
+              <p>Buying a smarter assistant may help, but it will not automatically make the engineering system understandable. If standards are stale, ownership is unclear, permissions are messy, and review expectations live only in people's heads, AI may expose or amplify those problems.</p>
+
+              <p>The useful work is more grounded: make the current guidance easier to find, remove or label stale documents, link decisions to repositories, put security and platform expectations closer to coding and review, clarify permissions, and keep humans accountable for design, risk, and production impact.</p>
+
+              <p>Enterprise AI adoption is not mainly about giving developers a new tool.</p>
+
+              <p>It is about making the engineering system legible to developers, reviewers, platform teams, security teams, and, where appropriate, AI assistants working under clear permissions and human accountability.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" class="article-related-item">
+                  <span class="article-related-item-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</span>
+                  <span class="article-related-item-summary">How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../stronger-evidence-chains-for-ai-assisted-engineering-changes/" class="article-related-item">
+                  <span class="article-related-item-title">Stronger Evidence Chains for AI-Assisted Engineering Changes</span>
+                  <span class="article-related-item-summary">As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
