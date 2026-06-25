@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership." />
+  <title>Stronger Evidence Chains for AI-Assisted Engineering Changes | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/" />
+  <meta property="og:title" content="Stronger Evidence Chains for AI-Assisted Engineering Changes | Suyog Joshi" />
+  <meta property="og:description" content="As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Stronger Evidence Chains for AI-Assisted Engineering Changes | Suyog Joshi" />
+  <meta name="twitter:description" content="As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Stronger Evidence Chains for AI-Assisted Engineering Changes</h1>
+            <p class="article-page-subtitle">As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 25 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="A pull request evidence flow connecting context, review, validation, rollout, observability, and ownership around an AI-assisted code change." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>Imagine a team ships a change to payment retry behavior.</p>
+
+              <p>The intent is reasonable. Some payment provider failures are transient, and the system should retry them instead of failing the customer too early. A developer uses an AI coding assistant to help with the implementation and a few tests. The pull request looks clean. CI passes. Review is short because the diff is easy to read and the tests cover the obvious cases.</p>
+
+              <p>A few days later, production behavior looks wrong. Some payments are retried more aggressively than expected. Support sees customer complaints. Finance asks whether duplicate charges are possible. The on-call engineer starts reading the code, the PR, the issue, and the deployment history.</p>
+
+              <p>At this point, the team does not need a transcript of every prompt, model response, and generated attempt. It needs to reconstruct the engineering decision.</p>
+
+              <p>What retry behavior was intended? Which provider errors were considered transient? Were idempotency guarantees checked? Were duplicate charge scenarios considered? What tests covered retry limits, provider timeouts, partial failures, and callback races? Was the change behind a feature flag? Which metrics were expected to catch bad behavior? Who reviewed the payment domain logic? Who accepted the rollout risk?</p>
+
+              <p>The problem is not that AI helped write some code. The problem is that the accepted change did not leave behind enough evidence for the team to understand why it was considered safe.</p>
+
+              <p>That is the traceability problem AI-assisted engineering makes more visible.</p>
+
+              <h2>Faster code production changes where teams need attention</h2>
+
+              <p>AI coding assistants have shown productivity gains in some studies and settings, especially on bounded programming tasks. Peng, Kalliamvakou, Cihon, and Demirer studied GitHub Copilot in a controlled task where developers implemented an HTTP server in JavaScript. The Copilot group completed the task faster in that setting (<a href="https://arxiv.org/abs/2302.06590" target="_blank" rel="noopener noreferrer">arXiv</a>).</p>
+
+              <p>That is useful evidence, but it does not mean AI improves every software delivery outcome. Real systems include old code, unclear requirements, external dependencies, partial failures, operational constraints, and people with incomplete context.</p>
+
+              <p>DORA’s 2024 Accelerate State of DevOps report is a useful caution against a simple “AI makes teams faster” story. Its AI findings discuss nuanced associations across documentation quality, code quality, review speed, approval speed, complexity, technical debt, and delivery performance (<a href="https://dora.dev/dora-report-2024" target="_blank" rel="noopener noreferrer">DORA 2024</a>).</p>
+
+              <p>The engineering lesson is simple: faster implementation is not the whole system.</p>
+
+              <p>When code becomes easier to produce, review and validation can become more important parts of the engineering system. The quality of the decision matters. The ability to reconstruct that decision later matters too.</p>
+
+              <p>This is not unique to AI. Human-written code has always shipped with missing context. A clean diff has never guaranteed a correct decision. Passing tests have never proved the absence of production risk.</p>
+
+              <p>AI assistance can make the gap more painful because a change may look finished earlier. It may include implementation code, tests, comments, and refactoring that feel polished. But polished code is not the same as shared understanding.</p>
+
+              <p>Microsoft Research’s early work on AI pair-programming tools makes a related observation: as AI tools participate in more development tasks, developer work can shift toward assessing suggestions, not only writing code (<a href="https://www.microsoft.com/en-us/research/publication/taking-flight-with-copilot-early-insights-and-opportunities-of-ai-powered-pair-programming-tools/" target="_blank" rel="noopener noreferrer">Microsoft Research</a>). That assessment needs context.</p>
+
+              <p>A reviewer cannot responsibly evaluate payment retry behavior from the diff alone. They need to know what the system is trying to guarantee.</p>
+
+              <h2>Complete traceability is not prompt surveillance</h2>
+
+              <p>A weak response to this problem is to say: “Log everything.”</p>
+
+              <p>Every prompt. Every model output. Every generation attempt. Every abandoned path. Every keystroke.</p>
+
+              <p>That may feel like traceability, but for most engineering review and incident-learning needs, it creates more noise than understanding. Prompt history can show how someone explored a problem. It does not necessarily explain why the final change was accepted.</p>
+
+              <p>A prompt transcript may contain guesses, false starts, generated code that was never used, incorrect assumptions that were later corrected, and tool-specific detail that does not matter to the production system. During an incident, the team usually needs the accepted engineering record more than the full conversation that led there.</p>
+
+              <p>The source of truth should be the accepted engineering decision:</p>
+
+              <ul>
+                <li>Why was this change made?</li>
+                <li>What constraints shaped it?</li>
+                <li>What alternatives were considered?</li>
+                <li>How was it validated?</li>
+                <li>Who reviewed it?</li>
+                <li>How was it rolled out?</li>
+                <li>Who owned the remaining risk?</li>
+              </ul>
+
+              <p>This distinction matters because traceability can quickly become uncomfortable if teams treat it as monitoring developer behavior. The goal should be to help future engineers, reviewers, incident leads, and maintainers understand consequential decisions.</p>
+
+              <p>There are exceptions. Some regulated, legal, privacy, security, vendor evaluation, or model-debugging contexts may require additional records, including prompts or model outputs. Those requirements should be handled deliberately. Prompt logging should not be confused with the normal engineering source of truth.</p>
+
+              <p>NIST’s AI Risk Management Framework supports a risk-aware way of thinking about AI use: governance, context mapping, measurement, management, accountability, and transparency (<a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10" target="_blank" rel="noopener noreferrer">NIST AI RMF 1.0</a>). Its Generative AI Profile extends that framing to generative AI risks (<a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence" target="_blank" rel="noopener noreferrer">NIST AI 600-1</a>). Neither source prescribes a universal pull request workflow or says software teams must log every prompt.</p>
+
+              <p>The practical lesson is narrower and more useful: preserve context and accountability around important AI-assisted decisions.</p>
+
+              <p>Good traceability helps a future engineer reconstruct the decision. It does not collect noise for its own sake.</p>
+
+              <h2>What an evidence chain means in practice</h2>
+
+              <p>One useful way to frame this is an evidence chain: the connected record that lets a future engineer understand why a change was made, how it was validated, how it was reviewed, how it was delivered, and who owned the decision.</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="evidence-chain-ai-changes.png" alt="Evidence chain diagram showing intent, context, constraints, alternatives, validation, review, rollout and observability, and ownership, with stronger evidence for higher-consequence changes." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>It is not one large document. It is usually the set of artifacts already present in a healthy engineering workflow:</p>
+
+              <ul>
+                <li>issue or ticket context</li>
+                <li>design notes or ADRs when needed</li>
+                <li>pull request description</li>
+                <li>test changes</li>
+                <li>CI results</li>
+                <li>review comments</li>
+                <li>rollout notes</li>
+                <li>feature flag or deployment record</li>
+                <li>dashboard, alert, or incident follow-up</li>
+              </ul>
+
+              <p>This is similar in spirit to software provenance, but with a wider scope. SLSA provenance focuses on verifiable information about software artifacts, including where, when, and how something was produced (<a href="https://slsa.dev/spec/v1.0/provenance" target="_blank" rel="noopener noreferrer">SLSA provenance</a>). That is valuable. Consequential engineering changes also need the human side: why the change was made, which constraints mattered, and who accepted the risk.</p>
+
+              <p>For the payment retry example, a useful evidence chain would cover a few practical questions.</p>
+
+              <h3>Intent and context</h3>
+
+              <p>What behavior is changing, and why?</p>
+
+              <p>“Retry transient provider failures up to three times with exponential backoff” is more useful than “improve payment reliability.” It gives reviewers something concrete to check.</p>
+
+              <p>The PR should also explain what production issue, provider behavior, customer impact, or business rule shaped the change. Maybe a provider returns a specific timeout error that often succeeds on retry. Maybe customers are abandoning checkout after a single temporary failure. Maybe finance has a reconciliation constraint that limits how retries should work.</p>
+
+              <p>Without this context, a reviewer can inspect code structure, but they cannot judge whether the behavior matches the real problem.</p>
+
+              <h3>Constraints and alternatives</h3>
+
+              <p>For payment retries, constraints may include no duplicate charges, idempotent provider calls, maximum retry counts, provider-specific error handling, safe reconciliation, and clear customer communication.</p>
+
+              <p>These constraints are often more important than the implementation. If they are missing from the PR, reviewers may not know what risk they are supposed to evaluate.</p>
+
+              <p>It also helps to capture alternatives considered. Maybe the team considered changing provider configuration, moving retries into a queue, adjusting backoff globally, or retrying only through manual support workflows. This does not need to be a long design document. Two or three sentences are often enough to prevent future engineers from reopening the same question without context.</p>
+
+              <h3>Validation</h3>
+
+              <p>Tests are part of the evidence. For payment retries, useful tests might cover retry limits, backoff behavior, provider timeouts, duplicate callbacks, partial failures, idempotency keys, and non-retryable errors.</p>
+
+              <p>But tests are evidence, not proof. They show selected expected behaviors under selected conditions. They do not prove the absence of production risk.</p>
+
+              <p>For higher-consequence changes, validation may also include manual checks, sandbox provider testing, production-like failure scenarios, or a review of existing metrics. NIST’s Secure Software Development Framework reinforces the value of secure development practices, traceability, validation, and learning from issues, especially in areas with security or operational risk (<a href="https://csrc.nist.gov/pubs/sp/800/218/final" target="_blank" rel="noopener noreferrer">NIST SSDF SP 800-218</a>).</p>
+
+              <h3>Review, rollout, and ownership</h3>
+
+              <p>Public code review guidance from Google is a useful reminder that review is about more than syntax and style. Reviewers should consider design, functionality, complexity, tests, naming, comments, style, and documentation (<a href="https://google.github.io/eng-practices/review/" target="_blank" rel="noopener noreferrer">Google Engineering Practices</a>).</p>
+
+              <p>For a payment retry change, review by someone who understands the payment domain is different from review by someone who only checks code formatting and test structure. Both may be useful, but they are not the same.</p>
+
+              <p>The evidence chain should also show how the change will be released, monitored, and rolled back if needed. In the payment retry scenario, useful signals might include retry volume, provider error rate, duplicate authorization attempts, charge success rate, support tickets, and reconciliation mismatches.</p>
+
+              <p>Finally, the record should make human ownership clear. This is about ownership, not blame. Every meaningful production change carries some uncertainty. AI can assist with implementation, but it should not become the owner of an engineering decision.</p>
+
+              <h2>Evidence should scale with consequence</h2>
+
+              <p>The question is not “Was AI used?”</p>
+
+              <p>The better question is: “What could happen if this change is wrong?”</p>
+
+              <p>A formatting cleanup does not need a long evidence chain. A small test refactor may only need a clear PR description and passing CI. A low-risk internal UI adjustment may not need domain-owner review.</p>
+
+              <p>A payment retry change is different. So is an authentication change, an authorization rule, a data deletion job, a migration, a customer notification workflow, a fraud rule, or an external provider integration.</p>
+
+              <p>The evidence chain should scale with consequence.</p>
+
+              <p>This risk-based approach avoids two bad extremes. One extreme is trusting AI-assisted changes because the code looks good and tests pass. The other is adding heavy process to every AI-assisted change, including trivial edits.</p>
+
+              <p>NIST’s AI risk guidance is useful here because it frames AI risk management around context and risk, not one-size-fits-all ceremony. OWASP’s work on LLM application risks also calls out concerns such as overreliance and insecure output handling (<a href="https://owasp.org/www-project-top-10-for-large-language-model-applications" target="_blank" rel="noopener noreferrer">OWASP Top 10 for LLM Applications</a>). That project is focused on LLM applications rather than coding workflows, so the connection is adjacent. Still, the lesson is relevant: AI output can be useful, but it should not bypass normal engineering judgment.</p>
+
+              <p>A practical team might define higher-consequence areas explicitly:</p>
+
+              <ul>
+                <li>payments</li>
+                <li>authentication and authorization</li>
+                <li>data handling and privacy</li>
+                <li>migrations and deletion</li>
+                <li>customer communication</li>
+                <li>external integrations</li>
+                <li>production reliability controls</li>
+                <li>security-sensitive code</li>
+                <li>irreversible operations</li>
+              </ul>
+
+              <p>Changes in those areas get stronger evidence requirements. Other changes stay lightweight.</p>
+
+              <p>That is engineering judgment applied to workflow design.</p>
+
+              <h2>Implementing this inside the existing workflow</h2>
+
+              <p>Most teams do not need a new AI governance tool to start improving evidence chains. They can adapt the workflow they already use.</p>
+
+              <p>Pull request templates can ask for the right information. CODEOWNERS can route changes in sensitive areas to domain owners. Protected branches can require reviews and status checks before merge. GitHub supports these mechanisms through pull request templates, CODEOWNERS, protected branches, required reviews, and required status checks (<a href="https://docs.github.com/github/administering-a-repository/defining-the-mergeability-of-pull-requests/about-protected-branches" target="_blank" rel="noopener noreferrer">GitHub protected branches</a>, <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners" target="_blank" rel="noopener noreferrer">CODEOWNERS</a>, <a href="https://docs.github.com/articles/creating-a-pull-request-template-for-your-repository" target="_blank" rel="noopener noreferrer">PR templates</a>).</p>
+
+              <p>For high-consequence changes, a PR template section like this can make the right thinking visible:</p>
+
+              <pre><code>## Intent
+What behavior is changing, and why?
+
+## Context
+What production issue, customer case, business rule, or system constraint shaped this change?
+
+## Risk area
+Does this affect payments, auth, data handling, retries, customer communication, or external integrations?
+
+## Alternatives
+What other approaches were considered, and why were they not chosen?
+
+## Validation
+What tests, scenarios, or manual checks were performed?
+
+## Rollout
+How will this be released, monitored, and rolled back if needed?
+
+## Ownership
+Who reviewed the domain behavior, and who accepts the remaining risk?</code></pre>
+
+              <p>This should not become a form people fill out mechanically. The value is not in the template. The value is in the thinking the template makes visible.</p>
+
+              <p>The same principle appears in the “Documentation Is Like Code” chapter from <em>Software Engineering at Google</em>: useful documentation should be treated as part of the engineering workflow, kept close to the code where possible, and maintained over time (<a href="https://abseil.io/resources/swe-book/html/ch10.html" target="_blank" rel="noopener noreferrer">Abseil / Software Engineering at Google</a>). Evidence chains work best when they live near the work: in PRs, issues, ADRs, tests, rollout notes, and incident follow-ups.</p>
+
+              <p>A disconnected audit document may satisfy a separate need, especially in regulated environments. But it may not help the next on-call engineer understand a payment retry incident at 2 a.m. A clear PR linked to the issue, tests, rollout plan, and dashboard has a better chance of helping.</p>
+
+              <h2>Limits to keep in mind</h2>
+
+              <p>There are a few important limits to this argument.</p>
+
+              <p>Not every change needs a strong evidence chain. If every small refactor requires a long decision record, people will either slow down unnecessarily or learn to write meaningless text. The process should scale with consequence.</p>
+
+              <p>Prompt logs may matter in some environments. Regulated teams, security-sensitive systems, legal review, privacy investigations, vendor evaluation, or model-debugging work may require additional records. The point is not that prompt logs are useless. The point is that they are usually not the best engineering source of truth for understanding the accepted change.</p>
+
+              <p>Documentation does not make a change safe. A better PR record helps reviewers ask better questions. It does not replace technical judgment, domain expertise, tests, observability, staged rollout, incident learning, or production ownership.</p>
+
+              <p>Repository controls are only gates. CODEOWNERS can request the right reviewers. Protected branches can require approvals and passing checks. PR templates can ask better questions. None of these guarantee that reviewers understood the risk.</p>
+
+              <p>AI assistance is also not the only reason teams need this. Many human-written changes lack intent, context, validation, and ownership. AI simply makes the weakness harder to ignore when code arrives faster and looks complete before the team has built shared understanding.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, the source of truth should be the accepted engineering decision, not the AI conversation. Prompt history may show exploration, but the durable record should explain the problem, constraints, alternatives, validation, review, rollout, and human owner.</p>
+
+              <p>Second, evidence should scale with consequence. A formatting cleanup does not need the same record as a payment retry change. Ask what could happen if the change is wrong, then adjust the evidence accordingly.</p>
+
+              <p>Third, a good evidence chain supports human judgment. It does not replace review, testing, observability, rollout discipline, or ownership. It gives people the context they need to make better decisions.</p>
+
+              <h2>Conclusion</h2>
+
+              <p>AI-assisted development does not remove the old responsibilities of software engineering. Teams still need to understand production behavior, validate assumptions, review tradeoffs, and own risk.</p>
+
+              <p>It may make those responsibilities more visible.</p>
+
+              <p>When a consequential change fails in production, the team rarely needs to know every prompt that was typed. It needs to understand the accepted decision: what the team intended, what constraints mattered, how the change was validated, who reviewed it, how it was rolled out, and who accepted the remaining risk.</p>
+
+              <p>That is the evidence chain worth preserving.</p>
+
+              <p>Keep it lightweight for low-risk changes. Strengthen it for payments, auth, data, migrations, external integrations, and other areas where mistakes matter.</p>
+
+              <p>The goal is reconstructability, not surveillance. Future engineers should be able to look back at an important AI-assisted change and understand what changed, why the team believed it was the right change to ship, and who owned the decision.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" class="article-related-item">
+                  <span class="article-related-item-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</span>
+                  <span class="article-related-item-summary">How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../why-reviewing-ai-generated-work-is-a-different-skill/" class="article-related-item">
+                  <span class="article-related-item-title">Why Reviewing AI-Generated Work Is a Different Skill</span>
+                  <span class="article-related-item-summary">AI can generate polished software artifacts quickly, but engineers still need to uncover assumptions, missing context, and hidden risks.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
