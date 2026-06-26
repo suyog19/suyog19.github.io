@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tribal knowledge has always been expensive in software teams. AI-assisted development makes the cost harder to hide." />
+  <title>Why AI Punishes Tribal Knowledge in Software Teams | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/" />
+  <meta property="og:title" content="Why AI Punishes Tribal Knowledge in Software Teams | Suyog Joshi" />
+  <meta property="og:description" content="Tribal knowledge has always been expensive in software teams. AI-assisted development makes the cost harder to hide." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Why AI Punishes Tribal Knowledge in Software Teams | Suyog Joshi" />
+  <meta name="twitter:description" content="Tribal knowledge has always been expensive in software teams. AI-assisted development makes the cost harder to hide." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Why AI Punishes Tribal Knowledge in Software Teams</h1>
+            <p class="article-page-subtitle">The assistant cannot use the rule your team only explains in review.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 26 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="Diagram showing engineering knowledge sources such as README notes, tests, tickets, and repository context flowing into an AI assistant while an unwritten rule remains outside the context." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>The assistant cannot use the rule your team only explains in review.</p>
+
+              <p>The README says the service supports account cancellation. The tests show the normal path: active account, valid request, cancellation recorded, confirmation sent. The code has a clear handler, a service method, and examples that look easy to follow.</p>
+
+              <p>What the repository does not say is that enterprise accounts follow a different rule. They need a contract check before cancellation. Everyone on the team knows this because it came from an old customer escalation. Senior developers remember it. Support remembers it. Product remembers it.</p>
+
+              <p>But the rule never made it into the README, the ticket template, the test examples, or the service instructions.</p>
+
+              <p>Now ask an AI assistant to make &quot;one small cancellation improvement.&quot;</p>
+
+              <p>It will probably follow the visible system.</p>
+
+              <p>That is the problem.</p>
+
+              <p>Tribal knowledge has always been expensive in software teams. AI-assisted development makes the cost harder to hide.</p>
+
+              <h2>What tribal knowledge really is</h2>
+
+              <p>Tribal knowledge is practical team knowledge that the software depends on but the team has not put in a durable, findable, current place.</p>
+
+              <p>It is not mysterious wisdom. It is usually ordinary delivery knowledge:</p>
+
+              <ul>
+                <li>do not call this provider during checkout</li>
+                <li>this old endpoint is still public, but no new clients should use it</li>
+                <li>trial accounts skip this workflow</li>
+                <li>enterprise accounts do not</li>
+                <li>this test helper hides a real authorization behavior</li>
+                <li>this table looks local, but operations depends on it</li>
+                <li>that retry policy changed after an incident</li>
+                <li>this module boundary matters even though imports still compile</li>
+              </ul>
+
+              <p>Human teams survive this for a while because people create social shortcuts around the missing record.</p>
+
+              <p>A new developer asks in chat. A reviewer notices the missing case. A senior engineer remembers the outage. A product manager explains the contract exception. Someone says, &quot;Before you touch that part, talk to the platform team.&quot;</p>
+
+              <p>These workarounds are useful. They are also fragile.</p>
+
+              <p>They depend on who is available, who remembers, who reviews the change, and whether the question gets asked at all.</p>
+
+              <p>AI assistants do not get that social layer by default. They work from the context assembled for the task: the prompt, selected files, nearby code, tests, retrieved documents, repository instructions, terminal output, and connected tools.</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="human-workarounds-vs-ai-context.png" alt="Diagram contrasting human workarounds such as memory, Slack, review, onboarding, product history, and incident memory with AI working context such as prompts, repositories, tests, docs, retrieved context, and tool output." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>If the important rule is only in someone's memory, the assistant cannot reliably use it. If the rule is in a stale wiki page, the assistant may use the wrong version. If the rule appears only in old review comments, the assistant may miss it completely.</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> makes this point in practical terms: AI tools become more useful when they can work with relevant internal context such as codebases, documentation, style guides, operational metrics, and architecture diagrams. The hard edge is simple: missing or inaccurate internal context produces weak assistance.</p>
+
+              <h2>Humans can ask around. AI extends what it sees.</h2>
+
+              <p>Experienced developers read more than files.</p>
+
+              <p>They read team history. They know which old pattern is tolerated but no longer preferred. They know the shortcut that works in one service but caused trouble in another. They know which &quot;simple&quot; change usually needs a product decision. They know that a certain test fixture exists for historical reasons and should not be copied.</p>
+
+              <p>AI can infer some things from code and tests. Sometimes that is enough. But it cannot reliably infer the rule that the team never captured and never connected to the work.</p>
+
+              <p>This difference matters because AI is good at continuing visible patterns.</p>
+
+              <p>If the repository contains three old examples and no current guidance, the assistant may copy the old examples. If the tests only show the normal path, it may write more normal-path tests. If the ticket describes the happy path but omits the contract exception, the assistant may implement exactly what the ticket says.</p>
+
+              <p>The assistant is not necessarily being careless.</p>
+
+              <p>It is treating the available evidence as the system.</p>
+
+              <p>That is why tribal knowledge becomes more expensive with AI. The output can arrive quickly, look consistent, and still miss the rule that mattered most.</p>
+
+              <h2>Wrong implementations</h2>
+
+              <p>The first failure mode is wrong implementation.</p>
+
+              <p>Suppose a team changed its API standard six months ago. New endpoints should use an asynchronous event-based flow. The decision was discussed in architecture review. A few senior engineers know the reason. One ADR exists, but it is not linked from the service. The repository still has older synchronous examples because migration is incomplete.</p>
+
+              <p>An assistant asked to add a similar endpoint will naturally find the old examples.</p>
+
+              <p>The generated code may be clean. It may pass tests. It may fit the naming style. But it implements the old standard.</p>
+
+              <p>A new human could make the same mistake. The difference is speed and surface polish.</p>
+
+              <p>Architecture Decision Records help because they preserve decision context. Martin Fowler describes an <a href="https://martinfowler.com/bliki/ArchitectureDecisionRecord.html" target="_blank" rel="noopener noreferrer">Architecture Decision Record</a> as a short document that captures a decision, the context for making it, and its consequences. He also notes that changed decisions should link to superseding decisions.</p>
+
+              <p>That matters because old decisions and old code remain visible. Unless current decisions are connected to the work, AI may faithfully implement yesterday's architecture.</p>
+
+              <h2>Missed edge cases</h2>
+
+              <p>Tribal knowledge also hides in edge cases.</p>
+
+              <p>The ticket says &quot;support cancellation.&quot; The acceptance criteria mention the normal customer flow. The existing tests cover a valid request, an invalid request, and a database failure.</p>
+
+              <p>What is missing?</p>
+
+              <p>Enterprise accounts need contract review. Suspended accounts need a different message. Accounts with pending invoices follow a separate workflow. One region requires an audit event. Old records contain account states the current UI cannot create.</p>
+
+              <p>These details come from incidents, support cases, customer contracts, and product history. Teams often carry them in memory because they were learned under pressure and never folded back into normal engineering artifacts.</p>
+
+              <p>AI assistants do not know that history unless it appears in the task context. If the edge case is not in the ticket, examples, tests, docs, or retrieved guidance, the assistant may produce a complete-looking implementation that handles only the visible path.</p>
+
+              <p>This is where AI exposes weak written work.</p>
+
+              <p>It shows the difference between what the team meant and what the team actually gave the system.</p>
+
+              <h2>Weak tests</h2>
+
+              <p>AI-generated tests can be helpful, but they usually reflect the same knowledge as the implementation.</p>
+
+              <p>If the repository shows happy-path tests, the assistant writes more happy-path tests. If the test helper hides authorization, it may reuse the helper. If no example covers idempotency, retries, stale data, or customer-specific rules, the generated tests may miss the risky behavior.</p>
+
+              <p>The tests can still look good.</p>
+
+              <p>They can have clear names. They can arrange data cleanly. They can assert the expected response. They can pass in CI.</p>
+
+              <p>But passing tests are only useful if they test the behavior that matters.</p>
+
+              <p>When reviewers repeatedly say &quot;add the enterprise case&quot; or &quot;test the retry boundary,&quot; that is not just a review comment. It is a signal that knowledge is stuck in human memory.</p>
+
+              <p>The documentation chapter in <a href="https://abseil.io/resources/swe-book/html/ch10.html" target="_blank" rel="noopener noreferrer">Software Engineering at Google</a> gives a useful rule of thumb: if something needs to be explained more than once, it usually makes sense to document it. For AI-assisted development, the same idea extends beyond prose. If the same correction appears twice, consider whether it should become a test, example, checklist, repository instruction, or CI check.</p>
+
+              <h2>Misleading confidence</h2>
+
+              <p>The most dangerous failure is not messy output.</p>
+
+              <p>Messy output is easy to distrust.</p>
+
+              <p>The harder case is polished output built on incomplete context.</p>
+
+              <p>An assistant can produce code that compiles, tests that pass, and a summary that sounds careful. It can say it added coverage for cancellation. It can say it followed existing patterns. It can say all tests pass.</p>
+
+              <p>All of that may be true.</p>
+
+              <p>It still may have missed the rule that was never connected to the work.</p>
+
+              <p>This creates misleading confidence. The team sees progress. The pull request looks reasonable. The generated explanation sounds complete. The missing knowledge is outside the artifact, so it is easy to miss until review or production.</p>
+
+              <p>That is why review has to look beyond code cleanliness.</p>
+
+              <p>Reviewers should ask:</p>
+
+              <ul>
+                <li>What local rule should have shaped this change?</li>
+                <li>Did the assistant copy a current pattern or an old one?</li>
+                <li>Are the edge cases visible in the ticket and tests?</li>
+                <li>Would a new developer find the same rule from the repository?</li>
+                <li>Is this the second or third time we have explained the same thing?</li>
+              </ul>
+
+              <p>These are not special AI questions. They are good engineering questions that AI makes harder to postpone.</p>
+
+              <h2>Documentation is not the whole answer</h2>
+
+              <p>The answer is not &quot;document everything.&quot;</p>
+
+              <p>That usually creates a second problem: stale documents, long pages nobody reads, and search results full of conflicting guidance.</p>
+
+              <p>Useful context is smaller and closer to work.</p>
+
+              <p>DORA's work on <a href="https://dora.dev/capabilities/documentation-quality/" target="_blank" rel="noopener noreferrer">documentation quality</a> emphasizes attributes such as clarity, findability, and reliability. That is the right direction. A short, current note next to the code is often better than a long page in a forgotten wiki.</p>
+
+              <p>Some tribal knowledge should become documentation. Some should become examples. Some should become tests. Some should become an ADR. Some should become a PR checklist item. Some should become a linter, schema check, or CI gate. Some should remain human judgment, but with clearer ownership.</p>
+
+              <p>Use a simple model.</p>
+
+              <h2>1. Spot repeated explanations</h2>
+
+              <p>Look for rules people keep explaining during onboarding, code review, incident follow-up, ticket clarification, or senior-engineer escalation.</p>
+
+              <p>Repeated explanation is a smell. It means the knowledge matters and the workflow has no good place for it.</p>
+
+              <h2>2. Capture the rule close to the work</h2>
+
+              <p>Do not start with a large knowledge base.</p>
+
+              <p>Put the rule where the next person or assistant will need it.</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="move-knowledge-closer-to-work.png" alt="Diagram showing a repeated review comment being captured as README notes, example tests, ADR links, PR questions, repository instructions, and CI checks that feed back into the repository workflow." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>If it affects a module, link the ADR from that module. If it affects tests, add a test example. If it affects a service, update the README. If it affects every PR of a certain type, add a template question. If it affects generated code, put it in repository instructions.</p>
+
+              <p>The goal is not perfect documentation. The goal is reachability.</p>
+
+              <h2>3. Convert stable rules into stronger artifacts</h2>
+
+              <p>Some knowledge should not remain a paragraph forever.</p>
+
+              <p>If a rule is stable, repeatable, and cheap to check, move it into something stronger:</p>
+
+              <ul>
+                <li>a unit or contract test</li>
+                <li>a lint rule</li>
+                <li>a schema constraint</li>
+                <li>a generated example</li>
+                <li>a PR checklist item</li>
+                <li>an architecture boundary check</li>
+                <li>a CI step</li>
+              </ul>
+
+              <p>This reduces dependence on memory.</p>
+
+              <p>It also helps AI because the correct path becomes visible in the repository and feedback loop.</p>
+
+              <h2>4. Feed review and incidents back into context</h2>
+
+              <p>Review comments and incidents are not only corrections. They are discovery mechanisms.</p>
+
+              <p>When an AI-assisted change misses a local rule, fix the change. Then ask where that rule should have lived.</p>
+
+              <p>Was the ticket too thin? Was the README stale? Was the ADR unlinked? Was the test example missing? Was the old pattern still present without a warning? Was the assistant blocked from the right source? Was retrieval noisy?</p>
+
+              <p>Every miss is not a context failure. Sometimes the model simply gets it wrong.</p>
+
+              <p>But repeated misses usually point to a knowledge-flow problem.</p>
+
+              <h2>Limits</h2>
+
+              <p>Some knowledge is hard to capture.</p>
+
+              <p>Experienced engineers carry judgment from production incidents, failed designs, customer history, and trade-offs. Not all of that can become a checklist.</p>
+
+              <p>Some knowledge is sensitive. Customer details, security incidents, commercial terms, and operational data need access control. DORA's guidance on <a href="https://dora.dev/capabilities/healthy-data-ecosystems/" target="_blank" rel="noopener noreferrer">healthy data ecosystems</a> is useful here because it pairs discoverability with governance. AI tools should not receive everything just because context is useful.</p>
+
+              <p>Some documentation will become stale. That is why ownership matters. A stale rule can be worse than no rule because it gives both humans and assistants the wrong thing to trust.</p>
+
+              <p>And some AI mistakes will happen even with good context.</p>
+
+              <p>Better knowledge flow reduces risk. It does not remove review, testing, architecture judgment, security review, or production ownership.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, treat tribal knowledge as AI risk when it affects implementation, testing, rollout, security, or production behavior.</p>
+
+              <p>Second, use AI mistakes as diagnostics. Ask whether the assistant had a realistic way to know the rule it missed.</p>
+
+              <p>Third, move repeated explanations closer to the workflow. The right artifact might be a README note, test, ADR link, PR question, repository instruction, or check.</p>
+
+              <h2>The next repeated explanation</h2>
+
+              <p>The next time you explain the same rule in review, pause for a moment.</p>
+
+              <p>Do not only leave the comment.</p>
+
+              <p>Ask where that rule should live so the next developer can find it earlier and the next assistant can use it as context.</p>
+
+              <p>Maybe the answer is a sentence in a README. Maybe it is an example test. Maybe it is an ADR link. Maybe it is a PR template question. Maybe it is a small CI check.</p>
+
+              <p>That small habit matters.</p>
+
+              <p>Tribal knowledge becomes expensive when important rules have no path into the work. AI makes that cost visible because it operates on the system your team has actually captured, not the system people remember.</p>
+
+              <p>If the knowledge matters, give it a home close to the work.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/" class="article-related-item">
+                  <span class="article-related-item-title">The Context Supply Chain: How Organizational Knowledge Reaches AI Output</span>
+                  <span class="article-related-item-summary">AI output often fails long before the prompt is written.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../enterprise-ai-adoption-is-a-context-problem/" class="article-related-item">
+                  <span class="article-related-item-title">Enterprise AI Adoption Is a Context Problem</span>
+                  <span class="article-related-item-summary">Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
