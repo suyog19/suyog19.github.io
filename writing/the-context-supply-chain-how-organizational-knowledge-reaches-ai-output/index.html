@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI output often fails long before the prompt is written." />
+  <title>The Context Supply Chain: How Organizational Knowledge Reaches AI Output | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/" />
+  <meta property="og:title" content="The Context Supply Chain: How Organizational Knowledge Reaches AI Output | Suyog Joshi" />
+  <meta property="og:description" content="AI output often fails long before the prompt is written." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Context Supply Chain: How Organizational Knowledge Reaches AI Output | Suyog Joshi" />
+  <meta name="twitter:description" content="AI output often fails long before the prompt is written." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">The Context Supply Chain: How Organizational Knowledge Reaches AI Output</h1>
+            <p class="article-page-subtitle">AI output often fails long before the prompt is written.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 26 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="Diagram showing organizational sources such as tickets, ADRs, repositories, runbooks, incidents, and tests flowing into usable context for an AI coding interface." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>A developer asks an assistant to add a new endpoint. The assistant reads the nearby code, follows the local naming style, adds a handler, creates a few tests, and updates a small piece of documentation. The pull request looks reasonable.</p>
+
+              <p>Then review starts.</p>
+
+              <p>The endpoint uses an API pattern the platform team deprecated months ago. The new guidance exists, but it lives in a wiki page that is not linked from the repository. The ticket explains the happy path, but not the business rule that makes one customer segment different. A previous incident changed the retry expectation, but that lesson never made it into the service README or test examples. The security rule is known by reviewers, but not visible in the work item, PR template, or assistant instructions.</p>
+
+              <p>The organization had the knowledge.</p>
+
+              <p>The assistant did not receive it in a usable form.</p>
+
+              <p>It is tempting to call this a prompt problem. The prompt could probably have been better. But the deeper issue is upstream. The knowledge the assistant needed was created somewhere, captured somewhere else, maintained unevenly, disconnected from the workflow, and only partially available when the code was generated.</p>
+
+              <p>That is what I mean by the context supply chain.</p>
+
+              <p>Not a formal methodology. Not a new process framework. Just a practical way to describe how organizational knowledge becomes usable AI context.</p>
+
+              <p>Better AI-assisted engineering requires better knowledge flow, not just better prompts.</p>
+
+              <h2>What the context supply chain means</h2>
+
+              <p>In software teams, useful knowledge is spread across many places.</p>
+
+              <p>Business rules. Product decisions. Architecture documents. ADRs. Repository conventions. Work items. Acceptance criteria. API specs. Tests. Runbooks. Incident reviews. Deployment notes. Security standards. Code review comments. Operational dashboards.</p>
+
+              <p>DORA's work on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> points to the same practical direction: AI tools become more useful when they can work with relevant internal context such as codebases, documentation, and operational information.</p>
+
+              <p>Some of this knowledge explains what the system does. Some explains why it changed. Some explains what should never be changed casually. Some explains how the team learned from a production issue. Some explains who owns a decision.</p>
+
+              <p>AI assistants do not automatically receive all of that.</p>
+
+              <p>They work from the context assembled for the task: the prompt, selected files, retrieved documents, repository instructions, terminal output, tool results, conversation history, and whatever other sources the workflow exposes.</p>
+
+              <p>The context supply chain is the path between organizational knowledge and that working context.</p>
+
+              <p>A useful version has eight stages:</p>
+
+              <ol>
+                <li>Knowledge is created.</li>
+                <li>Knowledge is captured.</li>
+                <li>Knowledge is maintained.</li>
+                <li>Knowledge is connected to the workflow.</li>
+                <li>Knowledge is retrieved with the right permissions.</li>
+                <li>Knowledge is assembled into task context.</li>
+                <li>The assistant generates output.</li>
+                <li>Humans review the output and feed learning back into the system.</li>
+              </ol>
+
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="context-supply-chain.png" alt="Diagram showing the context supply chain from creating, capturing, maintaining, connecting, retrieving, assembling, and generating context through review and feedback." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>When that chain works, AI-assisted work becomes easier to review and more likely to fit the system.</p>
+
+              <p>When it breaks, the assistant fills gaps with assumptions.</p>
+
+              <h2>Prompts are downstream</h2>
+
+              <p>Prompts matter, but they are not the whole system.</p>
+
+              <p>A prompt is the final request. It is the point where a developer asks the assistant to do something.</p>
+
+              <p>But by the time the prompt is written, many important decisions have already happened.</p>
+
+              <p>Was the requirement captured clearly? Was the current architecture decision recorded? Was old guidance marked as superseded? Was the incident lesson turned into a test, runbook update, or coding rule? Was the security expectation close to the code? Was the assistant allowed to retrieve the right source? Did retrieval find current guidance or stale guidance?</p>
+
+              <p>Those questions shape the answer before the assistant starts generating.</p>
+
+              <p>This is why &quot;prompt harder&quot; has limits. A better prompt can clarify the immediate task. It cannot reliably compensate for a broken knowledge flow across the organization.</p>
+
+              <p>If a business rule lives only in a product manager's memory, the assistant cannot infer it safely. If an ADR is stale, retrieval may surface the wrong decision. If a runbook is accurate but disconnected from the service, the assistant may miss an operational constraint. If reviewers keep repeating the same standard but the standard is never encoded anywhere, the assistant will keep missing it too.</p>
+
+              <p>The prompt is downstream of all of that.</p>
+
+              <h2>Where the chain breaks</h2>
+
+              <p>Most context supply chain failures are ordinary.</p>
+
+              <p>They are not dramatic AI failures. They are familiar software engineering problems that become more visible when AI enters the workflow.</p>
+
+              <p>The first break is tacit knowledge. Every team has rules that &quot;everyone knows.&quot; Use this service for customer lookup. Do not call that downstream API during checkout. Do not change this table without talking to operations. These rules may be obvious to experienced engineers and invisible to everyone else.</p>
+
+              <p>AI cannot read team memory.</p>
+
+              <p>The second break is stale knowledge. Old architecture documents, outdated API patterns, superseded ADRs, and forgotten wiki pages can be worse than no context. They create confidence around the wrong answer.</p>
+
+              <p>The third break is disconnected knowledge. The right information may exist, but not where the work happens. A ticket does not link the relevant ADR. A service README does not link the runbook. A PR template asks for testing, but not rollout risk. An incident review contains a lesson that never becomes a check, example, or instruction.</p>
+
+              <p>This is why documentation quality matters for AI-assisted work too. DORA describes documentation quality through attributes such as <a href="https://dora.dev/capabilities/documentation-quality/" target="_blank" rel="noopener noreferrer">clarity, findability, and reliability</a>. Those attributes are not only useful for humans. They also affect whether tools can retrieve and use the right guidance.</p>
+
+              <p>The fourth break is noisy knowledge. More context is not always better. If retrieval brings back five conflicting documents, long comment threads, old design notes, and unrelated logs, the assistant may have plenty of text and still lack the right signal.</p>
+
+              <p>The fifth break is permission. Some useful context is sensitive. Tickets may contain customer details. Incident reviews may include security information. Operational dashboards may expose production data. Connecting everything to an assistant is not a safe answer.</p>
+
+              <p>The sixth break is missing feedback. Review comments and incidents often reveal context gaps. If the team fixes only the current output and never updates the underlying knowledge source, the same failure returns.</p>
+
+              <p>That is how the context supply chain keeps leaking.</p>
+
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="context-supply-chain-break-points.png" alt="Diagram showing context supply chain break points such as tacit knowledge, stale knowledge, disconnected knowledge, noisy retrieval, permissions, and missing feedback." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <h2>A practical model</h2>
+
+              <p>A context supply chain does not need to be complicated.</p>
+
+              <p>Start with one workflow.</p>
+
+              <p>For example: adding a new API endpoint.</p>
+
+              <p>Ask what knowledge a developer would need to do the work safely:</p>
+
+              <ul>
+                <li>the ticket and acceptance criteria</li>
+                <li>current API standard</li>
+                <li>authentication and authorization rules</li>
+                <li>service ownership</li>
+                <li>relevant ADRs</li>
+                <li>existing controller and test examples</li>
+                <li>error handling convention</li>
+                <li>deployment or rollout constraints</li>
+                <li>incident lessons that changed the standard</li>
+                <li>review expectations</li>
+              </ul>
+
+              <p>Then map how that knowledge reaches the work.</p>
+
+              <p>Where is it created? Where is it captured? Who owns it? How does someone know it is current? Is it linked from the repository or ticket? Can the assistant retrieve it? Should the assistant retrieve it? Can a reviewer see which source was used? What happens when the guidance changes?</p>
+
+              <p>This mapping usually reveals simple improvements.</p>
+
+              <p>Move the current API standard closer to the repository. Link the relevant ADR from the service README. Add a PR template question for rollout risk. Turn a repeated review comment into a test, linter rule, or example. Mark old docs as superseded. Add ownership to the runbook. Include non-goals in the ticket. Update agent instructions with build commands, generated files, and local conventions.</p>
+
+              <p>This is not new engineering wisdom. The documentation chapter in <a href="https://abseil.io/resources/swe-book/html/ch10.html" target="_blank" rel="noopener noreferrer">Software Engineering at Google</a> makes a similar point about ownership and maintenance: useful documentation should be treated as part of the engineering workflow, not as a side artifact. ADRs are another example. Martin Fowler describes an <a href="https://martinfowler.com/bliki/ArchitectureDecisionRecord.html" target="_blank" rel="noopener noreferrer">Architecture Decision Record</a> as a short record of a decision, its context, and its consequences, and notes that changed decisions should be linked to superseding decisions.</p>
+
+              <p>None of these actions require a grand AI platform.</p>
+
+              <p>They improve the path from knowledge to work.</p>
+
+              <h2>The chain should be reviewable</h2>
+
+              <p>Good context flow does not remove review.</p>
+
+              <p>It makes review better.</p>
+
+              <p>If an assistant generates code using repository instructions, the reviewer should be able to inspect those instructions. If the change depends on an ADR, the PR should make that decision visible. If the ticket contains a non-goal, the implementation should not quietly expand beyond it. If the assistant used a runbook or platform standard, the reviewer should be able to understand that source.</p>
+
+              <p>This matters because AI output can look polished even when the context behind it is weak.</p>
+
+              <p>Reviewers should not only ask:</p>
+
+              <p>Is the code clean?</p>
+
+              <p>They should also ask:</p>
+
+              <p>What knowledge shaped this output? Was that knowledge current? Was anything important missing? Which assumptions did the assistant make? Do the tests prove the behavior that matters? Should a repeated correction become part of the context supply chain?</p>
+
+              <p>Every repeated review comment is a signal. Every incident caused by a missed standard is a signal. Every AI-generated change that looks plausible but misses local context is a signal.</p>
+
+              <p>Do not only fix the output.</p>
+
+              <p>Fix the path that produced it.</p>
+
+              <h2>What better knowledge flow looks like</h2>
+
+              <p>A healthier context supply chain has a few practical properties.</p>
+
+              <p>Important knowledge has a home. People know where the current API standard, architecture decision, runbook, or testing convention lives.</p>
+
+              <p>Important knowledge has an owner. Someone can update it, retire it, or mark it as superseded.</p>
+
+              <p>Freshness is visible. Old decisions point to newer decisions. Deprecated patterns point to replacements. Incident lessons become current guidance.</p>
+
+              <p>Context is close to the workflow. The right information appears in repositories, tickets, PR templates, CI feedback, review checklists, examples, and agent instructions.</p>
+
+              <p>Access is scoped. AI tools do not get everything by default. They receive what is needed for the workflow under appropriate permissions.</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/healthy-data-ecosystems/" target="_blank" rel="noopener noreferrer">healthy data ecosystems</a> is useful here because it pairs discoverability with governance. That balance matters for AI context too: useful knowledge should be reachable through clear paths, but not exposed without boundaries.</p>
+
+              <p>Output is reviewable. Humans can inspect the sources, assumptions, tests, and decisions that shaped the result.</p>
+
+              <p>Feedback loops exist. Review findings and incidents improve the knowledge system, not just the current pull request.</p>
+
+              <p>This is not about documenting everything.</p>
+
+              <p>It is about making important knowledge travel well.</p>
+
+              <h2>Limits</h2>
+
+              <p>The context supply chain is only a model.</p>
+
+              <p>It will not make AI output automatically correct. It will not remove the need for architecture judgment, product understanding, security review, testing, observability, or production ownership.</p>
+
+              <p>It can also be overdone.</p>
+
+              <p>If every small change requires a long context package, people will ignore the process. If assistant instructions become a dumping ground for every preference, they will become noisy. If teams connect sensitive systems without clear permissions, they create new risk. If stale documents are indexed without cleanup, retrieval may make bad guidance easier to find.</p>
+
+              <p>The goal is not maximum context.</p>
+
+              <p>The goal is reliable context flow for the work that matters.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, treat poor AI output as a possible context supply chain failure. Ask what knowledge was missing, stale, disconnected, noisy, or unavailable.</p>
+
+              <p>Second, improve one workflow at a time. Pick a real engineering workflow and map how knowledge reaches the ticket, repository, assistant, pull request, review, and release.</p>
+
+              <p>Third, close the loop. When review or production feedback reveals a missing standard, update the artifact, check, instruction, example, or owner that should carry that knowledge next time.</p>
+
+              <h2>Better prompts are not enough</h2>
+
+              <p>Better prompts help.</p>
+
+              <p>They can clarify the task, expose assumptions, and guide the assistant toward a better answer.</p>
+
+              <p>But prompts are only one point in the chain.</p>
+
+              <p>If the organization's knowledge is scattered, stale, unowned, permission-blocked, or disconnected from the workflow, the assistant will receive a broken view of the system.</p>
+
+              <p>The answer is not to connect everything blindly.</p>
+
+              <p>The answer is to make knowledge flow better.</p>
+
+              <p>Capture the decisions that matter. Keep the current guidance visible. Put context where work happens. Scope access. Review outputs. Feed lessons back into the system.</p>
+
+              <p>AI-assisted engineering improves when the context supply chain improves.</p>
+
+              <p>Not because the assistant becomes magically correct.</p>
+
+              <p>Because humans and AI are finally working from a clearer view of the system.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../enterprise-ai-adoption-is-a-context-problem/" class="article-related-item">
+                  <span class="article-related-item-title">Enterprise AI Adoption Is a Context Problem</span>
+                  <span class="article-related-item-summary">Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" class="article-related-item">
+                  <span class="article-related-item-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</span>
+                  <span class="article-related-item-summary">How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
