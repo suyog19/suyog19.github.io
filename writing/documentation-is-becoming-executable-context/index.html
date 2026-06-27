@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="How AI-assisted software work is changing documentation from a passive reference into an active part of delivery." />
+  <title>Documentation Is Becoming Executable Context | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/" />
+  <meta property="og:title" content="Documentation Is Becoming Executable Context | Suyog Joshi" />
+  <meta property="og:description" content="How AI-assisted software work is changing documentation from a passive reference into an active part of delivery." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Documentation Is Becoming Executable Context | Suyog Joshi" />
+  <meta name="twitter:description" content="How AI-assisted software work is changing documentation from a passive reference into an active part of delivery." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Documentation Is Becoming Executable Context</h1>
+            <p class="article-page-subtitle">How AI-assisted software work is changing documentation from a passive reference into an active part of delivery.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 27 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure" style="margin:0;">
+                <img src="cover.png" alt="Diagram showing README, ADR, API, runbook, and AGENTS documentation becoming executable context that feeds code, tests, review, and CI." style="max-width:100%;height:auto;display:block;margin:0 auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>The old README did not just confuse the developer. It changed the code the assistant wrote.</p>
+
+              <p>A team asked an AI coding assistant to add a new endpoint to an internal service. The code was easy enough to follow. The README explained how to run the app. The nearby tests showed a simple request and response pattern.</p>
+
+              <p>The assistant followed what it could see. It generated the handler, added happy-path tests, and updated a small doc section.</p>
+
+              <p>The pull request looked reasonable until review.</p>
+
+              <p>The endpoint skipped the contract test required for public API changes. It used an old retry pattern that had been replaced after an incident. It crossed a service boundary explained in an ADR, but that ADR was not linked from the repository. The real rollout rule lived in a runbook that was not connected to the ticket.</p>
+
+              <p>The assistant did not invent those gaps.</p>
+
+              <p>It worked from the documentation, examples, and files that reached the task.</p>
+
+              <p>That is why documentation is starting to matter in a different way. It is no longer only a passive reference for humans. In AI-assisted workflows, documentation can shape code generation, test creation, review reasoning, task decomposition, and implementation decisions.</p>
+
+              <p>Documentation is becoming executable context.</p>
+
+              <p>Not executable in the same sense as source code. A README does not compile. An ADR does not enforce an architecture boundary by itself. A runbook does not guarantee safe operations.</p>
+
+              <p>But documentation increasingly participates in the delivery path. It is read by tools. It is retrieved into prompts. It is used by assistants to choose local patterns. It is converted into tests, templates, checks, and review gates. It affects the quality of the work that follows.</p>
+
+              <p>That makes documentation quality a delivery concern.</p>
+
+              <h2>Documentation used to arrive late</h2>
+
+              <p>In many teams, documentation has traditionally been something people consult after the real work has already started.</p>
+
+              <p>A developer gets stuck and reads the README. A new engineer opens the onboarding guide. A reviewer links an ADR after a pull request goes in the wrong direction. Someone checks a runbook during an incident. A platform engineer points to the API standard after the implementation already exists.</p>
+
+              <p>That pattern was never ideal, but human teams could work around it. People asked in chat. Reviewers remembered old decisions. Senior engineers corrected direction. Product managers explained exceptions. Operations filled in production details.</p>
+
+              <p>AI-assisted work changes the timing.</p>
+
+              <p>An assistant may read repository instructions before writing code. A coding tool may use examples from tests and README files. A review assistant may reason from an API spec, ADR, or pull request template. An agent may use runbook steps while proposing a fix. A test-generation workflow may infer edge cases from documented behavior.</p>
+
+              <p>Documentation can now arrive before the first draft of the code.</p>
+
+              <p>That is useful when the documentation is clear, current, and close to the work. It is risky when the documentation is vague, stale, scattered, or contradictory.</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> points in this direction: AI tools become more useful when they can work with relevant internal context such as codebases, documentation, style guides, architecture diagrams, and operational information. DORA's work on <a href="https://dora.dev/capabilities/documentation-quality/" target="_blank" rel="noopener noreferrer">documentation quality</a> emphasizes clarity, findability, and reliability. Those qualities matter because documentation is no longer only helping someone understand the system later. It may shape the first version of the change.</p>
+
+              <h2>How documentation shapes AI-assisted work</h2>
+
+              <p>Consider a few ordinary artifacts.</p>
+
+              <p>A <code>README.md</code> often tells people how to build, test, configure, and run a service. If it says &quot;run unit tests&quot; but the real expectation for API changes includes contract tests, generated clients, and backward compatibility checks, an assistant may produce a change that looks locally correct but misses the real delivery standard.</p>
+
+              <p>An ADR explains why a team chose one architecture path over another. Martin Fowler describes an <a href="https://martinfowler.com/bliki/ArchitectureDecisionRecord.html" target="_blank" rel="noopener noreferrer">Architecture Decision Record</a> as a short document that captures a decision, its context, and its consequences. That context matters when old code and new standards coexist. If the ADR is findable and linked from the relevant module, it can help both humans and assistants avoid copying a pattern that still compiles but no longer represents the intended design.</p>
+
+              <p>An API specification describes contracts other teams depend on. If the spec is current, it can guide implementation and tests. If it is stale, it becomes dangerous context. A tool may treat it as authority because it looks structured and official.</p>
+
+              <p>A runbook captures operational behavior. It may explain retry rules, rollout steps, dashboards, alerts, or failure modes that are not obvious from code. If an agent uses that runbook during a production-adjacent task, the quality of the runbook affects the safety of the proposed action.</p>
+
+              <p>Repository instructions are even more direct. GitHub documents <a href="https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot" target="_blank" rel="noopener noreferrer">repository custom instructions for Copilot</a> as a way to give project-specific guidance. Codex-style agent workflows can use instruction files such as <code>AGENTS.md</code>. Other tools have similar project memory or instruction mechanisms.</p>
+
+              <p>These files can tell an assistant how to build the project, which tests to run, which generated files to avoid editing, which libraries to prefer, and which architecture boundaries matter.</p>
+
+              <p>This is useful, but it should stay in perspective.</p>
+
+              <p>Instructions guide behavior. They do not prove correctness.</p>
+
+              <p>The assistant may miss something. Retrieval may surface the wrong file. The instruction may be outdated. The tool may follow wording too literally. The generated code still needs review, tests, security checks, and production ownership.</p>
+
+              <p>The point is not that documentation controls AI.</p>
+
+              <p>The point is that documentation now has a stronger path into implementation.</p>
+
+              <h2>Bad documentation becomes bad context</h2>
+
+              <p>Poor documentation has always been expensive. AI-assisted work makes some of the cost faster and less visible.</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="weak-documentation.png" alt="Diagram showing vague documentation leading to weak tests, stale documentation leading to old patterns, and scattered documentation leading to unclear review." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>The most common failure is vague documentation.</p>
+
+              <p>&quot;Add good tests&quot; is not a standard. It is a hope.</p>
+
+              <p>If the team expects validation failures, permission failures, idempotency, downstream timeouts, and backward compatibility cases, say that. Better, point to example tests that show the shape. A human can ask follow-up questions. An assistant may simply generate tests that match the visible examples.</p>
+
+              <p>Stale documentation is worse.</p>
+
+              <p>An old page can look more authoritative than current team memory. A deprecated API pattern may be documented better than the new pattern. An old ADR may be indexed while the superseding decision is hidden in a meeting note. In that case, AI does not just suffer from missing context. It receives misleading context.</p>
+
+              <p>Scattered documentation creates another problem.</p>
+
+              <p>The README says one thing. The wiki says another. The API spec is almost current. The runbook contains the real production rule. The ticket links none of them. A human may know which source to trust. An assistant may not.</p>
+
+              <p>Then there is documentation that is too far from the workflow.</p>
+
+              <p>If a rule affects implementation, but lives only in a central knowledge base, it may arrive too late. If every public API change needs contract tests, that expectation should appear near the code, in the PR template, in test examples, or in CI feedback. If a service boundary matters, the ADR should be linked from the module where people are tempted to cross it.</p>
+
+              <p>The problem is not that teams need more pages.</p>
+
+              <p>The problem is that important context often has no reliable path into the work.</p>
+
+              <h2>Move documentation closer to execution</h2>
+
+              <p>Useful documentation is not only well written. It is well placed.</p>
+
+              <p>Put setup and test commands where developers and assistants start: the README, contributing guide, repository instructions, or project-specific agent files.</p>
+
+              <p>Put behavior examples where implementation happens: tests, fixtures, API examples, sample payloads, and contract files.</p>
+
+              <p>Put decision context where future changes will touch it: ADRs linked from modules, service READMEs, architecture indexes, and pull request templates.</p>
+
+              <p>Put review expectations where review happens: PR templates, code owner rules, review checklists, and CI status messages.</p>
+
+              <p>Put operational lessons where production risk is handled: runbooks, deployment notes, alert descriptions, rollback steps, and incident follow-up tasks.</p>
+
+              <p>Some documentation should become stronger than prose.</p>
+
+              <p>If a rule is stable, repeatable, and cheap to check, encode it as a test, linter rule, schema validation, generated-code drift check, dependency rule, architecture boundary check, or CI gate. The written rule explains intent. The executable check gives feedback.</p>
+
+              <p>This is where documentation and process as code meet.</p>
+
+              <p>A repeated review comment might start as a sentence in a PR checklist. Then it becomes an example test. Later it becomes a CI check. The original documentation still matters because it explains why the check exists, when it applies, and who owns it.</p>
+
+              <figure class="article-figure" style="margin:0;">
+                <img src="strengthen-review-comments.png" alt="Diagram showing a repeated review comment becoming a README note, example test, ADR link, pull request template, and CI check as documentation gains execution strength." style="max-width:100%;height:auto;display:block;margin:2rem auto 2.5rem;border-radius:4px;">
+              </figure>
+
+              <p>The goal is not to turn every paragraph into automation.</p>
+
+              <p>The goal is to give important knowledge the right form.</p>
+
+              <h2>Make documentation easier to use</h2>
+
+              <p>AI tools do better with documentation that has clear shape. Humans do too.</p>
+
+              <p>That does not mean every team needs a knowledge graph or a formal taxonomy. It means ordinary engineering documents should answer ordinary questions clearly.</p>
+
+              <p>A useful README says what the service owns, how to run it, which tests matter, which examples are current, which files are generated, and where the relevant ADRs, specs, and runbooks live.</p>
+
+              <p>A useful ADR says what decision was made, what context led to it, what alternatives were considered, what consequences follow, whether it has been superseded, and which code areas it affects.</p>
+
+              <p>A useful repository instruction file says what an assistant should know before editing: build commands, validation commands, unsafe files, testing expectations, architecture boundaries, and areas that require human review.</p>
+
+              <p>A useful PR template asks what changed, why it changed, how it was tested, what risks exist, and whether contracts, docs, migrations, or runbooks changed.</p>
+
+              <p>This structure does not need to be heavy. It just needs to make the important context easier to find, trust, and apply.</p>
+
+              <p>The documentation chapter in <a href="https://abseil.io/resources/swe-book/html/ch10.html" target="_blank" rel="noopener noreferrer">Software Engineering at Google</a> makes a practical point that fits here: documentation works better when it has ownership, maintenance, and a canonical place in the engineering workflow. That matters even more when tools may retrieve and reuse the document later.</p>
+
+              <h2>Do not document everything</h2>
+
+              <p>The wrong response is to create a giant documentation program.</p>
+
+              <p>More documentation can make AI-assisted work worse if it creates stale, conflicting, unowned text. Retrieval systems can surface old guidance with confidence. Assistants can summarize irrelevant documents. Developers can waste time deciding which source is current.</p>
+
+              <p>Document the knowledge that changes delivery outcomes.</p>
+
+              <p>Good candidates include:</p>
+
+              <ul>
+                <li>rules reviewers explain repeatedly</li>
+                <li>edge cases that affect tests</li>
+                <li>architecture decisions future contributors will touch</li>
+                <li>API contracts other teams depend on</li>
+                <li>security and privacy expectations</li>
+                <li>operational rules learned from incidents</li>
+                <li>build, validation, and release steps</li>
+                <li>generated files and unsafe edit paths</li>
+              </ul>
+
+              <p>Some knowledge should stay human judgment. Some is too sensitive for broad tool access. Some is still changing and belongs in active design discussion before it becomes a durable artifact.</p>
+
+              <p>Good documentation has ownership. Someone can update it, mark it stale, archive it, or connect it to a newer decision. Without ownership, documentation slowly turns from context into noise.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, treat documentation quality as delivery quality when AI tools use it as context. A vague README, stale ADR, or disconnected runbook can shape generated code and tests.</p>
+
+              <p>Second, put important documentation closer to the workflow. The right place might be a README, test example, API spec, ADR link, PR template, CI message, runbook, or repository instruction file.</p>
+
+              <p>Third, convert stable rules into stronger artifacts. Keep prose for context and intent, but use tests, schemas, checks, templates, and review gates when a rule is repeatable and important.</p>
+
+              <h2>The next documentation bug</h2>
+
+              <p>The next time a review comment says, &quot;The assistant should have known this,&quot; pause before only fixing the code.</p>
+
+              <p>Ask a few questions.</p>
+
+              <p>Where did that knowledge live? Was it current? Was it findable? Was it close enough to the work? Was it written as a vague preference, or as a concrete expectation? Should it be an example, a test, a PR question, an ADR link, a runbook update, or a CI check?</p>
+
+              <p>This habit matters because documentation is no longer only the thing people read after they are confused.</p>
+
+              <p>In AI-assisted engineering, documentation can become part of the path that produces the first draft, the tests, the review, and sometimes the agent's next action.</p>
+
+              <p>That does not make documentation magical.</p>
+
+              <p>It makes it operational.</p>
+
+              <p>If documentation shapes the work, unclear documentation shapes the work badly. Current, specific, well-placed documentation gives both humans and assistants a better view of the system.</p>
+
+              <p>Documentation quality has always mattered.</p>
+
+              <p>Now it is becoming directly connected to delivery quality.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" class="article-related-item">
+                  <span class="article-related-item-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</span>
+                  <span class="article-related-item-summary">How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../why-ai-punishes-tribal-knowledge-in-software-teams/" class="article-related-item">
+                  <span class="article-related-item-title">Why AI Punishes Tribal Knowledge in Software Teams</span>
+                  <span class="article-related-item-summary">The assistant cannot use the rule your team only explains in review.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
