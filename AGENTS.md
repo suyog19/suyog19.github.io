@@ -15,7 +15,7 @@ It owns:
 - site-wide CSS and vanilla JavaScript
 - writing, systems, research, about, and contact pages
 - sitemap and SEO metadata
-- frontend integration with the platform backend contact API
+- frontend integration with the platform backend contact and feedback APIs
 
 Backend services live in the separate `suyogjoshi-platform` repository.
 
@@ -115,6 +115,7 @@ Before marking work complete, agents must ensure:
 - `sitemap.xml` is updated for new pages
 - GA4 is present on new pages
 - contact form behavior is preserved when relevant
+- feedback widget behavior is preserved on writing article and article-series pages when relevant
 - responsive layout is checked for user-facing UI changes
 - risks or skipped checks are recorded in the PR or final handoff
 
@@ -133,6 +134,29 @@ remains.
 - Update `sitemap.xml` when adding public pages.
 - Do not add build tooling, frameworks, dependencies, or new font families
   without explicit approval.
+
+## Feedback Widget Rules
+
+Writing article detail pages must include the reusable feedback widget after the
+article body content and before related reading or article-series navigation.
+Use `data-feedback-target-type="ARTICLE"` and set
+`data-feedback-target-id` to the stable article directory slug.
+
+Article series detail pages must include the same widget with
+`data-feedback-target-type="ARTICLE_SERIES"` and the stable series slug as
+`data-feedback-target-id`. The `writing/series/index.html` page is a section
+index and should not receive an `ARTICLE_SERIES` widget unless a linked issue
+explicitly treats it as a feedback-worthy artifact.
+
+Every page with a feedback widget must load `js/feedback-widget.js` at the
+correct relative path depth. Preserve the backend `/feedback` payload contract:
+`targetType`, `targetId`, `rating`, optional `comment`, `sourcePageUrl`,
+`anonymousId`, and empty honeypot `website`. Public V1 submissions are
+anonymous and must not send `userId`; future authenticated submissions may only
+add an `Authorization: Bearer <token>` header through the widget auth-token
+extension point. Preserve the 1800-character frontend comment limit, hidden
+initial comment field, call-to-action copy, and placeholder-only comment
+guidance.
 
 ## Approval Policy
 
