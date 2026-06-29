@@ -212,7 +212,7 @@
         body: JSON.stringify(buildPayload(widget, config))
       });
 
-      if (response.status === 202 || response.status === 200 || response.status === 204) {
+      if (response.status === 201 || response.status === 202 || response.status === 200 || response.status === 204) {
         markSubmitted(widget, config);
         return;
       }

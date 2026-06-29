@@ -147,7 +147,7 @@ Expected responses: `202` → success message shown; `400` with `VALIDATION_FAIL
 
 ## Feedback Widget Backend
 
-[js/feedback-widget.js](js/feedback-widget.js) selects the feedback API base URL with the same dev/prod hostname convention as the contact form and posts to `/feedback`.
+[js/feedback-widget.js](js/feedback-widget.js) selects the feedback API base URL with the same dev/prod hostname convention as the contact form and posts to `/feedback`. Successful feedback submissions return `201 Created`; the widget also treats other 2xx success statuses as accepted for resilience.
 
 Widget instances are declarative:
 
