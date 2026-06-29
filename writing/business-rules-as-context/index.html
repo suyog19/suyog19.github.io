@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Why business rules must become first-class context for AI-assisted development when correctness depends on eligibility, limits, exceptions, and operations." />
+  <title>Business Rules as Context: The Missing Layer in AI-Assisted Development | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/business-rules-as-context/" />
+  <meta property="og:title" content="Business Rules as Context: The Missing Layer in AI-Assisted Development | Suyog Joshi" />
+  <meta property="og:description" content="Why business rules must become first-class context for AI-assisted development when correctness depends on eligibility, limits, exceptions, and operations." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/business-rules-as-context/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/business-rules-as-context/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Business Rules as Context: The Missing Layer in AI-Assisted Development | Suyog Joshi" />
+  <meta name="twitter:description" content="Why business rules must become first-class context for AI-assisted development when correctness depends on eligibility, limits, exceptions, and operations." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/business-rules-as-context/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Business Rules as Context: The Missing Layer in AI-Assisted Development</h1>
+            <p class="article-page-subtitle">AI assistants can read the code. They can read the ticket. That still may not tell them what the software is allowed to do.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 29 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure">
+                <img src="cover.png" alt="Business rules context cover showing code, ticket, and rules flowing into implementation, tests, and review outputs.">
+              </figure>
+
+              <p>A team asks an AI coding assistant to add refund preview support to an internal billing service.</p>
+
+              <p>The ticket looks simple: show the customer how much they would receive before they confirm a refund. The existing code has a normal refund path. The tests cover successful refunds, invalid payment IDs, and a downstream provider failure.</p>
+
+              <p>The assistant follows the visible system. It finds the refund service, extracts the calculation, adds a preview endpoint, writes a few tests, and returns a clean summary.</p>
+
+              <p>The implementation looks reasonable.</p>
+
+              <p>Then review starts.</p>
+
+              <p>Enterprise customers follow contract-specific refund rules. Customers in one region require a tax adjustment. Support can approve exceptions, but only when a case ID exists. Refunds above a threshold require manual review. Some old plans calculate credits differently. Compliance requires an audit event even for previews.</p>
+
+              <p>None of that was in the ticket.</p>
+
+              <p>Some of it was in old product discussions. Some lived in support workflows. Some was buried in previous incidents. Some existed only because a senior engineer remembered the last time refunds broke.</p>
+
+              <p>The assistant did not fail because it could not write code.</p>
+
+              <p>It failed because the business rules were missing from context.</p>
+
+              <p>That is the missing layer in a lot of AI-assisted development.</p>
+
+              <p>Code files show how the system currently behaves. Tickets describe what someone wants changed. Business rules explain what correct means: what the system is allowed to do, when, for whom, under which limits, and with which exceptions.</p>
+
+              <p>If those rules do not reach the work, AI assistants will make plausible assumptions.</p>
+
+              <figure class="article-figure">
+                <img src="business-rules-implementing-in-ui-layout.png" alt="Diagram showing an implementation panel that appears complete while separate business rule notes for eligibility, limits, exceptions, compliance, and operational constraints sit outside the implementation context.">
+              </figure>
+
+              <p>Sometimes those assumptions will be wrong.</p>
+
+              <h2>What business rules mean in software work</h2>
+
+              <p>Business rules are the product, domain, policy, and operational rules that shape correct behavior.</p>
+
+              <p>They are not limited to &quot;business&quot; in the commercial sense. They include anything outside pure technical structure that decides whether the system should accept, reject, route, limit, transform, log, delay, or escalate something.</p>
+
+              <p>In software teams, business rules often look like:</p>
+
+              <ul>
+                <li>eligibility: who can use a feature</li>
+                <li>limits: how much, how often, how many, how long</li>
+                <li>validations: what must be true before an action is allowed</li>
+                <li>exceptions: enterprise contracts, support overrides, migration states, legacy plans</li>
+                <li>compliance rules: consent, audit logging, retention, data residency</li>
+                <li>customer journeys: trial, onboarding, upgrade, cancellation, renewal, dispute</li>
+                <li>operational constraints: manual review queues, rollout windows, downstream limits, support handoff</li>
+              </ul>
+
+              <p>These rules often come from product decisions, customer contracts, regulation, support processes, incidents, sales commitments, finance policies, and operational experience.</p>
+
+              <p>They may be visible in code. But code alone is often a poor source of truth.</p>
+
+              <p>The code may contain old behavior that remains only for migration. It may include exceptions without explaining why they exist. It may show the current calculation but not the product rule behind it. It may have tests for the common path but not for the customer segment that matters most.</p>
+
+              <p>AI can infer patterns from code, but inference is not the same as knowing the rule.</p>
+
+              <h2>Why tickets are not enough</h2>
+
+              <p>Teams often treat the ticket as the source of truth for AI-assisted work.</p>
+
+              <p>That is understandable. The ticket is close to the task. It usually says what needs to change. It may include acceptance criteria and a few examples.</p>
+
+              <p>But many tickets are thin.</p>
+
+              <p>&quot;Add refund preview&quot; sounds clear until you ask:</p>
+
+              <ul>
+                <li>Which customers are eligible?</li>
+                <li>Which plans behave differently?</li>
+                <li>What limits apply?</li>
+                <li>What requires manual review?</li>
+                <li>What must be logged?</li>
+                <li>Which regions have different rules?</li>
+                <li>Which old states still exist in production?</li>
+                <li>Which downstream service constraints matter?</li>
+              </ul>
+
+              <p>Human developers often fill these gaps socially. They ask product. They ping support. They remember a previous incident. They look at old pull requests. They wait for a reviewer to catch the missing exception.</p>
+
+              <p>AI assistants do not get that social layer by default. They work from the prompt, selected files, tickets, retrieved docs, tests, repository instructions, terminal output, and connected tools.</p>
+
+              <p>If the business rule is not there, the assistant may continue the visible pattern and produce a clean wrong answer.</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> points to the practical need for relevant internal context such as codebases, documentation, style guides, architecture diagrams, and operational information. For software delivery, business rules belong in that context set. Without them, the assistant has technical context but not enough domain context.</p>
+
+              <h2>Plausible but wrong</h2>
+
+              <p>Missing business rules usually do not create obviously broken output.</p>
+
+              <p>They create plausible output.</p>
+
+              <p>That is what makes the problem dangerous.</p>
+
+              <p>The generated code compiles. The tests pass. The naming fits the service. The summary says the assistant added refund preview support. The change may even work for the normal customer path.</p>
+
+              <figure class="article-figure">
+                <img src="business-rules-plausible-errors.png" alt="Diagram contrasting plausible but wrong implementation with a four-step rule workflow: name the rule, locate the source, connect it to work, and verify it.">
+              </figure>
+
+              <p>But it may be wrong for the business.</p>
+
+              <p>It may approve a customer who is not eligible. It may skip a limit. It may accept a state that should be blocked. It may apply the standard calculation to a contracted customer. It may forget an audit event. It may generate tests that prove only the happy path.</p>
+
+              <p>The assistant is not necessarily being careless. It is using the available evidence.</p>
+
+              <p>If the visible evidence says refunds are a calculation and a provider call, that is what the assistant will implement. If the visible tests do not include manual review thresholds, the generated tests may not include them either. If the ticket does not mention regional rules, the implementation may treat all customers the same.</p>
+
+              <p>This is where business rules differ from style rules.</p>
+
+              <p>A style rule can often be inferred from local code. A business rule often cannot.</p>
+
+              <p>The fact that the code uses <code>RefundAmountCalculator</code> tells the assistant where calculation lives. It does not tell the assistant that customers on a migrated plan follow a different policy until their renewal date.</p>
+
+              <h2>Business rules should be first-class context</h2>
+
+              <p>First-class context means the rule has a reliable path into the work.</p>
+
+              <p>It is not hidden only in memory. It is not trapped in a long product thread. It is not buried in an old ticket that nobody links. It is not only discovered when a senior reviewer joins the pull request.</p>
+
+              <p>For AI-assisted development, a useful business rule has a few qualities.</p>
+
+              <p>It is explicit enough to apply. &quot;Handle enterprise customers&quot; is weak. &quot;Enterprise customers require contract-rule lookup before refund amount is calculated&quot; is better.</p>
+
+              <p>It is close to the workflow. A rule that affects implementation should appear in acceptance criteria, examples, tests, domain docs, repository instructions, or linked product specs. A rule that affects operations should appear in runbooks, alerts, rollout notes, or support handoff.</p>
+
+              <p>It is current. Old rules should be marked as superseded or scoped to legacy behavior. If the old rule still applies to migrated accounts, say that.</p>
+
+              <p>It is testable or reviewable where possible. If a rule affects behavior, there should be examples, tests, contract cases, decision tables, or review prompts that make the rule visible.</p>
+
+              <p>It is owned. Someone should know who can change the rule and who should review changes that touch it.</p>
+
+              <p>DORA's work on <a href="https://dora.dev/capabilities/documentation-quality/" target="_blank" rel="noopener noreferrer">documentation quality</a> emphasizes clarity, findability, and reliability. Those qualities apply directly to business rules. A rule that cannot be found at the moment of implementation is not useful context.</p>
+
+              <h2>Where business rules can live</h2>
+
+              <p>There is no single correct artifact.</p>
+
+              <p>The right form depends on how the rule is used.</p>
+
+              <p>Some rules belong in task context. Acceptance criteria, product specs, ticket examples, and scenario notes help when a rule is specific to the current change. If refund preview must respect manual review thresholds, the ticket should say so.</p>
+
+              <p>Some rules belong in executable examples. Tests, contract cases, fixtures, sample payloads, and API examples are useful when the behavior is stable enough to verify. If enterprise customers require contract lookup, add a test that fails when the lookup is skipped.</p>
+
+              <p>Some rules belong in domain references. A short, current &quot;refund rules&quot; page linked from the billing service is better than rediscovering the same policy in every ticket. For rules with many combinations, a small decision table can be clearer than paragraphs of prose. Formal approaches such as Decision Model and Notation exist, but most teams can start with a readable table.</p>
+
+              <p>Some rules belong in operational context. Runbooks, support handoff notes, alert descriptions, rollout steps, and incident follow-ups are the right place for rules that affect manual review, escalation, recovery, or production handling.</p>
+
+              <p>Repository instructions can help connect these sources for AI tools. They should not become a dumping ground, but they can point assistants toward the right docs, tests, validation commands, and domain-specific risks.</p>
+
+              <p>The rule should live where it changes behavior.</p>
+
+              <h2>A practical capture model</h2>
+
+              <p>Use a simple model: name the rule, locate the source, connect it to work, and verify it.</p>
+
+              <p>Name the rule in plain language.</p>
+
+              <p>For example: &quot;Refunds above $5,000 require manual review.&quot; Naming the rule makes it easier to discuss, search, test, and review.</p>
+
+              <p>Locate the source of authority.</p>
+
+              <p>Does the rule come from product policy, contract terms, compliance, finance, support, an incident, or an operational limit? If nobody knows where the rule comes from, treat that as a risk.</p>
+
+              <p>Connect the rule to the workflow.</p>
+
+              <p>Put it where the next change will see it: acceptance criteria, example table, test file, service README, domain doc, API contract, PR template, repository instruction, or runbook.</p>
+
+              <p>Verify the rule where practical.</p>
+
+              <p>Some rules should become tests. Some should become contract cases. Some should become validation logic. Some should become review checklist items. Some should become monitoring or audit checks. Not every rule can be automated, but important rules should not rely only on memory.</p>
+
+              <p>This model is intentionally small.</p>
+
+              <p>The goal is not a large requirements process. The goal is to stop important rules from disappearing between product intent and implementation.</p>
+
+              <h2>What reviewers should ask</h2>
+
+              <p>AI-assisted code review should include business-rule review.</p>
+
+              <p>Not as a separate ceremony. As part of normal engineering judgment.</p>
+
+              <p>When a generated change looks technically clean, reviewers should ask:</p>
+
+              <ul>
+                <li>Which business rules shaped this implementation?</li>
+                <li>Are eligibility, limits, validations, and exceptions visible?</li>
+                <li>Are compliance and audit requirements represented?</li>
+                <li>Are customer journey states covered?</li>
+                <li>Are operational constraints included?</li>
+                <li>Do the tests cover rule boundaries, not only the happy path?</li>
+                <li>Would a new developer or assistant find the same rules next time?</li>
+              </ul>
+
+              <p>These questions help separate clean code from correct behavior.</p>
+
+              <p>AI can help draft the checklist, generate candidate tests, and compare code against visible rules. But humans still own the business meaning of the change.</p>
+
+              <p>That accountability matters.</p>
+
+              <h2>Do not document everything</h2>
+
+              <p>Capturing business rules as context does not mean every conversation becomes a formal document.</p>
+
+              <p>Some rules are temporary. Some are sensitive. Some are still being negotiated. Some require human judgment. Some should live in product systems, contract systems, compliance workflows, or support tools rather than directly in a code repository.</p>
+
+              <p>The practical question is narrower:</p>
+
+              <p>Which rules affect implementation, testing, review, rollout, compliance, customer behavior, or production support?</p>
+
+              <p>Those rules need a reliable path into engineering work.</p>
+
+              <p>Sometimes that path is a link. Sometimes it is a test. Sometimes it is an example table. Sometimes it is a repository instruction that points to the source of truth. Sometimes it is a review gate for a domain owner.</p>
+
+              <p>The answer is not maximum documentation.</p>
+
+              <p>The answer is reachable rules.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, treat business rules as implementation context. Code and tickets are not enough when correctness depends on eligibility, limits, validations, exceptions, compliance, customer journeys, or operational constraints.</p>
+
+              <p>Second, make missing rules visible during AI-assisted work. If an assistant makes a plausible assumption, ask which rule was absent from the prompt, ticket, tests, docs, or retrieved context.</p>
+
+              <p>Third, capture rules in the form that changes behavior. Use acceptance criteria, examples, tests, decision tables, API contracts, domain docs, runbooks, repository instructions, and review gates where they fit.</p>
+
+              <h2>The missing layer</h2>
+
+              <p>AI-assisted development makes a familiar problem harder to ignore.</p>
+
+              <p>Software correctness is not only a code problem.</p>
+
+              <p>It is also a rule problem.</p>
+
+              <p>The assistant can read the code and still miss who is eligible. It can read the ticket and still miss a limit. It can generate tests and still miss the exception. It can summarize the change and still miss the operational constraint.</p>
+
+              <p>That does not mean AI is useless.</p>
+
+              <p>It means the context is incomplete.</p>
+
+              <p>The next time an AI-assisted change looks clean, ask one more question before trusting it:</p>
+
+              <p>Which business rules did this change use?</p>
+
+              <p>If the answer is unclear, the team has found the missing layer.</p>
+
+              <p>Business rules must become first-class context for AI-assisted development.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../knowledge-debt-is-the-new-technical-debt/" class="article-related-item">
+                  <span class="article-related-item-title">Knowledge Debt Is the New Technical Debt</span>
+                  <span class="article-related-item-summary">Technical debt makes code harder to change. Knowledge debt makes the system harder to understand.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../documentation-is-becoming-executable-context/" class="article-related-item">
+                  <span class="article-related-item-title">Documentation Is Becoming Executable Context</span>
+                  <span class="article-related-item-summary">How AI-assisted software work is changing documentation from a passive reference into an active part of delivery.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
