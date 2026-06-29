@@ -69,24 +69,29 @@
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">Choose Your Path</h2>
-          <p class="section-subtitle">Start with the reader path closest to what you are trying to understand.</p>
+          <p class="section-subtitle">Start with the reader path closest to what brought you here.</p>
         </div>
 
         <div class="wp-path-grid">
-          <a href="#path-ai-engineering" class="wp-path-card">
-            <span class="wp-path-kicker">Path 01</span>
-            <h2 class="wp-path-title">AI-assisted software engineering</h2>
-            <p class="wp-path-desc">Context, codebases, review, agents, orchestration, and the changing role of software engineers.</p>
-          </a>
-          <a href="#path-context-knowledge" class="wp-path-card">
-            <span class="wp-path-kicker">Path 02</span>
-            <h2 class="wp-path-title">Engineering context and knowledge</h2>
-            <p class="wp-path-desc">Business rules, documentation, knowledge debt, and how organizational knowledge reaches real work.</p>
-          </a>
           <a href="#path-ai-foundations" class="wp-path-card">
+            <span class="wp-path-kicker">Path 01</span>
+            <h2 class="wp-path-title">New to AI concepts</h2>
+            <p class="wp-path-desc">Start with plain-English foundations for AI, machine learning, LLM systems, and the wider AI ecosystem.</p>
+          </a>
+          <a href="#path-ai-engineering" class="wp-path-card">
+            <span class="wp-path-kicker">Path 02</span>
+            <h2 class="wp-path-title">Using AI coding assistants</h2>
+            <p class="wp-path-desc">Follow the ordered software engineering series on context, repositories, review, agents, and orchestration.</p>
+          </a>
+          <a href="#path-engineering-leadership" class="wp-path-card">
             <span class="wp-path-kicker">Path 03</span>
-            <h2 class="wp-path-title">AI foundations and systems</h2>
-            <p class="wp-path-desc">Plain-English foundations for AI, machine learning, LLM systems, and intelligent software products.</p>
+            <h2 class="wp-path-title">Leading AI adoption</h2>
+            <p class="wp-path-desc">Read about context, knowledge debt, process, evidence, and the operating model changes behind useful AI adoption.</p>
+          </a>
+          <a href="#cluster-systems-experiments" class="wp-path-card">
+            <span class="wp-path-kicker">Path 04</span>
+            <h2 class="wp-path-title">Exploring practical systems</h2>
+            <p class="wp-path-desc">Jump to system stories, workflow experiments, demos, and practical builds connected to the writing.</p>
           </a>
         </div>
       </div>
@@ -121,7 +126,7 @@
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">Recommended Starting Points</h2>
-          <p class="section-subtitle">A few entry points for first-time readers before going deeper into the clusters below.</p>
+          <p class="section-subtitle">A manually curated set of strong entry points for first-time readers before going deeper into the clusters below.</p>
         </div>
         <div class="writing-grid">
           <article class="article-card article-card--featured">
@@ -151,10 +156,14 @@
     <!-- Thematic Sections -->
     <section class="wp-themes">
       <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Topic Clusters</h2>
+          <p class="section-subtitle">Browse the writing by theme. These are topic groupings, not date-based feeds or separate series.</p>
+        </div>
 
         <div class="wp-theme" id="path-ai-foundations">
           <div class="wp-theme-header">
-            <p class="wp-theme-kicker">Reader path</p>
+            <p class="wp-theme-kicker">Topic cluster</p>
             <h2 class="wp-theme-title">AI Foundations</h2>
             <p class="wp-theme-desc">Begin here if you want the concepts behind AI, machine learning, data science, and LLM systems explained without hype.</p>
           </div>
@@ -180,9 +189,49 @@
           </ul>
         </div>
 
+        <div class="wp-theme" id="cluster-ai-assisted-software-engineering">
+          <div class="wp-theme-header">
+            <p class="wp-theme-kicker">Topic cluster</p>
+            <h2 class="wp-theme-title">AI-Assisted Software Engineering</h2>
+            <p class="wp-theme-desc">Practical essays on the context, repository structure, prompts, and review habits that make AI-assisted delivery more reliable.</p>
+          </div>
+          <ul class="wp-theme-articles">
+            <li class="wp-article-item">
+              <a href="series/ai-assisted-software-engineering/" class="wp-article-row">
+                <span class="wp-article-row-title">AI-Assisted Software Engineering Series</span>
+                <span class="wp-article-row-label">Ordered Path</span>
+              </a>
+            </li>
+            <li class="wp-article-item">
+              <a href="beyond-the-repository-why-ai-needs-work-context-too/" class="wp-article-row">
+                <span class="wp-article-row-title">Beyond the Repository: Why AI Needs Work Context Too</span>
+                <span class="wp-article-row-label">Work Context</span>
+              </a>
+            </li>
+            <li class="wp-article-item">
+              <a href="how-i-structure-repositories-so-ai-can-understand-them/" class="wp-article-row">
+                <span class="wp-article-row-title">How I Structure Repositories So AI Can Actually Understand Them</span>
+                <span class="wp-article-row-label">Repository Context</span>
+              </a>
+            </li>
+            <li class="wp-article-item">
+              <a href="stop-prompting-harder-start-giving-better-context/" class="wp-article-row">
+                <span class="wp-article-row-title">Stop Prompting Harder. Start Giving Better Context.</span>
+                <span class="wp-article-row-label">Context Design</span>
+              </a>
+            </li>
+            <li class="wp-article-item">
+              <a href="coding-assistants-are-not-junior-developers/" class="wp-article-row">
+                <span class="wp-article-row-title">Coding Assistants Are Not Junior Developers</span>
+                <span class="wp-article-row-label">Engineering Judgment</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
         <div class="wp-theme" id="path-context-knowledge">
           <div class="wp-theme-header">
-            <p class="wp-theme-kicker">Reader path</p>
+            <p class="wp-theme-kicker">Topic cluster</p>
             <h2 class="wp-theme-title">Engineering Context and Knowledge</h2>
             <p class="wp-theme-desc">How business rules, documentation, standards, and organizational knowledge become usable context for humans and AI assistants.</p>
           </div>
@@ -190,49 +239,31 @@
             <li class="wp-article-item">
               <a href="business-rules-as-context/" class="wp-article-row">
                 <span class="wp-article-row-title">Business Rules as Context: The Missing Layer in AI-Assisted Development</span>
-                <span class="wp-article-row-label">29 Jun 2026</span>
+                <span class="wp-article-row-label">Business Rules</span>
               </a>
             </li>
             <li class="wp-article-item">
               <a href="knowledge-debt-is-the-new-technical-debt/" class="wp-article-row">
                 <span class="wp-article-row-title">Knowledge Debt Is the New Technical Debt</span>
-                <span class="wp-article-row-label">29 Jun 2026</span>
+                <span class="wp-article-row-label">Knowledge Debt</span>
               </a>
             </li>
             <li class="wp-article-item">
               <a href="documentation-is-becoming-executable-context/" class="wp-article-row">
                 <span class="wp-article-row-title">Documentation Is Becoming Executable Context</span>
-                <span class="wp-article-row-label">27 Jun 2026</span>
+                <span class="wp-article-row-label">Documentation</span>
               </a>
             </li>
             <li class="wp-article-item">
               <a href="why-ai-punishes-tribal-knowledge-in-software-teams/" class="wp-article-row">
                 <span class="wp-article-row-title">Why AI Punishes Tribal Knowledge in Software Teams</span>
-                <span class="wp-article-row-label">26 Jun 2026</span>
+                <span class="wp-article-row-label">Tribal Knowledge</span>
               </a>
             </li>
             <li class="wp-article-item">
               <a href="the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/" class="wp-article-row">
                 <span class="wp-article-row-title">The Context Supply Chain: How Organizational Knowledge Reaches AI Output</span>
-                <span class="wp-article-row-label">26 Jun 2026</span>
-              </a>
-            </li>
-            <li class="wp-article-item">
-              <a href="enterprise-ai-adoption-is-a-context-problem/" class="wp-article-row">
-                <span class="wp-article-row-title">Enterprise AI Adoption Is a Context Problem</span>
-                <span class="wp-article-row-label">25 Jun 2026</span>
-              </a>
-            </li>
-            <li class="wp-article-item">
-              <a href="stronger-evidence-chains-for-ai-assisted-engineering-changes/" class="wp-article-row">
-                <span class="wp-article-row-title">Stronger Evidence Chains for AI-Assisted Engineering Changes</span>
-                <span class="wp-article-row-label">25 Jun 2026</span>
-              </a>
-            </li>
-            <li class="wp-article-item">
-              <a href="process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" class="wp-article-row">
-                <span class="wp-article-row-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</span>
-                <span class="wp-article-row-label">24 Jun 2026</span>
+                <span class="wp-article-row-label">Knowledge Flow</span>
               </a>
             </li>
           </ul>
@@ -240,7 +271,7 @@
 
         <div class="wp-theme" id="cluster-ai-agents-review">
           <div class="wp-theme-header">
-            <p class="wp-theme-kicker">Reader path</p>
+            <p class="wp-theme-kicker">Topic cluster</p>
             <h2 class="wp-theme-title">AI Agents and Review</h2>
             <p class="wp-theme-desc">Practical judgment for using AI assistants, reviewing generated work, assigning tasks, and coordinating agent-like workflows.</p>
           </div>
@@ -278,41 +309,35 @@
           </ul>
         </div>
 
-        <div class="wp-theme" id="cluster-context-rich-software-work">
+        <div class="wp-theme" id="path-engineering-leadership">
           <div class="wp-theme-header">
-            <p class="wp-theme-kicker">Reader path</p>
-            <h2 class="wp-theme-title">Context-Rich Software Work</h2>
-            <p class="wp-theme-desc">A practical cluster on repositories, prompts, work context, and the boundaries that make AI-assisted development more reliable.</p>
+            <p class="wp-theme-kicker">Topic cluster</p>
+            <h2 class="wp-theme-title">Agile, Process, and Engineering Leadership</h2>
+            <p class="wp-theme-desc">For architects and leaders thinking about AI adoption, delivery systems, process quality, evidence, and engineering standards.</p>
           </div>
           <ul class="wp-theme-articles">
             <li class="wp-article-item">
-              <a href="beyond-the-repository-why-ai-needs-work-context-too/" class="wp-article-row">
-                <span class="wp-article-row-title">Beyond the Repository: Why AI Needs Work Context Too</span>
-                <span class="wp-article-row-label">Series</span>
-              </a>
-            </li>
-            <li class="wp-article-item">
-              <a href="how-i-structure-repositories-so-ai-can-understand-them/" class="wp-article-row">
-                <span class="wp-article-row-title">How I Structure Repositories So AI Can Actually Understand Them</span>
-                <span class="wp-article-row-label">Series</span>
-              </a>
-            </li>
-            <li class="wp-article-item">
-              <a href="stop-prompting-harder-start-giving-better-context/" class="wp-article-row">
-                <span class="wp-article-row-title">Stop Prompting Harder. Start Giving Better Context.</span>
-                <span class="wp-article-row-label">Series</span>
-              </a>
-            </li>
-            <li class="wp-article-item">
-              <a href="coding-assistants-are-not-junior-developers/" class="wp-article-row">
-                <span class="wp-article-row-title">Coding Assistants Are Not Junior Developers</span>
-                <span class="wp-article-row-label">Series</span>
+              <a href="enterprise-ai-adoption-is-a-context-problem/" class="wp-article-row">
+                <span class="wp-article-row-title">Enterprise AI Adoption Is a Context Problem</span>
+                <span class="wp-article-row-label">AI Adoption</span>
               </a>
             </li>
             <li class="wp-article-item">
               <a href="ai-stress-testing-agile/" class="wp-article-row">
                 <span class="wp-article-row-title">AI Is Not Replacing Agile. It Is Stress-Testing It.</span>
-                <span class="wp-article-row-label">Engineering Practice</span>
+                <span class="wp-article-row-label">Agile</span>
+              </a>
+            </li>
+            <li class="wp-article-item">
+              <a href="process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" class="wp-article-row">
+                <span class="wp-article-row-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</span>
+                <span class="wp-article-row-label">Engineering Standards</span>
+              </a>
+            </li>
+            <li class="wp-article-item">
+              <a href="stronger-evidence-chains-for-ai-assisted-engineering-changes/" class="wp-article-row">
+                <span class="wp-article-row-title">Stronger Evidence Chains for AI-Assisted Engineering Changes</span>
+                <span class="wp-article-row-label">Evidence</span>
               </a>
             </li>
           </ul>
@@ -320,9 +345,9 @@
 
         <div class="wp-theme" id="cluster-systems-experiments">
           <div class="wp-theme-header">
-            <p class="wp-theme-kicker">Reader path</p>
+            <p class="wp-theme-kicker">Topic cluster</p>
             <h2 class="wp-theme-title">Systems and Experiments</h2>
-            <p class="wp-theme-desc">Articles connected to practical builds, workflow experiments, and system-level explorations.</p>
+            <p class="wp-theme-desc">Articles connected to practical builds, workflow experiments, and system-level explorations. The deeper build notes and demos live in Systems.</p>
           </div>
           <ul class="wp-theme-articles">
             <li class="wp-article-item">
@@ -343,7 +368,22 @@
                 <span class="wp-article-row-label">System</span>
               </a>
             </li>
+            <li class="wp-article-item">
+              <a href="../systems/" class="wp-article-row">
+                <span class="wp-article-row-title">Explore all Systems and practical demos</span>
+                <span class="wp-article-row-label">Systems Hub</span>
+              </a>
+            </li>
           </ul>
+        </div>
+
+        <div class="wp-systems-callout">
+          <div>
+            <p class="wp-theme-kicker">Writing to systems</p>
+            <h2 class="wp-theme-title">Looking for the practical builds?</h2>
+            <p class="wp-theme-desc">The Writing page explains the ideas and tradeoffs. The Systems section shows applied experiments, demos, architecture notes, and working examples.</p>
+          </div>
+          <a href="../systems/" class="btn btn-secondary">Go to Systems</a>
         </div>
 
       </div>
