@@ -233,17 +233,21 @@
   }
 
   function renderWidget(widget, config) {
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'feedback-widget-eyebrow';
+    eyebrow.textContent = 'Reader feedback';
+
     const title = document.createElement('h2');
     title.className = 'feedback-widget-title';
     title.textContent = 'Was this useful?';
 
     const copy = document.createElement('p');
     copy.className = 'feedback-widget-copy';
-    copy.textContent = 'Your feedback helps shape future writing.';
+    copy.textContent = 'A quick signal helps me understand what to write, clarify, or improve next.';
 
     const intro = document.createElement('div');
     intro.className = 'feedback-widget-intro';
-    intro.append(title, copy);
+    intro.append(eyebrow, title, copy);
 
     const choices = document.createElement('div');
     choices.className = 'feedback-widget-choices';
