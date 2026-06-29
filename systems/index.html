@@ -33,7 +33,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a href="../index.html" class="brand-lockup" aria-label="suyogjoshi.com — Home">
+      <a href="../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
         <span class="brand-mark" aria-hidden="true">SJ</span>
         <span class="brand-text">suyogjoshi.com</span>
       </a>
@@ -59,15 +59,47 @@
     <section class="sp-hero">
       <div class="container">
         <p class="eyebrow">Systems</p>
-        <h1 class="sp-hero-heading">Exploring how intelligent software systems are designed, built, and evolved in practice.</h1>
-        <p class="sp-hero-sub">From architecture and workflows to AI-assisted development and real-world constraints.</p>
+        <h1 class="sp-hero-heading">Practical builds, experiments, and architecture notes behind the writing.</h1>
+        <p class="sp-hero-sub">These systems turn ideas from the articles into concrete workflows, demos, and engineering decisions.</p>
       </div>
     </section>
 
     <!-- Intro Framing -->
     <section class="sp-intro">
       <div class="container">
-        <p class="sp-intro-text">These are not just projects.<br><br>They are explorations of how software systems behave when ideas meet constraints — scale, uncertainty, AI integration, and real-world complexity.</p>
+        <div class="sp-intro-grid">
+          <p class="sp-intro-text">These are not just projects.<br><br>They are explorations of how software systems behave when ideas meet constraints - scale, uncertainty, AI integration, and real-world complexity.</p>
+          <div class="sp-intro-links" aria-label="Systems reading bridges">
+            <a href="../writing/#cluster-systems-experiments">Systems writing</a>
+            <a href="../writing/series/ai-assisted-software-engineering/">AI-assisted engineering series</a>
+            <a href="../writing/how-i-used-two-ais-to-build-a-software-engineering-system/">How I built an AI engineering system</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Categories -->
+    <section class="sp-categories">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Explore by System Type</h2>
+          <p class="section-subtitle">Use these paths to connect practical builds back to the writing themes.</p>
+        </div>
+
+        <div class="sp-category-grid">
+          <a href="#ai-assisted-engineering-systems" class="sp-category-card">
+            <span class="sp-category-kicker">AI-assisted engineering</span>
+            <h3 class="sp-category-title">Workflows for planning, coding, review, and orchestration</h3>
+          </a>
+          <a href="#learning-workflow-experiments" class="sp-category-card">
+            <span class="sp-category-kicker">Learning and workflow experiments</span>
+            <h3 class="sp-category-title">Structured learning, document workflows, and evidence-rich AI outputs</h3>
+          </a>
+          <a href="#platform-infrastructure-systems" class="sp-category-card">
+            <span class="sp-category-kicker">Platform infrastructure</span>
+            <h3 class="sp-category-title">Small systems for API design, serverless architecture, and delivery discipline</h3>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -75,42 +107,135 @@
     <section class="sp-systems">
       <div class="container">
 
-        <a href="ai-workflow-lab/" class="system-card">
+        <article class="system-card" id="learning-workflow-experiments">
           <div class="system-card-inner">
+            <p class="system-category">Learning and workflow experiment</p>
             <h2 class="system-title">AI Workflow Lab</h2>
             <p class="system-desc">Turning everyday business documents into structured, reviewable data with evidence, confidence, and missing-field reporting.</p>
-            <p class="system-context">Explores practical document extraction before Phase 5 workflow decisions and human review.</p>
+            <dl class="system-facts">
+              <div>
+                <dt>Problem</dt>
+                <dd>Business documents are hard to trust when AI extraction does not show evidence.</dd>
+              </div>
+              <div>
+                <dt>Built</dt>
+                <dd>Document extraction demos with fields, confidence, evidence, and missing-field reporting.</dd>
+              </div>
+              <div>
+                <dt>Patterns</dt>
+                <dd>Evidence-first AI output, human review, structured extraction, workflow readiness.</dd>
+              </div>
+            </dl>
+            <p class="system-context">Connects to writing about context, review, and making AI-assisted output inspectable.</p>
+            <div class="system-actions">
+              <a href="ai-workflow-lab/">View system</a>
+              <a href="../writing/how-modern-llm-systems-really-work/">Related writing: How Modern LLM Systems Really Work</a>
+            </div>
             <p class="system-meta">Document -> Fields -> Evidence</p>
           </div>
-        </a>
+        </article>
 
-        <a href="ai-dev-orchestrator/" class="system-card">
+        <article class="system-card" id="ai-assisted-engineering-systems">
           <div class="system-card-inner">
+            <p class="system-category">AI-assisted engineering system</p>
             <h2 class="system-title">AI Dev Orchestrator</h2>
             <p class="system-desc">Designing an AI-assisted software engineering workflow across planning, coding, review, and deployment.</p>
-            <p class="system-context">Explores how multiple AI agents and human judgment interact in real-world SDLC.</p>
-            <p class="system-meta">Problem → Approach → What changed</p>
+            <dl class="system-facts">
+              <div>
+                <dt>Problem</dt>
+                <dd>AI-assisted development needs orchestration, review loops, and human decision points.</dd>
+              </div>
+              <div>
+                <dt>Built</dt>
+                <dd>A workflow model for using multiple AI tools across planning, implementation, review, and merge discipline.</dd>
+              </div>
+              <div>
+                <dt>Patterns</dt>
+                <dd>Agent roles, issue-first delivery, review gates, evidence trails, human ownership.</dd>
+              </div>
+            </dl>
+            <p class="system-context">Acts as practical evidence for the AI-Assisted Software Engineering series.</p>
+            <div class="system-actions">
+              <a href="ai-dev-orchestrator/">View system</a>
+              <a href="../writing/how-i-used-two-ais-to-build-a-software-engineering-system/">Related writing: How I Used Two AIs to Build a Software Engineering System</a>
+              <a href="../writing/series/ai-assisted-software-engineering/">Related series: AI-Assisted Software Engineering</a>
+            </div>
+            <p class="system-meta">Problem -> Approach -> What changed</p>
           </div>
-        </a>
+        </article>
 
-        <a href="survey-poll-serverless/" class="system-card">
+        <article class="system-card" id="platform-infrastructure-systems">
           <div class="system-card-inner">
+            <p class="system-category">Platform infrastructure system</p>
             <h2 class="system-title">Survey / Poll Serverless System</h2>
             <p class="system-desc">A focused serverless system to test API design, event flow, and deployment discipline using AWS.</p>
-            <p class="system-context">A small system used to validate infrastructure decisions end-to-end.</p>
-            <p class="system-meta">Problem → Approach → What changed</p>
+            <dl class="system-facts">
+              <div>
+                <dt>Problem</dt>
+                <dd>Architecture ideas need small, concrete systems before they become reusable practice.</dd>
+              </div>
+              <div>
+                <dt>Built</dt>
+                <dd>A serverless API and persistence experiment for survey and poll workflows.</dd>
+              </div>
+              <div>
+                <dt>Patterns</dt>
+                <dd>API boundaries, event flow, Lambda execution, DynamoDB persistence, deployment discipline.</dd>
+              </div>
+            </dl>
+            <p class="system-context">Shows the infrastructure side of building small systems to validate engineering decisions.</p>
+            <div class="system-actions">
+              <a href="survey-poll-serverless/">View system</a>
+              <a href="../writing/understanding-the-ai-ecosystem/">Related writing: Understanding the AI Ecosystem</a>
+            </div>
+            <p class="system-meta">Problem -> Approach -> What changed</p>
           </div>
-        </a>
+        </article>
 
-        <a href="ai-native-learning-platform/" class="system-card">
+        <article class="system-card">
           <div class="system-card-inner">
+            <p class="system-category">Learning and workflow experiment</p>
             <h2 class="system-title">AI-native Learning Platform</h2>
             <p class="system-desc">Exploring how structured content and AI can support deeper technical learning.</p>
-            <p class="system-context">An evolving system, still in experimentation phase.</p>
-            <p class="system-meta">Problem → Approach → What changed</p>
+            <dl class="system-facts">
+              <div>
+                <dt>Problem</dt>
+                <dd>Technical learning often optimizes for volume instead of structure, depth, and feedback.</dd>
+              </div>
+              <div>
+                <dt>Built</dt>
+                <dd>An early exploration of structured content, retrieval, and AI assistance for deeper learning.</dd>
+              </div>
+              <div>
+                <dt>Patterns</dt>
+                <dd>Learning paths, content structure, AI guidance, retrieval-oriented knowledge design.</dd>
+              </div>
+            </dl>
+            <p class="system-context">Connects the site's AI foundations writing to experiments in learning systems.</p>
+            <div class="system-actions">
+              <a href="ai-native-learning-platform/">View system</a>
+              <a href="../writing/ai-ml-data-science-explained-simply/">Related writing: AI, Machine Learning and Data Science - Explained Simply</a>
+            </div>
+            <p class="system-meta">Problem -> Approach -> What changed</p>
           </div>
-        </a>
+        </article>
 
+      </div>
+    </section>
+
+    <!-- Writing Bridge -->
+    <section class="sp-writing-bridge">
+      <div class="container">
+        <div class="sp-writing-bridge-inner">
+          <div>
+            <h2 class="section-title">Systems are the evidence layer for the writing.</h2>
+            <p class="section-subtitle">The articles explain the mental models. These systems test those ideas against practical constraints, interfaces, workflows, and review needs.</p>
+          </div>
+          <div class="sp-writing-bridge-actions">
+            <a href="../writing/#cluster-systems-experiments" class="btn btn-primary">Read systems writing</a>
+            <a href="../writing/series/ai-assisted-software-engineering/" class="btn btn-secondary">Start the AI engineering series</a>
+          </div>
+        </div>
       </div>
     </section>
 
