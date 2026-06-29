@@ -14,12 +14,13 @@ description: Write, adapt, or publish long-form articles for suyogjoshi.com in S
 2. Load `references/article-style-guide.md` before writing or editing article content.
 3. If creating or changing repo files, follow `AGENTS.md` and `CLAUDE.md` first:
    - Use a GitHub issue before edits.
-   - Work from `dev` on a feature branch.
+   - Work from `dev` on a feature branch when available; if `dev` does not exist, branch from the repository default branch.
    - Keep the scope tied to the issue.
-4. Draft the article around a practical mental model, not a newsy take.
-5. Author publishable pages with layout-aware HTML from the start; do not rely on validation to discover predictable list, table, code-block, image, or mobile overflow issues.
-6. Validate the draft against the voice checklist, layout-aware authoring checklist, and publishing checklist.
-7. For publishable pages, update required indexes and `sitemap.xml`, then complete local visual QA before handoff.
+4. For publishable pages, complete the Article Placement Workflow before editing indexes or navigation.
+5. Draft the article around a practical mental model, not a newsy take.
+6. Author publishable pages with layout-aware HTML from the start; do not rely on validation to discover predictable list, table, code-block, image, or mobile overflow issues.
+7. Validate the draft against the voice checklist, layout-aware authoring checklist, article placement checklist, and publishing checklist.
+8. For publishable pages, update required indexes and `sitemap.xml`, then complete local visual QA before handoff.
 
 ## Article Shape
 
@@ -52,6 +53,177 @@ Prefer section headings that name the idea directly:
 - Use italics for key distilled claims, not for decoration.
 - Avoid generic thought-leadership filler, breathless predictions, and keyword-stuffed SEO phrasing.
 
+## Article Placement Workflow
+
+Use this workflow whenever converting a draft into a publishable page or adding a new article to the site. Publishing is not only page creation; the article must be classified, connected, and discoverable.
+
+### 1. Required publishing inputs
+
+Before editing site files, confirm or derive:
+
+- Final article title.
+- Subtitle or short description.
+- Slug.
+- Published date.
+- Estimated reading time.
+- Cover image path, if applicable.
+- Draft status: `draft`, `scheduled`, or `published`.
+
+### 2. Content type
+
+For a normal article, use:
+
+```yaml
+contentType: article
+```
+
+Keep content type separate from topic. Content type describes the format. Topic cluster describes the theme.
+
+### 3. Primary category
+
+Choose one primary category.
+
+Allowed v1 categories:
+
+```yaml
+category: AI Foundations
+category: AI-Assisted Software Engineering
+category: Engineering Context and Knowledge
+category: Systems and Experiments
+category: Agile, Process, and Engineering Leadership
+```
+
+Rule: one article should have only one primary category.
+
+### 4. Topic clusters
+
+Choose one or more topic clusters.
+
+Allowed v1 topic clusters:
+
+```yaml
+topicClusters:
+  - AI Foundations
+  - AI-Assisted Software Engineering
+  - Engineering Context and Knowledge
+  - AI Agents and Review
+  - Systems and Experiments
+  - Agile, Process, and Engineering Leadership
+```
+
+Use topic clusters to support discovery and related reading. Add multiple clusters only when the article genuinely belongs in more than one reader path.
+
+### 5. Series decision
+
+Decide whether the article belongs to an ordered series.
+
+For most articles, leave series empty:
+
+```yaml
+series:
+seriesOrder:
+```
+
+Use series only when:
+
+- The article belongs to a deliberate reading sequence.
+- Reading order matters.
+- The series has or should have a landing page.
+
+Current approved series:
+
+```yaml
+series: ai-assisted-software-engineering
+seriesOrder: <number>
+```
+
+`Engineering Context and Knowledge` is a topic cluster for now, not a series.
+
+### 6. Editorial placement
+
+Decide whether the article should be highlighted beyond Latest Writing.
+
+Homepage featured:
+
+```yaml
+featured: true | false
+```
+
+Use `featured: true` sparingly for strong homepage highlights.
+
+Writing page recommended starting point:
+
+```yaml
+recommended: true | false
+```
+
+Use `recommended: true` manually when the article is a strong entry point for new visitors.
+
+### 7. Date display rules
+
+Article metadata should include dates, but not every listing should display them.
+
+- Homepage: no dates.
+- Recommended Starting Points: no dates.
+- Topic clusters: no dates.
+- Latest Writing: show dates.
+- Individual article page: show dates.
+
+### 8. Related content
+
+Every article should consider related links before publishing.
+
+Related articles:
+
+```yaml
+relatedArticles:
+  - article-slug-1
+  - article-slug-2
+```
+
+Add two to four related articles when useful. Prefer links that help the reader continue the same line of thinking.
+
+Related systems:
+
+```yaml
+relatedSystems:
+  - system-slug-1
+```
+
+Use related systems when the article connects to a project, build, experiment, or architecture note. Systems live primarily under Systems; Writing references systems, and Systems reference writing.
+
+Backlinks:
+
+- Check whether older articles should link to the new article.
+- Check whether related systems should link to the new article.
+- Check whether the new article changes the best next-read path for any existing article.
+
+### 9. Suggested metadata shape
+
+Use this as the target metadata shape, even if the current static HTML implementation stores some of it manually in page content or index sections:
+
+```yaml
+title:
+subtitle:
+slug:
+contentType: article
+publishedDate:
+updatedDate:
+status: draft | scheduled | published
+readingTime:
+category:
+topicClusters:
+series:
+seriesOrder:
+featured: false
+recommended: false
+relatedArticles: []
+relatedSystems: []
+coverImage:
+```
+
+Fields may be optional in implementation, but the publishing workflow must consider each field.
+
 ## Publishing Rules
 
 For a new article page:
@@ -62,8 +234,17 @@ For a new article page:
 - Include SEO metadata, canonical URL, Open Graph/Twitter tags, favicon links, and GA4.
 - Use `og:type` of `article`.
 - Show article metadata in the page header: `Author: Suyog Joshi` and `Published On: dd MMM yyyy` using the current publication date.
-- Add the article to `writing/index.html` in the featured grid or relevant thematic group.
-- Add or promote it on root `index.html` only when requested or clearly in scope.
+- Complete the Article Placement Workflow before updating indexes, homepage highlights, series links, or related reading.
+- Add the article to `writing/index.html` under the correct taxonomy-aware section:
+  - Recommended Starting Points only when `recommended: true`.
+  - Series only when the article belongs to an ordered series.
+  - Topic cluster section or sections based on `topicClusters`.
+  - Latest Writing by publication date.
+- Add or promote it on root `index.html` only when requested, clearly in scope, or `featured: true`.
+- Add or update series navigation when `series` and `seriesOrder` are present.
+- Add related reading links using `relatedArticles` where useful.
+- Add related systems links using `relatedSystems` where useful.
+- Consider backlinks from older related articles and related system pages.
 - Add the production URL to `sitemap.xml` with priority `0.8`.
 - Preserve `aria-current="page"` in navigation.
 - Add `.article-original-note` when adapting a Medium or external post.
@@ -72,6 +253,27 @@ For a new article page:
 - Confirm body text, lists, tables, code blocks, and images align to the article reading column unless a deliberate full-width treatment is already established.
 - Confirm mobile pages have no document-level horizontal overflow. Code blocks and tables may scroll within their own containers, but must not widen the page.
 - If the in-app Browser is unavailable, use a local browser or headless screenshot fallback. If visual QA cannot be completed, do not present the page as ready; state the skipped check and residual risk.
+
+## Article Placement Checklist
+
+Before marking a publishable article as ready:
+
+- [ ] Article title, subtitle, slug, date, status, and reading time are set.
+- [ ] Primary category is selected.
+- [ ] Topic cluster or clusters are selected.
+- [ ] Series decision is made.
+- [ ] Series order is set if applicable.
+- [ ] Homepage featured decision is made.
+- [ ] Recommended Starting Point decision is made.
+- [ ] Related articles are selected or explicitly skipped.
+- [ ] Related systems are selected or explicitly skipped.
+- [ ] Latest Writing listing is updated or will update automatically.
+- [ ] Topic cluster listing is updated or will update automatically.
+- [ ] Series page is updated if applicable.
+- [ ] Article-level navigation is verified.
+- [ ] Useful backlinks from older content are added where applicable.
+- [ ] `sitemap.xml` is updated.
+- [ ] Desktop, tablet, and mobile visual QA is complete or explicitly called out as skipped.
 
 ## References
 
