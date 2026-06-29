@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manual admin access for reviewing submitted messages and feedback on suyogjoshi.com." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/admin/" />
+  <meta property="og:title" content="Admin | Suyog Joshi" />
+  <meta property="og:description" content="Manual admin access for reviewing submitted messages and feedback on suyogjoshi.com." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://suyogjoshi.com/admin/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Admin | Suyog Joshi" />
+  <meta name="twitter:description" content="Manual admin access for reviewing submitted messages and feedback on suyogjoshi.com." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body class="admin-page">
+
+  <header class="site-header admin-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <div class="admin-session-actions" id="admin-session-actions" hidden>
+        <span class="admin-user-pill" id="admin-user-pill"></span>
+        <button class="btn btn-secondary admin-logout-button" id="admin-logout" type="button">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="admin-hero">
+      <div class="container admin-hero-inner">
+        <div>
+          <p class="eyebrow">Manual admin access</p>
+          <h1 class="admin-title">Messages and feedback</h1>
+          <p class="admin-intro">Read-only operational view for submitted contact messages and platform feedback.</p>
+        </div>
+        <p class="admin-api-note" id="admin-api-note"></p>
+      </div>
+    </section>
+
+    <section class="admin-content">
+      <div class="container">
+        <div class="admin-status" id="admin-status" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+        <section class="admin-login-panel" id="admin-login-panel" aria-labelledby="admin-login-title">
+          <div class="admin-panel-copy">
+            <h2 id="admin-login-title">Sign in with email OTP</h2>
+            <p>Use the platform admin email. The page is intentionally unlinked from public navigation; backend authorization still controls access.</p>
+          </div>
+
+          <form class="admin-login-form" id="admin-login-form" novalidate>
+            <div class="form-field">
+              <label for="admin-email">Email</label>
+              <input
+                type="email"
+                id="admin-email"
+                name="emailId"
+                autocomplete="email"
+                required
+              >
+              <span class="field-error" id="admin-email-error" role="alert" hidden></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="admin-request-otp">Request OTP</button>
+          </form>
+
+          <form class="admin-login-form" id="admin-otp-form" novalidate hidden>
+            <div class="form-field">
+              <label for="admin-otp">OTP</label>
+              <input
+                type="text"
+                id="admin-otp"
+                name="otp"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="6"
+                pattern="[0-9]{6}"
+                required
+              >
+              <span class="field-hint" id="admin-otp-hint">Enter the 6 digit code sent to the admin email.</span>
+              <span class="field-error" id="admin-otp-error" role="alert" hidden></span>
+            </div>
+
+            <div class="admin-form-actions">
+              <button type="submit" class="btn btn-primary" id="admin-verify-otp">Verify and enter</button>
+              <button type="button" class="btn btn-secondary" id="admin-change-email">Change email</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-shell" id="admin-shell" hidden>
+          <div class="admin-tabs" role="tablist" aria-label="Admin views">
+            <button class="admin-tab is-active" id="admin-messages-tab" type="button" role="tab" aria-selected="true" aria-controls="admin-messages-panel" data-admin-view="messages">Messages</button>
+            <button class="admin-tab" id="admin-feedback-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-feedback-panel" data-admin-view="feedback">Feedback</button>
+          </div>
+
+          <section class="admin-view-panel" id="admin-messages-panel" role="tabpanel" aria-labelledby="admin-messages-tab">
+            <div class="admin-view-toolbar">
+              <div>
+                <h2>Contact messages</h2>
+                <p>Newest submitted messages first. Full message text opens only in the detail view.</p>
+              </div>
+              <button type="button" class="btn btn-secondary" id="admin-refresh-messages">Refresh</button>
+            </div>
+            <div class="admin-split">
+              <div class="admin-list-pane">
+                <div class="admin-list" id="admin-messages-list" aria-live="polite"></div>
+              </div>
+              <article class="admin-detail-pane" id="admin-message-detail" aria-live="polite">
+                <p class="admin-empty">Select a message to view its details.</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="admin-view-panel" id="admin-feedback-panel" role="tabpanel" aria-labelledby="admin-feedback-tab" hidden>
+            <div class="admin-view-toolbar">
+              <div>
+                <h2>Feedback</h2>
+                <p>Read-only view of article, system, page, and module feedback.</p>
+              </div>
+              <button type="button" class="btn btn-secondary" id="admin-refresh-feedback">Refresh</button>
+            </div>
+
+            <form class="admin-feedback-filters" id="admin-feedback-filters">
+              <div class="form-field">
+                <label for="admin-feedback-target-type">Target type</label>
+                <select id="admin-feedback-target-type" name="targetType">
+                  <option value="">All</option>
+                  <option value="ARTICLE">Article</option>
+                  <option value="SYSTEM">System</option>
+                  <option value="PAGE">Page</option>
+                  <option value="MODULE">Module</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="admin-feedback-target-id">Target ID</label>
+                <input type="text" id="admin-feedback-target-id" name="targetId" autocomplete="off">
+              </div>
+              <div class="form-field">
+                <label for="admin-feedback-status">Status</label>
+                <select id="admin-feedback-status" name="status">
+                  <option value="">All</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="HIDDEN">Hidden</option>
+                  <option value="DELETED">Deleted</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-secondary">Apply</button>
+            </form>
+
+            <div class="admin-feedback-summary" id="admin-feedback-summary" aria-live="polite"></div>
+
+            <div class="admin-split">
+              <div class="admin-list-pane">
+                <div class="admin-list" id="admin-feedback-list" aria-live="polite"></div>
+              </div>
+              <article class="admin-detail-pane" id="admin-feedback-detail" aria-live="polite">
+                <p class="admin-empty">Select feedback to view its details.</p>
+              </article>
+            </div>
+          </section>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer admin-footer">
+    <div class="container footer-inner">
+      <div class="footer-bottom admin-footer-bottom">
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/admin.js"></script>
+</body>
+</html>
