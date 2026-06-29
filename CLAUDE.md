@@ -82,6 +82,8 @@ All three are loaded in every page's `<head>` in that order.
 
 **Detail pages wrap content in `<article>`** — both writing and system detail pages wrap the page header, body, and related reading blocks inside `<article>` (as a direct child of `<main>`).
 
+**Article feedback widget** — every writing article detail page includes a reusable feedback widget after the article body (and any original-source note) and before related reading or series navigation. Use `data-feedback-target-type="ARTICLE"` and `data-feedback-target-id="<article-slug>"`, where the stable target id is the article directory slug. Article series detail pages use `data-feedback-target-type="ARTICLE_SERIES"` and the series slug as `data-feedback-target-id`. Include `js/feedback-widget.js` at the correct relative depth along with `js/script.js`. V1 feedback is anonymous: the widget sends `anonymousId`, never sends `userId`, preserves the future `window.sjFeedbackAuth.getToken()` bearer-token extension point, keeps the comment field hidden until the reader chooses thumbs up, thumbs down, or leave a note, and enforces the 1800-character frontend comment limit. `writing/series/index.html` is a section index and does not receive an `ARTICLE_SERIES` widget unless it becomes a feedback-worthy artifact.
+
 ## Conventions
 
 - Use existing CSS custom properties from [css/base.css](css/base.css) for colors, fonts, and spacing. The complete set: `--color-bg` (#fff), `--color-text` (#111), `--color-text-muted` (#6b7280), `--color-border` (#e5e7eb), `--color-surface` (#f8fafc), `--font-serif` (Playfair Display stack), `--font-sans` (Inter stack), `--max-width` (1120px), `--container-px` (2rem), `--section-py` (6rem). The one hardcoded exception is the accent red `#b91c1c`, which is not a custom property but is used consistently across components (arrows, error states, interactive accents).
@@ -142,6 +144,25 @@ POST to `/messages` with JSON body:
 ```
 
 Expected responses: `202` → success message shown; `400` with `VALIDATION_FAILED` → field-level errors displayed via `aria-invalid` + `aria-describedby`; any other error → fallback message shown.
+
+## Feedback Widget Backend
+
+[js/feedback-widget.js](js/feedback-widget.js) selects the feedback API base URL with the same dev/prod hostname convention as the contact form and posts to `/feedback`.
+
+Widget instances are declarative:
+
+```html
+<section
+  class="feedback-widget"
+  data-feedback-widget
+  data-feedback-target-type="ARTICLE"
+  data-feedback-target-id="stable-article-slug"
+  data-feedback-source-label="Article"
+  aria-label="Article feedback"
+></section>
+```
+
+Payload fields are `targetType`, `targetId`, `rating`, optional trimmed `comment`, `sourcePageUrl`, `anonymousId`, and honeypot `website: ""`. Supported V1 article ratings are `THUMBS_UP`, `THUMBS_DOWN`, and `NONE`. Anonymous submissions generate and reuse `sj_feedback_anonymous_id` in browser local storage. Do not send `userId` from the frontend; authenticated feedback should later be added only by providing `Authorization: Bearer <token>` through `window.sjFeedbackAuth.getToken()`.
 
 ## Deployment
 

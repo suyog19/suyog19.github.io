@@ -2138,6 +2138,20 @@
   margin-top: -1px;
 }
 
+.article-feedback-section {
+  padding-block: 4rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.article-body-section + .article-feedback-section,
+.article-feedback-section + .article-series-nav-section {
+  margin-top: -1px;
+}
+
+.article-feedback-section .feedback-widget {
+  margin-block: 0;
+}
+
 .article-series-nav {
   border: 1px solid var(--color-border);
   background-color: var(--color-bg);
@@ -2261,6 +2275,10 @@
   }
 
   .article-body-section {
+    padding-block: 3.5rem;
+  }
+
+  .article-feedback-section {
     padding-block: 3.5rem;
   }
 
