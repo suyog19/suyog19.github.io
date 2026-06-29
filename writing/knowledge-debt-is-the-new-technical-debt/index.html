@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical explanation of knowledge debt, how it differs from technical debt, why AI-assisted teams feel its cost, and how to manage it." />
+  <title>Knowledge Debt Is the New Technical Debt | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/" />
+  <meta property="og:title" content="Knowledge Debt Is the New Technical Debt | Suyog Joshi" />
+  <meta property="og:description" content="A practical explanation of knowledge debt, how it differs from technical debt, why AI-assisted teams feel its cost, and how to manage it." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Knowledge Debt Is the New Technical Debt | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical explanation of knowledge debt, how it differs from technical debt, why AI-assisted teams feel its cost, and how to manage it." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">AI and Software Engineering</p>
+            <h1 class="article-page-title">Knowledge Debt Is the New Technical Debt</h1>
+            <p class="article-page-subtitle">Technical debt makes code harder to change. Knowledge debt makes the system harder to understand.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 29 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure">
+                <img src="cover.png" alt="Knowledge debt cover showing a clean user-service code panel weighed down by chained blocks representing an old diagram, unknown ownership, missing rule, outdated runbook, unclear trade-off, and uncertain AI suggestion.">
+              </figure>
+
+              <p>The team had paid down a lot of technical debt.</p>
+
+              <p>The old service had been split into clearer modules. The slow tests were cleaned up. The dependency graph was simpler. The build was faster. A few risky classes were rewritten. On paper, the codebase was healthier than it had been in years.</p>
+
+              <p>Then a product change arrived.</p>
+
+              <p>Nobody was sure which team owned the billing exception. The architecture diagram still showed a dependency that had been removed six months earlier. The runbook described a rollback process that no longer matched the deployment pipeline. A business rule about enterprise customers lived only in review memory. The original trade-off behind a strange data model was never written down.</p>
+
+              <p>The code was cleaner.</p>
+
+              <p>The system was still hard to change.</p>
+
+              <p>That is knowledge debt.</p>
+
+              <p>Knowledge debt is the accumulated cost of engineering knowledge that is missing, stale, scattered, misleading, inaccessible, or owned by nobody.</p>
+
+              <p>It includes stale architecture diagrams, missing business rules, outdated runbooks, unclear ownership, undocumented trade-offs, obsolete ADRs, missing test examples, contradictory standards, and incident lessons that never make it back into normal engineering workflow.</p>
+
+              <p>It is not just &quot;bad documentation.&quot; Documentation is part of it, but the problem is wider. Knowledge debt appears whenever important understanding does not reliably reach the people and tools doing the work.</p>
+
+              <p>Traditional technical debt affects code maintainability. Knowledge debt affects comprehension. It changes how developers understand a system, how reviewers judge a change, how teams respond to incidents, and how AI assistants generate code, tests, and summaries.</p>
+
+              <p>Knowledge debt does not replace technical debt as a concept. It sits beside it.</p>
+
+              <figure class="article-figure">
+                <img src="knowledge-debt-vs-technical-debt.png" alt="Diagram comparing technical debt examples such as tangled modules and weak tests with knowledge debt examples such as stale diagrams, missing business rules, outdated runbooks, unclear ownership, and undocumented trade-offs.">
+              </figure>
+
+              <p>And in AI-assisted teams, it is becoming harder to ignore.</p>
+
+              <h2>Technical debt has a sibling</h2>
+
+              <p>The technical debt metaphor is useful because it explains a common engineering trade-off. A team takes a shortcut today and pays interest later. Ward Cunningham used the debt metaphor to describe the cost of shipping with incomplete understanding and then learning from the system. Martin Fowler's writing on <a href="https://martinfowler.com/bliki/TechnicalDebt.html" target="_blank" rel="noopener noreferrer">technical debt</a> also emphasizes that not all debt is the same. Some is deliberate. Some is reckless. Some is discovered only later.</p>
+
+              <p>Knowledge debt works in a similar way, but the principal is different.</p>
+
+              <p>With technical debt, the debt might be a tangled module, weak test coverage, a brittle build, a poor abstraction, or a dependency that is painful to upgrade.</p>
+
+              <p>With knowledge debt, the debt is the missing explanation around the system:</p>
+
+              <ul>
+                <li>why this module boundary exists</li>
+                <li>which customer rule changes the normal flow</li>
+                <li>who owns the shared table</li>
+                <li>which architecture decision is current</li>
+                <li>why the team rejected a simpler design</li>
+                <li>how to recover safely when the queue stalls</li>
+                <li>which test examples represent the current standard</li>
+              </ul>
+
+              <p>Technical debt often slows the act of changing code.</p>
+
+              <p>Knowledge debt slows the act of knowing what change is correct.</p>
+
+              <p>The two feed each other. A messy system is harder to explain. Missing decision context makes future refactoring riskier. Unclear ownership allows code problems to sit longer. Outdated runbooks make operational fixes more dangerous. A stale architecture diagram can cause a team to add new code in the wrong place, creating new technical debt from old knowledge debt.</p>
+
+              <h2>What knowledge debt looks like</h2>
+
+              <p>Knowledge debt rarely announces itself. It shows up as friction.</p>
+
+              <p>A stale architecture diagram says Service A calls Service B directly. In reality, the dependency moved behind an event stream months ago. A new developer uses the diagram during onboarding. An AI assistant retrieves it while answering a design question. A reviewer sees a pull request that reintroduces the old direction. The diagram was not harmless. It changed the path people considered normal.</p>
+
+              <p>A missing business rule creates a different kind of debt. The code says cancellation is allowed. The tests cover the ordinary customer path. What they do not show is that enterprise customers require contract review before cancellation. The rule came from an old escalation. The team knows it when the right reviewer is present. AI does not know it unless the rule is in the ticket, tests, docs, examples, or retrieved context.</p>
+
+              <p>An outdated runbook is knowledge debt with operational consequences. It may describe a manual rollback step that the pipeline no longer supports. It may point to an old dashboard. It may tell engineers to restart a worker that has been replaced by autoscaling. During normal work, nobody notices. During an incident, the debt comes due.</p>
+
+              <p>Unclear ownership is another form. A service exists. People depend on it. Nobody is sure who approves changes. The last major decision came from a team that no longer owns the domain. Review slows down because responsibility is ambiguous. Agents and assistants cannot fix that. They may generate a plausible change, but they cannot create accountability where the organization has none.</p>
+
+              <p>Undocumented trade-offs are one of the most expensive forms of knowledge debt. A strange design may look accidental years later. Maybe the team chose it to satisfy a reporting constraint, reduce data migration risk, protect latency, avoid vendor lock-in, or support a customer migration. If the trade-off was never captured, a future team may &quot;simplify&quot; the design and remove the reason it worked.</p>
+
+              <p>This is why knowledge debt is not a documentation aesthetics problem.</p>
+
+              <p>It is a delivery risk.</p>
+
+              <h2>AI makes the interest visible</h2>
+
+              <p>Human teams have always paid interest on knowledge debt.</p>
+
+              <p>Onboarding takes longer. Review comments repeat. Senior engineers become bottlenecks. Incident response depends on who is online. Architecture discussions revisit decisions nobody can find. Product rules get rediscovered through defects.</p>
+
+              <p>AI-assisted work makes the interest more visible because assistants operate on available context.</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> is useful here. AI tools become more useful when they can work with relevant internal context such as codebases, documentation, style guides, operational information, and architecture diagrams. The reverse is also true in practice: missing or misleading internal context makes assistance weaker.</p>
+
+              <p>If the current standard is absent, the assistant may copy the old pattern. If the stale diagram is easier to retrieve than the current design, the answer may be confidently wrong. If a business rule is missing from tests and tickets, generated tests may miss the exact case that matters. If ownership is unclear, an agent can produce a change faster than the team can decide who should approve it.</p>
+
+              <p>This is not the assistant's fault in every case.</p>
+
+              <p>It is the system reflecting the knowledge it can reach.</p>
+
+              <p>AI does not create most knowledge debt. It exposes it. Sometimes it amplifies it because the output arrives quickly and looks polished. A generated summary can sound complete while missing the important exception. Generated tests can look clean while covering only the documented path. A review assistant can reason from an outdated ADR and still sound careful.</p>
+
+              <p>That creates misleading confidence.</p>
+
+              <p>The team sees progress, but the understanding behind the progress is weak.</p>
+
+              <h2>Not all knowledge deserves the same treatment</h2>
+
+              <p>The answer is not to document everything.</p>
+
+              <p>That creates a different debt: long pages nobody trusts, stale wikis, duplicated standards, and retrieval results full of conflicting guidance.</p>
+
+              <p>Knowledge debt management starts with impact.</p>
+
+              <p>Ask which missing or stale knowledge changes delivery outcomes:</p>
+
+              <ul>
+                <li>Does it affect implementation?</li>
+                <li>Does it affect tests?</li>
+                <li>Does it affect architecture decisions?</li>
+                <li>Does it affect security, privacy, or compliance?</li>
+                <li>Does it affect rollout, rollback, or incident response?</li>
+                <li>Does it affect ownership or review?</li>
+                <li>Does it repeatedly slow onboarding or planning?</li>
+              </ul>
+
+              <p>If the answer is yes, the knowledge probably needs a better home.</p>
+
+              <p>The right home is not always a document. Sometimes it is an ADR. Martin Fowler describes an <a href="https://martinfowler.com/bliki/ArchitectureDecisionRecord.html" target="_blank" rel="noopener noreferrer">Architecture Decision Record</a> as a short record of a decision, context, and consequences. Sometimes the right home is a README note, a test example, a runbook update, a code owner rule, a PR template question, a schema check, an architecture test, or a CI gate.</p>
+
+              <p>Some knowledge should remain human judgment. Some knowledge is sensitive and should not be broadly exposed to AI tools. Some knowledge is still evolving and belongs in active design discussion before it becomes durable guidance.</p>
+
+              <p>Good knowledge debt management is selective.</p>
+
+              <h2>A practical model for managing knowledge debt</h2>
+
+              <p>Use a simple sequence: find it, rate it, place it, maintain it.</p>
+
+              <figure class="article-figure">
+                <img src="knowledge-debt-management-workflow.png" alt="Four-step workflow for managing knowledge debt: find it, rate it, place it, and maintain it, with a loop to revisit and update knowledge as things change.">
+              </figure>
+
+              <p>Find it by looking for repeated review comments, onboarding questions, incident confusion, stale diagrams, contradictory docs, unclear owners, missing runbook steps, and business rules that only a few people remember. AI mistakes are useful signals here. When an assistant misses a rule, ask whether it had any realistic way to know the rule.</p>
+
+              <p>Rate it by risk. Not every missing note deserves immediate work. A stale diagram for an abandoned prototype matters less than a stale runbook for a production payment service. Classify knowledge debt by where it can hurt: delivery speed, review quality, production safety, security, customer behavior, architecture drift, or onboarding.</p>
+
+              <p>Place it where the next person or assistant will need it. Business rules belong in tickets, tests, product specs, or service docs. Architecture decisions belong in ADRs linked from relevant code. Operational behavior belongs in runbooks close to alerts and deployment workflows. Ownership belongs in service catalogs, <code>CODEOWNERS</code> files, READMEs, or team maps. Trade-offs belong near the decision, not only in someone's memory.</p>
+
+              <p>Maintain it so the debt does not return. A diagram should have a date and owner. An ADR should link to a superseding decision when it changes. A runbook should be tested or reviewed after incidents. A README should change with the workflow. A pull request that changes behavior should update the context future work will rely on.</p>
+
+              <p>The documentation chapter in <a href="https://abseil.io/resources/swe-book/html/ch10.html" target="_blank" rel="noopener noreferrer">Software Engineering at Google</a> makes this practical point: documentation needs ownership, maintenance, and a clear place in the engineering workflow. DORA's work on <a href="https://dora.dev/capabilities/documentation-quality/" target="_blank" rel="noopener noreferrer">documentation quality</a> points to similar qualities: clarity, findability, and reliability.</p>
+
+              <p>Knowledge that affects delivery should not be treated as optional housekeeping.</p>
+
+              <h2>How to pay it down without creating bureaucracy</h2>
+
+              <p>Start where the interest is highest.</p>
+
+              <p>If review keeps catching the same missing edge case, add an example test or PR checklist item. If incidents keep exposing stale recovery steps, update and rehearse the runbook. If developers keep asking who owns a service, make ownership visible in the repository and service catalog. If AI keeps copying an old pattern, mark the old pattern as deprecated and link the current ADR.</p>
+
+              <p>Small paydowns matter.</p>
+
+              <p>You do not need a grand knowledge program. You need fewer places where important engineering knowledge disappears.</p>
+
+              <p>A useful habit is to attach knowledge debt cleanup to work that already reveals it:</p>
+
+              <ul>
+                <li>When a review repeats the same explanation, capture the rule.</li>
+                <li>When an incident exposes a bad runbook, update the runbook before the incident is closed.</li>
+                <li>When an architecture decision changes, supersede the old ADR.</li>
+                <li>When a service owner changes, update ownership where engineers look.</li>
+                <li>When a generated change misses context, improve the context path, not only the prompt.</li>
+              </ul>
+
+              <p>This is the same discipline teams already understand from technical debt.</p>
+
+              <p>You do not pay down every debt immediately. You make it visible. You assess the risk. You prioritize. You reduce interest where it is hurting the team.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, treat knowledge debt as real engineering debt when it affects implementation, testing, review, ownership, incidents, or architecture decisions.</p>
+
+              <p>Second, use AI-assisted mistakes as diagnostics. If an assistant missed a rule, ask whether the rule was captured, current, findable, and close to the workflow.</p>
+
+              <p>Third, pay down knowledge debt in the form that fits the risk. Some debt needs a README update. Some needs an ADR. Some needs a test. Some needs a runbook. Some needs ownership. Some needs a CI check.</p>
+
+              <h2>Add knowledge debt to the conversation</h2>
+
+              <p>Technical debt is already part of engineering language. Teams discuss it in planning, design reviews, retrospectives, and roadmap trade-offs.</p>
+
+              <p>Knowledge debt deserves the same seriousness.</p>
+
+              <p>The next time a team says, &quot;We need to clean up this service,&quot; ask about more than the code.</p>
+
+              <p>Do we know who owns it? Is the architecture diagram current? Are the important business rules visible? Are the runbooks safe? Are old decisions linked to current decisions? Do the tests show the behavior that matters? Would a new developer understand why the system works this way? Would an AI assistant have the context needed to help safely?</p>
+
+              <p>Those questions are not documentation theater.</p>
+
+              <p>They are delivery questions.</p>
+
+              <p>AI-assisted software teams do not only need cleaner code. They need cleaner knowledge around the code.</p>
+
+              <p>Because when humans and AI cannot understand what the system is supposed to do, every change becomes slower, riskier, and easier to get wrong.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../documentation-is-becoming-executable-context/" class="article-related-item">
+                  <span class="article-related-item-title">Documentation Is Becoming Executable Context</span>
+                  <span class="article-related-item-summary">How AI-assisted software work is changing documentation from a passive reference into an active part of delivery.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../why-ai-punishes-tribal-knowledge-in-software-teams/" class="article-related-item">
+                  <span class="article-related-item-title">Why AI Punishes Tribal Knowledge in Software Teams</span>
+                  <span class="article-related-item-summary">The assistant cannot use the rule your team only explains in review.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+</body>
+</html>
