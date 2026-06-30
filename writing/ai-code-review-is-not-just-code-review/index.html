@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change." />
+  <title>AI Code Review Is Not Just Code Review | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/" />
+  <meta property="og:title" content="AI Code Review Is Not Just Code Review | Suyog Joshi" />
+  <meta property="og:description" content="Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AI Code Review Is Not Just Code Review | Suyog Joshi" />
+  <meta name="twitter:description" content="Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">Review and Governance</p>
+            <h1 class="article-page-title">AI Code Review Is Not Just Code Review</h1>
+            <p class="article-page-subtitle">Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 30 Jun 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure">
+                <img src="cover.png" alt="AI code review cover showing a code diff surrounded by context, intent, tests, evidence, and risk review signals.">
+              </figure>
+
+              <p>The pull request looked easy to approve.</p>
+
+              <p>The code was clean. The naming matched the service. The diff was not too large. The assistant summary was confident: validation was improved, tests were added, and all checks passed.</p>
+
+              <p>At first glance, it looked like a good AI-assisted change.</p>
+
+              <p>Then the reviewer slowed down.</p>
+
+              <p>The ticket only said, &quot;Fix validation for missing transfer amount.&quot; The assistant had changed a shared payment validator, touched a service method, and added tests that only checked whether &quot;an error&quot; was returned. The tests did not verify the exact error code, currency-specific behavior, zero-amount handling, or cross-border transfer rules. The implementation also copied an older validation pattern that the team had been moving away from.</p>
+
+              <p>Nothing in the diff looked obviously careless.</p>
+
+              <p>That was the problem.</p>
+
+              <p>The code was clean enough to hide the weak assumptions behind it.</p>
+
+              <figure class="article-figure">
+                <img src="ai-code-review-clean-code-above-hidden-weakness.png" alt="Clean code panel sitting above hidden review weaknesses including missing rule, weak test, old pattern, unverified scope, and skipped validation.">
+              </figure>
+
+              <p>This is why AI code review is not just code review. A reviewer cannot only ask whether the code is readable, consistent, and tested. Those questions still matter, but they are not enough.</p>
+
+              <p>For AI-assisted changes, the reviewer also has to ask:</p>
+
+              <ul>
+                <li>What context did the assistant receive?</li>
+                <li>What intent did it infer?</li>
+                <li>What assumptions did it make?</li>
+                <li>What evidence supports the behavior?</li>
+                <li>What validation path was actually run?</li>
+                <li>What risks did the change introduce?</li>
+              </ul>
+
+              <p>AI code review is really evidence review, context review, and engineering judgment combined.</p>
+
+              <figure class="article-figure">
+                <img src="ai-code-review-minimal-layered-structure.png" alt="Layered AI code review structure showing code, context, intent, validation, evidence, and risk.">
+              </figure>
+
+              <h2>The diff is not the whole story</h2>
+
+              <p>Traditional code review often starts with the diff.</p>
+
+              <p>That makes sense. The diff shows what changed. Reviewers inspect design, functionality, complexity, tests, naming, comments, style, and documentation. Google's public <a href="https://google.github.io/eng-practices/review/reviewer/looking-for.html" target="_blank" rel="noopener noreferrer">code review guidance</a> covers this broader view of review well. Good code review has never been only formatting.</p>
+
+              <p>But AI-assisted work changes the review surface.</p>
+
+              <p>The diff may be a clean implementation of a bad assumption.</p>
+
+              <p>A human developer can do that too. Human-written code can also misunderstand requirements, miss edge cases, or copy old patterns. The difference with AI is the combination of speed, polish, and incomplete uncertainty signals.</p>
+
+              <p>AI assistants often continue from the context they have. If the ticket is thin, they fill gaps. If the repository contains old examples, they may copy them. If tests show only the happy path, they may generate more happy-path tests. If business rules are missing, the implementation may ignore them without looking obviously wrong.</p>
+
+              <p>The pull request can arrive with clean code, generated tests, a tidy summary, and passing CI.</p>
+
+              <p>That presentation can make the change feel more reliable than it is.</p>
+
+              <p>Reviewers need to resist that effect.</p>
+
+              <p>The question is not only, &quot;Is this code acceptable?&quot;</p>
+
+              <p>The better question is, &quot;Is this the right change, based on the right context, validated in the right way?&quot;</p>
+
+              <h2>AI hides assumptions differently</h2>
+
+              <p>When an experienced developer makes an uncertain change, the uncertainty often leaks into the workflow.</p>
+
+              <p>They might write, &quot;I was not sure whether this applies to cross-border transfers.&quot; They might ask a product manager. They might leave a comment in the pull request. They might avoid touching a shared validator until someone confirms the scope.</p>
+
+              <p>AI-generated code often does not expose uncertainty that way.</p>
+
+              <p>It tends to produce a complete-looking answer from incomplete context. That is useful when the task is low-risk and well bounded. It is dangerous when the missing context contains the important rule.</p>
+
+              <p>Suppose the assistant is asked to fix validation for a missing transfer amount. It sees a shared validator and updates it. That may be correct. Or it may accidentally affect domestic transfers, cross-border transfers, wallet transfers, and bill payments differently. The assistant may not know that one payment type allows a zero-value authorization step. It may not know that one currency has different decimal handling. It may not know that a specific error code is required for downstream support tooling.</p>
+
+              <p>The code can still look clean.</p>
+
+              <p>That is why review has to become assumption hunting.</p>
+
+              <p>Look for decisions the assistant made silently:</p>
+
+              <ul>
+                <li>Which scope did it choose?</li>
+                <li>Which old pattern did it copy?</li>
+                <li>Which business rule did it assume?</li>
+                <li>Which edge case did it ignore?</li>
+                <li>Which tests did it treat as enough?</li>
+                <li>Which files did it decide were safe to change?</li>
+              </ul>
+
+              <p>These questions are important because AI can make silent decisions quickly and present the result as finished.</p>
+
+              <h2>Context review comes before code approval</h2>
+
+              <p>For an AI-assisted pull request, reviewers should inspect the input context as part of review.</p>
+
+              <p>That does not mean reading every prompt transcript. Most of the time, prompt history is too noisy to be the engineering source of truth.</p>
+
+              <p>It means checking whether the assistant had the context needed to produce the right change.</p>
+
+              <p>Was the ticket clear? Did it include the business rule? Were acceptance criteria specific? Were non-goals visible? Did the assistant see the current ADR or only the old code? Did the repository instructions explain the testing expectation? Did the task mention sensitive areas, rollout constraints, or domain-owner review?</p>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> points to the practical need for relevant internal context such as codebases, documentation, style guides, architecture diagrams, and operational information. The review implication is direct. If the relevant context was not available, the reviewer should treat the output with caution.</p>
+
+              <p>This is especially important when the change touches business behavior.</p>
+
+              <p>Code files rarely contain the full rule. A ticket may say &quot;validate transfer amount,&quot; but the real behavior may depend on product limits, currencies, customer segment, compliance logging, and support workflows. If those rules were not in the task context, the assistant may have implemented the generic version.</p>
+
+              <p>Reviewers should ask: would a new developer find the same rule from the available materials?</p>
+
+              <p>If the answer is no, the AI probably did not have a reliable path to it either.</p>
+
+              <h2>Intent review checks what changed and why</h2>
+
+              <p>Once context is clear, review the intent.</p>
+
+              <p>What behavior is supposed to change?</p>
+
+              <p>This sounds basic, but many AI-assisted pull requests blur the intent. The assistant may fix the bug, clean up nearby code, adjust a helper, rename a method, and add tests all in one pass. Some of those changes may be useful. Some may be unrelated. Some may make review harder.</p>
+
+              <p>The reviewer should separate the intended change from incidental change.</p>
+
+              <p>For the validation example, the intent might be narrow:</p>
+
+              <p>&quot;When transfer amount is missing, return <code>TRANSFER_AMOUNT_REQUIRED</code> without throwing a generic exception.&quot;</p>
+
+              <p>That intent is reviewable.</p>
+
+              <p>&quot;Improve payment validation&quot; is not.</p>
+
+              <p>Once intent is clear, the reviewer can ask whether the diff matches it. Did the assistant change only the relevant validation path? Did it alter behavior for other payment types? Did it change public response contracts? Did it update shared code without explaining why? Did it introduce a new abstraction because it looked cleaner rather than because the change required it?</p>
+
+              <p>AI-generated changes often need scope review because assistants can be very helpful in the wrong direction.</p>
+
+              <p>Reviewability is part of quality.</p>
+
+              <p>If the reviewer cannot easily explain what changed and why, the team should slow down before approval.</p>
+
+              <h2>Test review is not coverage review</h2>
+
+              <p>AI assistants can generate tests quickly.</p>
+
+              <p>That is helpful, but it creates another review trap. Test presence can be mistaken for test quality.</p>
+
+              <p>Generated tests often mirror the implementation. They may prove that the code does what the assistant wrote, not that the system does what the requirement needs. They may assert that some error exists rather than checking the exact behavior. They may mock away the dependency that carries the risk. They may skip boundary cases because the ticket did not name them.</p>
+
+              <p>Reviewers should read generated tests with the same skepticism as generated code.</p>
+
+              <p>Ask:</p>
+
+              <ul>
+                <li>Do the tests prove the intended behavior?</li>
+                <li>Do they cover the important boundary cases?</li>
+                <li>Do they fail for the old bug?</li>
+                <li>Do they protect against the risky regression?</li>
+                <li>Are they checking exact outcomes or vague existence?</li>
+                <li>Did the assistant weaken any existing test to make the suite pass?</li>
+                <li>Were the right tests actually run?</li>
+              </ul>
+
+              <p>The last question matters.</p>
+
+              <p>&quot;All tests pass&quot; is not enough if only unit tests ran and the risky behavior sits in contract tests, integration tests, or production-like flows.</p>
+
+              <p>Tests are evidence.</p>
+
+              <p>They are not proof.</p>
+
+              <h2>Evidence review asks why the change is safe</h2>
+
+              <p>For low-risk changes, evidence can be small. A focused diff, clear PR description, relevant tests, and passing CI may be enough.</p>
+
+              <p>For higher-risk changes, the reviewer needs more.</p>
+
+              <p>Payments, authentication, authorization, data deletion, migrations, customer notifications, external integrations, compliance-sensitive logic, and production reliability controls deserve stronger evidence.</p>
+
+              <p>Evidence might include the issue context, acceptance criteria, non-goals, business rules, ADR links, test execution output, CI results, security or domain review, rollout notes, monitoring expectations, and ownership of remaining risk.</p>
+
+              <p>This is not bureaucracy for its own sake. It is how reviewers avoid approving a clean diff with weak understanding.</p>
+
+              <p>The evidence-chain article in this series made a similar point: for important AI-assisted changes, future engineers should be able to reconstruct what changed, why the team believed it was safe, how it was validated, who reviewed it, how it was rolled out, and who owned the decision.</p>
+
+              <p>That same thinking belongs inside code review.</p>
+
+              <p>Before approving, ask: what would I need to believe for this change to be safe, and where is the evidence?</p>
+
+              <p>If the evidence is missing, the review is not done.</p>
+
+              <h2>Risk review scales the depth</h2>
+
+              <p>Not every AI-assisted change needs a heavyweight process.</p>
+
+              <p>A typo fix does not need a design review. A small internal refactor may not need product review. A local unit test cleanup may not need a rollout plan.</p>
+
+              <p>The review depth should scale with consequence.</p>
+
+              <p>The question is not &quot;Was AI used?&quot;</p>
+
+              <p>The better question is &quot;What happens if this change is wrong?&quot;</p>
+
+              <p>If the answer is &quot;a label looks slightly off,&quot; keep the review lightweight. If the answer is &quot;customers can be charged twice,&quot; &quot;private data can leak,&quot; &quot;a migration can delete records,&quot; or &quot;support cannot recover during an incident,&quot; the review needs stronger evidence and the right humans involved.</p>
+
+              <p>NIST's <a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10" target="_blank" rel="noopener noreferrer">AI Risk Management Framework</a> is useful here because it frames AI risk around context, mapping, measurement, management, and governance. Software teams do not need to turn every AI-assisted pull request into a compliance exercise. They do need a risk-aware review path.</p>
+
+              <p>Risk review should consider customer impact, security and privacy, financial or compliance exposure, production reliability, reversibility, blast radius, ownership, and observability.</p>
+
+              <p>That is engineering judgment.</p>
+
+              <p>AI can help surface risks, but it cannot accept them on behalf of the team.</p>
+
+              <h2>A practical review checklist</h2>
+
+              <p>For AI-assisted pull requests, I would add a few questions to normal code review.</p>
+
+              <p>Context: Was the task clear enough? Were business rules, constraints, and non-goals visible? Did the assistant use current guidance, not stale examples?</p>
+
+              <p>Intent: Can the intended behavior change be stated in one or two sentences? Does the diff match that intent? Are unrelated changes separated or removed?</p>
+
+              <p>Assumptions: What did the assistant appear to assume? Are those assumptions written down and checked? Are there domain questions for product, security, operations, or architecture?</p>
+
+              <p>Validation: Do tests prove the intended behavior? Do they cover boundaries, failures, and important regressions? Which test commands actually ran?</p>
+
+              <p>Evidence: Is there enough evidence to approve this change? Are ADRs, business rules, rollout notes, or domain reviews linked when needed? Could a future engineer reconstruct the decision?</p>
+
+              <p>Risk: What could happen if this change is wrong? Is the review depth appropriate for that consequence? Who owns the remaining risk?</p>
+
+              <p>This checklist should not become a form people fill out mechanically. Its purpose is to change the review posture.</p>
+
+              <p>Do not only inspect the code.</p>
+
+              <p>Inspect the conditions that produced the code.</p>
+
+              <h2>AI review tools can help, but they are not approval</h2>
+
+              <p>AI can also review code.</p>
+
+              <p>That can be useful. A review assistant can summarize a diff, compare it against acceptance criteria, point out missing tests, detect broad scope, check consistency with repository instructions, or generate risk questions for the human reviewer.</p>
+
+              <p>But an AI review is not accountability.</p>
+
+              <p>The review assistant may miss the same missing business rule as the implementation assistant. It may reason from stale documentation. It may focus on code style because the real risk sits in product intent. It may approve tests that look structured but do not prove the behavior.</p>
+
+              <p>This is why implementation and review should be separated, and why human review still matters.</p>
+
+              <p>Let AI help with review.</p>
+
+              <p>Do not let AI become the only reason a change is approved.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, treat AI code review as more than diff review. Inspect context, intent, assumptions, validation, evidence, and risk.</p>
+
+              <p>Second, review generated tests as carefully as generated code. A test can increase coverage without increasing confidence.</p>
+
+              <p>Third, scale review depth with consequence. Low-risk changes should stay lightweight. High-risk changes need stronger evidence, domain review, and clear human ownership.</p>
+
+              <h2>The approval question</h2>
+
+              <p>The next time an AI-assisted pull request looks clean, pause before approving it.</p>
+
+              <p>Do not only ask whether the code is readable.</p>
+
+              <p>Ask what had to be true for the change to be correct.</p>
+
+              <p>Did the assistant have the right context? Did it understand the intent? Did it make assumptions? Do the tests prove the behavior that matters? Is the validation path visible? Is the risk acceptable? Is there enough evidence for someone else to understand this decision later?</p>
+
+              <p>That is the real review.</p>
+
+              <p>AI can produce code, tests, summaries, and review notes quickly.</p>
+
+              <p>The human reviewer still has to decide whether the change deserves trust.</p>
+
+              <p>AI code review is not just code review.</p>
+
+              <p>It is context review, evidence review, and engineering judgment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-feedback-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <section
+              class="feedback-widget"
+              data-feedback-widget
+              data-feedback-target-type="ARTICLE"
+              data-feedback-target-id="ai-code-review-is-not-just-code-review"
+              data-feedback-source-label="Article"
+              aria-label="Article feedback"
+            ></section>
+          </div>
+        </div>
+      </div>
+      <div class="article-path-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <nav class="article-path-nav" aria-label="Article reading path">
+              <p class="article-path-label">Reading path</p>
+              <h2 class="article-path-title">Review and Governance</h2>
+              <p class="article-path-desc">This article belongs to the Review and Governance path: how teams review AI-assisted work, evaluate evidence, scale scrutiny with risk, and keep human accountability visible.</p>
+              <div class="article-path-links">
+                <a href="../#cluster-review-governance">Browse this path</a>
+                <a href="../stronger-evidence-chains-for-ai-assisted-engineering-changes/">Related: Stronger Evidence Chains for AI-Assisted Engineering Changes</a>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../stronger-evidence-chains-for-ai-assisted-engineering-changes/" class="article-related-item">
+                  <span class="article-related-item-title">Stronger Evidence Chains for AI-Assisted Engineering Changes</span>
+                  <span class="article-related-item-summary">As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../why-reviewing-ai-generated-work-is-a-different-skill/" class="article-related-item">
+                  <span class="article-related-item-title">Why Reviewing AI-Generated Work Is a Different Skill</span>
+                  <span class="article-related-item-summary">AI can generate polished software artifacts quickly, but engineers still need to uncover assumptions, missing context, and hidden risks.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/" class="article-related-item">
+                  <span class="article-related-item-title">Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</span>
+                  <span class="article-related-item-summary">How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+  <script src="../../js/feedback-widget.js"></script>
+</body>
+</html>
