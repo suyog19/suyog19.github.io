@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Human review gates help AI-assisted software teams make intent, design, risk, validation, release, and ownership decisions explicit." />
+  <title>Human Review Gates in AI-Assisted Delivery | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/" />
+  <meta property="og:title" content="Human Review Gates in AI-Assisted Delivery | Suyog Joshi" />
+  <meta property="og:description" content="Human review gates help AI-assisted software teams make intent, design, risk, validation, release, and ownership decisions explicit." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Human Review Gates in AI-Assisted Delivery | Suyog Joshi" />
+  <meta name="twitter:description" content="Human review gates help AI-assisted software teams make intent, design, risk, validation, release, and ownership decisions explicit." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">Review and Governance</p>
+            <h1 class="article-page-title">Human Review Gates in AI-Assisted Delivery</h1>
+            <p class="article-page-subtitle">Useful AI adoption does not mean fewer human decisions. It means clearer human decision points.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 01 Jul 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure">
+                <img src="cover.png" alt="A delivery path passing through human review gates for intent, design, validation, risk, release, and ownership.">
+              </figure>
+
+              <p>Useful AI adoption does not mean fewer human decisions. It means clearer human decision points.</p>
+
+              <p>The workflow looked faster than anything the team had used before.</p>
+
+              <p>An AI assistant helped refine the ticket. Another assistant suggested an implementation plan. A coding agent changed the files. A test agent generated unit tests. A documentation agent updated the README. A review assistant summarized the pull request and pointed out a few possible issues.</p>
+
+              <p>By the end of the day, the team had a complete-looking change.</p>
+
+              <p>But a simple question made everyone pause:</p>
+
+              <p>Who approved the important decisions?</p>
+
+              <p>Who confirmed that the requirement was the right one? Who accepted the architecture trade-off? Who checked whether the generated tests proved the behavior that mattered? Who reviewed the security and compliance risk? Who decided the rollout was safe? Who owned the production impact if the change went wrong?</p>
+
+              <p>The AI tools had produced artifacts.</p>
+
+              <p>The team still needed humans to make decisions.</p>
+
+              <p>That is the role of human review gates in AI-assisted delivery.</p>
+
+              <p>A review gate is not a meeting for its own sake. It is not a rubber stamp. It is not a way to slow down every change. A useful review gate is a clear decision point where a human accepts, rejects, redirects, or escalates the work based on context, evidence, and risk.</p>
+
+              <p>This is different from an automated check. A test, linter, scanner, or CI job can provide feedback. A human review gate assigns judgment.</p>
+
+              <p>AI can draft code, tests, documentation, comments, plans, and pull requests. It can summarize logs, suggest fixes, compare a diff against acceptance criteria, and prepare release notes.</p>
+
+              <p>But humans remain responsible for intent, risk, architecture, security, compliance, production readiness, and accountability.</p>
+
+              <h2>Why review gates matter more with AI</h2>
+
+              <p>AI lowers the cost of producing software artifacts.</p>
+
+              <p>That is useful. It can reduce blank-page effort, speed up routine changes, generate test candidates, and help reviewers see a change from multiple angles.</p>
+
+              <p>But faster artifact production can blur decision ownership.</p>
+
+              <p>When an assistant drafts requirements, the text may look complete before the team has agreed on the real problem. When an agent proposes a design, the diagram may look clean before anyone has accepted the trade-offs. When generated code compiles, the team may treat implementation as further along than the thinking behind it. When generated tests pass, the team may assume validation is stronger than it is.</p>
+
+              <p>This does not mean AI is the problem.</p>
+
+              <p>It means the workflow needs clearer control points.</p>
+
+              <p>In traditional delivery, many decision points are implicit. A senior engineer pushes back in planning. An architect questions an integration. A security reviewer notices a logging risk. An on-call engineer asks how rollback will work. A release owner delays deployment because monitoring is weak.</p>
+
+              <p>AI-assisted delivery makes these decision points easier to skip because the artifacts arrive sooner and look polished.</p>
+
+              <p>Human review gates make the decisions explicit.</p>
+
+              <h2>Gate 1: Requirements and intent</h2>
+
+              <p>The first gate is not code.</p>
+
+              <p>It is intent.</p>
+
+              <p>Before AI starts producing implementation artifacts, someone needs to approve what problem the team is solving.</p>
+
+              <p>At this gate, humans should check whether the user or business problem is clear, whether important business rules are visible, whether acceptance criteria are specific, whether non-goals are stated, and whether open questions remain.</p>
+
+              <p>An AI assistant can help refine a ticket. It can propose acceptance criteria, identify missing business rules, and suggest edge cases. That is useful.</p>
+
+              <p>But AI should not silently decide what the business wants.</p>
+
+              <p>If the requirement is vague, the assistant will often fill the gap. It may produce a convincing version of the requirement that nobody actually approved.</p>
+
+              <p>The human decision at this gate is simple:</p>
+
+              <p>Do we understand the change well enough to design or implement it?</p>
+
+              <p>If the answer is no, the right action is not better code generation. It is clarification.</p>
+
+              <h2>Gate 2: Design and architecture</h2>
+
+              <p>The next gate is design.</p>
+
+              <p>This matters when the change affects module boundaries, data flow, public APIs, integration behavior, storage, security, observability, or operational support.</p>
+
+              <p>AI can produce design options quickly. It can compare patterns, draft ADRs, outline interfaces, and identify impacted files. But a design option is not an accepted design.</p>
+
+              <p>Humans should approve system boundaries, data ownership, API contracts, dependency direction, rejected alternatives, operational constraints, security and privacy implications, migration concerns, and backward compatibility risks.</p>
+
+              <p>This does not mean every small change needs architecture review.</p>
+
+              <p>It means the workflow should be clear about when a design decision has been made and who made it.</p>
+
+              <p>For a small UI text change, this gate may be unnecessary. For a payment workflow, authorization rule, data migration, or shared platform change, skipping it is risky.</p>
+
+              <p>The human decision at this gate is:</p>
+
+              <p>Is this the right design direction, and are the trade-offs acceptable?</p>
+
+              <h2>Gate 3: Implementation</h2>
+
+              <p>The implementation gate is the one teams already recognize most easily.</p>
+
+              <p>It is the code review gate.</p>
+
+              <p>But in AI-assisted delivery, implementation review is not just checking whether the code is readable. The reviewer should also check whether the implementation stayed inside the approved scope.</p>
+
+              <p>Google's public <a href="https://google.github.io/eng-practices/review/reviewer/looking-for.html" target="_blank" rel="noopener noreferrer">code review guidance</a> is a useful reminder that review covers design, functionality, complexity, tests, naming, comments, style, and documentation. AI-assisted implementation review needs all of that, plus attention to generated assumptions and scope drift.</p>
+
+              <p>AI agents can be very helpful. They can also be too helpful. A small bug fix can become a refactor. A validation change can touch shared behavior. A documentation update can invent behavior. A test failure can lead an agent to weaken an assertion instead of fixing the underlying issue.</p>
+
+              <p>At the implementation gate, humans should ask whether the code matches the approved intent, whether the agent changed only what was needed, whether architecture boundaries are preserved, whether generated summaries are accurate, and whether the diff is reviewable.</p>
+
+              <p>AI review tools can help. They can summarize the diff, identify broad changes, compare code against acceptance criteria, and suggest missing tests.</p>
+
+              <p>But an AI review is not approval.</p>
+
+              <p>The human decision at this gate is:</p>
+
+              <p>Is this implementation correct, maintainable, and appropriately scoped?</p>
+
+              <h2>Gate 4: Testing and validation</h2>
+
+              <p>Testing is another place where AI can create false confidence.</p>
+
+              <p>Generated tests may look structured. They may increase coverage. They may pass.</p>
+
+              <p>That does not mean they prove the behavior that matters.</p>
+
+              <p>At the testing gate, humans decide whether the validation path is strong enough for the risk.</p>
+
+              <p>Do the tests cover the intended behavior? Do they cover edge cases and failure paths? Do they check exact outcomes or vague success? Do they protect against the old bug? Do they cover business rules and security-sensitive behavior? Were the right tests actually run?</p>
+
+              <p>The key distinction is simple:</p>
+
+              <p>AI can generate test code.</p>
+
+              <p>Humans must decide whether the tests provide enough confidence.</p>
+
+              <p>For low-risk changes, unit tests and CI may be enough. For higher-risk changes, the validation path may need contract tests, integration tests, security tests, performance checks, migration rehearsal, or manual domain review.</p>
+
+              <p>The human decision at this gate is:</p>
+
+              <p>Do we have enough evidence that the change behaves correctly?</p>
+
+              <h2>Gate 5: Security, compliance, and policy</h2>
+
+              <p>Some changes need a dedicated risk gate.</p>
+
+              <p>This is especially true for authentication, authorization, customer data, payments, privacy, audit logs, data retention, encryption, dependencies, infrastructure, and compliance-sensitive workflows.</p>
+
+              <p>AI can help identify security concerns. It can scan for obvious issues, summarize data flow, check for missing validation, and draft audit notes. But it should not accept security or compliance risk for the organization.</p>
+
+              <p>At this gate, humans should approve authentication and authorization behavior, sensitive data handling, logging and audit requirements, dependency or license concerns, privacy and retention rules, compliance obligations, and policy exceptions.</p>
+
+              <p>NIST's <a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10" target="_blank" rel="noopener noreferrer">AI Risk Management Framework</a> is useful here because it frames AI risk management around context, governance, mapping, measurement, and management. The practical point for software teams is not to add ceremony everywhere. It is to make risk decisions explicit where they matter.</p>
+
+              <p>The human decision at this gate is:</p>
+
+              <p>Are the security, privacy, compliance, and policy risks understood and acceptable?</p>
+
+              <h2>Gate 6: Release readiness</h2>
+
+              <p>Passing tests does not mean production readiness.</p>
+
+              <p>This is one of the easiest mistakes in AI-assisted delivery. Because AI can generate code and tests quickly, teams may feel the change is ready as soon as CI passes.</p>
+
+              <p>But production has more questions.</p>
+
+              <p>Is the change backward compatible? Is rollout staged or all at once? Is there a feature flag? Is rollback possible? Are dashboards and alerts ready? Are support teams aware? Are migration steps safe? Who is watching after release?</p>
+
+              <p>AI can draft release notes, generate rollout plans, suggest monitoring, and prepare support documentation. That is useful preparation.</p>
+
+              <p>But the release decision belongs to humans.</p>
+
+              <p>For a small internal change, release approval may be lightweight. For a migration, payment change, customer notification flow, or security-sensitive release, it should be explicit.</p>
+
+              <p>The human decision at this gate is:</p>
+
+              <p>Are we ready to put this change in front of production reality?</p>
+
+              <h2>Gate 7: Operations and learning</h2>
+
+              <p>The last gate happens after release.</p>
+
+              <p>AI-assisted delivery should not end when the pull request merges.</p>
+
+              <p>Humans still need to inspect production signals, incidents, support feedback, and follow-up work. If the change caused confusion, missed a rule, produced weak tests, or relied on stale documentation, the team should feed that learning back into the system.</p>
+
+              <p>At the operations gate, humans should ask whether the change behaved as expected, whether monitoring caught the right signals, whether support had the right information, whether an incident exposed missing context, and whether a runbook, test, ADR, business rule, or repository instruction should be updated.</p>
+
+              <p>AI can summarize incidents, cluster logs, draft follow-up tasks, and propose documentation updates.</p>
+
+              <p>Humans decide what the organization learned.</p>
+
+              <p>The human decision at this gate is:</p>
+
+              <p>What should change in our system so the next delivery is safer?</p>
+
+              <h2>Automated checks are not review gates</h2>
+
+              <figure class="article-figure">
+                <img src="human-review-gates-vs-automated-checks.png" alt="A comparison showing automated checks such as tests, lint, CI, and scans beside human gates for intent, design, risk, release, and ownership.">
+              </figure>
+
+              <p>Automated checks matter.</p>
+
+              <p>Tests, linters, type checks, dependency scans, secret scans, policy checks, branch protection, and required status checks all make delivery safer.</p>
+
+              <p>GitHub features such as <a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches" target="_blank" rel="noopener noreferrer">protected branches</a>, <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners" target="_blank" rel="noopener noreferrer">CODEOWNERS</a>, and <a href="https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository" target="_blank" rel="noopener noreferrer">pull request templates</a> are useful because they help route work through the right checks and people.</p>
+
+              <p>But automated checks are not the same as human review gates.</p>
+
+              <p>Checks answer repeatable questions:</p>
+
+              <ul>
+                <li>Does the code compile?</li>
+                <li>Do tests pass?</li>
+                <li>Is formatting consistent?</li>
+                <li>Did a secret appear?</li>
+                <li>Did coverage drop?</li>
+                <li>Did a required owner approve?</li>
+              </ul>
+
+              <p>Human gates answer judgment questions:</p>
+
+              <ul>
+                <li>Is this the right problem to solve?</li>
+                <li>Is this design acceptable?</li>
+                <li>Is this risk worth taking?</li>
+                <li>Are the tests meaningful enough?</li>
+                <li>Is the rollout safe?</li>
+                <li>Who owns the remaining uncertainty?</li>
+              </ul>
+
+              <p>Both are needed.</p>
+
+              <p>Checks provide feedback. Gates assign judgment.</p>
+
+              <h2>Scale gates with risk</h2>
+
+              <p>The danger is turning this into a heavy process for every change.</p>
+
+              <p>That would be a mistake.</p>
+
+              <p>A typo fix should not need a design gate, security gate, release gate, and operations review. A low-risk internal cleanup should stay lightweight.</p>
+
+              <p>The gate structure should scale with consequence.</p>
+
+              <p>Ask:</p>
+
+              <p>What happens if this change is wrong?</p>
+
+              <p>If the answer is minor inconvenience, keep the gates light. If the answer involves money movement, customer data, authorization, compliance, production reliability, irreversible operations, or customer communication, strengthen the gates.</p>
+
+              <p>Useful AI adoption is not about adding the same process everywhere.</p>
+
+              <p>It is about making the right human decisions visible at the right time.</p>
+
+              <h2>A simple operating model</h2>
+
+              <figure class="article-figure">
+                <img src="human-review-gates-gate-to-outcome-flowchart.png" alt="A four-part operating model for human review gates: gate, owner, evidence, and outcome.">
+              </figure>
+
+              <p>A practical model has four parts.</p>
+
+              <p>First, name the gate.</p>
+
+              <p>Do not hide approval inside vague phrases like &quot;looks good.&quot; Say what is being approved: requirement, design, implementation, validation, security risk, release readiness, or operational follow-up.</p>
+
+              <p>Second, name the human owner.</p>
+
+              <p>The owner may be a product person, tech lead, architect, security reviewer, release owner, on-call engineer, or domain expert. The point is not hierarchy. The point is accountability.</p>
+
+              <p>Third, name the evidence.</p>
+
+              <p>What does the human use to decide? Ticket, acceptance criteria, ADR, diff, test results, security review, rollout plan, dashboard, incident note, or runbook?</p>
+
+              <p>Fourth, name the outcome.</p>
+
+              <p>Approve, reject, revise, escalate, or defer.</p>
+
+              <p>This model is simple enough to use without creating a governance program.</p>
+
+              <p>It also creates a useful record. Future engineers can understand what was approved, by whom, based on what evidence, and with what remaining risk.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, treat human review gates as decision points. AI can draft artifacts, but humans approve intent, design, risk, validation, release readiness, and production ownership.</p>
+
+              <p>Second, separate automated checks from human judgment. Checks are useful feedback. They do not decide whether a risk is acceptable.</p>
+
+              <p>Third, scale gates with consequence. Keep low-risk changes light. Make high-risk changes explicit, reviewable, and owned.</p>
+
+              <h2>Where does a human say yes?</h2>
+
+              <p>AI-assisted delivery can make software teams faster.</p>
+
+              <p>But speed is not the same as control.</p>
+
+              <p>If AI drafts the requirement, proposes the design, writes the code, generates the tests, updates the docs, and prepares the pull request, the team still needs to know where humans make decisions.</p>
+
+              <p>Where does a human say yes to the requirement?</p>
+
+              <p>Where does a human say yes to the design?</p>
+
+              <p>Where does a human say yes to the tests?</p>
+
+              <p>Where does a human say yes to security risk?</p>
+
+              <p>Where does a human say yes to release readiness?</p>
+
+              <p>Where does a human say yes to production ownership?</p>
+
+              <p>Those questions are not bureaucracy.</p>
+
+              <p>They are engineering discipline.</p>
+
+              <p>Useful AI adoption does not mean fewer human decisions.</p>
+
+              <p>It means clearer human decision points.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-feedback-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <section
+              class="feedback-widget"
+              data-feedback-widget
+              data-feedback-target-type="ARTICLE"
+              data-feedback-target-id="human-review-gates-ai-assisted-delivery"
+              data-feedback-source-label="Article"
+              aria-label="Article feedback"
+            ></section>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-path-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <nav class="article-path-nav" aria-label="Article reading path">
+              <p class="article-path-label">Reading path</p>
+              <h2 class="article-path-title">Review and Governance</h2>
+              <p class="article-path-desc">This article belongs to the Review and Governance path: how teams review AI-assisted work, evaluate evidence, scale scrutiny with risk, and keep human accountability visible.</p>
+              <div class="article-path-links">
+                <a href="../#cluster-review-governance">Browse this path</a>
+                <a href="../ai-code-review-is-not-just-code-review/">Related: AI Code Review Is Not Just Code Review</a>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../ai-code-review-is-not-just-code-review/" class="article-related-item">
+                  <span class="article-related-item-title">AI Code Review Is Not Just Code Review</span>
+                  <span class="article-related-item-summary">Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../stronger-evidence-chains-for-ai-assisted-engineering-changes/" class="article-related-item">
+                  <span class="article-related-item-title">Stronger Evidence Chains for AI-Assisted Engineering Changes</span>
+                  <span class="article-related-item-summary">As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../why-reviewing-ai-generated-work-is-a-different-skill/" class="article-related-item">
+                  <span class="article-related-item-title">Why Reviewing AI-Generated Work Is a Different Skill</span>
+                  <span class="article-related-item-summary">AI can generate polished software artifacts quickly, but engineers still need to uncover assumptions, missing context, and hidden risks.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+  <script src="../../js/feedback-widget.js"></script>
+</body>
+</html>
