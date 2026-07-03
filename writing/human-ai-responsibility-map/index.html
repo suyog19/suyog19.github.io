@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical responsibility map for AI-assisted engineering: what AI can assist with, what humans must own, and how teams scale review with risk." />
+  <title>The Human + AI Responsibility Map | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/human-ai-responsibility-map/" />
+  <meta property="og:title" content="The Human + AI Responsibility Map | Suyog Joshi" />
+  <meta property="og:description" content="A practical responsibility map for AI-assisted engineering: what AI can assist with, what humans must own, and how teams scale review with risk." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/human-ai-responsibility-map/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/human-ai-responsibility-map/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Human + AI Responsibility Map | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical responsibility map for AI-assisted engineering: what AI can assist with, what humans must own, and how teams scale review with risk." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/human-ai-responsibility-map/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">Review and Governance</p>
+            <h1 class="article-page-title">The Human + AI Responsibility Map</h1>
+            <p class="article-page-subtitle">Reliable AI-assisted engineering requires responsibility boundaries.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 03 Jul 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure">
+                <img src="cover.png" alt="AI-assisted engineering artifacts moving from assist to shared work to human-owned decisions for intent, architecture, risk, and approval.">
+              </figure>
+
+              <p>AI can help with many engineering tasks. That does not mean AI owns those tasks.</p>
+
+              <p>A team starts using AI across the delivery workflow.</p>
+
+              <p>One assistant drafts user stories from meeting notes. Another generates code from accepted tasks. A coding agent refactors a service. A test assistant creates unit tests. A documentation assistant updates release notes. A review assistant summarizes the pull request. An incident assistant summarizes logs after deployment.</p>
+
+              <p>The team moves faster.</p>
+
+              <p>Then confusion appears.</p>
+
+              <p>Who owns the business intent in the user story? Who decides whether the refactor is safe? Who approves the architecture trade-off? Who verifies that the generated tests prove the right behavior? Who accepts the security risk? Who decides whether the release is ready?</p>
+
+              <p>The answer cannot be "the AI."</p>
+
+              <p>The tool can participate in the work, but it cannot own the responsibility.</p>
+
+              <p>That is why teams need a Human + AI responsibility map.</p>
+
+              <p>The goal is not to keep AI away from important work. The goal is to be explicit about what AI can do, what humans must own, and where humans and AI can share the work safely.</p>
+
+              <p>Reliable AI-assisted engineering requires responsibility boundaries.</p>
+
+              <h2>Two bad extremes</h2>
+
+              <p>Teams usually fall into one of two bad mental models.</p>
+
+              <p>The first is treating AI like a junior employee.</p>
+
+              <p>This sounds reasonable at first. Junior engineers need tasks, guidance, review, and feedback. AI needs those too. But the analogy breaks at accountability.</p>
+
+              <p>A junior engineer is a person inside the organization. They can learn the history of a system, ask clarifying questions, understand consequences over time, and become accountable within a human team. AI can simulate some of those behaviors, but it does not own production outcomes. It does not carry responsibility during an incident. It does not explain a decision to a customer, auditor, regulator, or executive.</p>
+
+              <p>The second bad model is treating AI as harmless autocomplete.</p>
+
+              <p>That also misses reality.</p>
+
+              <p>Modern AI tools do more than complete a line. They can inspect repositories, edit files, run tests, generate pull requests, summarize incidents, propose architecture options, and influence decisions. Once a tool can shape work across the delivery lifecycle, it is not harmless decoration.</p>
+
+              <p>This is already visible in normal developer workflows. Coding agents can take an issue, inspect the repository, create a plan, change files on a branch, and prepare a pull request for review. GitHub's <a href="https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/" target="_blank" rel="noopener noreferrer">Copilot coding agent announcement</a> describes pull requests created by the agent that still require human approval before CI/CD workflows are run. Review assistants can comment on pull requests. Chat assistants can explain production behavior from logs, docs, and code.</p>
+
+              <p>That is not just typing help.</p>
+
+              <p>It is participation in delivery.</p>
+
+              <p>The useful view sits between those extremes.</p>
+
+              <p>AI is a capable engineering aid that can transform information, generate artifacts, analyze inputs, and accelerate execution.</p>
+
+              <p>Humans remain responsible for direction, judgment, accountability, and approval.</p>
+
+              <p>NIST's <a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10" target="_blank" rel="noopener noreferrer">AI Risk Management Framework</a> is useful here because it keeps governance, risk, accountability, and context connected. Its core functions are Govern, Map, Measure, and Manage. For software teams, the practical version is simple: understand where AI is being used, measure the risk, manage the workflow, and keep human responsibility explicit.</p>
+
+              <h2>The three responsibility zones</h2>
+
+              <p>A practical responsibility map has three zones.</p>
+
+              <p>Zone 1: AI can assist.</p>
+
+              <p>This is work where AI drafts, summarizes, transforms, explains, or generates candidate artifacts. Humans provide context and check the result.</p>
+
+              <p>Zone 2: Human + AI can share.</p>
+
+              <p>This is work where AI can propose, analyze, or prepare options, but humans constrain the task, validate the output, and accept or reject the result.</p>
+
+              <p>Zone 3: Humans must own.</p>
+
+              <p>This is work involving intent, accountability, trade-offs, architectural judgment, business correctness, risk acceptance, and final approval.</p>
+
+              <p>The boundaries are not based on whether AI is technically able to produce an output. AI can produce many outputs. The better question is whether the task requires accountability, business judgment, trade-offs, or risk acceptance.</p>
+
+              <p>The more a task looks like transformation or execution, the more AI can help directly.</p>
+
+              <p>The more a task looks like judgment or accountability, the more humans must own it.</p>
+
+              <p>Most real engineering work sits somewhere in the middle.</p>
+
+              <h2>Zone 1: AI can assist</h2>
+
+              <p>AI is strongest when the task is well-bounded, pattern-based, and easy to verify.</p>
+
+              <p>Good examples include:</p>
+
+              <ul>
+                <li>drafting boilerplate code</li>
+                <li>summarizing meeting notes</li>
+                <li>generating release note drafts</li>
+                <li>creating first-pass documentation</li>
+                <li>converting examples into test cases</li>
+                <li>explaining existing code</li>
+                <li>suggesting refactor candidates</li>
+                <li>summarizing logs or errors</li>
+                <li>generating small helper functions</li>
+                <li>drafting pull request summaries</li>
+              </ul>
+
+              <p>DORA's guidance on <a href="https://dora.dev/capabilities/ai-accessible-internal-data/" target="_blank" rel="noopener noreferrer">AI-accessible internal data</a> points to an important condition: AI tools are more useful when they can work with relevant internal context. Even in the assist zone, better context produces better output.</p>
+
+              <p>These tasks still need review, but they do not usually require AI to make final business or architecture decisions.</p>
+
+              <p>For example, asking AI to summarize a long incident timeline can save time. The human still validates the summary. Asking AI to draft release notes from merged pull requests can reduce writing effort. The human still checks accuracy and impact. Asking AI to generate a first pass at unit tests can be useful. The human still checks whether the tests matter.</p>
+
+              <p>In this zone, AI is mostly a drafting, synthesis, and execution aid.</p>
+
+              <p>The human responsibility is to provide context, check the output, and decide whether it is good enough to use.</p>
+
+              <h2>Zone 2: Human + AI can share</h2>
+
+              <p>The shared zone is where most practical AI-assisted engineering happens.</p>
+
+              <p>AI can contribute meaningfully, but humans must constrain and validate the work.</p>
+
+              <p>Examples include refactoring production code, generating tests for business behavior, analyzing a bug, proposing architecture options, drafting an ADR, reviewing a pull request, producing migration steps, creating a runbook, identifying security risks, and mapping code impact for a change.</p>
+
+              <p>These tasks are valuable because AI can bring speed, breadth, and pattern recognition. It can find candidates, draft options, compare alternatives, and expose issues.</p>
+
+              <p>But the outputs are not self-approving.</p>
+
+              <p>A refactor may look cleaner but change behavior. A test plan may look complete but miss the risky case. A bug analysis may sound plausible but point to the wrong cause. An ADR draft may describe trade-offs but miss organizational constraints. A security review may catch common issues but miss domain-specific risk.</p>
+
+              <p>In the shared zone, keep the responsibility pattern simple:</p>
+
+              <p>AI proposes. Humans decide.</p>
+
+              <p>AI drafts. Humans validate.</p>
+
+              <p>AI analyzes. Humans confirm.</p>
+
+              <p>AI accelerates the work, but humans own acceptance of the result.</p>
+
+              <p>This is where clear handoffs matter. If AI drafts a design option, the handoff should include assumptions, constraints, alternatives, and open questions. If AI generates tests, the handoff should explain what behavior each test proves. If AI reviews a PR, the handoff should separate blocking issues, suggestions, assumptions, and unresolved questions.</p>
+
+              <p>Shared work fails when teams blur contribution and approval.</p>
+
+              <p>This is also how AI review tools should be treated. GitHub's responsible-use guidance says Copilot code review should <a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener noreferrer">supplement human reviews, not replace them</a>. Its product documentation also says Copilot reviews do not count as required approvals and do not block merges. That distinction matters. AI review can widen the review surface. It can spot common defects, summarize changes, and ask useful questions. But the human reviewer still owns whether the change is correct, maintainable, safe, and ready to merge.</p>
+
+              <h2>Zone 3: Humans must own</h2>
+
+              <p>Some responsibilities should remain clearly human-owned.</p>
+
+              <p>AI can assist with analysis, but it should not own the decision.</p>
+
+              <p>Humans must own:</p>
+
+              <ul>
+                <li>business intent</li>
+                <li>final requirements approval</li>
+                <li>architecture trade-offs</li>
+                <li>data ownership decisions</li>
+                <li>security risk acceptance</li>
+                <li>compliance interpretation and accountability</li>
+                <li>production readiness</li>
+                <li>customer impact decisions</li>
+                <li>prioritization</li>
+                <li>organizational trade-offs</li>
+                <li>incident decisions</li>
+                <li>final merge or release approval</li>
+              </ul>
+
+              <p>These responsibilities involve judgment, accountability, and real-world consequences.</p>
+
+              <p>AI can help prepare the decision. It can summarize evidence, list options, identify risks, draft documentation, or compare alternatives.</p>
+
+              <p>But a human must decide.</p>
+
+              <p>Architecture is a good example. AI can suggest patterns and trade-offs. It can draft a diagram and identify likely failure modes. But architecture decisions are rarely just technical. They involve team skill, operational maturity, budget, roadmap pressure, migration cost, compliance, and long-term ownership.</p>
+
+              <p>Business correctness is another example. AI can inspect code and tests, but it cannot decide what the business really intends when requirements conflict or when customer impact is unclear.</p>
+
+              <p>Security and compliance follow the same rule. AI can identify possible concerns. It cannot accept risk for the organization.</p>
+
+              <p>This is the line teams should not blur:</p>
+
+              <p>AI can inform decisions.</p>
+
+              <p>Humans own decisions.</p>
+
+              <h2>Responsibility should scale with risk</h2>
+
+              <p>The responsibility map is not static.</p>
+
+              <p>Risk changes the boundary.</p>
+
+              <p>For a small internal script, AI can do more with lighter review. For a customer-facing payment flow, the shared zone shrinks and human ownership expands. For authentication, authorization, data deletion, migrations, privacy, compliance, and production recovery, humans should own more of the decision path.</p>
+
+              <p>The useful question is:</p>
+
+              <p>What happens if this is wrong?</p>
+
+              <figure class="article-figure">
+                <img src="who-owns-this-if-wrong.png" alt="A responsibility question diagram asking who owns this if it is wrong, connected to story, ADR, tests, refactor, incident summary, and release note artifacts.">
+              </figure>
+
+              <p>If the consequence is low, AI can operate with more autonomy and lighter review. If the consequence is high, humans should tighten context, scope, validation, and approval.</p>
+
+              <p>This is where vague phrases like "human in the loop" are not enough.</p>
+
+              <p>Which human?</p>
+
+              <p>At what point?</p>
+
+              <p>With what evidence?</p>
+
+              <p>With what authority to stop the change?</p>
+
+              <p>Human oversight has to be designed into the workflow. Otherwise it becomes a comforting phrase, not an operating model. The <a href="https://airc.nist.gov/airmf-resources/playbook/" target="_blank" rel="noopener noreferrer">NIST AI RMF Playbook</a> is useful here because it treats governance, measurement, and management as concrete practices, not slogans.</p>
+
+              <p>This avoids two extremes.</p>
+
+              <p>One extreme is forcing heavy human process onto every generated artifact. That wastes time and trains people to ignore the process.</p>
+
+              <p>The other extreme is allowing AI-generated confidence to pass as approval. That creates risk disguised as speed.</p>
+
+              <p>The responsibility map should help teams adjust, not freeze.</p>
+
+              <h2>A practical responsibility map</h2>
+
+              <p>For each AI-assisted workflow, ask four questions.</p>
+
+              <p>First: What can AI produce?</p>
+
+              <p>This might be a draft, summary, diff, test plan, documentation update, analysis, or review report.</p>
+
+              <p>Second: What must a human decide?</p>
+
+              <p>This might be intent, architecture direction, risk acceptance, business correctness, security posture, release readiness, or final approval.</p>
+
+              <p>Third: What evidence connects the two?</p>
+
+              <p>This might be acceptance criteria, tests, ADRs, logs, diagrams, domain rules, code diffs, review notes, or rollout plans.</p>
+
+              <p>Fourth: Who owns the outcome?</p>
+
+              <p>Name the human or role. Product owner. Tech lead. Architect. Security reviewer. Release owner. On-call engineer. Engineering manager. Domain expert.</p>
+
+              <p>This does not need to be a large process.</p>
+
+              <p>It can be a short section in a story, a pull request template, an agent handoff, or a team working agreement.</p>
+
+              <p>A simple version could look like this:</p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Workflow</th>
+                    <th>AI can produce</th>
+                    <th>Human must decide</th>
+                    <th>Evidence required</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Story drafting</td>
+                    <td>Draft acceptance criteria</td>
+                    <td>Whether the intent is correct</td>
+                    <td>Product notes, domain rules, examples</td>
+                  </tr>
+                  <tr>
+                    <td>Refactoring</td>
+                    <td>Candidate diff</td>
+                    <td>Whether behavior is preserved</td>
+                    <td>Tests, code review, rollout plan</td>
+                  </tr>
+                  <tr>
+                    <td>Test generation</td>
+                    <td>Test cases</td>
+                    <td>Whether coverage matches risk</td>
+                    <td>Acceptance criteria, edge cases, failure modes</td>
+                  </tr>
+                  <tr>
+                    <td>Architecture option</td>
+                    <td>Trade-off draft</td>
+                    <td>Which trade-off the team accepts</td>
+                    <td>ADR, constraints, cost, operational impact</td>
+                  </tr>
+                  <tr>
+                    <td>Release preparation</td>
+                    <td>Summary and checklist</td>
+                    <td>Whether release is ready</td>
+                    <td>Test results, approvals, rollback plan</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p>The point is to avoid vague responsibility.</p>
+
+              <p>If AI writes the test plan, who says the test plan is enough?</p>
+
+              <p>If AI refactors the service, who says behavior is preserved?</p>
+
+              <p>If AI summarizes an incident, who says the root cause is accepted?</p>
+
+              <p>If AI drafts an ADR, who says the trade-off is real?</p>
+
+              <p>If AI prepares the release note, who says the customer impact is accurate?</p>
+
+              <p>Those are responsibility questions.</p>
+
+              <p>They should have human answers.</p>
+
+              <h2>What this changes in practice</h2>
+
+              <p>The responsibility map changes how teams use AI.</p>
+
+              <p>Prompts become clearer because the team knows whether it is asking AI to draft, analyze, transform, or decide. In most serious engineering workflows, "decide" should not be delegated.</p>
+
+              <p>Reviews become sharper because reviewers know what human decision they are validating. They are not only checking the artifact. They are checking whether the right responsibility boundary was respected.</p>
+
+              <p>Agent workflows become safer because agents have roles. A coding agent implements. A review agent critiques. A test agent proposes cases. A documentation agent explains approved behavior. A human owner decides.</p>
+
+              <p>Handoffs become more useful because each AI output includes assumptions, evidence, limits, and open questions. This makes the human decision easier.</p>
+
+              <p>Governance becomes less abstract. Instead of saying "keep humans in the loop," the team can say exactly where humans own intent, risk, architecture, validation, and approval.</p>
+
+              <p>Google's public <a href="https://google.github.io/eng-practices/review/reviewer/looking-for.html" target="_blank" rel="noopener noreferrer">code review guidance</a> is useful here because it treats review as more than style checking. In AI-assisted work, review also checks whether the responsibility boundary was respected: did AI assist, did humans validate, and did the right person approve?</p>
+
+              <p>DORA's <a href="https://dora.dev/dora-report-2025/" target="_blank" rel="noopener noreferrer">2025 AI-assisted software development research</a> makes a similar practical point from another angle: AI does not improve delivery in isolation. It amplifies the system around it. If a team has clear ownership, good internal knowledge, useful tests, and healthy review practices, AI has better material to work with. If the team has unclear requirements, weak feedback loops, stale documentation, and vague approvals, AI can amplify that confusion too.</p>
+
+              <p>That is a better operating model.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, separate participation from ownership. AI can contribute to many tasks, but contribution is not accountability.</p>
+
+              <p>Second, use the three-zone map: AI can assist, Human + AI can share, Humans must own.</p>
+
+              <p>Third, adjust the boundary by risk. The higher the consequence, the more explicit human ownership, evidence, and approval should be.</p>
+
+              <h2>The question that clarifies everything</h2>
+
+              <p>The next time AI participates in an engineering task, ask one question:</p>
+
+              <p>Who owns this decision if it is wrong?</p>
+
+              <p>If AI drafts a user story, who owns the business intent?</p>
+
+              <p>If AI writes the tests, who owns confidence in the behavior?</p>
+
+              <p>If AI refactors the code, who owns the safety of the change?</p>
+
+              <p>If AI proposes an architecture, who owns the trade-off?</p>
+
+              <p>If AI summarizes an incident, who owns the conclusion?</p>
+
+              <p>If AI prepares a release note, who owns the customer impact?</p>
+
+              <p>AI can help with all of these.</p>
+
+              <p>But it cannot be accountable for them.</p>
+
+              <p>Reliable AI-assisted engineering is not about pretending AI is a junior employee. It is also not about dismissing it as autocomplete.</p>
+
+              <p>It is about designing clear responsibility boundaries so humans and AI can work together without confusing speed with ownership.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-feedback-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <section
+              class="feedback-widget"
+              data-feedback-widget
+              data-feedback-target-type="ARTICLE"
+              data-feedback-target-id="human-ai-responsibility-map"
+              data-feedback-source-label="Article"
+              aria-label="Article feedback"
+            ></section>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-path-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <nav class="article-path-nav" aria-label="Article reading path">
+              <p class="article-path-label">Reading path</p>
+              <h2 class="article-path-title">Review and Governance</h2>
+              <p class="article-path-desc">This article belongs to the Review and Governance path: how teams review AI-assisted work, evaluate evidence, scale scrutiny with risk, and keep human accountability visible.</p>
+              <div class="article-path-links">
+                <a href="../#cluster-review-governance">Browse this path</a>
+                <a href="../human-review-gates-ai-assisted-delivery/">Related: Human Review Gates in AI-Assisted Delivery</a>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../human-review-gates-ai-assisted-delivery/" class="article-related-item">
+                  <span class="article-related-item-title">Human Review Gates in AI-Assisted Delivery</span>
+                  <span class="article-related-item-summary">Useful AI adoption does not mean fewer human decisions. It means clearer human decision points.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../ai-code-review-is-not-just-code-review/" class="article-related-item">
+                  <span class="article-related-item-title">AI Code Review Is Not Just Code Review</span>
+                  <span class="article-related-item-summary">Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+  <script src="../../js/feedback-widget.js"></script>
+</body>
+</html>
