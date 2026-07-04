@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A practical agent risk register for defining AI agent permissions, scope, evidence, review, blast radius, rollback, and ownership." />
+  <title>The Agent Risk Register: What to Check Before Letting AI Act | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/writing/agent-risk-register/" />
+  <meta property="og:title" content="The Agent Risk Register: What to Check Before Letting AI Act | Suyog Joshi" />
+  <meta property="og:description" content="A practical agent risk register for defining AI agent permissions, scope, evidence, review, blast radius, rollback, and ownership." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://suyogjoshi.com/writing/agent-risk-register/" />
+  <meta property="og:image" content="https://suyogjoshi.com/writing/agent-risk-register/cover.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The Agent Risk Register: What to Check Before Letting AI Act | Suyog Joshi" />
+  <meta name="twitter:description" content="A practical agent risk register for defining AI agent permissions, scope, evidence, review, blast radius, rollback, and ownership." />
+  <meta name="twitter:image" content="https://suyogjoshi.com/writing/agent-risk-register/cover.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H');
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+      <nav class="nav" id="nav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
+          <li><a href="../../systems/" class="nav-link">Systems</a></li>
+          <li><a href="../../about/" class="nav-link">About</a></li>
+          <li><a href="../../contact/" class="nav-link">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article>
+
+      <div class="article-page-header">
+        <div class="container">
+          <div class="article-reading-col">
+            <a href="../" class="article-back-link">&larr; Back to Writing</a>
+            <p class="article-tag">Review and Governance</p>
+            <h1 class="article-page-title">The Agent Risk Register: What to Check Before Letting AI Act</h1>
+            <p class="article-page-subtitle">Before letting an AI agent act, define what it can touch, what it cannot touch, and who remains accountable.</p>
+            <div class="article-page-meta" aria-label="Article metadata">
+              <span><strong>Author:</strong> Suyog Joshi</span>
+              <span><strong>Published On:</strong> 04 Jul 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-body-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <div class="article-body">
+              <figure class="article-figure">
+                <img src="cover.png" alt="AI agent permissions diagram showing allowed read, write, tests, and pull request actions while secrets, production data, protected branches, deploy, and CI/CD changes remain restricted behind human ownership.">
+              </figure>
+
+
+
+              <p>The demo goes well.</p>
+
+              <p>An AI agent picks up a small issue, reads the repository, changes the right files, runs tests, and opens a pull request. The diff is clean. The summary is useful. The team can immediately see the appeal.</p>
+
+              <p>Then someone asks the better question:</p>
+
+              <p>What else is this agent allowed to do?</p>
+
+              <p>That is where the real risk discussion begins.</p>
+
+              <p>An assistant that suggests code is one thing. You can accept the suggestion, reject it, or rewrite it.</p>
+
+              <p>An agent that can act is different.</p>
+
+              <p>It may read files, inspect history, edit code, run commands, create a branch, update tests, open a pull request, or interact with workflow tools. In some environments, it may also touch infrastructure configuration, deployment scripts, secrets-adjacent files, or production-adjacent workflows.</p>
+
+              <p>At that point, the question is no longer only:</p>
+
+              <p>Is the generated output good?</p>
+
+              <p>The better question is:</p>
+
+              <p>What is this agent allowed to touch?</p>
+
+              <p>Before teams let AI agents act inside delivery workflows, they need a simple risk register.</p>
+
+              <p>Not a heavy compliance document.</p>
+
+              <p>A practical engineering register that says:</p>
+
+              <ul>
+                <li>what the agent can access</li>
+                <li>what the agent can change</li>
+                <li>what is off-limits</li>
+                <li>what evidence is required</li>
+                <li>who reviews the result</li>
+                <li>who remains accountable</li>
+              </ul>
+
+              <p>The purpose is not to block agent use.</p>
+
+              <p>The purpose is to make agent use safe enough to be useful.</p>
+
+              <p>Before allowing AI agents to act, teams must define what they can touch, what they cannot touch, and who remains accountable.</p>
+
+              <h2>Agents are not just better assistants</h2>
+
+              <p>The difference between an assistant and an agent is not the model name.</p>
+
+              <p>It is action.</p>
+
+              <p>A coding assistant may suggest a function. A coding agent may change five files, run tests, create a branch, and prepare a pull request.</p>
+
+              <p>A documentation assistant may draft release notes. A documentation agent may update repository docs across several folders.</p>
+
+              <p>A review assistant may comment on a diff. A review agent may inspect related files, flag risks, and request changes.</p>
+
+              <p>This is useful.</p>
+
+              <p>It also increases the blast radius.</p>
+
+              <p>OpenAI's Codex documentation describes <a href="https://developers.openai.com/codex/concepts/sandboxing" target="_blank" rel="noopener noreferrer">sandboxing</a> and <a href="https://developers.openai.com/codex/agent-approvals-security" target="_blank" rel="noopener noreferrer">agent approvals</a> as controls around file access, command execution, network access, and when the agent must ask before acting. GitHub's <a href="https://github.blog/news-insights/product-news/github-copilot-meet-the-new-coding-agent/" target="_blank" rel="noopener noreferrer">Copilot coding agent announcement</a> shows agents working through branches and pull requests.</p>
+
+              <p>These are not just chat interactions.</p>
+
+              <p>They are delivery workflow interactions.</p>
+
+              <p>That means teams need to assess the agent as part of the engineering system.</p>
+
+              <h2>The five drivers of agent risk</h2>
+
+              <p>Agent risk depends on five practical factors.</p>
+
+              <p>First: permission.</p>
+
+              <p>Can the agent read only public repository files, or can it access private code, secrets-adjacent configuration, customer data, logs, tickets, and internal documents? Can it write files? Can it run commands? Can it push branches? Can it modify workflows?</p>
+
+              <p>Second: context quality.</p>
+
+              <p>Does the agent have current architecture guidance, business rules, test expectations, ownership information, and constraints? Or is it acting from stale docs, vague tickets, and examples copied from old code?</p>
+
+              <p>Third: action scope.</p>
+
+              <p>Is the agent limited to one folder and one kind of change? Or can it roam across services, dependencies, scripts, workflow files, and infrastructure?</p>
+
+              <p>Fourth: review depth.</p>
+
+              <p>Will a human review only the final diff? Will tests run? Will security-sensitive areas require code owner approval? Will the reviewer see assumptions, touched files, test evidence, and remaining risk?</p>
+
+              <p>Fifth: blast radius.</p>
+
+              <p>What happens if the agent is wrong? A typo in internal documentation is one thing. A change to authentication, payment limits, data deletion, deployment workflows, or incident automation is another.</p>
+
+              <p>These five factors matter more than a generic statement like &quot;we use agents.&quot;</p>
+
+              <p>The same agent can be low-risk in one workflow and high-risk in another.</p>
+
+              <h2>The agent risk register</h2>
+
+              <p>A useful register can be small.</p>
+
+              <p>It should not become a document nobody updates.</p>
+
+              <p>It should be close to the workflow where the agent is enabled: repository instructions, team working agreements, platform documentation, PR templates, or an internal developer portal.</p>
+
+              <p>Here is a practical version.</p>
+
+              <figure class="article-figure">
+                <img src="agent-risk-register-ui-mockup.png" alt="Agent risk register table showing risk areas, likelihood, impact, controls in place, status, and notes for AI agent workflows.">
+              </figure>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Risk area</th>
+                    <th>What to check</th>
+                    <th>Safer default</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Data access</td>
+                    <td>What code, docs, tickets, logs, and customer data can the agent read?</td>
+                    <td>Start with least privilege and exclude sensitive data unless clearly needed.</td>
+                  </tr>
+                  <tr>
+                    <td>Secrets</td>
+                    <td>Can the agent read secrets, tokens, env files, credentials, or logs containing secrets?</td>
+                    <td>Do not expose secrets. Use secret scanning and redaction.</td>
+                  </tr>
+                  <tr>
+                    <td>Code writes</td>
+                    <td>Which files can the agent edit?</td>
+                    <td>Limit write access to the task scope. Keep shared libraries and sensitive areas gated.</td>
+                  </tr>
+                  <tr>
+                    <td>Branch creation</td>
+                    <td>Can the agent create branches or commits?</td>
+                    <td>Allow branches before allowing merges. Require human review before protected branches.</td>
+                  </tr>
+                  <tr>
+                    <td>PR automation</td>
+                    <td>Can the agent open, update, or summarize PRs?</td>
+                    <td>Allow PR creation, but require human approval and clear evidence.</td>
+                  </tr>
+                  <tr>
+                    <td>Workflow updates</td>
+                    <td>Can the agent modify CI, actions, deployment scripts, or policy files?</td>
+                    <td>Treat workflow changes as high-risk and require owner review.</td>
+                  </tr>
+                  <tr>
+                    <td>Dependencies</td>
+                    <td>Can the agent update packages or lockfiles?</td>
+                    <td>Require dependency checks, security scanning, and reviewer approval.</td>
+                  </tr>
+                  <tr>
+                    <td>Production impact</td>
+                    <td>Could the change affect live users, data, auth, billing, or operations?</td>
+                    <td>Add stronger review, test evidence, rollout, and monitoring.</td>
+                  </tr>
+                  <tr>
+                    <td>Security exposure</td>
+                    <td>Could the change affect auth, authorization, encryption, input handling, or secrets?</td>
+                    <td>Require security review or code owner approval.</td>
+                  </tr>
+                  <tr>
+                    <td>Rollback readiness</td>
+                    <td>Is there a way to detect and reverse a bad change?</td>
+                    <td>Require rollback notes for production-adjacent changes.</td>
+                  </tr>
+                  <tr>
+                    <td>Ownership</td>
+                    <td>Who owns the agent's output and final decision?</td>
+                    <td>Name a human owner before the agent acts.</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p>This is not meant to stop agents from being useful.</p>
+
+              <p>It is meant to make their usefulness safer.</p>
+
+              <h2>Data access comes first</h2>
+
+              <p>Many teams start by asking what the agent should do.</p>
+
+              <p>Start with what it can see.</p>
+
+              <p>An agent with access to repository code has one risk profile. An agent with access to production logs, customer records, support tickets, internal strategy docs, and secrets-adjacent configuration has another.</p>
+
+              <p>OWASP's <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener noreferrer">Top 10 for LLM Applications</a> highlights risks such as sensitive information disclosure, prompt injection, insecure tool design, and excessive agency. Its <a href="https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/" target="_blank" rel="noopener noreferrer">Agentic AI guidance</a> is useful for thinking about tool access, permissions, memory, and human oversight.</p>
+
+              <p>For delivery teams, the practical lesson is direct: data exposure and tool access should be reviewed before autonomy.</p>
+
+              <p>Ask:</p>
+
+              <ul>
+                <li>Does this agent need customer data?</li>
+                <li>Does it need production logs?</li>
+                <li>Does it need secrets-adjacent files?</li>
+                <li>Does it need access to tickets or internal docs?</li>
+                <li>Can retrieved context contain instructions that conflict with repository rules?</li>
+                <li>How are sensitive outputs prevented from landing in PRs, logs, or comments?</li>
+              </ul>
+
+              <p>If the agent does not need the data, do not give it the data.</p>
+
+              <p>Least privilege is not old-fashioned.</p>
+
+              <p>It is how you make agents usable without giving them the whole house.</p>
+
+              <h2>Write access changes the risk</h2>
+
+              <p>Read-only agents are easier to reason about.</p>
+
+              <p>Write-capable agents require more care.</p>
+
+              <p>A code-writing agent can make a focused fix. It can also update unrelated files, change behavior outside the story, introduce a dependency, reformat a large area, or modify a shared helper used by other services.</p>
+
+              <p>This is why action scope matters.</p>
+
+              <p>Good agent instructions should define:</p>
+
+              <ul>
+                <li>files or folders likely in scope</li>
+                <li>areas that are off-limits</li>
+                <li>whether public APIs can change</li>
+                <li>whether dependencies can change</li>
+                <li>whether migrations are allowed</li>
+                <li>whether generated tests are required</li>
+                <li>when the agent must stop and ask</li>
+              </ul>
+
+              <p>Context helps the agent understand.</p>
+
+              <p>Constraints help the agent behave.</p>
+
+              <h2>Branches and pull requests are safer than direct changes</h2>
+
+              <p>An agent creating a branch is usually safer than an agent changing a protected branch.</p>
+
+              <p>A branch gives the team a review surface.</p>
+
+              <p>A pull request gives the team a place for evidence:</p>
+
+              <ul>
+                <li>what changed</li>
+                <li>why it changed</li>
+                <li>what the agent assumed</li>
+                <li>which files were touched</li>
+                <li>which tests were run</li>
+                <li>what risk remains</li>
+                <li>who should review</li>
+              </ul>
+
+              <p>GitHub's <a href="https://docs.github.com/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches" target="_blank" rel="noopener noreferrer">branch protection documentation</a> is a useful reminder that normal engineering controls still matter: required reviews, status checks, code owner approval, and merge restrictions.</p>
+
+              <p>The agent can prepare the work.</p>
+
+              <p>The workflow should preserve human approval.</p>
+
+              <h2>Workflow updates deserve special treatment</h2>
+
+              <p>Some files are more dangerous than they look.</p>
+
+              <p>CI configuration, GitHub Actions, deployment scripts, infrastructure code, policy files, release automation, and package publishing workflows can change what the delivery system does.</p>
+
+              <p>An agent that modifies application code is one risk.</p>
+
+              <p>An agent that modifies the pipeline that validates and deploys the code is another.</p>
+
+              <p>Treat workflow updates as high-risk by default.</p>
+
+              <p>Require owner review. Require clear explanation. Require tests where possible. Require a rollback path.</p>
+
+              <p>If the agent can change the guardrails, the guardrails need protection from the agent.</p>
+
+              <h2>Production impact changes the register</h2>
+
+              <p>The register should scale with blast radius.</p>
+
+              <figure class="article-figure">
+                <img src="agent-risk-register-blast-radius.png" alt="Blast radius map showing low, medium, and high risk AI agent actions with stronger human approval for higher-impact areas.">
+              </figure>
+
+              <p>A small documentation update may need light review.</p>
+
+              <p>A refactor inside a low-risk internal tool may need tests and a normal PR review.</p>
+
+              <p>A change to authentication, authorization, billing, customer data export, data deletion, deployment automation, incident response, or database migration needs stronger controls.</p>
+
+              <p>Ask:</p>
+
+              <p>What happens if this is wrong?</p>
+
+              <p>If the answer is &quot;a typo appears in an internal page,&quot; keep the process light.</p>
+
+              <p>If the answer is &quot;customers cannot log in,&quot; &quot;payments are calculated incorrectly,&quot; &quot;data is deleted,&quot; or &quot;rollback is unclear,&quot; slow down.</p>
+
+              <p>That is not bureaucracy.</p>
+
+              <p>That is engineering judgment.</p>
+
+              <h2>Rollback is part of permission</h2>
+
+              <p>Teams often discuss what the agent can do before they discuss how to undo it.</p>
+
+              <p>That is backwards for production-adjacent work.</p>
+
+              <p>Before an agent changes something with operational impact, the team should know:</p>
+
+              <ul>
+                <li>how the change will be tested</li>
+                <li>how it will be released</li>
+                <li>how it will be monitored</li>
+                <li>what signal indicates failure</li>
+                <li>how rollback works</li>
+                <li>who owns the rollback decision</li>
+              </ul>
+
+              <p>The NIST <a href="https://csrc.nist.gov/pubs/sp/800/218/final" target="_blank" rel="noopener noreferrer">Secure Software Development Framework</a> is useful here because it reinforces the value of secure development workflows, review, testing, and vulnerability handling. For AI agents, the same engineering logic applies: generated changes still need trustworthy validation and recovery paths.</p>
+
+              <p>An agent should not get broad action scope in an area where the team cannot recover confidently.</p>
+
+              <h2>Ownership must be explicit</h2>
+
+              <p>The most dangerous risk in an agent workflow may be unclear ownership.</p>
+
+              <p>If an agent creates a PR, who owns the change?</p>
+
+              <p>If it updates tests, who owns whether the tests prove the right behavior?</p>
+
+              <p>If it changes a deployment workflow, who owns release safety?</p>
+
+              <p>If it modifies a security-sensitive path, who owns risk acceptance?</p>
+
+              <p>The answer cannot be &quot;the agent.&quot;</p>
+
+              <p>GitHub's responsible-use guidance says Copilot code review should <a href="https://docs.github.com/en/copilot/responsible-use/agents" target="_blank" rel="noopener noreferrer">supplement human reviews, not replace them</a>. That same principle applies more broadly to agent workflows.</p>
+
+              <p>The agent can act.</p>
+
+              <p>The human team remains accountable.</p>
+
+              <p>For every enabled agent workflow, name the human owner or role:</p>
+
+              <ul>
+                <li>product owner for business intent</li>
+                <li>tech lead for design and maintainability</li>
+                <li>code owner for sensitive areas</li>
+                <li>security reviewer for security risk</li>
+                <li>release owner for production readiness</li>
+                <li>on-call owner for operational impact</li>
+              </ul>
+
+              <p>Agent output can be automated.</p>
+
+              <p>Accountability cannot.</p>
+
+              <h2>How to use the register</h2>
+
+              <p>Use the register before enabling the agent, not after something goes wrong.</p>
+
+              <p>For each workflow, fill out:</p>
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Agent purpose</td>
+                    <td>Draft implementation for bounded backlog items</td>
+                  </tr>
+                  <tr>
+                    <td>Allowed access</td>
+                    <td>Repository code, linked story, relevant docs</td>
+                  </tr>
+                  <tr>
+                    <td>Disallowed access</td>
+                    <td>Secrets, production data, unrelated internal docs</td>
+                  </tr>
+                  <tr>
+                    <td>Allowed actions</td>
+                    <td>Edit files in approved folders, run tests, open PR</td>
+                  </tr>
+                  <tr>
+                    <td>Disallowed actions</td>
+                    <td>Modify CI/CD, dependencies, public APIs, production config</td>
+                  </tr>
+                  <tr>
+                    <td>Required evidence</td>
+                    <td>Summary, assumptions, touched files, tests run, risk notes</td>
+                  </tr>
+                  <tr>
+                    <td>Required review</td>
+                    <td>Code owner approval for touched area</td>
+                  </tr>
+                  <tr>
+                    <td>Rollback path</td>
+                    <td>Feature flag or revert plan for production changes</td>
+                  </tr>
+                  <tr>
+                    <td>Human owner</td>
+                    <td>Named engineer or role</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p>Then review it periodically.</p>
+
+              <p>Agent capabilities change. Repository structure changes. Team ownership changes. Risk changes.</p>
+
+              <p>A register that is never revisited becomes knowledge debt.</p>
+
+              <h2>Three practical takeaways</h2>
+
+              <p>First, assess agents by what they can do, not only by how good their answers look.</p>
+
+              <p>Second, define permission, context, scope, review, and blast radius before enabling action.</p>
+
+              <p>Third, keep human accountability explicit. The agent may create the branch, update the code, run the tests, and open the PR. A human still owns the decision to accept the change.</p>
+
+              <p>AI agents can be useful delivery tools.</p>
+
+              <p>But they need boundaries.</p>
+
+              <p>Before letting an agent act, decide what it can touch, what it cannot touch, and who is accountable when the work reaches the real system.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-feedback-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <section
+              class="feedback-widget"
+              data-feedback-widget
+              data-feedback-target-type="ARTICLE"
+              data-feedback-target-id="agent-risk-register"
+              data-feedback-source-label="Article"
+              aria-label="Article feedback"
+            ></section>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-path-section">
+        <div class="container">
+          <div class="article-reading-col">
+            <nav class="article-path-nav" aria-label="Article reading path">
+              <p class="article-path-label">Reading path</p>
+              <h2 class="article-path-title">Review and Governance</h2>
+              <p class="article-path-desc">This article belongs to the Review and Governance path: how teams review AI-assisted work, evaluate evidence, scale scrutiny with risk, and keep human accountability visible.</p>
+              <div class="article-path-links">
+                <a href="../#cluster-review-governance">Browse this path</a>
+                <a href="../ai-governance-without-bureaucracy/">Related: AI Governance Without Bureaucracy</a>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-related">
+        <div class="container">
+          <div class="article-reading-col">
+            <h2 class="article-related-title">Continue reading</h2>
+            <ul class="article-related-list">
+              <li>
+                <a href="../ai-governance-without-bureaucracy/" class="article-related-item">
+                  <span class="article-related-item-title">AI Governance Without Bureaucracy</span>
+                  <span class="article-related-item-summary">Good AI governance should live inside normal engineering workflow.</span>
+                </a>
+              </li>
+              <li>
+                <a href="../human-ai-responsibility-map/" class="article-related-item">
+                  <span class="article-related-item-title">The Human + AI Responsibility Map</span>
+                  <span class="article-related-item-summary">AI can help with many engineering tasks. That does not mean AI owns those tasks.</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <span class="footer-brand">suyogjoshi.com</span>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../writing/">Writing</a>
+          <a href="../../systems/">Systems</a>
+          <a href="../../about/">About</a>
+          <a href="../../contact/">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+        </div>
+        <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/script.js"></script>
+  <script src="../../js/feedback-widget.js"></script>
+</body>
+</html>
