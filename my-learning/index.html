@@ -52,7 +52,17 @@
     <section id="learner-shell" class="container learner-shell" hidden>
       <p class="eyebrow">Private learner area</p>
       <h1>My Learning</h1>
-      <p>Your course and application information will appear here when those Gate 1 features are available.</p>
+      <div id="learner-current-action" class="learner-current-action"></div>
+      <div id="learner-applications" class="learner-application-list" aria-label="Current learning journeys"></div>
+      <section class="learner-profile" aria-labelledby="learner-profile-title">
+        <h2 id="learner-profile-title">Your profile</h2>
+        <dl id="learner-profile-details"></dl>
+      </section>
+      <nav class="learner-support-links" aria-label="Learner support">
+        <a href="../contact/">Support</a>
+        <a href="../privacy/">Privacy</a>
+        <a href="../contact/#grievance">Grievance process</a>
+      </nav>
     </section>
   </main>
   <script src="../js/learner-auth.js"></script>
