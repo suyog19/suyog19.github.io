@@ -11,6 +11,8 @@
     activeView: 'messages',
     messages: [],
     feedback: [],
+    trainingCourses: [],
+    trainingCohorts: [],
     feedbackSummary: null,
     selectedMessageId: '',
     selectedFeedbackId: '',
@@ -36,6 +38,23 @@
     tabs: Array.from(document.querySelectorAll('[data-admin-view]')),
     messagesPanel: document.getElementById('admin-messages-panel'),
     feedbackPanel: document.getElementById('admin-feedback-panel'),
+    trainingPanel: document.getElementById('admin-training-panel'),
+    refreshTraining: document.getElementById('admin-refresh-training'),
+    trainingCourses: document.getElementById('admin-training-courses'),
+    trainingCohorts: document.getElementById('admin-training-cohorts'),
+    cohortForm: document.getElementById('admin-cohort-form'),
+    cohortId: document.getElementById('admin-cohort-id'),
+    cohortVersion: document.getElementById('admin-cohort-version'),
+    cohortCourse: document.getElementById('admin-cohort-course'),
+    cohortLabel: document.getElementById('admin-cohort-label'),
+    cohortTimezone: document.getElementById('admin-cohort-timezone'),
+    cohortCapacity: document.getElementById('admin-cohort-capacity'),
+    cohortMinimum: document.getElementById('admin-cohort-minimum'),
+    cohortStart: document.getElementById('admin-cohort-start'),
+    cohortEnd: document.getElementById('admin-cohort-end'),
+    registrationOpen: document.getElementById('admin-registration-open'),
+    registrationClose: document.getElementById('admin-registration-close'),
+    cohortCancel: document.getElementById('admin-cohort-cancel'),
     refreshMessages: document.getElementById('admin-refresh-messages'),
     refreshFeedback: document.getElementById('admin-refresh-feedback'),
     messagesList: document.getElementById('admin-messages-list'),
@@ -591,9 +610,113 @@
     });
     els.messagesPanel.hidden = view !== 'messages';
     els.feedbackPanel.hidden = view !== 'feedback';
+    els.trainingPanel.hidden = view !== 'training';
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
     }
+    if (view === 'training' && !state.trainingCourses.length) loadTraining();
+  }
+
+  function idempotencyKey(prefix) {
+    const value = window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : Date.now() + '-' + Math.random().toString(16).slice(2);
+    return prefix + '-' + value;
+  }
+
+  async function loadTraining() {
+    setStatus('Loading training setup...', '');
+    try {
+      const courses = await adminGet('/admin/training/courses');
+      state.trainingCourses = Array.isArray(courses.items) ? courses.items : [];
+      const cohortPages = await Promise.all(state.trainingCourses.map((course) =>
+        adminGet('/admin/training/cohorts?courseId=' + encodeURIComponent(course.courseId))));
+      state.trainingCohorts = cohortPages.flatMap((page) => Array.isArray(page.items) ? page.items : []);
+      renderTraining();
+      setStatus('', '');
+    } catch (error) { handleRequestError(error); }
+  }
+
+  function renderTraining() {
+    clearNode(els.trainingCourses);
+    clearNode(els.cohortCourse);
+    state.trainingCourses.forEach((course) => {
+      const card = textEl('article', 'admin-training-card', '');
+      card.appendChild(textEl('h3', '', course.title));
+      card.appendChild(textEl('p', '', course.publicationStatus + ' · Version ' + course.version));
+      const action = course.publicationStatus === 'PUBLISHED' ? 'unpublish' : 'publish';
+      card.appendChild(buttonEl('btn btn-secondary', action === 'publish' ? 'Publish' : 'Unpublish', {
+        trainingCourseId: course.courseId, trainingCourseAction: action, trainingCourseVersion: String(course.version),
+      }));
+      els.trainingCourses.appendChild(card);
+      const option = document.createElement('option');
+      option.value = course.courseId; option.textContent = course.title; els.cohortCourse.appendChild(option);
+    });
+    clearNode(els.trainingCohorts);
+    state.trainingCohorts.forEach((cohort) => {
+      const card = textEl('article', 'admin-training-card', '');
+      card.appendChild(textEl('h3', '', cohort.label));
+      card.appendChild(textEl('p', '', cohort.lifecycle + ' · Availability ' + (cohort.availability || 'CLOSED') + ' · Remaining ' + (cohort.capacityRemaining == null ? cohort.capacity : cohort.capacityRemaining) + ' of ' + cohort.capacity + ' · Minimum ' + cohort.minimumSize));
+      card.appendChild(buttonEl('btn btn-secondary', 'Edit', { trainingCohortEdit: cohort.cohortId }));
+      if (cohort.lifecycle === 'DRAFT') card.appendChild(buttonEl('btn btn-secondary', 'Open registration', { trainingCohortCommand: 'open', trainingCohortId: cohort.cohortId, trainingCohortCourse: cohort.courseId, trainingCohortVersion: String(cohort.version) }));
+      if (cohort.lifecycle === 'OPEN') card.appendChild(buttonEl('btn btn-secondary', 'Close registration', { trainingCohortCommand: 'close', trainingCohortId: cohort.cohortId, trainingCohortCourse: cohort.courseId, trainingCohortVersion: String(cohort.version) }));
+      els.trainingCohorts.appendChild(card);
+    });
+  }
+
+  function iso(value) { return value ? new Date(value).toISOString() : null; }
+  function localDate(value) { if (!value) return ''; const date = new Date(value); return Number.isNaN(date.getTime()) ? '' : new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16); }
+
+  async function saveCohort(event) {
+    event.preventDefault();
+    const body = {
+      courseId: els.cohortCourse.value, label: els.cohortLabel.value.trim(), timezone: els.cohortTimezone.value.trim(),
+      tentativeStartAt: iso(els.cohortStart.value), tentativeEndAt: iso(els.cohortEnd.value),
+      capacity: Number(els.cohortCapacity.value), minimumSize: Number(els.cohortMinimum.value),
+      registrationOpensAt: iso(els.registrationOpen.value), registrationClosesAt: iso(els.registrationClose.value),
+    };
+    const editing = Boolean(els.cohortId.value);
+    if (editing) body.expectedVersion = Number(els.cohortVersion.value);
+    try {
+      await apiRequest(editing ? '/admin/training/cohorts/' + encodeURIComponent(els.cohortId.value) : '/admin/training/cohorts', {
+        method: editing ? 'PATCH' : 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': idempotencyKey('cohort-save') },
+      });
+      clearCohortForm(); await loadTraining(); setStatus('Cohort saved.', 'success');
+    } catch (error) { handleRequestError(error); }
+  }
+
+  function editCohort(id) {
+    const cohort = state.trainingCohorts.find((item) => item.cohortId === id); if (!cohort) return;
+    els.cohortId.value = cohort.cohortId; els.cohortVersion.value = cohort.version; els.cohortCourse.value = cohort.courseId;
+    els.cohortCourse.disabled = true; els.cohortLabel.value = cohort.label; els.cohortTimezone.value = cohort.timezone;
+    els.cohortCapacity.value = cohort.capacity; els.cohortMinimum.value = cohort.minimumSize;
+    els.cohortStart.value = localDate(cohort.tentativeStartAt); els.cohortEnd.value = localDate(cohort.tentativeEndAt);
+    els.registrationOpen.value = localDate(cohort.registrationOpensAt); els.registrationClose.value = localDate(cohort.registrationClosesAt);
+    els.cohortLabel.focus();
+  }
+
+  function clearCohortForm() { els.cohortForm.reset(); els.cohortId.value = ''; els.cohortVersion.value = ''; els.cohortCourse.disabled = false; els.cohortTimezone.value = 'Asia/Kolkata'; }
+
+  async function courseCommand(button) {
+    const action = button.dataset.trainingCourseAction;
+    if (!window.confirm((action === 'publish' ? 'Publish' : 'Unpublish') + ' this seeded course?')) return;
+    try {
+      await apiRequest('/admin/training/courses/' + encodeURIComponent(button.dataset.trainingCourseId) + '/' + action, {
+        method: 'POST', body: JSON.stringify({ expectedVersion: Number(button.dataset.trainingCourseVersion) }),
+        headers: { 'Idempotency-Key': idempotencyKey('course-' + action) },
+      });
+      await loadTraining(); setStatus('Course publication updated.', 'success');
+    } catch (error) { handleRequestError(error); }
+  }
+
+  async function cohortCommand(button) {
+    const action = button.dataset.trainingCohortCommand;
+    if (!window.confirm((action === 'open' ? 'Open' : 'Close') + ' registration for this cohort?')) return;
+    try {
+      await apiRequest('/admin/training/cohorts/' + encodeURIComponent(button.dataset.trainingCohortId) + '/' + action, {
+        method: 'POST', body: JSON.stringify({ courseId: button.dataset.trainingCohortCourse, expectedVersion: Number(button.dataset.trainingCohortVersion), reason: 'Manual admin ' + action }),
+        headers: { 'Idempotency-Key': idempotencyKey('cohort-' + action) },
+      });
+      await loadTraining(); setStatus('Cohort registration updated.', 'success');
+    } catch (error) { handleRequestError(error); }
   }
 
   function bindEvents() {
@@ -610,6 +733,9 @@
     els.logout.addEventListener('click', logout);
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
+    els.refreshTraining.addEventListener('click', loadTraining);
+    els.cohortForm.addEventListener('submit', saveCohort);
+    els.cohortCancel.addEventListener('click', clearCohortForm);
     els.feedbackFilters.addEventListener('submit', (event) => {
       event.preventDefault();
       state.selectedFeedbackId = '';
@@ -630,7 +756,14 @@
       if (feedback) {
         state.selectedFeedbackId = feedback.dataset.feedbackId;
         renderFeedback();
+        return;
       }
+      const courseAction = event.target.closest('[data-training-course-action]');
+      if (courseAction) { courseCommand(courseAction); return; }
+      const cohortAction = event.target.closest('[data-training-cohort-command]');
+      if (cohortAction) { cohortCommand(cohortAction); return; }
+      const cohortEdit = event.target.closest('[data-training-cohort-edit]');
+      if (cohortEdit) editCohort(cohortEdit.dataset.trainingCohortEdit);
     });
   }
 

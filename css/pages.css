@@ -4562,6 +4562,13 @@
   color: var(--color-text);
   border-bottom-color: var(--color-text);
 }
+.admin-training-courses, .admin-training-cohorts { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.admin-training-card { padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-bg); }
+.admin-training-card .btn { margin: .75rem .5rem 0 0; }
+.admin-training-cohort-editor { margin: 2rem 0; padding: 1.5rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-surface); }
+.admin-cohort-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.admin-cohort-form .admin-form-actions { grid-column: 1 / -1; }
+@media (max-width: 700px) { .admin-cohort-form { grid-template-columns: 1fr; } }
 
 .admin-view-panel {
   min-width: 0;
