@@ -12,4 +12,9 @@
 3. Add the empty My Learning shell required for route and session validation.
 4. Validate anonymous, restored-session, error, logout, accessibility, and mobile states locally.
 
+Implementation note: the unified first step makes the existing generic,
+idempotent registration request before requesting OTP, so new and returning
+learners receive the same non-enumerating flow. Safe destinations discard URL
+fragments and all query parameters except validated course/application IDs.
+
 No application form, course content, admin behavior, or new identity mechanism is included.

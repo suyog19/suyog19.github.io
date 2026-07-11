@@ -18,7 +18,16 @@
       const url = new URL(value, window.location.origin);
       if (url.origin !== window.location.origin || url.username || url.password) return '/my-learning/';
       const allowed = SAFE_DESTINATIONS.some((prefix) => url.pathname === prefix || url.pathname.startsWith(prefix));
-      return allowed ? url.pathname + url.search + url.hash : '/my-learning/';
+      if (!allowed) return '/my-learning/';
+      const safeQuery = new URLSearchParams();
+      ['courseId', 'applicationId'].forEach((name) => {
+        const candidate = url.searchParams.get(name);
+        if (candidate && /^[A-Za-z0-9_-]{1,128}$/.test(candidate)) {
+          safeQuery.set(name, candidate);
+        }
+      });
+      const query = safeQuery.toString();
+      return url.pathname + (query ? '?' + query : '');
     } catch (_) {
       return '/my-learning/';
     }

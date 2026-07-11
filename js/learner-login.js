@@ -11,6 +11,7 @@
   const changeEmail = document.getElementById('learner-change-email');
   let emailId = '';
   let pending = false;
+  let registrationAttempted = false;
 
   function message(text, tone) {
     status.textContent = text || '';
@@ -36,6 +37,12 @@
     busy(true);
     message('', '');
     try {
+      if (!registrationAttempted) {
+        await auth.request('/auth/register', {
+          method: 'POST', body: JSON.stringify({ emailId }),
+        });
+        registrationAttempted = true;
+      }
       await auth.request('/auth/otp/request', { method: 'POST', body: JSON.stringify({ emailId }) });
       emailForm.hidden = true;
       otpForm.hidden = false;
@@ -84,6 +91,7 @@
     otpForm.hidden = true;
     emailForm.hidden = false;
     otp.value = '';
+    registrationAttempted = false;
     message('', '');
     email.focus();
   });
