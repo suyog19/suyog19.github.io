@@ -26,8 +26,14 @@
 
   logoutButton.addEventListener('click', async () => {
     logoutButton.disabled = true;
-    await auth.logout();
-    window.location.replace('/learn/');
+    const revoked = await auth.logout();
+    if (revoked) {
+      window.location.replace('/learn/');
+      return;
+    }
+    shell.hidden = true;
+    status.textContent = 'Signed out on this device, but the service could not confirm server sign-out. Close this browser window on a shared device and contact support if this continues.';
+    status.hidden = false;
   });
   initialise();
 }());

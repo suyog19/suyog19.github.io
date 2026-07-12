@@ -7,7 +7,7 @@
 
   function apiBaseUrl() {
     const host = window.location.hostname;
-    return host === 'localhost' || host === '127.0.0.1' || host === 'dev.suyogjoshi.com'
+    return host === 'localhost' || host === '127.0.0.1' || host === '::1' || host === '[::1]' || host === 'dev.suyogjoshi.com'
       ? 'https://api-dev.suyogjoshi.com'
       : 'https://api.suyogjoshi.com';
   }
@@ -87,12 +87,15 @@
   async function logout() {
     const accessToken = token();
     clearSession();
-    if (!accessToken) return;
+    if (!accessToken) return true;
     try {
-      await fetch(apiBaseUrl() + '/auth/logout', {
+      const response = await fetch(apiBaseUrl() + '/auth/logout', {
         method: 'POST', cache: 'no-store', headers: { Authorization: 'Bearer ' + accessToken },
       });
-    } catch (_) { /* The local session is already removed. */ }
+      return response.ok || response.status === 401 || response.status === 403;
+    } catch (_) {
+      return false;
+    }
   }
 
   window.sjLearnerAuth = { clearSession, logout, readUser, request, restore, safeDestination, saveSession, token };

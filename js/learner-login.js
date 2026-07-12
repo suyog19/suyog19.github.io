@@ -38,9 +38,15 @@
     message('', '');
     try {
       if (!registrationAttempted) {
-        await auth.request('/auth/register', {
-          method: 'POST', body: JSON.stringify({ emailId }),
-        });
+        try {
+          await auth.request('/auth/register', {
+            method: 'POST', body: JSON.stringify({ emailId }),
+          });
+        } catch (_) {
+          // Registration and OTP request are deliberately indistinguishable.
+          // Always continue to the generic OTP endpoint so account state cannot
+          // be inferred from client request count, timing, or status handling.
+        }
         registrationAttempted = true;
       }
       await auth.request('/auth/otp/request', { method: 'POST', body: JSON.stringify({ emailId }) });
