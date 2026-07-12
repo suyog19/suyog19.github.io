@@ -42,3 +42,17 @@ test('tab keyboard navigation wraps and supports home/end', () => {
   assert.equal(tools.nextTabIndex(1, 'Home', 3), 0);
   assert.equal(tools.nextTabIndex(1, 'End', 3), 2);
 });
+
+test('offers and resends fail closed on capacity and uncertain delivery', () => {
+  assert.equal(tools.offerableCohort({
+    courseId: 'course', lifecycle: 'OPEN', isFull: false, capacityRemaining: 1,
+  }, 'course'), true);
+  assert.equal(tools.offerableCohort({
+    courseId: 'course', lifecycle: 'OPEN', isFull: true, capacityRemaining: 0,
+  }, 'course'), false);
+  assert.equal(tools.resendAllowed({ status: 'SENT', sk: 'APPLICATION_RECEIVED:key' }), true);
+  assert.equal(tools.resendAllowed({
+    status: 'FAILED_FINAL', failureCategory: 'DELIVERY_UNCERTAIN', sk: 'key',
+  }), false);
+  assert.equal(tools.resendAllowed({ status: 'SENT', sk: 'key:RESEND:attempt' }), false);
+});
