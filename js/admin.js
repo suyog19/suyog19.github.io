@@ -768,7 +768,7 @@
       };
       if (!trainingTools.requestStillCurrent(current, expected)) return;
       state.selectedApplication = results[0].application || null;
-      state.selectedEnrolment = results[0].enrolment || state.selectedEnrolment;
+      state.selectedEnrolment = results[0].enrolment || null;
       state.applicationCommunications = results[1];
       renderApplicationDetail();
     } catch (error) {
