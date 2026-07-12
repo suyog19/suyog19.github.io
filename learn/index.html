@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Continue securely to learner services on suyogjoshi.com using a one-time code sent to your email.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Continue with email | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/learn/">
+  <meta property="og:title" content="Continue with email | Suyog Joshi">
+  <meta property="og:description" content="Secure learner access using a one-time email code.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://suyogjoshi.com/learn/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Continue with email | Suyog Joshi">
+  <meta name="twitter:description" content="Secure learner access using a one-time email code.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H', {
+      page_location: 'https://suyogjoshi.com/learn/',
+      page_path: '/learn/'
+    });
+  </script>
+</head>
+<body class="learner-page">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+        <span class="brand-mark" aria-hidden="true">SJ</span>
+        <span class="brand-text">suyogjoshi.com</span>
+      </a>
+    </div>
+  </header>
+  <main class="learner-auth-main">
+    <section class="learner-auth-card" aria-labelledby="learner-auth-title">
+      <p class="eyebrow">Learner access</p>
+      <h1 id="learner-auth-title">Continue with email</h1>
+      <p>New and returning learners use the same secure one-time-code journey.</p>
+      <div id="learner-auth-status" class="learner-status" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+      <form id="learner-email-form" novalidate>
+        <div class="form-field">
+          <label for="learner-email">Email address</label>
+          <input id="learner-email" type="email" autocomplete="email" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Continue with email</button>
+      </form>
+      <form id="learner-otp-form" novalidate hidden>
+        <div class="form-field">
+          <label for="learner-otp">6 digit code</label>
+          <input id="learner-otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required>
+        </div>
+        <div class="learner-form-actions">
+          <button class="btn btn-primary" type="submit">Verify and continue</button>
+          <button class="btn btn-secondary" id="learner-resend" type="button">Resend code</button>
+          <button class="learner-text-button" id="learner-change-email" type="button">Use another email</button>
+        </div>
+      </form>
+    </section>
+  </main>
+  <script src="../js/learner-auth.js"></script>
+  <script src="../js/learner-login.js"></script>
+</body>
+</html>
