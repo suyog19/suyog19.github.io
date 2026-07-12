@@ -212,8 +212,15 @@
     state.messages = [];
     state.feedback = [];
     state.feedbackSummary = null;
+    state.trainingCourses = [];
+    state.trainingCohorts = [];
     state.selectedMessageId = '';
     state.selectedFeedbackId = '';
+    operationKeys.clearAll();
+    clearNode(els.trainingCourses);
+    clearNode(els.trainingCohorts);
+    clearNode(els.cohortCourse);
+    clearCohortForm();
     showLogin();
     renderMessages();
     renderFeedback();

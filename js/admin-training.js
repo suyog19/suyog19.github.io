@@ -36,6 +36,7 @@
         return key;
       },
       clear(scope) { entries.delete(scope); },
+      clearAll() { entries.clear(); },
     };
   }
 

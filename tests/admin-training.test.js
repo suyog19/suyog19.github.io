@@ -32,6 +32,8 @@ test('idempotency key is stable for an ambiguous retry and rotates on payload ch
   assert.notEqual(tracker.key('create', { label: 'B' }), first);
   tracker.clear('create');
   assert.equal(tracker.key('create', { label: 'B' }), 'create-3');
+  tracker.clearAll();
+  assert.equal(tracker.key('create', { label: 'B' }), 'create-4');
 });
 
 test('tab keyboard navigation wraps and supports home/end', () => {
