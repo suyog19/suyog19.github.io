@@ -2,6 +2,13 @@
   const TOKEN_KEY = 'sj_admin_access_token';
   const USER_KEY = 'sj_admin_user';
   const LIMIT = 50;
+  const trainingTools = window.sjAdminTraining;
+  const operationKeys = trainingTools.createIdempotencyTracker((prefix) => {
+    const value = window.crypto && window.crypto.randomUUID
+      ? window.crypto.randomUUID()
+      : Date.now() + '-' + Math.random().toString(16).slice(2);
+    return prefix + '-' + value;
+  });
 
   const state = {
     apiBase: apiBaseUrl(),
@@ -221,6 +228,7 @@
     if (error.status === 401) return 'Your admin session is missing or expired. Sign in again.';
     if (error.status === 403) return 'This account is authenticated but does not have admin access.';
     if (error.status === 404) return 'That record was not found.';
+    if (error.status === 409 || error.status === 412) return 'This record changed in another action. Current data has been reloaded; review it before trying again.';
     return body.message || 'Something went wrong. Please retry.';
   }
 
@@ -607,6 +615,7 @@
       const active = tab.dataset.adminView === view;
       tab.classList.toggle('is-active', active);
       tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      tab.tabIndex = active ? 0 : -1;
     });
     els.messagesPanel.hidden = view !== 'messages';
     els.feedbackPanel.hidden = view !== 'feedback';
@@ -617,22 +626,31 @@
     if (view === 'training' && !state.trainingCourses.length) loadTraining();
   }
 
-  function idempotencyKey(prefix) {
-    const value = window.crypto && window.crypto.randomUUID ? window.crypto.randomUUID() : Date.now() + '-' + Math.random().toString(16).slice(2);
-    return prefix + '-' + value;
-  }
-
   async function loadTraining() {
     setStatus('Loading training setup...', '');
     try {
       const courses = await adminGet('/admin/training/courses');
       state.trainingCourses = Array.isArray(courses.items) ? courses.items : [];
-      const cohortPages = await Promise.all(state.trainingCourses.map((course) =>
-        adminGet('/admin/training/cohorts?courseId=' + encodeURIComponent(course.courseId))));
-      state.trainingCohorts = cohortPages.flatMap((page) => Array.isArray(page.items) ? page.items : []);
+      const cohortLists = await Promise.all(
+        state.trainingCourses.map((course) => loadAllCohorts(course.courseId))
+      );
+      state.trainingCohorts = cohortLists.flat();
       renderTraining();
       setStatus('', '');
     } catch (error) { handleRequestError(error); }
+  }
+
+  async function loadAllCohorts(courseId) {
+    const items = [];
+    let cursor = '';
+    do {
+      const params = new URLSearchParams({ courseId, limit: String(LIMIT) });
+      if (cursor) params.set('cursor', cursor);
+      const page = await adminGet('/admin/training/cohorts?' + params.toString());
+      if (Array.isArray(page.items)) items.push(...page.items);
+      cursor = typeof page.nextCursor === 'string' ? page.nextCursor : '';
+    } while (cursor);
+    return items;
   }
 
   function renderTraining() {
@@ -667,6 +685,30 @@
 
   async function saveCohort(event) {
     event.preventDefault();
+    const values = {
+      courseId: els.cohortCourse.value,
+      label: els.cohortLabel.value,
+      timezone: els.cohortTimezone.value,
+      capacity: els.cohortCapacity.value,
+      minimumSize: els.cohortMinimum.value,
+      tentativeStartAt: els.cohortStart.value,
+      tentativeEndAt: els.cohortEnd.value,
+      registrationOpensAt: els.registrationOpen.value,
+      registrationClosesAt: els.registrationClose.value,
+    };
+    const fieldMap = {
+      courseId: els.cohortCourse, label: els.cohortLabel, timezone: els.cohortTimezone,
+      capacity: els.cohortCapacity, minimumSize: els.cohortMinimum,
+      tentativeStartAt: els.cohortStart, tentativeEndAt: els.cohortEnd,
+      registrationOpensAt: els.registrationOpen, registrationClosesAt: els.registrationClose,
+    };
+    Object.values(fieldMap).forEach((field) => field.setCustomValidity(''));
+    const errors = trainingTools.validateCohort(values);
+    Object.entries(errors).forEach(([name, message]) => fieldMap[name].setCustomValidity(message));
+    if (Object.keys(errors).length || !els.cohortForm.checkValidity()) {
+      els.cohortForm.reportValidity();
+      return;
+    }
     const body = {
       courseId: els.cohortCourse.value, label: els.cohortLabel.value.trim(), timezone: els.cohortTimezone.value.trim(),
       tentativeStartAt: iso(els.cohortStart.value), tentativeEndAt: iso(els.cohortEnd.value),
@@ -675,12 +717,26 @@
     };
     const editing = Boolean(els.cohortId.value);
     if (editing) body.expectedVersion = Number(els.cohortVersion.value);
+    const scope = 'cohort-save:' + (els.cohortId.value || 'new');
     try {
       await apiRequest(editing ? '/admin/training/cohorts/' + encodeURIComponent(els.cohortId.value) : '/admin/training/cohorts', {
-        method: editing ? 'PATCH' : 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': idempotencyKey('cohort-save') },
+        method: editing ? 'PATCH' : 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': operationKeys.key(scope, body) },
       });
+      operationKeys.clear(scope);
       clearCohortForm(); await loadTraining(); setStatus('Cohort saved.', 'success');
-    } catch (error) { handleRequestError(error); }
+    } catch (error) {
+      if (error.status && error.status < 500) operationKeys.clear(scope);
+      if (error.status === 409 || error.status === 412) {
+        const cohortId = els.cohortId.value;
+        await loadTraining();
+        const current = state.trainingCohorts.find((item) => item.cohortId === cohortId);
+        if (current) {
+          els.cohortVersion.value = current.version;
+          els.cohortCourse.value = current.courseId;
+        }
+      }
+      handleRequestError(error);
+    }
   }
 
   function editCohort(id) {
@@ -698,25 +754,39 @@
   async function courseCommand(button) {
     const action = button.dataset.trainingCourseAction;
     if (!window.confirm((action === 'publish' ? 'Publish' : 'Unpublish') + ' this seeded course?')) return;
+    const body = { expectedVersion: Number(button.dataset.trainingCourseVersion) };
+    const scope = 'course-' + action + ':' + button.dataset.trainingCourseId;
     try {
       await apiRequest('/admin/training/courses/' + encodeURIComponent(button.dataset.trainingCourseId) + '/' + action, {
-        method: 'POST', body: JSON.stringify({ expectedVersion: Number(button.dataset.trainingCourseVersion) }),
-        headers: { 'Idempotency-Key': idempotencyKey('course-' + action) },
+        method: 'POST', body: JSON.stringify(body),
+        headers: { 'Idempotency-Key': operationKeys.key(scope, body) },
       });
+      operationKeys.clear(scope);
       await loadTraining(); setStatus('Course publication updated.', 'success');
-    } catch (error) { handleRequestError(error); }
+    } catch (error) {
+      if (error.status && error.status < 500) operationKeys.clear(scope);
+      if (error.status === 409 || error.status === 412) await loadTraining();
+      handleRequestError(error);
+    }
   }
 
   async function cohortCommand(button) {
     const action = button.dataset.trainingCohortCommand;
     if (!window.confirm((action === 'open' ? 'Open' : 'Close') + ' registration for this cohort?')) return;
+    const body = { courseId: button.dataset.trainingCohortCourse, expectedVersion: Number(button.dataset.trainingCohortVersion), reason: 'Manual admin ' + action };
+    const scope = 'cohort-' + action + ':' + button.dataset.trainingCohortId;
     try {
       await apiRequest('/admin/training/cohorts/' + encodeURIComponent(button.dataset.trainingCohortId) + '/' + action, {
-        method: 'POST', body: JSON.stringify({ courseId: button.dataset.trainingCohortCourse, expectedVersion: Number(button.dataset.trainingCohortVersion), reason: 'Manual admin ' + action }),
-        headers: { 'Idempotency-Key': idempotencyKey('cohort-' + action) },
+        method: 'POST', body: JSON.stringify(body),
+        headers: { 'Idempotency-Key': operationKeys.key(scope, body) },
       });
+      operationKeys.clear(scope);
       await loadTraining(); setStatus('Cohort registration updated.', 'success');
-    } catch (error) { handleRequestError(error); }
+    } catch (error) {
+      if (error.status && error.status < 500) operationKeys.clear(scope);
+      if (error.status === 409 || error.status === 412) await loadTraining();
+      handleRequestError(error);
+    }
   }
 
   function bindEvents() {
@@ -740,6 +810,16 @@
       event.preventDefault();
       state.selectedFeedbackId = '';
       loadFeedback();
+    });
+    els.tabs.forEach((tab, index) => {
+      tab.tabIndex = index === 0 ? 0 : -1;
+      tab.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const next = trainingTools.nextTabIndex(index, event.key, els.tabs.length);
+        switchView(els.tabs[next].dataset.adminView);
+        els.tabs[next].focus();
+      });
     });
     document.addEventListener('click', (event) => {
       const tab = event.target.closest('[data-admin-view]');
