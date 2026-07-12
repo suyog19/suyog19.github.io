@@ -50,9 +50,16 @@ test('offers and resends fail closed on capacity and uncertain delivery', () => 
   assert.equal(tools.offerableCohort({
     courseId: 'course', lifecycle: 'OPEN', isFull: true, capacityRemaining: 0,
   }, 'course'), false);
-  assert.equal(tools.resendAllowed({ status: 'SENT', sk: 'APPLICATION_RECEIVED:key' }), true);
-  assert.equal(tools.resendAllowed({
-    status: 'FAILED_FINAL', failureCategory: 'DELIVERY_UNCERTAIN', sk: 'key',
-  }), false);
-  assert.equal(tools.resendAllowed({ status: 'SENT', sk: 'key:RESEND:attempt' }), false);
+  assert.equal(tools.resendAllowed({ canResend: true, status: 'SENT', sk: 'APPLICATION_RECEIVED:key' }), true);
+  assert.equal(tools.resendAllowed({ canResend: false, status: 'SENT', sk: 'key' }), false);
+  assert.equal(tools.resendAllowed({ canResend: true, status: 'SENT', sk: 'key:RESEND:attempt' }), false);
+});
+
+test('detail and request guards preserve structured and session truth', () => {
+  assert.equal(tools.detailValue({ reason: 'Reviewed', nested: { score: 2 } }), '{"reason":"Reviewed","nested":{"score":2}}');
+  const expected = { applicationId: 'app-1', sessionToken: 'token-1', sequence: 4 };
+  assert.equal(tools.requestStillCurrent({ ...expected }, expected), true);
+  assert.equal(tools.requestStillCurrent({ ...expected, applicationId: 'app-2' }, expected), false);
+  assert.equal(tools.requestStillCurrent({ ...expected, sessionToken: 'token-2' }, expected), false);
+  assert.equal(tools.requestStillCurrent({ ...expected, sequence: 5 }, expected), false);
 });

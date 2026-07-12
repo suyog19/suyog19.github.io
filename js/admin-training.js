@@ -59,22 +59,32 @@
   }
 
   function resendAllowed(communication) {
-    const blocked = new Set([
-      'DISPATCH_UNCERTAIN', 'DELIVERY_UNCERTAIN', 'RECIPIENT_UNAVAILABLE',
-    ]);
     return Boolean(
       communication
-      && ['SENT', 'FAILED_FINAL', 'FAILED_RETRYABLE'].includes(communication.status)
-      && !blocked.has(communication.failureCategory)
+      && communication.canResend === true
       && typeof (communication.sk || communication.logicalKey) === 'string'
       && !String(communication.sk || communication.logicalKey).includes(':RESEND:')
     );
   }
 
+  function detailValue(value) {
+    if (value === null || value === undefined || value === '') return 'Not available';
+    if (typeof value === 'object') return JSON.stringify(value);
+    return String(value);
+  }
+
+  function requestStillCurrent(current, expected) {
+    return current.applicationId === expected.applicationId
+      && current.sessionToken === expected.sessionToken
+      && current.sequence === expected.sequence;
+  }
+
   window.sjAdminTraining = {
     createIdempotencyTracker,
+    detailValue,
     nextTabIndex,
     offerableCohort,
+    requestStillCurrent,
     resendAllowed,
     validateCohort,
   };
