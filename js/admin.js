@@ -23,7 +23,9 @@
     trainingApplications: [],
     selectedApplicationId: '',
     selectedApplication: null,
+    selectedEnrolment: null,
     applicationCommunications: [],
+    trainingMutationPending: false,
     feedbackSummary: null,
     selectedMessageId: '',
     selectedFeedbackId: '',
@@ -224,12 +226,21 @@
     state.feedbackSummary = null;
     state.trainingCourses = [];
     state.trainingCohorts = [];
+    state.trainingApplications = [];
+    state.selectedApplicationId = '';
+    state.selectedApplication = null;
+    state.selectedEnrolment = null;
+    state.applicationCommunications = [];
+    state.trainingMutationPending = false;
     state.selectedMessageId = '';
     state.selectedFeedbackId = '';
     operationKeys.clearAll();
     clearNode(els.trainingCourses);
     clearNode(els.trainingCohorts);
     clearNode(els.cohortCourse);
+    clearNode(els.applicationList);
+    renderEmptyDetail(els.applicationDetail, 'Select an application to review.');
+    els.applicationFilters.reset();
     clearCohortForm();
     showLogin();
     renderMessages();
@@ -677,8 +688,18 @@
       const params = new URLSearchParams(new FormData(els.applicationFilters));
       Array.from(params.entries()).forEach(([key, value]) => { if (!value) params.delete(key); });
       params.set('limit', String(LIMIT));
-      const data = await adminGet('/admin/training/applications?' + params.toString());
-      state.trainingApplications = Array.isArray(data.items) ? data.items : [];
+      const items = [];
+      const seen = new Set();
+      let cursor = '';
+      do {
+        if (cursor) params.set('cursor', cursor); else params.delete('cursor');
+        const data = await adminGet('/admin/training/applications?' + params.toString());
+        if (Array.isArray(data.items)) items.push(...data.items);
+        cursor = typeof data.nextCursor === 'string' ? data.nextCursor : '';
+        if (cursor && seen.has(cursor)) throw new Error('Repeated application cursor');
+        if (cursor) seen.add(cursor);
+      } while (cursor);
+      state.trainingApplications = items;
       renderApplications();
       if (state.selectedApplicationId && state.trainingApplications.some((item) => item.applicationId === state.selectedApplicationId)) {
         await loadApplicationDetail(state.selectedApplicationId);
@@ -708,6 +729,7 @@
   }
 
   async function loadApplicationDetail(applicationId) {
+    if (state.selectedApplicationId !== applicationId) state.selectedEnrolment = null;
     state.selectedApplicationId = applicationId;
     renderApplications();
     renderLoading(els.applicationDetail, 'Loading application detail...');
@@ -746,10 +768,17 @@
       els.applicationDetail.appendChild(detailSection('Acknowledgements', acknowledgements));
     }
     if (application.decision) els.applicationDetail.appendChild(detailSection('Decision', application.decision));
+    if (state.selectedEnrolment) {
+      els.applicationDetail.appendChild(detailSection('Latest offer result', {
+        Status: state.selectedEnrolment.status,
+        Cohort: state.selectedEnrolment.cohortId,
+        'Offered at': formatDate(state.selectedEnrolment.offeredAt),
+      }));
+    }
     const timeline = {
       Submitted: formatDate(application.submittedAt),
       Decision: application.decision ? (application.decision.type + ' · ' + formatDate(application.decision.decidedAt)) : 'Pending',
-      Offer: application.status === 'OFFERED' ? 'Created' : 'Not created',
+      Offer: state.selectedEnrolment ? 'Created' : (state.applicationCommunications.some((item) => item.family === 'ENROLMENT_OFFER') ? 'Recorded' : 'Not created'),
       'Latest communication': state.applicationCommunications[0] ? state.applicationCommunications[0].status + ' · ' + formatDate(state.applicationCommunications[0].updatedAt) : 'None',
     };
     els.applicationDetail.appendChild(detailSection('Operational timeline', timeline));
@@ -761,18 +790,39 @@
     const section = textEl('section', 'admin-detail-section', '');
     section.appendChild(textEl('h4', '', 'Review actions'));
     const actions = document.createElement('div'); actions.className = 'admin-form-actions';
-    const available = application.status === 'NEW' ? ['start-review', 'accept', 'waitlist', 'recommend', 'decline', 'withdraw'] : application.status === 'UNDER_REVIEW' ? ['accept', 'waitlist', 'recommend', 'decline', 'withdraw'] : [];
+    const available = application.status === 'NEW' ? ['start-review', 'waitlist', 'recommend', 'decline', 'withdraw'] : application.status === 'UNDER_REVIEW' ? ['waitlist', 'recommend', 'decline', 'withdraw'] : [];
     available.forEach((command) => actions.appendChild(buttonEl('btn btn-secondary', command.replace('-', ' '), { applicationCommand: command })));
+    if (['NEW', 'UNDER_REVIEW'].includes(application.status)) {
+      appendOfferControls(actions, application, true);
+    }
     if (application.status === 'ACCEPTED') {
-      const select = document.createElement('select'); select.id = 'admin-application-cohort'; select.setAttribute('aria-label', 'Offer cohort');
-      state.trainingCohorts.filter((cohort) => cohort.courseId === application.courseId && cohort.lifecycle === 'OPEN').forEach((cohort) => {
-        const option = document.createElement('option'); option.value = cohort.cohortId; option.textContent = cohort.label + ' (' + cohort.capacityRemaining + ' remaining)'; select.appendChild(option);
-      });
-      actions.appendChild(select);
-      actions.appendChild(buttonEl('btn btn-primary', 'Send offer', { applicationOffer: 'true' }));
+      appendOfferControls(actions, application, false);
     }
     if (!available.length && application.status !== 'ACCEPTED') actions.appendChild(textEl('p', 'admin-empty', 'No review transition is available for this status.'));
     section.appendChild(actions); els.applicationDetail.appendChild(section);
+  }
+
+  function appendOfferControls(actions, application, acceptFirst) {
+    const select = document.createElement('select');
+    select.id = 'admin-application-cohort';
+    select.setAttribute('aria-label', 'Offer cohort');
+    const cohorts = state.trainingCohorts.filter((cohort) => (
+      trainingTools.offerableCohort(cohort, application.courseId)
+    ));
+    cohorts.forEach((cohort) => {
+      const option = document.createElement('option');
+      option.value = cohort.cohortId;
+      option.textContent = cohort.label + ' (' + cohort.capacityRemaining + ' remaining)';
+      select.appendChild(option);
+    });
+    actions.appendChild(select);
+    const offer = buttonEl(
+      'btn btn-primary', acceptFirst ? 'Accept and send offer' : 'Send offer',
+      { applicationOffer: acceptFirst ? 'accept' : 'offer' }
+    );
+    offer.disabled = !cohorts.length;
+    actions.appendChild(offer);
+    if (!cohorts.length) actions.appendChild(textEl('p', 'admin-empty', 'No open cohort with capacity is available.'));
   }
 
   function renderCommunications() {
@@ -782,52 +832,122 @@
       const row = textEl('article', 'admin-training-card', '');
       row.appendChild(textEl('strong', '', (item.family || 'Communication') + ' — ' + (item.variant || '')));
       row.appendChild(textEl('p', '', (item.status || 'UNKNOWN') + ' · Updated ' + formatDate(item.updatedAt)));
-      const blocked = ['DISPATCH_UNCERTAIN', 'DELIVERY_UNCERTAIN', 'RECIPIENT_UNAVAILABLE'].includes(item.failureCategory);
-      if (['SENT', 'FAILED_FINAL', 'FAILED_RETRYABLE'].includes(item.status) && !blocked) row.appendChild(buttonEl('btn btn-secondary', 'Resend', { communicationResend: item.sk || item.logicalKey || '' }));
+      if (trainingTools.resendAllowed(item)) row.appendChild(buttonEl('btn btn-secondary', 'Resend', { communicationResend: item.sk || item.logicalKey || '' }));
       section.appendChild(row);
     });
     els.applicationDetail.appendChild(section);
   }
 
   async function applicationCommand(command) {
-    const application = state.selectedApplication; if (!application) return;
+    const application = state.selectedApplication;
+    if (!application || state.trainingMutationPending) return;
     let reason = null; let recommendedCourseId = null;
     if (['recommend', 'decline', 'withdraw'].includes(command)) {
       reason = window.prompt('Reason (required, maximum 500 characters):');
       if (!reason || !reason.trim()) return;
+      if (reason.trim().length > 500) return setStatus('Reason must be at most 500 characters.', 'warn');
     }
     if (command === 'recommend') {
       recommendedCourseId = window.prompt('Published recommended course ID:');
       if (!recommendedCourseId || !recommendedCourseId.trim()) return;
+      const recommended = state.trainingCourses.find((course) => (
+        course.courseId === recommendedCourseId.trim()
+        && course.publicationStatus === 'PUBLISHED'
+      ));
+      if (!recommended) return setStatus('Choose the ID of a published Gate 1 course.', 'warn');
     }
     if (!window.confirm('Confirm ' + command.replace('-', ' ') + ' for this application?')) return;
     const body = { expectedVersion: Number(application.version) };
     if (reason) body.reason = reason.trim(); if (recommendedCourseId) body.recommendedCourseId = recommendedCourseId.trim();
+    const scope = 'application-' + command + ':' + application.applicationId;
+    setApplicationMutationBusy(true);
     try {
-      await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/' + command, { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': idempotencyKey('application-' + command) } });
+      await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/' + command, { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': operationKeys.key(scope, body) } });
+      operationKeys.clear(scope);
       await loadApplications(); setStatus('Application updated.', 'success');
-    } catch (error) { handleRequestError(error); }
+    } catch (error) {
+      if (error.status && error.status < 500) operationKeys.clear(scope);
+      if (error.status === 409 || error.status === 412) await loadApplicationDetail(application.applicationId);
+      handleRequestError(error);
+    } finally { setApplicationMutationBusy(false); }
   }
 
   async function offerApplication() {
+    if (state.trainingMutationPending) return;
     const application = state.selectedApplication; const select = document.getElementById('admin-application-cohort');
     const cohort = select && state.trainingCohorts.find((item) => item.cohortId === select.value);
     if (!application || !cohort) return setStatus('Choose an open cohort before sending an offer.', 'warn');
-    if (!window.confirm('Reserve a seat in ' + cohort.label + ' and send this offer?')) return;
+    const acceptFirst = application.status === 'NEW' || application.status === 'UNDER_REVIEW';
+    if (!window.confirm((acceptFirst ? 'Accept this application, then reserve' : 'Reserve') + ' a seat in ' + cohort.label + ' and send this offer?')) return;
+    let activeScope = '';
+    let acceptCompleted = false;
+    setApplicationMutationBusy(true);
     try {
-      await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/offer', { method: 'POST', body: JSON.stringify({ expectedVersion: Number(application.version), cohortId: cohort.cohortId, expectedCohortVersion: Number(cohort.version) }), headers: { 'Idempotency-Key': idempotencyKey('application-offer') } });
-      await loadTraining(); setStatus('Offer created and seat reserved.', 'success');
-    } catch (error) { handleRequestError(error); }
+      let applicationVersion = Number(application.version);
+      if (acceptFirst) {
+        const acceptBody = { expectedVersion: applicationVersion };
+        const acceptScope = 'application-accept:' + application.applicationId;
+        activeScope = acceptScope;
+        const accepted = await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/accept', {
+          method: 'POST', body: JSON.stringify(acceptBody),
+          headers: { 'Idempotency-Key': operationKeys.key(acceptScope, acceptBody) },
+        });
+        operationKeys.clear(acceptScope);
+        acceptCompleted = true;
+        state.selectedApplication = accepted.application;
+        applicationVersion = Number(accepted.application.version);
+      }
+      const offerBody = {
+        expectedVersion: applicationVersion, cohortId: cohort.cohortId,
+        expectedCohortVersion: Number(cohort.version),
+      };
+      const offerScope = 'application-offer:' + application.applicationId;
+      activeScope = offerScope;
+      const offered = await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/offer', {
+        method: 'POST', body: JSON.stringify(offerBody),
+        headers: { 'Idempotency-Key': operationKeys.key(offerScope, offerBody) },
+      });
+      operationKeys.clear(offerScope);
+      state.selectedEnrolment = offered.enrolment || null;
+      await loadTraining(); setStatus('Application accepted; offer created and seat reserved.', 'success');
+    } catch (error) {
+      if (error.status && error.status < 500 && activeScope) operationKeys.clear(activeScope);
+      if (acceptCompleted && !error.status) renderApplicationDetail();
+      if (acceptCompleted || error.status === 409 || error.status === 412) await loadTraining();
+      handleRequestError(error);
+    } finally { setApplicationMutationBusy(false); }
   }
 
   async function resendCommunication(logicalKey) {
+    if (state.trainingMutationPending) return;
     if (!logicalKey) return setStatus('Communication identifier is unavailable.', 'warn');
     const reason = window.prompt('Reason for resend (required, maximum 500 characters):'); if (!reason || !reason.trim()) return;
+    if (reason.trim().length > 500) return setStatus('Reason must be at most 500 characters.', 'warn');
     if (!window.confirm('Queue one controlled resend attempt?')) return;
+    const body = { logicalKey, reason: reason.trim() };
+    const scope = 'communication-resend:' + state.selectedApplicationId + ':' + logicalKey;
+    setApplicationMutationBusy(true);
     try {
-      await apiRequest('/admin/training/applications/' + encodeURIComponent(state.selectedApplicationId) + '/communications/resend', { method: 'POST', body: JSON.stringify({ logicalKey, reason: reason.trim() }), headers: { 'Idempotency-Key': idempotencyKey('communication-resend') } });
+      await apiRequest('/admin/training/applications/' + encodeURIComponent(state.selectedApplicationId) + '/communications/resend', { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': operationKeys.key(scope, body) } });
+      operationKeys.clear(scope);
       await loadApplicationDetail(state.selectedApplicationId); setStatus('Resend queued.', 'success');
-    } catch (error) { handleRequestError(error); }
+    } catch (error) {
+      if (error.status && error.status < 500) operationKeys.clear(scope);
+      handleRequestError(error);
+    } finally { setApplicationMutationBusy(false); }
+  }
+
+  function setApplicationMutationBusy(busy) {
+    state.trainingMutationPending = busy;
+    document.querySelectorAll('[data-application-command], [data-application-offer], [data-communication-resend]').forEach((button) => {
+      if (busy) {
+        button.dataset.wasDisabled = button.disabled ? 'true' : 'false';
+        button.disabled = true;
+      } else {
+        button.disabled = button.dataset.wasDisabled === 'true';
+        delete button.dataset.wasDisabled;
+      }
+    });
   }
 
   function renderTraining() {
