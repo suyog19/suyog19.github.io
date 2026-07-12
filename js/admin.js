@@ -26,6 +26,7 @@
     selectedEnrolment: null,
     applicationCommunications: [],
     trainingMutationPending: false,
+    applicationRequestSequence: 0,
     feedbackSummary: null,
     selectedMessageId: '',
     selectedFeedbackId: '',
@@ -232,6 +233,7 @@
     state.selectedEnrolment = null;
     state.applicationCommunications = [];
     state.trainingMutationPending = false;
+    state.applicationRequestSequence += 1;
     state.selectedMessageId = '';
     state.selectedFeedbackId = '';
     operationKeys.clearAll();
@@ -583,7 +585,7 @@
     items.filter(([, value]) => value !== undefined && value !== null && value !== '').forEach(([label, value]) => {
       const div = document.createElement('div');
       div.appendChild(textEl('dt', '', label));
-      div.appendChild(textEl('dd', '', String(value)));
+      div.appendChild(textEl('dd', '', trainingTools.detailValue(value)));
       dl.appendChild(div);
     });
     return dl;
@@ -655,18 +657,24 @@
   }
 
   async function loadTraining() {
+    const sessionToken = state.token;
     setStatus('Loading training setup...', '');
     try {
       const courses = await adminGet('/admin/training/courses');
-      state.trainingCourses = Array.isArray(courses.items) ? courses.items : [];
+      const courseItems = Array.isArray(courses.items) ? courses.items : [];
       const cohortLists = await Promise.all(
-        state.trainingCourses.map((course) => loadAllCohorts(course.courseId))
+        courseItems.map((course) => loadAllCohorts(course.courseId))
       );
+      if (state.token !== sessionToken) return;
+      state.trainingCourses = courseItems;
       state.trainingCohorts = cohortLists.flat();
       renderTraining();
       await loadApplications();
       setStatus('', '');
-    } catch (error) { handleRequestError(error); }
+    } catch (error) {
+      if (state.token !== sessionToken) return;
+      handleRequestError(error);
+    }
   }
 
   async function loadAllCohorts(courseId) {
@@ -683,6 +691,8 @@
   }
 
   async function loadApplications() {
+    const sessionToken = state.token;
+    const requestSequence = ++state.applicationRequestSequence;
     renderLoading(els.applicationList, 'Loading applications...');
     try {
       const params = new URLSearchParams(new FormData(els.applicationFilters));
@@ -699,6 +709,10 @@
         if (cursor && seen.has(cursor)) throw new Error('Repeated application cursor');
         if (cursor) seen.add(cursor);
       } while (cursor);
+      if (
+        state.token !== sessionToken
+        || state.applicationRequestSequence !== requestSequence
+      ) return;
       state.trainingApplications = items;
       renderApplications();
       if (state.selectedApplicationId && state.trainingApplications.some((item) => item.applicationId === state.selectedApplicationId)) {
@@ -709,6 +723,10 @@
         renderEmptyDetail(els.applicationDetail, 'Select an application to review.');
       }
     } catch (error) {
+      if (
+        state.token !== sessionToken
+        || state.applicationRequestSequence !== requestSequence
+      ) return;
       renderEmptyList(els.applicationList, 'Applications could not be loaded.');
       handleRequestError(error);
     }
@@ -731,20 +749,57 @@
   async function loadApplicationDetail(applicationId) {
     if (state.selectedApplicationId !== applicationId) state.selectedEnrolment = null;
     state.selectedApplicationId = applicationId;
+    const expected = {
+      applicationId,
+      sessionToken: state.token,
+      sequence: ++state.applicationRequestSequence,
+    };
     renderApplications();
     renderLoading(els.applicationDetail, 'Loading application detail...');
     try {
       const results = await Promise.all([
         adminGet('/admin/training/applications/' + encodeURIComponent(applicationId)),
-        adminGet('/admin/training/applications/' + encodeURIComponent(applicationId) + '/communications'),
+        loadAllCommunications(applicationId),
       ]);
+      const current = {
+        applicationId: state.selectedApplicationId,
+        sessionToken: state.token,
+        sequence: state.applicationRequestSequence,
+      };
+      if (!trainingTools.requestStillCurrent(current, expected)) return;
       state.selectedApplication = results[0].application || null;
-      state.applicationCommunications = Array.isArray(results[1].items) ? results[1].items : [];
+      state.selectedEnrolment = results[0].enrolment || state.selectedEnrolment;
+      state.applicationCommunications = results[1];
       renderApplicationDetail();
     } catch (error) {
+      const current = {
+        applicationId: state.selectedApplicationId,
+        sessionToken: state.token,
+        sequence: state.applicationRequestSequence,
+      };
+      if (!trainingTools.requestStillCurrent(current, expected)) return;
       renderEmptyDetail(els.applicationDetail, error.status === 404 ? 'Application not found.' : 'Application detail could not be loaded.');
       handleRequestError(error);
     }
+  }
+
+  async function loadAllCommunications(applicationId) {
+    const items = [];
+    const seen = new Set();
+    let cursor = '';
+    do {
+      const params = new URLSearchParams({ limit: String(LIMIT) });
+      if (cursor) params.set('cursor', cursor);
+      const page = await adminGet(
+        '/admin/training/applications/' + encodeURIComponent(applicationId)
+        + '/communications?' + params.toString()
+      );
+      if (Array.isArray(page.items)) items.push(...page.items);
+      cursor = typeof page.nextCursor === 'string' ? page.nextCursor : '';
+      if (cursor && seen.has(cursor)) throw new Error('Repeated communication cursor');
+      if (cursor) seen.add(cursor);
+    } while (cursor);
+    return items;
   }
 
   function courseTitle(courseId) {
@@ -778,8 +833,8 @@
     const timeline = {
       Submitted: formatDate(application.submittedAt),
       Decision: application.decision ? (application.decision.type + ' · ' + formatDate(application.decision.decidedAt)) : 'Pending',
-      Offer: state.selectedEnrolment ? 'Created' : (state.applicationCommunications.some((item) => item.family === 'ENROLMENT_OFFER') ? 'Recorded' : 'Not created'),
-      'Latest communication': state.applicationCommunications[0] ? state.applicationCommunications[0].status + ' · ' + formatDate(state.applicationCommunications[0].updatedAt) : 'None',
+      Offer: state.selectedEnrolment ? (state.selectedEnrolment.status + ' · ' + formatDate(state.selectedEnrolment.offeredAt)) : 'Not created',
+      'Latest communication (delivery only)': state.applicationCommunications[0] ? state.applicationCommunications[0].status + ' · ' + formatDate(state.applicationCommunications[0].updatedAt) : 'None',
     };
     els.applicationDetail.appendChild(detailSection('Operational timeline', timeline));
     renderApplicationActions(application);
