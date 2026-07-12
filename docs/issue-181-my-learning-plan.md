@@ -8,3 +8,8 @@ separate from application truth.
 
 No raw entity joins, payment controls, materials, recordings, or Gate 2–4 state
 are implemented. Merge follows the parent dependency PRs.
+
+Focused validation uses Node's built-in test runner for exact action-link
+allowlisting, missing-versus-false profile truth, and complete approved
+acknowledgement records. Interactive responsive/API validation remains a Gate 1
+release item while the in-app browser is unavailable.

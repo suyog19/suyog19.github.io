@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   const auth = window.sjLearnerAuth;
+  const summaryView = window.sjLearnerSummary;
   const shell = document.getElementById('learner-shell');
   const status = document.getElementById('learner-shell-status');
   const userLabel = document.getElementById('learner-user-label');
@@ -36,18 +37,13 @@
     return element;
   }
 
-  function safeActionHref(value) {
-    if (typeof value !== 'string') return '/my-learning/';
-    return ['/my-learning/', '/training/', '/contact/'].includes(value) ? value : '/my-learning/';
-  }
-
   function renderSummary(summary) {
     currentAction.replaceChildren();
     const action = summary.currentAction || {};
     currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
     currentAction.appendChild(textElement('h2', '', action.label || 'My Learning'));
     const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
-    actionLink.href = safeActionHref(action.href);
+    actionLink.href = summaryView.safeActionHref(action.href);
     currentAction.appendChild(actionLink);
 
     applicationList.replaceChildren();
@@ -78,14 +74,20 @@
     addDetail('Verified email', learner.verifiedEmail);
     addDetail('Full name', learner.fullName);
     addDetail('Timezone', learner.timezone);
-    addDetail('Adult eligibility', learner.adultEligibilityConfirmed ? 'Confirmed' : 'Not confirmed');
-    const acknowledgements = Array.isArray(learner.acknowledgements) ? learner.acknowledgements : [];
-    const acknowledgementLabels = {
-      'software-signal-terms-privacy': 'Terms and privacy',
-      'software-signal-recorded-delivery': 'Recorded class delivery',
-    };
-    addDetail('Required acknowledgements', acknowledgements.length ? acknowledgements.map((item) => (acknowledgementLabels[item.documentId] || 'Required policy') + ' version ' + item.version).join(', ') : 'Not recorded');
-    addDetail('Promotional consent', learner.promotionalConsent ? 'Recorded' : 'Not used');
+    addDetail(
+      'Adult eligibility',
+      summaryView.booleanLabel(
+        learner.adultEligibilityConfirmed, 'Confirmed', 'Not confirmed'
+      )
+    );
+    addDetail(
+      'Required acknowledgements',
+      summaryView.acknowledgementLabel(learner.acknowledgements)
+    );
+    addDetail(
+      'Promotional consent',
+      summaryView.booleanLabel(learner.promotionalConsent, 'Recorded', 'Not recorded')
+    );
   }
 
   function addDetail(label, value) {
