@@ -3,7 +3,8 @@
 
   const TOKEN_KEY = 'sj_learner_access_token';
   const USER_KEY = 'sj_learner_user';
-  const SAFE_DESTINATIONS = ['/my-learning/', '/learn/', '/courses/', '/apply/'];
+  const SAFE_DESTINATIONS = new Set(['/my-learning/', '/learn/', '/apply/']);
+  const SAFE_COURSE_PATH = /^\/courses\/[a-z0-9-]{1,128}\/$/;
 
   function apiBaseUrl() {
     const host = window.location.hostname;
@@ -17,7 +18,7 @@
     try {
       const url = new URL(value, window.location.origin);
       if (url.origin !== window.location.origin || url.username || url.password) return '/my-learning/';
-      const allowed = SAFE_DESTINATIONS.some((prefix) => url.pathname === prefix || url.pathname.startsWith(prefix));
+      const allowed = SAFE_DESTINATIONS.has(url.pathname) || SAFE_COURSE_PATH.test(url.pathname);
       if (!allowed) return '/my-learning/';
       const safeQuery = new URLSearchParams();
       ['courseId', 'applicationId'].forEach((name) => {

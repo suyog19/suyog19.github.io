@@ -17,4 +17,11 @@ idempotent registration request before requesting OTP, so new and returning
 learners receive the same non-enumerating flow. Safe destinations discard URL
 fragments and all query parameters except validated course/application IDs.
 
+The protected `/learn/` and `/my-learning/` pages intentionally use `noindex`
+and are excluded from `sitemap.xml`. They still include canonical and social
+metadata plus the existing GA4 product. Analytics receives a fixed canonical
+page location/path, never the continuation query or course/application IDs.
+Continuation paths are exact `/learn/`, `/my-learning/`, or `/apply/` routes,
+or one bounded lowercase course slug under `/courses/`.
+
 No application form, course content, admin behavior, or new identity mechanism is included.
