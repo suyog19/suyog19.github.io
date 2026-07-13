@@ -42,6 +42,37 @@ test('only an explicit OFFERED state is actionable', () => {
   assert.equal(view.hasActionableOffer(null), false);
 });
 
+test('Gate 2 links require backend action codes and bounded owned enrolment ids', () => {
+  const payment = { offer: { enrolmentId: 'enr_one' }, gate2: { action: { code: 'DEPOSIT_DUE' }, enrolment: { status: 'OFFERED' } } };
+  assert.equal(view.gate2Href(payment), '/my-learning/payment/?enrolmentId=enr_one');
+  assert.equal(view.gate2ChangeHref(payment), '/my-learning/change/?enrolmentId=enr_one');
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'REFUND_PROCESSING' } } }), '/my-learning/change/?enrolmentId=enr_one');
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'PAYMENT_ACTION_NEEDED' } } }), '/contact/');
+  assert.equal(view.gate2Href({ ...payment, offer: { enrolmentId: '../admin' } }), null);
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'BALANCE_DUE' } } }), null);
+  assert.equal(view.gate2ChangeHref({ ...payment, gate2: { ...payment.gate2, learnerChange: { status: 'REQUESTED' } } }), null);
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'RESERVED' }, learnerChange: { status: 'DECIDED', decision: 'TRANSFER_OFFERED' } } }), '/my-learning/change/?enrolmentId=enr_one');
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'RESERVED' }, enrolment: { status: 'CANCELLED' } } }), '/my-learning/change/?enrolmentId=enr_one');
+});
+
+test('Gate 2 domain enums use bounded learner-friendly labels', () => {
+  assert.equal(view.gate2StatusLabel('enrolment', 'RESERVED'), 'Seat reserved');
+  assert.equal(view.gate2StatusLabel('request', 'REQUESTED'), 'Submitted');
+  assert.equal(view.gate2StatusLabel('decision', 'APPROVED'), 'Approved');
+  assert.equal(view.gate2StatusLabel('refund', 'PROCESSING'), 'Refund processing');
+  assert.equal(view.gate2StatusLabel('refund', 'UNRECOGNISED'), 'Action needed');
+});
+
+test('only Gate 1 and Gate 2 action codes are supported in V1', () => {
+  assert.equal(view.isV1ActionCode('APPLICATION_RECEIVED'), true);
+  assert.equal(view.isV1ActionCode('REFUND_PROCESSING'), true);
+  assert.equal(view.isV1ActionCode('BALANCE_DUE'), false);
+  assert.equal(view.isV1ActionCode('VIEW_COURSE_RESOURCES'), false);
+  assert.equal(view.isGate2ActionCode('DEPOSIT_DUE'), true);
+  assert.equal(view.isGate2ActionCode('REFUND_PROCESSING'), true);
+  assert.equal(view.isGate2ActionCode('APPLICATION_RECEIVED'), false);
+});
+
 test('correction links require explicit eligibility and bounded owned identifiers', () => {
   assert.equal(view.correctionHref({ canReplace: false }), null);
   assert.equal(view.correctionHref({ canReplace: true, applicationId: 'app_abc', course: { courseId: 'crs_python_foundations' } }), '/apply/?courseId=crs_python_foundations&applicationId=app_abc');

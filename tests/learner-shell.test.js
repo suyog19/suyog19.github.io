@@ -117,7 +117,87 @@ test('renderer shows an offer only for the backend OFFERED state', () => {
   const text = elements['learner-applications'].children[0].children
     .map((child) => child.textContent).join(' | ');
   assert.match(text, /A cohort offer is available/);
-  assert.match(text, /No payment workflow is enabled in Gate 1/);
+});
+
+test('renderer keeps Gate 2 domain stages separate and links only to focused journeys', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'REFUND_PROCESSING', label: 'View refund status', href: '/my-learning/payments/enr_one/' },
+    applications: [{
+      reference: 'APP-G2', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' },
+      action: { label: 'View refund status' },
+      gate2: {
+        journeyStatus: 'REFUND_PROCESSING', action: { code: 'REFUND_PROCESSING', label: 'View refund status' },
+        enrolment: { status: 'RESERVED', seatReserved: true },
+        learnerChange: { type: 'CANCELLATION', status: 'DECIDED', decision: 'APPROVED' },
+        refund: { status: 'PROCESSING', amount: 1000 }, communication: { status: 'FAILED' },
+      },
+    }],
+  }));
+  assert.equal(elements['learner-current-action'].children[2].href, '/my-learning/change/?enrolmentId=enr_one');
+  const card = elements['learner-applications'].children[0];
+  const joined = card.children.map((child) => child.textContent).join(' | ');
+  assert.match(joined, /Place status: Seat reserved/);
+  assert.match(joined, /Seat reservation is confirmed by the service/);
+  assert.match(joined, /Organiser request: Decision recorded · Approved/);
+  assert.match(joined, /Provider refund: Refund processing/);
+  assert.match(joined, /message could not be confirmed[\s\S]*status above are unchanged/);
+  assert.ok(card.children.find((child) => child.href === '/my-learning/change/?enrolmentId=enr_one'));
+  assert.equal(card.children.some((child) => /Request cancellation/.test(child.textContent)), false);
+});
+
+test('unsupported Gate 3 and Gate 4 actions render neutral and inert', () => {
+  for (const code of ['BALANCE_DUE', 'VIEW_COURSE_RESOURCES']) {
+    const { elements, shell } = harness();
+    shell.renderSummary(summary({
+      currentAction: { code, label: code === 'BALANCE_DUE' ? 'Pay balance' : 'Open course resources', href: '/my-learning/' },
+      applications: [{
+        reference: 'APP-FUTURE', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' },
+        action: { label: code === 'BALANCE_DUE' ? 'Pay balance' : 'Open course resources' },
+        gate2: { action: { code, label: 'Future action' }, enrolment: { status: 'RESERVED', seatReserved: true } },
+      }],
+    }));
+    const current = elements['learner-current-action'];
+    assert.equal(current.children[1].textContent, 'No action is currently available');
+    assert.equal(current.children[2].tag, 'p');
+    assert.equal(current.children[2].href, '');
+    const cardText = elements['learner-applications'].children[0].children.map((child) => child.textContent).join(' | ');
+    assert.doesNotMatch(cardText, /Pay balance|Open course resources|Future action/);
+  }
+});
+
+test('future actions stay inert when gate2 is absent or retains a supported code', () => {
+  const shapes = [
+    { gate2: null, code: 'BALANCE_DUE', label: 'Pay balance' },
+    { gate2: { action: { code: 'RESERVED', label: 'View reserved seat' }, enrolment: { status: 'RESERVED', seatReserved: true } }, code: 'VIEW_COURSE_RESOURCES', label: 'Open course resources' },
+  ];
+  shapes.forEach((shape) => {
+    const { elements, shell } = harness();
+    const application = { reference: 'APP-FUTURE', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code: shape.code, label: shape.label } };
+    if (shape.gate2) application.gate2 = shape.gate2;
+    shell.renderSummary(summary({ currentAction: { code: shape.code, label: shape.label, href: '/my-learning/' }, applications: [application] }));
+    assert.equal(elements['learner-current-action'].children[1].textContent, 'No action is currently available');
+    assert.equal(elements['learner-current-action'].children[2].tag, 'p');
+    const card = elements['learner-applications'].children[0];
+    assert.equal(card.children[1].textContent, 'Status available');
+    assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay balance|Open course resources/);
+  });
+});
+
+test('Gate 2-only actions stay inert when their authoritative projection is missing', () => {
+  ['DEPOSIT_DUE', 'REFUND_PROCESSING'].forEach((code) => {
+    const { elements, shell } = harness();
+    const label = code === 'DEPOSIT_DUE' ? 'Pay deposit' : 'View refund status';
+    shell.renderSummary(summary({
+      currentAction: { code, label, href: '/my-learning/' },
+      applications: [{ reference: 'APP-MISSING-G2', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code, label } }],
+    }));
+    assert.equal(elements['learner-current-action'].children[1].textContent, 'No action is currently available');
+    assert.equal(elements['learner-current-action'].children[2].tag, 'p');
+    const card = elements['learner-applications'].children[0];
+    assert.equal(card.children[1].textContent, 'Status available');
+    assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay deposit|View refund status/);
+  });
 });
 
 test('renderer offers correction only when backend marks the current application eligible', () => {
