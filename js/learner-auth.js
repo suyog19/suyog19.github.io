@@ -3,7 +3,7 @@
 
   const TOKEN_KEY = 'sj_learner_access_token';
   const USER_KEY = 'sj_learner_user';
-  const SAFE_DESTINATIONS = new Set(['/my-learning/', '/my-learning/payment/', '/learn/', '/apply/']);
+  const SAFE_DESTINATIONS = new Set(['/my-learning/', '/my-learning/payment/', '/my-learning/change/', '/learn/', '/apply/']);
   const SAFE_COURSE_PATH = /^\/courses\/[a-z0-9-]{1,128}\/$/;
 
   function apiBaseUrl() {

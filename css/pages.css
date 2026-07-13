@@ -5115,6 +5115,12 @@
 .learner-payment-action [aria-disabled="true"] { opacity: .55; pointer-events: none; }
 .learner-payment-action .field-hint { margin-top: .75rem; max-width: 42rem; }
 .learner-payment-safety { color: var(--color-text-muted); max-width: 44rem; }
+.learner-change-form { display: grid; gap: 1rem; max-width: 44rem; margin-top: 2rem; }
+.learner-change-form fieldset { display: grid; gap: .65rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: .75rem; }
+.learner-change-form fieldset label { display: flex; gap: .6rem; align-items: flex-start; }
+.learner-change-form select,
+.learner-change-form textarea { width: 100%; padding: .8rem; border: 1px solid var(--color-border); border-radius: .4rem; background: var(--color-background); color: var(--color-text); }
+.learner-change-form textarea { min-height: 8rem; resize: vertical; }
 
 @media (max-width: 640px) {
   .learner-payment-main { padding-top: 2.5rem; }
