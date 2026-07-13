@@ -28,6 +28,14 @@
       : null;
   }
 
+  function correctionHref(application) {
+    if (!application || application.canReplace !== true) return null;
+    const applicationId = application.applicationId;
+    const courseId = application.course && application.course.courseId;
+    if (!/^app_[A-Za-z0-9]{1,120}$/.test(applicationId || '') || !/^crs_[A-Za-z0-9_]{1,120}$/.test(courseId || '')) return null;
+    return '/apply/?courseId=' + encodeURIComponent(courseId) + '&applicationId=' + encodeURIComponent(applicationId);
+  }
+
   function hasActionableOffer(offer) {
     return Boolean(offer && offer.status === 'OFFERED');
   }
@@ -57,6 +65,7 @@
   window.sjLearnerSummary = {
     acknowledgementLabel,
     booleanLabel,
+    correctionHref,
     hasActionableOffer,
     safeCourseHref,
     safeActionHref,

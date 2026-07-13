@@ -120,6 +120,21 @@ test('renderer shows an offer only for the backend OFFERED state', () => {
   assert.match(text, /No payment workflow is enabled in Gate 1/);
 });
 
+test('renderer offers correction only when backend marks the current application eligible', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    applications: [{
+      applicationId: 'app_abc', reference: 'APP-3', canReplace: true,
+      course: { courseId: 'crs_python_foundations', title: 'Python' },
+      action: { label: 'Application received' }, offer: null,
+    }],
+  }));
+  const card = elements['learner-applications'].children[0];
+  const correction = card.children.find((child) => child.textContent === 'Correct or update application');
+  assert.equal(correction.href, '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
+  assert.match(card.children.map((child) => child.textContent).join(' | '), /does not withdraw or change/);
+});
+
 test('initialise exposes retry and support recovery after a network error', async () => {
   const { elements, shell } = harness({
     request: async () => { const error = new Error('network'); error.status = 0; throw error; },

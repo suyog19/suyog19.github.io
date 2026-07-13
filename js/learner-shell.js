@@ -70,6 +70,13 @@
       card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
       card.appendChild(textElement('h2', '', application.action && application.action.label));
       card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
+      const correctionHref = summaryView.correctionHref(application);
+      if (correctionHref) {
+        const correction = textElement('a', 'btn btn-secondary learner-correction-link', 'Correct or update application');
+        correction.href = correctionHref;
+        card.appendChild(correction);
+        card.appendChild(textElement('p', 'field-hint', 'Opening correction does not withdraw or change your current application.'));
+      }
       if (summaryView.hasActionableOffer(application.offer)) {
         card.appendChild(textElement('p', 'learner-offer-note', 'A cohort offer is available. No payment workflow is enabled in Gate 1.'));
       }

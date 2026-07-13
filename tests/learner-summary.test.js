@@ -42,6 +42,13 @@ test('only an explicit OFFERED state is actionable', () => {
   assert.equal(view.hasActionableOffer(null), false);
 });
 
+test('correction links require explicit eligibility and bounded owned identifiers', () => {
+  assert.equal(view.correctionHref({ canReplace: false }), null);
+  assert.equal(view.correctionHref({ canReplace: true, applicationId: 'app_abc', course: { courseId: 'crs_python_foundations' } }), '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
+  assert.equal(view.correctionHref({ canReplace: true, applicationId: '../admin', course: { courseId: 'crs_python_foundations' } }), null);
+  assert.equal(view.correctionHref({ canReplace: true, applicationId: 'app_abc', course: { courseId: 'https://evil.example' } }), null);
+});
+
 test('acknowledgements render only complete approved records', () => {
   assert.equal(view.acknowledgementLabel([]), 'Not recorded');
   assert.equal(view.acknowledgementLabel(null), 'Not available');
