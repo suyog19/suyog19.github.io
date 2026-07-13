@@ -9,6 +9,9 @@
   const currentAction = document.getElementById('learner-current-action');
   const applicationList = document.getElementById('learner-applications');
   const profileDetails = document.getElementById('learner-profile-details');
+  const supportLink = document.getElementById('learner-support-link');
+  const privacyLink = document.getElementById('learner-privacy-link');
+  const grievanceLink = document.getElementById('learner-grievance-link');
 
   function loginUrl() {
     return '/learn/?continue=' + encodeURIComponent(window.location.pathname + window.location.search);
@@ -59,11 +62,27 @@
       if (application.offer) {
         card.appendChild(textElement('p', 'learner-offer-note', 'A cohort offer is available. No payment workflow is enabled in Gate 1.'));
       }
+      const recommendedCourse = application.decision && application.decision.recommendedCourse;
+      const recommendationHref = recommendedCourse && summaryView.safeCourseHref(recommendedCourse.href);
+      if (recommendationHref) {
+        const recommendation = textElement('a', 'learner-course-link', 'View recommended course: ' + (recommendedCourse.title || 'Course'));
+        recommendation.href = recommendationHref;
+        card.appendChild(recommendation);
+      }
       if (application.communication && application.communication.status === 'FAILED') {
         card.appendChild(textElement('p', 'learner-communication-warning', 'A status message could not be confirmed. Your application status above is unchanged; contact support if you need help.'));
       }
       applicationList.appendChild(card);
     });
+
+    const support = summary.support || {};
+    supportLink.href = summaryView.safeSupportHref(support.supportUrl, '/contact/');
+    privacyLink.href = summaryView.safeSupportHref(
+      support.privacyUrl, '/training/policies/'
+    );
+    grievanceLink.href = summaryView.safeSupportHref(
+      support.grievanceUrl, '/training/policies/#support-and-grievance-process'
+    );
 
     profileDetails.replaceChildren();
     const learner = summary.learner;

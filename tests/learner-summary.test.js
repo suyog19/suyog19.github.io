@@ -14,6 +14,20 @@ test('action links accept only exact backend-owned destinations', () => {
   assert.equal(view.safeActionHref('javascript:alert(1)'), '/my-learning/');
 });
 
+test('support and course links allow only bounded internal destinations', () => {
+  assert.equal(
+    view.safeSupportHref('/training/policies/', '/contact/'),
+    '/training/policies/'
+  );
+  assert.equal(
+    view.safeSupportHref('/training/policies/?next=evil', '/contact/'),
+    '/contact/'
+  );
+  assert.equal(view.safeCourseHref('/training/python-foundations-ai-data/'), '/training/python-foundations-ai-data/');
+  assert.equal(view.safeCourseHref('/training/../admin/'), null);
+  assert.equal(view.safeCourseHref('https://evil.example/training/course/'), null);
+});
+
 test('boolean labels preserve true, false, and missing truth states', () => {
   assert.equal(view.booleanLabel(true, 'Yes', 'No'), 'Yes');
   assert.equal(view.booleanLabel(false, 'Yes', 'No'), 'No');
