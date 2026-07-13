@@ -152,4 +152,5 @@ test('logout uncertainty hides private content and gives safe recovery guidance'
   assert.equal(elements['learner-shell'].hidden, true);
   assert.match(elements['learner-shell-status'].textContent, /could not confirm server sign-out/);
   assert.equal(elements['learner-shell-status'].hidden, false);
+  assert.equal(elements['learner-error-actions'].hidden, false);
 });

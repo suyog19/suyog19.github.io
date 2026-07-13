@@ -136,6 +136,7 @@
     shell.hidden = true;
     status.textContent = 'Signed out on this device, but the service could not confirm server sign-out. Close this browser window on a shared device and contact support if this continues.';
     status.hidden = false;
+    errorActions.hidden = false;
   });
   retryButton.addEventListener('click', initialise);
   window.sjLearnerShell = { initialise, renderSummary };
