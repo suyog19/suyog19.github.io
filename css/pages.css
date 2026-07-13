@@ -4927,6 +4927,10 @@
   background: var(--color-surface);
 }
 
+.learner-page [hidden] {
+  display: none !important;
+}
+
 .learner-auth-main {
   min-height: calc(100vh - 76px);
   display: grid;
