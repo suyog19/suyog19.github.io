@@ -1,0 +1,60 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const test = require('node:test');
+const vm = require('node:vm');
+
+const script = fs.readFileSync('js/admin-payments.js', 'utf8');
+const page = fs.readFileSync('admin/index.html', 'utf8');
+const context = { window: {}, Number };
+vm.runInNewContext(script, context);
+const tools = context.window.sjAdminPayments;
+
+test('Gate 2 admin uses a separate accessible tab without replacing existing views', () => {
+  assert.match(page, />Messages</);
+  assert.match(page, />Feedback</);
+  assert.match(page, />Training</);
+  assert.match(page, /id="admin-payments-tab"[\s\S]*role="tab"/);
+  assert.match(page, /id="admin-payments-panel"[\s\S]*role="tabpanel"/);
+  assert.match(page, /noindex, nofollow/);
+});
+
+test('identifiers and financial display fail closed without calculation', () => {
+  assert.equal(tools.safeId('obl_abc-123'), 'obl_abc-123');
+  assert.equal(tools.safeId('../admin'), null);
+  assert.equal(tools.safeId('x'.repeat(161)), null);
+  assert.equal(tools.money(1250, 'INR'), '1250 minor units INR');
+  assert.equal(tools.money(12.5, 'INR'), 'Not available');
+  assert.equal(tools.money(1250, 'inr'), 'Not available');
+});
+
+test('commands use only approved Gate 2 admin routes and concurrency fields', () => {
+  for (const route of [
+    '/admin/training/payment-requests/', '/replace', '/disable',
+    '/admin/training/transfer-requests/',
+    '/decide', '/apply', '/refunds', '/retry', '/reconcile', '/communications/resend',
+  ]) assert.match(script, new RegExp(route.replaceAll('/', '\\/')));
+  assert.match(script, /item\.requestType\.toLowerCase\(\) \+ '-requests\/'/);
+  assert.match(script, /expectedObligationVersion/);
+  assert.match(script, /expectedRequestVersion/);
+  assert.match(script, /expectedDecisionVersion/);
+  assert.match(script, /expectedSourceEnrolmentVersion/);
+  assert.match(script, /expectedTargetCohortVersion/);
+  assert.match(script, /'Idempotency-Key'/);
+});
+
+test('consequential commands require confirmation, reason and evidence', () => {
+  assert.match(script, /name: 'reason'/);
+  assert.match(script, /name: 'evidenceReference'/);
+  assert.match(script, /reviewed current versions', 'confirmation'/);
+  assert.match(script, /confirmation: form\.get\('confirmation'\) === 'on'/);
+  assert.doesNotMatch(script, /innerHTML|safeUrl|Authorization|balanceAmount|remainingFee/);
+});
+
+test('financial and lifecycle evidence stays separated in the detail view', () => {
+  for (const label of ['Unallocated capture', 'Refundable', 'Provider status', 'Settlement', 'Learner change requests', 'Organiser decisions', 'Provider refunds', 'Communication attempts']) {
+    assert.match(script, new RegExp(label));
+  }
+  assert.match(script, /ALLOCATE_VERIFIED_CAPTURE/);
+  assert.match(script, /backend-controlled verified capture allocation/);
+  assert.match(page, /browser does not allocate money, reserve seats, calculate credit, or prove provider completion/);
+});
