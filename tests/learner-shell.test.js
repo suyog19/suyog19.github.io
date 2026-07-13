@@ -186,9 +186,15 @@ test('logout uncertainty hides private content and gives safe recovery guidance'
   const { elements } = harness({ logout: async () => false });
   elements['learner-shell'].hidden = false;
   elements['learner-user-label'].textContent = 'private@example.com';
+  elements['learner-current-action'].appendChild(new Element());
+  elements['learner-applications'].appendChild(new Element());
+  elements['learner-profile-details'].appendChild(new Element());
   await elements['learner-logout'].listeners.click();
   assert.equal(elements['learner-shell'].hidden, true);
   assert.equal(elements['learner-user-label'].textContent, '');
+  assert.equal(elements['learner-current-action'].children.length, 0);
+  assert.equal(elements['learner-applications'].children.length, 0);
+  assert.equal(elements['learner-profile-details'].children.length, 0);
   assert.match(elements['learner-shell-status'].textContent, /could not confirm server sign-out/);
   assert.equal(elements['learner-shell-status'].hidden, false);
   assert.equal(elements['learner-error-actions'].hidden, false);
