@@ -112,6 +112,7 @@
             <button class="admin-tab is-active" id="admin-messages-tab" type="button" role="tab" aria-selected="true" aria-controls="admin-messages-panel" data-admin-view="messages">Messages</button>
             <button class="admin-tab" id="admin-feedback-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-feedback-panel" data-admin-view="feedback">Feedback</button>
             <button class="admin-tab" id="admin-training-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-training-panel" data-admin-view="training">Training</button>
+            <button class="admin-tab" id="admin-payments-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-payments-panel" data-admin-view="payments">Payments</button>
           </div>
 
           <section class="admin-view-panel" id="admin-messages-panel" role="tabpanel" aria-labelledby="admin-messages-tab">
@@ -130,6 +131,11 @@
                 <p class="admin-empty">Select a message to view its details.</p>
               </article>
             </div>
+          </section>
+          <section class="admin-view-panel" id="admin-payments-panel" role="tabpanel" aria-labelledby="admin-payments-tab" hidden>
+            <div class="admin-view-toolbar"><div><h2>Gate 2 payments and changes</h2><p>Development/test-mode obligations, captures, learner requests, refunds, reconciliation and communication evidence.</p></div><button type="button" class="btn btn-secondary" id="admin-refresh-payments">Refresh</button></div>
+            <p class="admin-api-note">All amounts and states below are backend projections. The browser does not allocate money, reserve seats, calculate credit, or prove provider completion.</p>
+            <div class="admin-split"><div class="admin-list-pane"><div id="admin-payments-list" class="admin-list" aria-live="polite"></div></div><article id="admin-payment-detail" class="admin-detail-pane admin-payment-detail" aria-live="polite"><p class="admin-empty">Select a payment obligation to review.</p></article></div>
           </section>
 
           <section class="admin-view-panel" id="admin-feedback-panel" role="tabpanel" aria-labelledby="admin-feedback-tab" hidden>
@@ -215,6 +221,7 @@
   </footer>
 
   <script src="../js/admin-training.js"></script>
+  <script src="../js/admin-payments.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>
