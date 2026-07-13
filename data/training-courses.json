@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0.0",
+  "disclosureVersion": "1.0.0",
+  "provider": {
+    "name": "Suyog Joshi",
+    "brand": "Software Signal",
+    "location": "Pune, Maharashtra, India",
+    "contact": "contact@suyogjoshi.com"
+  },
+  "courses": [
+    {
+      "courseId": "crs_python_foundations",
+      "slug": "python-foundations-ai-data",
+      "title": "Python Foundations for AI and Data",
+      "summary": "Build practical Python foundations for AI and data work.",
+      "feeAmountPaise": 400000,
+      "depositAmountPaise": 100000,
+      "currency": "INR",
+      "minimumCohortSize": 10,
+      "certificateAvailable": true,
+      "scheduleStatus": "TBD"
+    },
+    {
+      "courseId": "crs_applied_python",
+      "slug": "applied-python-ai-ml",
+      "title": "Applied Python for AI and Machine Learning",
+      "summary": "Apply Python to practical AI and machine-learning workflows.",
+      "feeAmountPaise": 800000,
+      "depositAmountPaise": 200000,
+      "currency": "INR",
+      "minimumCohortSize": 5,
+      "certificateAvailable": true,
+      "scheduleStatus": "TBD"
+    }
+  ]
+}
+
