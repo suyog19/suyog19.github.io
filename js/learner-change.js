@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   const auth = window.sjLearnerAuth;
+  const recovery = window.sjLearnerChangeRecovery;
   const status = document.getElementById('change-status');
   const panel = document.getElementById('change-panel');
   const state = document.getElementById('change-state');
@@ -17,7 +18,6 @@
   function text(tag, value) { const node = document.createElement(tag); node.textContent = value || ''; return node; }
   function addDetail(label, value) { details.appendChild(text('dt', label)); details.appendChild(text('dd', value || 'Not available')); }
   function money(value, currency) { return Number.isSafeInteger(value) && value >= 0 && /^[A-Z]{3}$/.test(currency || '') ? new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(value / 100) : 'Not available'; }
-  function key(id, kind) { const name = 'sj_gate2_change_' + id + '_' + kind; let value = sessionStorage.getItem(name); if (!value) { value = 'web_' + (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)); sessionStorage.setItem(name, value); } return value; }
   function findApplication(summary, id) { return (Array.isArray(summary.applications) ? summary.applications : []).find((item) => item.offer && item.offer.enrolmentId === id) || null; }
   function describe(change, refund, enrolment) {
     if (refund) {
@@ -66,6 +66,11 @@
       const application = findApplication(results[0], id); const payment = results[1].payment || results[1];
       if (!application || !application.gate2 || !payment) throw Object.assign(new Error('NOT_AVAILABLE'), { status: 404 });
       context = { id, application, payment }; render(application, payment); status.hidden = true;
+      if (!application.gate2.learnerChange && !application.gate2.refund && recovery.read(sessionStorage, id)) {
+        requiresReconciliation = true;
+        status.hidden = false;
+        status.textContent = 'A previous submission has an uncertain outcome. Check authoritative status before the exact request is retried.';
+      }
     } catch (error) {
       if (error.status === 401 || error.status === 403) { location.replace(loginUrl()); return; }
       status.textContent = error.status === 404 ? 'This request is not available for the selected enrolment.' : 'Request status is temporarily unavailable. No request was changed.'; errors.hidden = false;
@@ -73,23 +78,30 @@
   }
   form.addEventListener('submit', async (event) => {
     event.preventDefault(); if (!context) return;
-    if (requiresReconciliation) {
-      requiresReconciliation = false;
+    let envelope = recovery.read(sessionStorage, context.id);
+    if (requiresReconciliation || envelope) {
       await initialise();
       const gate = context && context.application && context.application.gate2;
-      if (!context || (gate && (gate.learnerChange || gate.refund))) return;
+      if (!context) return;
+      if (gate && (gate.learnerChange || gate.refund)) { recovery.clear(sessionStorage, context.id); requiresReconciliation = false; return; }
+      envelope = recovery.read(sessionStorage, context.id);
+      requiresReconciliation = false;
     }
-    const selected = new FormData(form).get('requestType');
-    const kind = selected === 'TRANSFER' ? 'TRANSFER' : 'CANCELLATION';
-    const outcome = selected === 'DISCUSS_OPTIONS' ? 'DISCUSS_OPTIONS' : selected;
-    const policy = context.payment.review && context.payment.review.policyVersions && context.payment.review.policyVersions[kind.toLowerCase()];
-    if (!policy || document.getElementById('change-ack').checked !== true) { status.hidden = false; status.textContent = 'Review and acknowledge the current policy before submitting.'; return; }
+    if (!envelope) {
+      const selected = new FormData(form).get('requestType');
+      const kind = selected === 'TRANSFER' ? 'TRANSFER' : 'CANCELLATION';
+      const outcome = selected === 'DISCUSS_OPTIONS' ? 'DISCUSS_OPTIONS' : selected;
+      const policy = context.payment.review && context.payment.review.policyVersions && context.payment.review.policyVersions[kind.toLowerCase()];
+      if (!policy || document.getElementById('change-ack').checked !== true) { status.hidden = false; status.textContent = 'Review and acknowledge the current policy before submitting.'; return; }
+      envelope = recovery.create(sessionStorage, window.crypto, context.id, kind, { category: document.getElementById('change-category').value, requestedOutcome: outcome, explanation: document.getElementById('change-explanation').value, policyAcknowledgement: { documentId: 'software-signal-' + kind.toLowerCase() + '-development-policy', version: policy } });
+    }
     submit.disabled = true; status.hidden = false; status.textContent = 'Submitting your request...';
     try {
-      await auth.request('/me/enrolments/' + encodeURIComponent(context.id) + '/' + kind.toLowerCase() + '-requests', { method: 'POST', headers: { 'Idempotency-Key': key(context.id, kind) }, body: JSON.stringify({ category: document.getElementById('change-category').value, requestedOutcome: outcome, explanation: document.getElementById('change-explanation').value, policyAcknowledgement: { documentId: 'software-signal-' + kind.toLowerCase() + '-development-policy', version: policy } }) });
+      await auth.request('/me/enrolments/' + encodeURIComponent(context.id) + '/' + envelope.kind.toLowerCase() + '-requests', { method: 'POST', headers: { 'Idempotency-Key': envelope.key }, body: JSON.stringify(envelope.payload) });
+      recovery.clear(sessionStorage, context.id);
       await initialise();
     } catch (error) {
-      if (error.status === 0) {
+      if (recovery.isAmbiguous(error.status)) {
         requiresReconciliation = true;
         await initialise();
         const gate = context && context.application && context.application.gate2;
@@ -99,6 +111,7 @@
           errors.hidden = false;
         }
       } else {
+        recovery.clear(sessionStorage, context.id);
         status.textContent = error.status === 409 ? 'A request already exists or eligibility changed. Check the current status.' : 'The request could not be submitted. No refund, credit or transfer was created.'; errors.hidden = false;
       }
     } finally { submit.disabled = false; }

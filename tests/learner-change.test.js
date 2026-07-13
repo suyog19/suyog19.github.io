@@ -23,7 +23,7 @@ test('request input is bounded and acknowledgement describes non-promissory revi
 
 test('client submits only the two approved owner routes with idempotency', () => {
   assert.match(script, /kind\.toLowerCase\(\) \+ '-requests'/);
-  assert.match(script, /'Idempotency-Key': key\(context\.id, kind\)/);
+  assert.match(script, /'Idempotency-Key': envelope\.key/);
   assert.match(script, /policyAcknowledgement:/);
   assert.match(script, /requestedOutcome: outcome/);
   assert.doesNotMatch(script, /amountMinorUnits|providerPaymentReference|creditAmount/);
@@ -42,8 +42,8 @@ test('status copy separates request, decision and refund execution truth', () =>
 });
 
 test('ambiguous submission reconciles authoritative truth before same-key retry', () => {
-  assert.match(script, /if \(error\.status === 0\)/);
+  assert.match(script, /recovery\.isAmbiguous\(error\.status\)/);
   assert.match(script, /requiresReconciliation = true;[\s\S]*await initialise\(\)/);
-  assert.match(script, /if \(requiresReconciliation\)[\s\S]*await initialise\(\)/);
+  assert.match(script, /if \(requiresReconciliation \|\| envelope\)[\s\S]*await initialise\(\)/);
   assert.match(script, /same request key will be reused/);
 });
