@@ -47,6 +47,14 @@ test('submission payload is the exact approved contract', () => {
   assert.equal(Object.hasOwn(payload, 'payment'), false);
 });
 
+test('replacement adds only the optimistic concurrency precondition', () => {
+  const model = loadModel();
+  const replacement = model.replacementPayload(validValue(), 3);
+  assert.equal(replacement.expectedVersion, 3);
+  assert.deepEqual(Object.keys(replacement).sort(), ['acknowledgements', 'answers', 'courseId', 'expectedVersion']);
+  assert.notEqual(model.fingerprint(validValue()), model.fingerprint(validValue(), { expectedVersion: 3 }));
+});
+
 test('validation covers profile, answers, adult status, and acknowledgements', () => {
   const model = loadModel();
   assert.deepEqual(Object.keys(model.validate(validValue(), true)), []);
@@ -62,6 +70,7 @@ test('backend contract errors map to specific recovery states', () => {
   assert.equal(model.errorMessage({ status: 409, body: { error: 'DUPLICATE_ACTIVE_APPLICATION' } }).code, 'DUPLICATE');
   assert.equal(model.errorMessage({ status: 409, body: { error: 'REGISTRATION_CLOSED' } }).code, 'REGISTRATION_CLOSED');
   assert.equal(model.errorMessage({ status: 409, body: { error: 'ACKNOWLEDGEMENT_VERSION_NOT_CURRENT' } }).code, 'ACKNOWLEDGEMENT_REQUIRED');
+  assert.equal(model.errorMessage({ status: 409, body: { error: 'APPLICATION_REPLACEMENT_CONFLICT' } }).code, 'REPLACEMENT_CONFLICT');
   assert.equal(model.errorMessage({ status: 503, body: {} }).code, 'UNCERTAIN');
   assert.equal(model.errorMessage({ status: 401, body: {} }).code, 'SESSION_EXPIRED');
 });
@@ -75,4 +84,6 @@ test('page remains private-by-default and contains no payment integration', () =
   assert.doesNotMatch(script, /emailId.*gtag|application\.reference.*gtag/);
   assert.match(script, /sessionStorage/);
   assert.match(script, /Idempotency-Key/);
+  assert.match(script, /\/replacements/);
+  assert.match(script, /Your original remains active until you resubmit/);
 });

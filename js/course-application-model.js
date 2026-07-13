@@ -35,7 +35,8 @@
       weeklyAvailability: model.answers.weeklyAvailability.trim(),
     }, acknowledgements: ACKNOWLEDGEMENTS.map((item) => ({ ...item })) };
   }
-  function fingerprint(model) { return JSON.stringify(payload(model)); }
+  function replacementPayload(model, expectedVersion) { return { ...payload(model), expectedVersion }; }
+  function fingerprint(model, replacement) { return JSON.stringify(replacement ? replacementPayload(model, replacement.expectedVersion) : payload(model)); }
   function idempotencyKey() {
     const random = new Uint32Array(4);
     crypto.getRandomValues(random);
@@ -46,6 +47,7 @@
     if (error && (error.status === 401 || error.status === 403)) return { code: 'SESSION_EXPIRED', message: 'Your secure session expired. Verify your email again to continue.' };
     if (code === 'DUPLICATE_ACTIVE_APPLICATION') return { code: 'DUPLICATE', message: 'You already have a current application for this course. View it in My Learning.' };
     if (code === 'ACKNOWLEDGEMENT_VERSION_NOT_CURRENT') return { code: 'ACKNOWLEDGEMENT_REQUIRED', message: 'Confirm the current terms and recorded-delivery notices, then retry.' };
+    if (code === 'APPLICATION_REPLACEMENT_CONFLICT') return { code: 'REPLACEMENT_CONFLICT', message: 'This application can no longer be corrected because its status changed. View My Learning or contact support.' };
     if (code === 'PROFILE_REQUIRED') return { code, message: 'Complete your learner profile before applying.' };
     if (code === 'REGISTRATION_CLOSED') return { code, message: 'Applications are currently closed for this course.' };
     if (code === 'COHORT_FULL') return { code, message: 'The currently available cohort is full.' };
@@ -55,5 +57,5 @@
     if (!error || !error.status || error.status >= 500) return { code: 'UNCERTAIN', message: 'The result could not be confirmed. Retry safely with the same information; this will not create a duplicate application.' };
     return { code: code || 'REQUEST_FAILED', message: 'The application could not be submitted. Review the information or contact support.' };
   }
-  window.sjCourseApplication = { ACKNOWLEDGEMENTS, course, errorMessage, fingerprint, idempotencyKey, payload, validate };
+  window.sjCourseApplication = { ACKNOWLEDGEMENTS, course, errorMessage, fingerprint, idempotencyKey, payload, replacementPayload, validate };
 }());

@@ -3,6 +3,8 @@
   const auth = window.sjLearnerAuth;
   const model = window.sjCourseApplication;
   const courseId = new URLSearchParams(window.location.search).get('courseId') || '';
+  const sourceApplicationId = new URLSearchParams(window.location.search).get('applicationId') || '';
+  const correctionMode = sourceApplicationId !== '';
   const selectedCourse = model.course(courseId);
   const draftKey = 'sj_gate1_application_draft_' + courseId;
   const idempotencyStateKey = 'sj_gate1_application_idempotency_' + courseId;
@@ -13,17 +15,22 @@
   const submit = document.getElementById('application-submit');
   const result = document.getElementById('application-result');
   const reference = document.getElementById('application-reference');
+  const resultTitle = document.getElementById('application-result-title');
+  const resultDetail = document.getElementById('application-result-detail');
   const courseSummary = document.getElementById('application-course-summary');
   const profileFields = document.getElementById('profile-fields');
   const userLabel = document.getElementById('application-user-label');
   const logout = document.getElementById('application-logout');
+  const cancel = document.getElementById('application-cancel');
   let needsProfile = false;
   let pending = false;
   let retryAction = initialise;
   let missingAcknowledgements = [];
+  let sourceApplication = null;
 
   function destination() {
-    return '/apply/?courseId=' + encodeURIComponent(courseId);
+    const source = correctionMode ? '&applicationId=' + encodeURIComponent(sourceApplicationId) : '';
+    return '/apply/?courseId=' + encodeURIComponent(courseId) + source;
   }
   function loginUrl() { return '/learn/?continue=' + encodeURIComponent(destination()); }
   function message(value, tone) {
@@ -75,7 +82,7 @@
     document.getElementById('application-recording').checked = draft.recordingAccepted === true;
   }
   function idempotencyKey(value) {
-    const fingerprint = model.fingerprint(value);
+    const fingerprint = model.fingerprint(value, sourceApplication);
     let state = null;
     try { state = JSON.parse(sessionStorage.getItem(idempotencyStateKey) || 'null'); } catch (_) { state = null; }
     if (!state || state.fingerprint !== fingerprint || typeof state.key !== 'string') {
@@ -112,14 +119,18 @@
     const data = await auth.request('/me/applications/current?courseId=' + encodeURIComponent(courseId), { method: 'GET' });
     return data.application || null;
   }
-  function showSuccess(application) {
+  function showSuccess(application, trackCompletion = true) {
     form.hidden = true;
     recovery.hidden = true;
     result.hidden = false;
     reference.textContent = application.reference || 'Available in My Learning';
+    resultTitle.textContent = correctionMode ? 'Updated application received' : 'Application received';
+    resultDetail.textContent = correctionMode
+      ? 'This new application replaces your earlier submission. Only the updated application will be reviewed.'
+      : 'Your application will be reviewed. Check My Learning for the current status and next action.';
     sessionStorage.removeItem(draftKey);
     sessionStorage.removeItem(idempotencyStateKey);
-    analytics('course_application_complete');
+    if (trackCompletion) analytics('course_application_complete');
     result.querySelector('a').focus();
   }
   async function reconcile() {
@@ -169,10 +180,16 @@
         }
         missingAcknowledgements = [];
       }
-      const data = await auth.request('/me/applications', {
+      const endpoint = correctionMode
+        ? '/me/applications/' + encodeURIComponent(sourceApplicationId) + '/replacements'
+        : '/me/applications';
+      const requestPayload = correctionMode
+        ? model.replacementPayload(value, sourceApplication.version)
+        : model.payload(value);
+      const data = await auth.request(endpoint, {
         method: 'POST',
         headers: { 'Idempotency-Key': idempotencyKey(value) },
-        body: JSON.stringify(model.payload(value)),
+        body: JSON.stringify(requestPayload),
       });
       showSuccess(data.application);
     } catch (error) {
@@ -182,6 +199,10 @@
       }
       if (friendly.code === 'DUPLICATE' || friendly.code === 'UNCERTAIN') {
         if (await reconcile()) return;
+      }
+      if (friendly.code === 'REPLACEMENT_CONFLICT') {
+        form.hidden = true;
+        retry.hidden = true;
       }
       message(friendly.message, 'error');
       retryAction = submitApplication;
@@ -193,6 +214,13 @@
   }
   async function initialise() {
     retryAction = initialise;
+    retry.hidden = false;
+    if (correctionMode && !/^app_[A-Za-z0-9]{1,120}$/.test(sourceApplicationId)) {
+      message('This correction link is invalid. Return to My Learning and try again.', 'error');
+      recovery.hidden = false;
+      retry.hidden = true;
+      return;
+    }
     if (!selectedCourse) {
       courseSummary.textContent = 'Choose one of the available courses before applying.';
       message('This course selection is invalid or unavailable.', 'error');
@@ -221,7 +249,24 @@
         profileFields.hidden = false;
       }
       const existing = await currentApplication();
-      if (existing) { showSuccess(existing); return; }
+      if (correctionMode) {
+        if (!existing || existing.applicationId !== sourceApplicationId || !['NEW', 'UNDER_REVIEW'].includes(existing.status)) {
+          throw Object.assign(new Error('APPLICATION_REPLACEMENT_CONFLICT'), { status: 409, body: { error: 'APPLICATION_REPLACEMENT_CONFLICT' } });
+        }
+        const detail = await auth.request('/me/applications/' + encodeURIComponent(sourceApplicationId), { method: 'GET' });
+        sourceApplication = detail.application;
+        if (!sourceApplication || sourceApplication.courseId !== courseId || sourceApplication.version !== existing.version) {
+          throw Object.assign(new Error('APPLICATION_REPLACEMENT_CONFLICT'), { status: 409, body: { error: 'APPLICATION_REPLACEMENT_CONFLICT' } });
+        }
+        if (!readDraft()) {
+          document.getElementById('application-experience').value = sourceApplication.answers.programmingExperience;
+          document.getElementById('application-goal').value = sourceApplication.answers.learningGoal;
+          document.getElementById('application-availability').value = sourceApplication.answers.weeklyAvailability;
+        }
+        courseSummary.textContent = 'Correcting ' + sourceApplication.reference + ' for ' + publicCourse.course.title + '. Your original remains active until you resubmit.';
+        submit.textContent = 'Submit corrected application';
+        cancel.hidden = false;
+      } else if (existing) { showSuccess(existing, false); return; }
       form.hidden = false;
       retryAction = submitApplication;
       message('', '');
@@ -230,6 +275,7 @@
       const friendly = model.errorMessage(error);
       if (friendly.code === 'SESSION_EXPIRED') { window.location.replace(loginUrl()); return; }
       message(friendly.message, 'error');
+      if (friendly.code === 'REPLACEMENT_CONFLICT') retry.hidden = true;
       recovery.hidden = false;
     }
   }

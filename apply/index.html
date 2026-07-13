@@ -51,9 +51,9 @@
           <label class="application-check"><input id="application-recording" type="checkbox" required> I acknowledge that recorded-class delivery terms will apply as disclosed, version 1.0.0.</label>
         </fieldset>
         <p class="application-disclosure">Applying is free. It does not guarantee admission, a seat, placement, employment, income, certification, or any particular learning outcome. No payment is collected in Gate 1.</p>
-        <button id="application-submit" class="btn btn-primary" type="submit">Submit application</button>
+        <div class="learner-form-actions"><button id="application-submit" class="btn btn-primary" type="submit">Submit application</button><a id="application-cancel" class="btn btn-secondary" href="../my-learning/" hidden>Abandon correction</a></div>
       </form>
-      <section id="application-result" class="application-result" aria-labelledby="application-result-title" hidden><h2 id="application-result-title">Application received</h2><p>Your reference is <strong id="application-reference"></strong>.</p><p>Your application will be reviewed. Check My Learning for the current status and next action.</p><a class="btn btn-primary" href="../my-learning/">Go to My Learning</a></section>
+      <section id="application-result" class="application-result" aria-labelledby="application-result-title" hidden><h2 id="application-result-title">Application received</h2><p>Your reference is <strong id="application-reference"></strong>.</p><p id="application-result-detail">Your application will be reviewed. Check My Learning for the current status and next action.</p><a class="btn btn-primary" href="../my-learning/">Go to My Learning</a></section>
     </section>
   </main>
   <script src="../js/learner-auth.js"></script>
@@ -61,4 +61,3 @@
   <script src="../js/course-application.js"></script>
 </body>
 </html>
-
