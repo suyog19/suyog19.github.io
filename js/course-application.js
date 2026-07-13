@@ -8,6 +8,7 @@
   const selectedCourse = model.course(courseId);
   const draftKey = 'sj_gate1_application_draft_' + courseId;
   const idempotencyStateKey = 'sj_gate1_application_idempotency_' + courseId;
+  const profileIdempotencyStateKey = 'sj_gate1_profile_idempotency';
   const form = document.getElementById('application-form');
   const status = document.getElementById('application-status');
   const recovery = document.getElementById('application-recovery');
@@ -136,13 +137,54 @@
   async function reconcile() {
     try {
       const application = await currentApplication();
-      if (application) { showSuccess(application); return true; }
+      const isExpected = correctionMode
+        ? application && application.applicationId !== sourceApplicationId && application.replacesApplicationId === sourceApplicationId
+        : Boolean(application);
+      if (isExpected) { showSuccess(application); return true; }
     } catch (error) {
       if (error.status === 401 || error.status === 403) {
         saveDraft(); window.location.replace(loginUrl()); return true;
       }
     }
     return false;
+  }
+  function profileIdempotencyKey(value) {
+    const fingerprint = JSON.stringify({ fullName: value.fullName.trim(), timezone: value.timezone, acknowledgements: model.ACKNOWLEDGEMENTS });
+    let state = null;
+    try { state = JSON.parse(sessionStorage.getItem(profileIdempotencyStateKey) || 'null'); } catch (_) { state = null; }
+    if (!state || state.fingerprint !== fingerprint || typeof state.key !== 'string') {
+      state = { fingerprint, key: model.idempotencyKey() };
+      sessionStorage.setItem(profileIdempotencyStateKey, JSON.stringify(state));
+    }
+    return state.key;
+  }
+  function profileMatches(learner, value) {
+    const current = new Set((learner.acknowledgements || []).map((item) => item.documentId + ':' + (item.version || item.documentVersion)));
+    return learner.fullName === value.fullName.trim()
+      && learner.timezone === value.timezone
+      && learner.adultEligibilityConfirmed === true
+      && model.ACKNOWLEDGEMENTS.every((item) => current.has(item.documentId + ':' + item.version));
+  }
+  async function bootstrapProfile(value) {
+    const body = {
+      fullName: value.fullName.trim(), timezone: value.timezone,
+      adultEligibilityConfirmed: true, acknowledgements: model.ACKNOWLEDGEMENTS,
+    };
+    try {
+      await auth.request('/learners/me/bootstrap', {
+        method: 'POST', headers: { 'Idempotency-Key': profileIdempotencyKey(value) }, body: JSON.stringify(body),
+      });
+    } catch (error) {
+      if (error.status === 401 || error.status === 403) throw error;
+      try {
+        const profile = await auth.request('/learners/me', { method: 'GET' });
+        if (!profile.learner || !profileMatches(profile.learner, value)) throw error;
+      } catch (reconcileError) {
+        if (reconcileError === error) throw error;
+        throw error;
+      }
+    }
+    sessionStorage.removeItem(profileIdempotencyStateKey);
   }
   async function submitApplication() {
     if (pending) return;
@@ -160,14 +202,7 @@
     message('Submitting your application…', '');
     try {
       if (needsProfile) {
-        await auth.request('/learners/me/bootstrap', {
-          method: 'POST',
-          body: JSON.stringify({
-            fullName: value.fullName.trim(), timezone: value.timezone,
-            adultEligibilityConfirmed: true,
-            acknowledgements: model.ACKNOWLEDGEMENTS,
-          }),
-        });
+        await bootstrapProfile(value);
         needsProfile = false;
         profileFields.hidden = true;
       } else {
@@ -215,6 +250,13 @@
   async function initialise() {
     retryAction = initialise;
     retry.hidden = false;
+    if (!model.applicationsEnabled(window.location.hostname)) {
+      courseSummary.textContent = 'Applications are not currently open.';
+      message('This application journey is disabled until launch approval.', '');
+      form.hidden = true;
+      recovery.hidden = true;
+      return;
+    }
     if (correctionMode && !/^app_[A-Za-z0-9]{1,120}$/.test(sourceApplicationId)) {
       message('This correction link is invalid. Return to My Learning and try again.', 'error');
       recovery.hidden = false;

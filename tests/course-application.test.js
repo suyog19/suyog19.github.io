@@ -64,7 +64,7 @@ function pageHarness(search, request) {
     document: { getElementById(id) { return elements[id]; } },
     window: {
       __SJ_DISABLE_AUTO_INIT__: true,
-      location: { search, replace(value) { this.redirected = value; } },
+      location: { hostname: 'dev.suyogjoshi.com', search, replace(value) { this.redirected = value; } },
       sjLearnerAuth: {
         restore: async () => ({ emailId: 'learner@example.com' }), request,
         logout: async () => true,
@@ -81,6 +81,15 @@ test('only approved Gate 1 course identifiers are accepted', () => {
   assert.equal(model.course('crs_python_foundations').slug, 'python-foundations-ai-data');
   assert.equal(model.course('crs_applied_python').slug, 'applied-python-ai-ml');
   assert.equal(model.course('../admin'), null);
+});
+
+test('production and unknown hosts remain hard-disabled until launch approval', () => {
+  const model = loadModel();
+  assert.equal(model.applicationsEnabled('suyogjoshi.com'), false);
+  assert.equal(model.applicationsEnabled('www.suyogjoshi.com'), false);
+  assert.equal(model.applicationsEnabled('untrusted.example'), false);
+  assert.equal(model.applicationsEnabled('dev.suyogjoshi.com'), true);
+  assert.equal(model.applicationsEnabled('preview.suyogjoshi-dev.pages.dev'), true);
 });
 
 test('submission payload is the exact approved contract', () => {
@@ -230,4 +239,74 @@ test('uncertain replacement retry reuses its key and resolves without duplicatio
   assert.equal(keys.length, 2);
   assert.equal(keys[0], keys[1]);
   assert.equal(elements['application-reference'].textContent, 'APP-NEW');
+});
+
+test('uncertain replacement does not mistake the unchanged source for success', async () => {
+  const source = {
+    applicationId: 'app_source', reference: 'APP-SOURCE', courseId: 'crs_python_foundations', status: 'NEW', version: 2,
+    answers: { programmingExperience: 'Experience', learningGoal: 'Goal', weeklyAvailability: 'Availability' },
+  };
+  let attempts = 0;
+  const { elements, page } = pageHarness('?courseId=crs_python_foundations&applicationId=app_source', async (path) => {
+    if (path === '/training/courses/python-foundations-ai-data') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
+    if (path === '/learners/me') return { learner: { adultEligibilityConfirmed: true, acknowledgements: [
+      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+    ] } };
+    if (path.startsWith('/me/applications/current')) return { application: source };
+    if (path === '/me/applications/app_source') return { application: source };
+    if (path.endsWith('/replacements')) { attempts += 1; const error = new Error('network'); error.status = 0; throw error; }
+    throw new Error('Unexpected ' + path);
+  });
+  await page.initialise();
+  elements['application-terms'].checked = true;
+  elements['application-recording'].checked = true;
+  await page.submitApplication();
+  assert.equal(attempts, 1);
+  assert.equal(elements['application-result'].hidden, true);
+  assert.equal(elements['application-form'].hidden, false);
+  assert.match(elements['application-status'].textContent, /could not be confirmed/);
+});
+
+test('lost profile-bootstrap response reconciles before application submission', async () => {
+  let profileExists = false;
+  let submitted = false;
+  const { elements, page } = pageHarness('?courseId=crs_python_foundations', async (path, options) => {
+    if (path === '/training/courses/python-foundations-ai-data') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
+    if (path === '/learners/me' && !profileExists) { const error = new Error('missing'); error.status = 404; throw error; }
+    if (path === '/learners/me') return { learner: { fullName: 'Learner', timezone: 'Asia/Kolkata', adultEligibilityConfirmed: true, acknowledgements: [
+      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+    ] } };
+    if (path.startsWith('/me/applications/current')) return { application: null };
+    if (path === '/learners/me/bootstrap') {
+      assert.match(options.headers['Idempotency-Key'], /^web-/);
+      profileExists = true;
+      const error = new Error('lost response'); error.status = 0; throw error;
+    }
+    if (path === '/me/applications') { submitted = true; return { application: { applicationId: 'app_new', reference: 'APP-NEW' } }; }
+    throw new Error('Unexpected ' + path);
+  });
+  await page.initialise();
+  elements['application-full-name'].value = 'Learner';
+  elements['application-experience'].value = 'Experience';
+  elements['application-goal'].value = 'Goal';
+  elements['application-availability'].value = 'Availability';
+  elements['application-adult'].checked = true;
+  elements['application-terms'].checked = true;
+  elements['application-recording'].checked = true;
+  await page.submitApplication();
+  assert.equal(submitted, true);
+  assert.equal(elements['application-reference'].textContent, 'APP-NEW');
+});
+
+test('production guard prevents authentication or API requests', async () => {
+  let requests = 0;
+  const { context, elements, page } = pageHarness('?courseId=crs_python_foundations', async () => { requests += 1; return {}; });
+  context.window.location.hostname = 'suyogjoshi.com';
+  context.window.sjLearnerAuth.restore = async () => { requests += 1; return {}; };
+  await page.initialise();
+  assert.equal(requests, 0);
+  assert.equal(elements['application-form'].hidden, true);
+  assert.match(elements['application-status'].textContent, /disabled until launch approval/);
 });

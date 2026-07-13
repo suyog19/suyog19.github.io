@@ -42,6 +42,14 @@
     crypto.getRandomValues(random);
     return 'web-' + Array.from(random, (value) => value.toString(16).padStart(8, '0')).join('');
   }
+  function applicationsEnabled(hostname) {
+    return hostname === 'dev.suyogjoshi.com'
+      || hostname === 'localhost'
+      || hostname === '127.0.0.1'
+      || hostname === '::1'
+      || hostname === '[::1]'
+      || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(hostname || '');
+  }
   function errorMessage(error) {
     const code = error && error.body && error.body.error;
     if (error && (error.status === 401 || error.status === 403)) return { code: 'SESSION_EXPIRED', message: 'Your secure session expired. Verify your email again to continue.' };
@@ -57,5 +65,5 @@
     if (!error || !error.status || error.status >= 500) return { code: 'UNCERTAIN', message: 'The result could not be confirmed. Retry safely with the same information; this will not create a duplicate application.' };
     return { code: code || 'REQUEST_FAILED', message: 'The application could not be submitted. Review the information or contact support.' };
   }
-  window.sjCourseApplication = { ACKNOWLEDGEMENTS, course, errorMessage, fingerprint, idempotencyKey, payload, replacementPayload, validate };
+  window.sjCourseApplication = { ACKNOWLEDGEMENTS, applicationsEnabled, course, errorMessage, fingerprint, idempotencyKey, payload, replacementPayload, validate };
 }());
