@@ -66,10 +66,11 @@
       && application.gate2.action.code === action.code
     ));
     const currentGate2Href = summaryView.gate2Href(currentGate2);
+    const currentSupported = summaryView.isV1ActionCode(action.code);
     currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
-    const currentLabel = currentGate2 && !currentGate2Href ? 'No action is currently available' : action.label || 'My Learning';
+    const currentLabel = !currentSupported || (currentGate2 && !currentGate2Href) ? 'No action is currently available' : action.label || 'My Learning';
     currentAction.appendChild(textElement('h2', '', currentLabel));
-    if (!currentGate2 || currentGate2Href) {
+    if (currentSupported && (!currentGate2 || currentGate2Href)) {
       const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
       actionLink.href = currentGate2Href || summaryView.safeActionHref(action.href);
       currentAction.appendChild(actionLink);
@@ -85,14 +86,16 @@
       const card = textElement('article', 'learner-application-card', '');
       const gate2 = application.gate2;
       const gate2ActionHref = summaryView.gate2Href(application);
+      const applicationAction = application.action || {};
+      const applicationSupported = !applicationAction.code || summaryView.isV1ActionCode(applicationAction.code);
       card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
-      card.appendChild(textElement('h2', '', gate2 && !gate2ActionHref ? 'Status available' : application.action && application.action.label));
+      card.appendChild(textElement('h2', '', !applicationSupported || (gate2 && !gate2ActionHref) ? 'Status available' : applicationAction.label));
       card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
       if (gate2) {
         const enrolment = gate2.enrolment || {};
         card.appendChild(textElement('p', 'learner-offer-note', 'Place status: ' + summaryView.gate2StatusLabel('enrolment', enrolment.status)));
         if (enrolment.seatReserved === true) card.appendChild(textElement('p', '', 'Seat reservation is confirmed by the service.'));
-        if (gate2ActionHref) {
+        if (applicationSupported && gate2ActionHref) {
           const gate2Action = textElement('a', 'btn btn-primary learner-gate2-link', gate2.action && gate2.action.label || 'View status');
           gate2Action.href = gate2ActionHref;
           card.appendChild(gate2Action);

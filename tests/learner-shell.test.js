@@ -166,6 +166,24 @@ test('unsupported Gate 3 and Gate 4 actions render neutral and inert', () => {
   }
 });
 
+test('future actions stay inert when gate2 is absent or retains a supported code', () => {
+  const shapes = [
+    { gate2: null, code: 'BALANCE_DUE', label: 'Pay balance' },
+    { gate2: { action: { code: 'RESERVED', label: 'View reserved seat' }, enrolment: { status: 'RESERVED', seatReserved: true } }, code: 'VIEW_COURSE_RESOURCES', label: 'Open course resources' },
+  ];
+  shapes.forEach((shape) => {
+    const { elements, shell } = harness();
+    const application = { reference: 'APP-FUTURE', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code: shape.code, label: shape.label } };
+    if (shape.gate2) application.gate2 = shape.gate2;
+    shell.renderSummary(summary({ currentAction: { code: shape.code, label: shape.label, href: '/my-learning/' }, applications: [application] }));
+    assert.equal(elements['learner-current-action'].children[1].textContent, 'No action is currently available');
+    assert.equal(elements['learner-current-action'].children[2].tag, 'p');
+    const card = elements['learner-applications'].children[0];
+    assert.equal(card.children[1].textContent, 'Status available');
+    assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay balance|Open course resources/);
+  });
+});
+
 test('renderer offers correction only when backend marks the current application eligible', () => {
   const { elements, shell } = harness();
   shell.renderSummary(summary({

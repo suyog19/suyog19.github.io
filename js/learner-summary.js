@@ -11,6 +11,12 @@
     'software-signal-terms-privacy': 'Terms and privacy',
     'software-signal-recorded-delivery': 'Recorded class delivery',
   };
+  const V1_ACTION_CODES = new Set([
+    'APPLY', 'COMPLETE_PROFILE', 'APPLICATION_RECEIVED', 'UNDER_REVIEW', 'OFFERED',
+    'ACCEPTED', 'WAITLISTED', 'RECOMMENDED', 'DECLINED', 'WITHDRAWN',
+    'DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED', 'PAYMENT_ACTION_NEEDED',
+    'CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED',
+  ]);
 
   function safeActionHref(value) {
     return typeof value === 'string' && ACTION_PATHS.has(value)
@@ -44,7 +50,7 @@
     const gate = application && application.gate2;
     const id = application && application.offer && application.offer.enrolmentId;
     const code = gate && gate.action && gate.action.code;
-    if (!/^[A-Za-z0-9_-]{1,128}$/.test(id || '')) return null;
+    if (!gate || !/^[A-Za-z0-9_-]{1,128}$/.test(id || '')) return null;
     if (code === 'PAYMENT_ACTION_NEEDED') return '/contact/';
     if (gate.refund || gate.learnerChange || (gate.enrolment && ['CANCELLED', 'TRANSFERRED'].includes(gate.enrolment.status))) {
       return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
@@ -77,6 +83,8 @@
     return labels[kind] && labels[kind][value] || 'Action needed';
   }
 
+  function isV1ActionCode(value) { return typeof value === 'string' && V1_ACTION_CODES.has(value); }
+
   function booleanLabel(value, whenTrue, whenFalse) {
     if (value === true) return whenTrue;
     if (value === false) return whenFalse;
@@ -107,6 +115,7 @@
     gate2Href,
     gate2StatusLabel,
     hasActionableOffer,
+    isV1ActionCode,
     safeCourseHref,
     safeActionHref,
     safeSupportHref,

@@ -63,6 +63,13 @@ test('Gate 2 domain enums use bounded learner-friendly labels', () => {
   assert.equal(view.gate2StatusLabel('refund', 'UNRECOGNISED'), 'Action needed');
 });
 
+test('only Gate 1 and Gate 2 action codes are supported in V1', () => {
+  assert.equal(view.isV1ActionCode('APPLICATION_RECEIVED'), true);
+  assert.equal(view.isV1ActionCode('REFUND_PROCESSING'), true);
+  assert.equal(view.isV1ActionCode('BALANCE_DUE'), false);
+  assert.equal(view.isV1ActionCode('VIEW_COURSE_RESOURCES'), false);
+});
+
 test('correction links require explicit eligibility and bounded owned identifiers', () => {
   assert.equal(view.correctionHref({ canReplace: false }), null);
   assert.equal(view.correctionHref({ canReplace: true, applicationId: 'app_abc', course: { courseId: 'crs_python_foundations' } }), '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
