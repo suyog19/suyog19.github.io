@@ -4977,6 +4977,16 @@
   margin-top: 2rem;
 }
 
+.training-status {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: .65rem .9rem;
+  border: 1px solid var(--color-border);
+  border-radius: .4rem;
+  background: var(--color-surface);
+  font-weight: 600;
+}
+
 .training-section {
   padding: var(--section-py) 0;
 }
