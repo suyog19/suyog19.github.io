@@ -141,6 +141,7 @@
 
   logoutButton.addEventListener('click', async () => {
     logoutButton.disabled = true;
+    userLabel.textContent = '';
     const revoked = await auth.logout();
     if (revoked) {
       window.location.replace('/learn/');

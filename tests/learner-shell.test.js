@@ -185,8 +185,10 @@ test('initialise redirects expired sessions without exposing the shell', async (
 test('logout uncertainty hides private content and gives safe recovery guidance', async () => {
   const { elements } = harness({ logout: async () => false });
   elements['learner-shell'].hidden = false;
+  elements['learner-user-label'].textContent = 'private@example.com';
   await elements['learner-logout'].listeners.click();
   assert.equal(elements['learner-shell'].hidden, true);
+  assert.equal(elements['learner-user-label'].textContent, '');
   assert.match(elements['learner-shell-status'].textContent, /could not confirm server sign-out/);
   assert.equal(elements['learner-shell-status'].hidden, false);
   assert.equal(elements['learner-error-actions'].hidden, false);
