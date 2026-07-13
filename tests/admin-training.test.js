@@ -42,3 +42,24 @@ test('tab keyboard navigation wraps and supports home/end', () => {
   assert.equal(tools.nextTabIndex(1, 'Home', 3), 0);
   assert.equal(tools.nextTabIndex(1, 'End', 3), 2);
 });
+
+test('offers and resends fail closed on capacity and uncertain delivery', () => {
+  assert.equal(tools.offerableCohort({
+    courseId: 'course', lifecycle: 'OPEN', isFull: false, capacityRemaining: 1,
+  }, 'course'), true);
+  assert.equal(tools.offerableCohort({
+    courseId: 'course', lifecycle: 'OPEN', isFull: true, capacityRemaining: 0,
+  }, 'course'), false);
+  assert.equal(tools.resendAllowed({ canResend: true, status: 'SENT', sk: 'APPLICATION_RECEIVED:key' }), true);
+  assert.equal(tools.resendAllowed({ canResend: false, status: 'SENT', sk: 'key' }), false);
+  assert.equal(tools.resendAllowed({ canResend: true, status: 'SENT', sk: 'key:RESEND:attempt' }), false);
+});
+
+test('detail and request guards preserve structured and session truth', () => {
+  assert.equal(tools.detailValue({ reason: 'Reviewed', nested: { score: 2 } }), '{"reason":"Reviewed","nested":{"score":2}}');
+  const expected = { applicationId: 'app-1', sessionToken: 'token-1', sequence: 4 };
+  assert.equal(tools.requestStillCurrent({ ...expected }, expected), true);
+  assert.equal(tools.requestStillCurrent({ ...expected, applicationId: 'app-2' }, expected), false);
+  assert.equal(tools.requestStillCurrent({ ...expected, sessionToken: 'token-2' }, expected), false);
+  assert.equal(tools.requestStillCurrent({ ...expected, sequence: 5 }, expected), false);
+});

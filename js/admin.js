@@ -20,6 +20,13 @@
     feedback: [],
     trainingCourses: [],
     trainingCohorts: [],
+    trainingApplications: [],
+    selectedApplicationId: '',
+    selectedApplication: null,
+    selectedEnrolment: null,
+    applicationCommunications: [],
+    trainingMutationPending: false,
+    applicationRequestSequence: 0,
     feedbackSummary: null,
     selectedMessageId: '',
     selectedFeedbackId: '',
@@ -62,6 +69,12 @@
     registrationOpen: document.getElementById('admin-registration-open'),
     registrationClose: document.getElementById('admin-registration-close'),
     cohortCancel: document.getElementById('admin-cohort-cancel'),
+    refreshApplications: document.getElementById('admin-refresh-applications'),
+    applicationList: document.getElementById('admin-application-list'),
+    applicationDetail: document.getElementById('admin-application-detail'),
+    applicationFilters: document.getElementById('admin-application-filters'),
+    applicationCourseFilter: document.getElementById('admin-application-course-filter'),
+    applicationCohortFilter: document.getElementById('admin-application-cohort-filter'),
     refreshMessages: document.getElementById('admin-refresh-messages'),
     refreshFeedback: document.getElementById('admin-refresh-feedback'),
     messagesList: document.getElementById('admin-messages-list'),
@@ -214,12 +227,22 @@
     state.feedbackSummary = null;
     state.trainingCourses = [];
     state.trainingCohorts = [];
+    state.trainingApplications = [];
+    state.selectedApplicationId = '';
+    state.selectedApplication = null;
+    state.selectedEnrolment = null;
+    state.applicationCommunications = [];
+    state.trainingMutationPending = false;
+    state.applicationRequestSequence += 1;
     state.selectedMessageId = '';
     state.selectedFeedbackId = '';
     operationKeys.clearAll();
     clearNode(els.trainingCourses);
     clearNode(els.trainingCohorts);
     clearNode(els.cohortCourse);
+    clearNode(els.applicationList);
+    renderEmptyDetail(els.applicationDetail, 'Select an application to review.');
+    els.applicationFilters.reset();
     clearCohortForm();
     showLogin();
     renderMessages();
@@ -562,7 +585,7 @@
     items.filter(([, value]) => value !== undefined && value !== null && value !== '').forEach(([label, value]) => {
       const div = document.createElement('div');
       div.appendChild(textEl('dt', '', label));
-      div.appendChild(textEl('dd', '', String(value)));
+      div.appendChild(textEl('dd', '', trainingTools.detailValue(value)));
       dl.appendChild(div);
     });
     return dl;
@@ -634,17 +657,24 @@
   }
 
   async function loadTraining() {
+    const sessionToken = state.token;
     setStatus('Loading training setup...', '');
     try {
       const courses = await adminGet('/admin/training/courses');
-      state.trainingCourses = Array.isArray(courses.items) ? courses.items : [];
+      const courseItems = Array.isArray(courses.items) ? courses.items : [];
       const cohortLists = await Promise.all(
-        state.trainingCourses.map((course) => loadAllCohorts(course.courseId))
+        courseItems.map((course) => loadAllCohorts(course.courseId))
       );
+      if (state.token !== sessionToken) return;
+      state.trainingCourses = courseItems;
       state.trainingCohorts = cohortLists.flat();
       renderTraining();
+      await loadApplications();
       setStatus('', '');
-    } catch (error) { handleRequestError(error); }
+    } catch (error) {
+      if (state.token !== sessionToken) return;
+      handleRequestError(error);
+    }
   }
 
   async function loadAllCohorts(courseId) {
@@ -658,6 +688,321 @@
       cursor = typeof page.nextCursor === 'string' ? page.nextCursor : '';
     } while (cursor);
     return items;
+  }
+
+  async function loadApplications() {
+    const sessionToken = state.token;
+    const requestSequence = ++state.applicationRequestSequence;
+    renderLoading(els.applicationList, 'Loading applications...');
+    try {
+      const params = new URLSearchParams(new FormData(els.applicationFilters));
+      Array.from(params.entries()).forEach(([key, value]) => { if (!value) params.delete(key); });
+      params.set('limit', String(LIMIT));
+      const items = [];
+      const seen = new Set();
+      let cursor = '';
+      do {
+        if (cursor) params.set('cursor', cursor); else params.delete('cursor');
+        const data = await adminGet('/admin/training/applications?' + params.toString());
+        if (Array.isArray(data.items)) items.push(...data.items);
+        cursor = typeof data.nextCursor === 'string' ? data.nextCursor : '';
+        if (cursor && seen.has(cursor)) throw new Error('Repeated application cursor');
+        if (cursor) seen.add(cursor);
+      } while (cursor);
+      if (
+        state.token !== sessionToken
+        || state.applicationRequestSequence !== requestSequence
+      ) return;
+      state.trainingApplications = items;
+      renderApplications();
+      if (state.selectedApplicationId && state.trainingApplications.some((item) => item.applicationId === state.selectedApplicationId)) {
+        await loadApplicationDetail(state.selectedApplicationId);
+      } else {
+        state.selectedApplicationId = '';
+        state.selectedApplication = null;
+        renderEmptyDetail(els.applicationDetail, 'Select an application to review.');
+      }
+    } catch (error) {
+      if (
+        state.token !== sessionToken
+        || state.applicationRequestSequence !== requestSequence
+      ) return;
+      renderEmptyList(els.applicationList, 'Applications could not be loaded.');
+      handleRequestError(error);
+    }
+  }
+
+  function renderApplications() {
+    clearNode(els.applicationList);
+    if (!state.trainingApplications.length) return renderEmptyList(els.applicationList, 'No applications to show.');
+    state.trainingApplications.forEach((application) => {
+      const row = buttonEl('admin-list-item' + (application.applicationId === state.selectedApplicationId ? ' is-selected' : ''), '', { applicationId: application.applicationId });
+      row.setAttribute('aria-pressed', application.applicationId === state.selectedApplicationId ? 'true' : 'false');
+      row.appendChild(textEl('span', 'admin-list-kicker', formatDate(application.submittedAt)));
+      row.appendChild(textEl('strong', '', application.reference || application.applicationId));
+      row.appendChild(textEl('span', '', courseTitle(application.courseId)));
+      row.appendChild(metaRow([application.status, 'Version ' + application.version]));
+      els.applicationList.appendChild(row);
+    });
+  }
+
+  async function loadApplicationDetail(applicationId) {
+    if (state.selectedApplicationId !== applicationId) state.selectedEnrolment = null;
+    state.selectedApplicationId = applicationId;
+    const expected = {
+      applicationId,
+      sessionToken: state.token,
+      sequence: ++state.applicationRequestSequence,
+    };
+    renderApplications();
+    renderLoading(els.applicationDetail, 'Loading application detail...');
+    try {
+      const results = await Promise.all([
+        adminGet('/admin/training/applications/' + encodeURIComponent(applicationId)),
+        loadAllCommunications(applicationId),
+      ]);
+      const current = {
+        applicationId: state.selectedApplicationId,
+        sessionToken: state.token,
+        sequence: state.applicationRequestSequence,
+      };
+      if (!trainingTools.requestStillCurrent(current, expected)) return;
+      state.selectedApplication = results[0].application || null;
+      state.selectedEnrolment = results[0].enrolment || null;
+      state.applicationCommunications = results[1];
+      renderApplicationDetail();
+    } catch (error) {
+      const current = {
+        applicationId: state.selectedApplicationId,
+        sessionToken: state.token,
+        sequence: state.applicationRequestSequence,
+      };
+      if (!trainingTools.requestStillCurrent(current, expected)) return;
+      renderEmptyDetail(els.applicationDetail, error.status === 404 ? 'Application not found.' : 'Application detail could not be loaded.');
+      handleRequestError(error);
+    }
+  }
+
+  async function loadAllCommunications(applicationId) {
+    const items = [];
+    const seen = new Set();
+    let cursor = '';
+    do {
+      const params = new URLSearchParams({ limit: String(LIMIT) });
+      if (cursor) params.set('cursor', cursor);
+      const page = await adminGet(
+        '/admin/training/applications/' + encodeURIComponent(applicationId)
+        + '/communications?' + params.toString()
+      );
+      if (Array.isArray(page.items)) items.push(...page.items);
+      cursor = typeof page.nextCursor === 'string' ? page.nextCursor : '';
+      if (cursor && seen.has(cursor)) throw new Error('Repeated communication cursor');
+      if (cursor) seen.add(cursor);
+    } while (cursor);
+    return items;
+  }
+
+  function courseTitle(courseId) {
+    const course = state.trainingCourses.find((item) => item.courseId === courseId);
+    return course ? course.title : courseId || 'Unknown course';
+  }
+
+  function renderApplicationDetail() {
+    const application = state.selectedApplication;
+    clearNode(els.applicationDetail);
+    if (!application) return renderEmptyDetail(els.applicationDetail, 'Application detail was not returned.');
+    els.applicationDetail.appendChild(detailHeader('Application review', application.reference || application.applicationId, application.status));
+    els.applicationDetail.appendChild(detailGrid([
+      ['Course', courseTitle(application.courseId)], ['Submitted', formatDate(application.submittedAt)],
+      ['Current application', application.isCurrent ? 'Yes' : 'No'], ['Version', application.version],
+    ]));
+    if (application.profileSnapshot) els.applicationDetail.appendChild(detailSection('Profile at submission', application.profileSnapshot));
+    if (application.answers) els.applicationDetail.appendChild(detailSection('Application answers', application.answers));
+    if (application.acknowledgements) {
+      const acknowledgements = Object.fromEntries(application.acknowledgements.map((item, index) => ['Acknowledgement ' + (index + 1), (item.documentId || 'Document') + ' version ' + (item.version || 'unknown')]));
+      els.applicationDetail.appendChild(detailSection('Acknowledgements', acknowledgements));
+    }
+    if (application.decision) els.applicationDetail.appendChild(detailSection('Decision', application.decision));
+    if (state.selectedEnrolment) {
+      els.applicationDetail.appendChild(detailSection('Latest offer result', {
+        Status: state.selectedEnrolment.status,
+        Cohort: state.selectedEnrolment.cohortId,
+        'Offered at': formatDate(state.selectedEnrolment.offeredAt),
+      }));
+    }
+    const timeline = {
+      Submitted: formatDate(application.submittedAt),
+      Decision: application.decision ? (application.decision.type + ' · ' + formatDate(application.decision.decidedAt)) : 'Pending',
+      Offer: state.selectedEnrolment ? (state.selectedEnrolment.status + ' · ' + formatDate(state.selectedEnrolment.offeredAt)) : 'Not created',
+      'Latest communication (delivery only)': state.applicationCommunications[0] ? state.applicationCommunications[0].status + ' · ' + formatDate(state.applicationCommunications[0].updatedAt) : 'None',
+    };
+    els.applicationDetail.appendChild(detailSection('Operational timeline', timeline));
+    renderApplicationActions(application);
+    renderCommunications();
+  }
+
+  function renderApplicationActions(application) {
+    const section = textEl('section', 'admin-detail-section', '');
+    section.appendChild(textEl('h4', '', 'Review actions'));
+    const actions = document.createElement('div'); actions.className = 'admin-form-actions';
+    const available = application.status === 'NEW' ? ['start-review', 'waitlist', 'recommend', 'decline', 'withdraw'] : application.status === 'UNDER_REVIEW' ? ['waitlist', 'recommend', 'decline', 'withdraw'] : [];
+    available.forEach((command) => actions.appendChild(buttonEl('btn btn-secondary', command.replace('-', ' '), { applicationCommand: command })));
+    if (['NEW', 'UNDER_REVIEW'].includes(application.status)) {
+      appendOfferControls(actions, application, true);
+    }
+    if (application.status === 'ACCEPTED') {
+      appendOfferControls(actions, application, false);
+    }
+    if (!available.length && application.status !== 'ACCEPTED') actions.appendChild(textEl('p', 'admin-empty', 'No review transition is available for this status.'));
+    section.appendChild(actions); els.applicationDetail.appendChild(section);
+  }
+
+  function appendOfferControls(actions, application, acceptFirst) {
+    const select = document.createElement('select');
+    select.id = 'admin-application-cohort';
+    select.setAttribute('aria-label', 'Offer cohort');
+    const cohorts = state.trainingCohorts.filter((cohort) => (
+      trainingTools.offerableCohort(cohort, application.courseId)
+    ));
+    cohorts.forEach((cohort) => {
+      const option = document.createElement('option');
+      option.value = cohort.cohortId;
+      option.textContent = cohort.label + ' (' + cohort.capacityRemaining + ' remaining)';
+      select.appendChild(option);
+    });
+    actions.appendChild(select);
+    const offer = buttonEl(
+      'btn btn-primary', acceptFirst ? 'Accept and send offer' : 'Send offer',
+      { applicationOffer: acceptFirst ? 'accept' : 'offer' }
+    );
+    offer.disabled = !cohorts.length;
+    actions.appendChild(offer);
+    if (!cohorts.length) actions.appendChild(textEl('p', 'admin-empty', 'No open cohort with capacity is available.'));
+  }
+
+  function renderCommunications() {
+    const section = textEl('section', 'admin-detail-section', ''); section.appendChild(textEl('h4', '', 'Communications'));
+    if (!state.applicationCommunications.length) section.appendChild(textEl('p', 'admin-empty', 'No communication records yet.'));
+    state.applicationCommunications.forEach((item) => {
+      const row = textEl('article', 'admin-training-card', '');
+      row.appendChild(textEl('strong', '', (item.family || 'Communication') + ' — ' + (item.variant || '')));
+      row.appendChild(textEl('p', '', (item.status || 'UNKNOWN') + ' · Updated ' + formatDate(item.updatedAt)));
+      if (trainingTools.resendAllowed(item)) row.appendChild(buttonEl('btn btn-secondary', 'Resend', { communicationResend: item.sk || item.logicalKey || '' }));
+      section.appendChild(row);
+    });
+    els.applicationDetail.appendChild(section);
+  }
+
+  async function applicationCommand(command) {
+    const application = state.selectedApplication;
+    if (!application || state.trainingMutationPending) return;
+    let reason = null; let recommendedCourseId = null;
+    if (['recommend', 'decline', 'withdraw'].includes(command)) {
+      reason = window.prompt('Reason (required, maximum 500 characters):');
+      if (!reason || !reason.trim()) return;
+      if (reason.trim().length > 500) return setStatus('Reason must be at most 500 characters.', 'warn');
+    }
+    if (command === 'recommend') {
+      recommendedCourseId = window.prompt('Published recommended course ID:');
+      if (!recommendedCourseId || !recommendedCourseId.trim()) return;
+      const recommended = state.trainingCourses.find((course) => (
+        course.courseId === recommendedCourseId.trim()
+        && course.publicationStatus === 'PUBLISHED'
+      ));
+      if (!recommended) return setStatus('Choose the ID of a published Gate 1 course.', 'warn');
+    }
+    if (!window.confirm('Confirm ' + command.replace('-', ' ') + ' for this application?')) return;
+    const body = { expectedVersion: Number(application.version) };
+    if (reason) body.reason = reason.trim(); if (recommendedCourseId) body.recommendedCourseId = recommendedCourseId.trim();
+    const scope = 'application-' + command + ':' + application.applicationId;
+    setApplicationMutationBusy(true);
+    try {
+      await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/' + command, { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': operationKeys.key(scope, body) } });
+      operationKeys.clear(scope);
+      await loadApplications(); setStatus('Application updated.', 'success');
+    } catch (error) {
+      if (error.status && error.status < 500) operationKeys.clear(scope);
+      if (error.status === 409 || error.status === 412) await loadApplicationDetail(application.applicationId);
+      handleRequestError(error);
+    } finally { setApplicationMutationBusy(false); }
+  }
+
+  async function offerApplication() {
+    if (state.trainingMutationPending) return;
+    const application = state.selectedApplication; const select = document.getElementById('admin-application-cohort');
+    const cohort = select && state.trainingCohorts.find((item) => item.cohortId === select.value);
+    if (!application || !cohort) return setStatus('Choose an open cohort before sending an offer.', 'warn');
+    const acceptFirst = application.status === 'NEW' || application.status === 'UNDER_REVIEW';
+    if (!window.confirm((acceptFirst ? 'Accept this application, then reserve' : 'Reserve') + ' a seat in ' + cohort.label + ' and send this offer?')) return;
+    let activeScope = '';
+    let acceptCompleted = false;
+    setApplicationMutationBusy(true);
+    try {
+      let applicationVersion = Number(application.version);
+      if (acceptFirst) {
+        const acceptBody = { expectedVersion: applicationVersion };
+        const acceptScope = 'application-accept:' + application.applicationId;
+        activeScope = acceptScope;
+        const accepted = await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/accept', {
+          method: 'POST', body: JSON.stringify(acceptBody),
+          headers: { 'Idempotency-Key': operationKeys.key(acceptScope, acceptBody) },
+        });
+        operationKeys.clear(acceptScope);
+        acceptCompleted = true;
+        state.selectedApplication = accepted.application;
+        applicationVersion = Number(accepted.application.version);
+      }
+      const offerBody = {
+        expectedVersion: applicationVersion, cohortId: cohort.cohortId,
+        expectedCohortVersion: Number(cohort.version),
+      };
+      const offerScope = 'application-offer:' + application.applicationId;
+      activeScope = offerScope;
+      const offered = await apiRequest('/admin/training/applications/' + encodeURIComponent(application.applicationId) + '/offer', {
+        method: 'POST', body: JSON.stringify(offerBody),
+        headers: { 'Idempotency-Key': operationKeys.key(offerScope, offerBody) },
+      });
+      operationKeys.clear(offerScope);
+      state.selectedEnrolment = offered.enrolment || null;
+      await loadTraining(); setStatus('Application accepted; offer created and seat reserved.', 'success');
+    } catch (error) {
+      if (error.status && error.status < 500 && activeScope) operationKeys.clear(activeScope);
+      if (acceptCompleted && !error.status) renderApplicationDetail();
+      if (acceptCompleted || error.status === 409 || error.status === 412) await loadTraining();
+      handleRequestError(error);
+    } finally { setApplicationMutationBusy(false); }
+  }
+
+  async function resendCommunication(logicalKey) {
+    if (state.trainingMutationPending) return;
+    if (!logicalKey) return setStatus('Communication identifier is unavailable.', 'warn');
+    const reason = window.prompt('Reason for resend (required, maximum 500 characters):'); if (!reason || !reason.trim()) return;
+    if (reason.trim().length > 500) return setStatus('Reason must be at most 500 characters.', 'warn');
+    if (!window.confirm('Queue one controlled resend attempt?')) return;
+    const body = { logicalKey, reason: reason.trim() };
+    const scope = 'communication-resend:' + state.selectedApplicationId + ':' + logicalKey;
+    setApplicationMutationBusy(true);
+    try {
+      await apiRequest('/admin/training/applications/' + encodeURIComponent(state.selectedApplicationId) + '/communications/resend', { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': operationKeys.key(scope, body) } });
+      operationKeys.clear(scope);
+      await loadApplicationDetail(state.selectedApplicationId); setStatus('Resend queued.', 'success');
+    } catch (error) {
+      if (error.status && error.status < 500) operationKeys.clear(scope);
+      handleRequestError(error);
+    } finally { setApplicationMutationBusy(false); }
+  }
+
+  function setApplicationMutationBusy(busy) {
+    state.trainingMutationPending = busy;
+    document.querySelectorAll('[data-application-command], [data-application-offer], [data-communication-resend]').forEach((button) => {
+      if (busy) {
+        button.dataset.wasDisabled = button.disabled ? 'true' : 'false';
+        button.disabled = true;
+      } else {
+        button.disabled = button.dataset.wasDisabled === 'true';
+        delete button.dataset.wasDisabled;
+      }
+    });
   }
 
   function renderTraining() {
@@ -685,6 +1030,12 @@
       if (cohort.lifecycle === 'OPEN') card.appendChild(buttonEl('btn btn-secondary', 'Close registration', { trainingCohortCommand: 'close', trainingCohortId: cohort.cohortId, trainingCohortCourse: cohort.courseId, trainingCohortVersion: String(cohort.version) }));
       els.trainingCohorts.appendChild(card);
     });
+    const selectedCourse = els.applicationCourseFilter.value;
+    const selectedCohort = els.applicationCohortFilter.value;
+    clearNode(els.applicationCourseFilter); clearNode(els.applicationCohortFilter);
+    [['', 'All courses'], ...state.trainingCourses.map((item) => [item.courseId, item.title])].forEach(([value, label]) => { const option = document.createElement('option'); option.value = value; option.textContent = label; els.applicationCourseFilter.appendChild(option); });
+    [['', 'All cohorts'], ...state.trainingCohorts.map((item) => [item.cohortId, item.label])].forEach(([value, label]) => { const option = document.createElement('option'); option.value = value; option.textContent = label; els.applicationCohortFilter.appendChild(option); });
+    els.applicationCourseFilter.value = selectedCourse; els.applicationCohortFilter.value = selectedCohort;
   }
 
   function iso(value) { return value ? new Date(value).toISOString() : null; }
@@ -811,6 +1162,8 @@
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
     els.refreshTraining.addEventListener('click', loadTraining);
+    els.refreshApplications.addEventListener('click', loadApplications);
+    els.applicationFilters.addEventListener('submit', (event) => { event.preventDefault(); state.selectedApplicationId = ''; loadApplications(); });
     els.cohortForm.addEventListener('submit', saveCohort);
     els.cohortCancel.addEventListener('click', clearCohortForm);
     els.feedbackFilters.addEventListener('submit', (event) => {
@@ -851,6 +1204,14 @@
       if (cohortAction) { cohortCommand(cohortAction); return; }
       const cohortEdit = event.target.closest('[data-training-cohort-edit]');
       if (cohortEdit) editCohort(cohortEdit.dataset.trainingCohortEdit);
+      const application = event.target.closest('[data-application-id]');
+      if (application) { loadApplicationDetail(application.dataset.applicationId); return; }
+      const applicationAction = event.target.closest('[data-application-command]');
+      if (applicationAction) { applicationCommand(applicationAction.dataset.applicationCommand); return; }
+      const offer = event.target.closest('[data-application-offer]');
+      if (offer) { offerApplication(); return; }
+      const resend = event.target.closest('[data-communication-resend]');
+      if (resend) resendCommunication(resend.dataset.communicationResend);
     });
   }
 

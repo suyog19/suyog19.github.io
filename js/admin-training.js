@@ -48,5 +48,44 @@
     return current;
   }
 
-  window.sjAdminTraining = { createIdempotencyTracker, nextTabIndex, validateCohort };
+  function offerableCohort(cohort, courseId) {
+    return Boolean(
+      cohort
+      && cohort.courseId === courseId
+      && cohort.lifecycle === 'OPEN'
+      && cohort.isFull === false
+      && Number(cohort.capacityRemaining) > 0
+    );
+  }
+
+  function resendAllowed(communication) {
+    return Boolean(
+      communication
+      && communication.canResend === true
+      && typeof (communication.sk || communication.logicalKey) === 'string'
+      && !String(communication.sk || communication.logicalKey).includes(':RESEND:')
+    );
+  }
+
+  function detailValue(value) {
+    if (value === null || value === undefined || value === '') return 'Not available';
+    if (typeof value === 'object') return JSON.stringify(value);
+    return String(value);
+  }
+
+  function requestStillCurrent(current, expected) {
+    return current.applicationId === expected.applicationId
+      && current.sessionToken === expected.sessionToken
+      && current.sequence === expected.sequence;
+  }
+
+  window.sjAdminTraining = {
+    createIdempotencyTracker,
+    detailValue,
+    nextTabIndex,
+    offerableCohort,
+    requestStillCurrent,
+    resendAllowed,
+    validateCohort,
+  };
 }());
