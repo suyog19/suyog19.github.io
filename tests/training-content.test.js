@@ -39,11 +39,20 @@ test('course schema matches approved platform facts', () => {
   ]);
 });
 
-test('draft experience does not enable applications or payment', () => {
+test('course application actions are hidden by default and payment stays disabled', () => {
   const combined = pages.map(([relative]) => fs.readFileSync(path.join(root, relative), 'utf8')).join('\n');
   assert.match(combined, /Applications not yet open/);
-  assert.doesNotMatch(combined, /href="[^\"]*(apply|checkout|payment)/i);
+  assert.match(combined, /data-course-availability-action hidden/);
+  assert.doesNotMatch(combined, /href="[^\"]*(checkout|payment)/i);
   assert.doesNotMatch(combined, /Razorpay|payment-button|checkout\.js/i);
+});
+
+test('course pages load the fail-closed availability controller', () => {
+  for (const relative of ['training/python-foundations-ai-data/index.html', 'training/applied-python-ai-ml/index.html']) {
+    const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    assert.match(html, /data-course-availability/);
+    assert.match(html, /src="\.\.\/\.\.\/js\/training-availability\.js"/);
+  }
 });
 
 test('all training URLs are present in the sitemap', () => {
