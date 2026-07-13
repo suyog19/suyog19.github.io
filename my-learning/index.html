@@ -49,13 +49,29 @@
   </header>
   <main>
     <div id="learner-shell-status" class="container learner-shell-status" role="status" aria-live="polite">Restoring your secure session…</div>
+    <div id="learner-error-actions" class="container learner-error-actions" hidden>
+      <button id="learner-retry" class="btn btn-primary" type="button">Retry</button>
+      <a class="btn btn-secondary" href="../contact/">Contact support</a>
+    </div>
     <section id="learner-shell" class="container learner-shell" hidden>
       <p class="eyebrow">Private learner area</p>
       <h1>My Learning</h1>
-      <p>Your course and application information will appear here when those Gate 1 features are available.</p>
+      <div id="learner-current-action" class="learner-current-action"></div>
+      <div id="learner-applications" class="learner-application-list" aria-label="Current learning journeys"></div>
+      <section class="learner-profile" aria-labelledby="learner-profile-title">
+        <h2 id="learner-profile-title">Your profile</h2>
+        <p id="learner-profile-empty" hidden>Complete your learner profile to apply.</p>
+        <dl id="learner-profile-details"></dl>
+      </section>
+      <nav class="learner-support-links" aria-label="Learner support">
+        <a id="learner-support-link" href="../contact/">Support</a>
+        <a id="learner-privacy-link" href="../training/policies/">Privacy</a>
+        <a id="learner-grievance-link" href="../training/policies/#support-and-grievance-process">Grievance process</a>
+      </nav>
     </section>
   </main>
   <script src="../js/learner-auth.js"></script>
+  <script src="../js/learner-summary.js"></script>
   <script src="../js/learner-shell.js"></script>
 </body>
 </html>
