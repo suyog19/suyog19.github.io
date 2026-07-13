@@ -66,7 +66,8 @@
       && application.gate2.action.code === action.code
     ));
     const currentGate2Href = summaryView.gate2Href(currentGate2);
-    const currentSupported = summaryView.isV1ActionCode(action.code);
+    const currentSupported = summaryView.isV1ActionCode(action.code)
+      && (!summaryView.isGate2ActionCode(action.code) || Boolean(currentGate2 && currentGate2Href));
     currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
     const currentLabel = !currentSupported || (currentGate2 && !currentGate2Href) ? 'No action is currently available' : action.label || 'My Learning';
     currentAction.appendChild(textElement('h2', '', currentLabel));
@@ -87,7 +88,10 @@
       const gate2 = application.gate2;
       const gate2ActionHref = summaryView.gate2Href(application);
       const applicationAction = application.action || {};
-      const applicationSupported = !applicationAction.code || summaryView.isV1ActionCode(applicationAction.code);
+      const applicationSupported = !applicationAction.code || (
+        summaryView.isV1ActionCode(applicationAction.code)
+        && (!summaryView.isGate2ActionCode(applicationAction.code) || Boolean(gate2 && gate2ActionHref))
+      );
       card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
       card.appendChild(textElement('h2', '', !applicationSupported || (gate2 && !gate2ActionHref) ? 'Status available' : applicationAction.label));
       card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));

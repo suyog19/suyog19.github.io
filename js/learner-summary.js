@@ -17,6 +17,10 @@
     'DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED', 'PAYMENT_ACTION_NEEDED',
     'CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED',
   ]);
+  const GATE2_ACTION_CODES = new Set([
+    'DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED', 'PAYMENT_ACTION_NEEDED',
+    'CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED',
+  ]);
 
   function safeActionHref(value) {
     return typeof value === 'string' && ACTION_PATHS.has(value)
@@ -84,6 +88,7 @@
   }
 
   function isV1ActionCode(value) { return typeof value === 'string' && V1_ACTION_CODES.has(value); }
+  function isGate2ActionCode(value) { return typeof value === 'string' && GATE2_ACTION_CODES.has(value); }
 
   function booleanLabel(value, whenTrue, whenFalse) {
     if (value === true) return whenTrue;
@@ -116,6 +121,7 @@
     gate2StatusLabel,
     hasActionableOffer,
     isV1ActionCode,
+    isGate2ActionCode,
     safeCourseHref,
     safeActionHref,
     safeSupportHref,

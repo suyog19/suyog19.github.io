@@ -68,6 +68,9 @@ test('only Gate 1 and Gate 2 action codes are supported in V1', () => {
   assert.equal(view.isV1ActionCode('REFUND_PROCESSING'), true);
   assert.equal(view.isV1ActionCode('BALANCE_DUE'), false);
   assert.equal(view.isV1ActionCode('VIEW_COURSE_RESOURCES'), false);
+  assert.equal(view.isGate2ActionCode('DEPOSIT_DUE'), true);
+  assert.equal(view.isGate2ActionCode('REFUND_PROCESSING'), true);
+  assert.equal(view.isGate2ActionCode('APPLICATION_RECEIVED'), false);
 });
 
 test('correction links require explicit eligibility and bounded owned identifiers', () => {

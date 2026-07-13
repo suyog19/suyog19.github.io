@@ -184,6 +184,22 @@ test('future actions stay inert when gate2 is absent or retains a supported code
   });
 });
 
+test('Gate 2-only actions stay inert when their authoritative projection is missing', () => {
+  ['DEPOSIT_DUE', 'REFUND_PROCESSING'].forEach((code) => {
+    const { elements, shell } = harness();
+    const label = code === 'DEPOSIT_DUE' ? 'Pay deposit' : 'View refund status';
+    shell.renderSummary(summary({
+      currentAction: { code, label, href: '/my-learning/' },
+      applications: [{ reference: 'APP-MISSING-G2', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code, label } }],
+    }));
+    assert.equal(elements['learner-current-action'].children[1].textContent, 'No action is currently available');
+    assert.equal(elements['learner-current-action'].children[2].tag, 'p');
+    const card = elements['learner-applications'].children[0];
+    assert.equal(card.children[1].textContent, 'Status available');
+    assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay deposit|View refund status/);
+  });
+});
+
 test('renderer offers correction only when backend marks the current application eligible', () => {
   const { elements, shell } = harness();
   shell.renderSummary(summary({
