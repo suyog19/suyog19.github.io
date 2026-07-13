@@ -10,6 +10,7 @@
   const submit = document.getElementById('change-submit');
   const ID = /^[A-Za-z0-9_-]{1,128}$/;
   let context = null;
+  let requiresReconciliation = false;
 
   function enrolmentId() { const value = new URLSearchParams(location.search).get('enrolmentId'); return ID.test(value || '') ? value : null; }
   function loginUrl() { return '/learn/?continue=' + encodeURIComponent(location.pathname + location.search); }
@@ -18,11 +19,14 @@
   function money(value, currency) { return Number.isSafeInteger(value) && value >= 0 && /^[A-Z]{3}$/.test(currency || '') ? new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(value / 100) : 'Not available'; }
   function key(id, kind) { const name = 'sj_gate2_change_' + id + '_' + kind; let value = sessionStorage.getItem(name); if (!value) { value = 'web_' + (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)); sessionStorage.setItem(name, value); } return value; }
   function findApplication(summary, id) { return (Array.isArray(summary.applications) ? summary.applications : []).find((item) => item.offer && item.offer.enrolmentId === id) || null; }
-  function describe(change, refund) {
+  function describe(change, refund, enrolment) {
     if (refund) {
       if (['PENDING_SUBMISSION', 'SUBMITTING', 'PROCESSING'].includes(refund.status)) return ['Refund processing', 'The organiser decision is complete. Razorpay test-mode processing is still separate and not yet complete.'];
       if (refund.status === 'COMPLETED') return ['Completed', 'The service reports that the refund has completed.'];
       return ['Action needed', 'The refund needs organiser review. Do not make another payment or assume completion.'];
+    }
+    if (enrolment && ['CANCELLED', 'TRANSFERRED'].includes(enrolment.status)) {
+      return ['Action needed', 'This place is already closed or transferred. A new request is unavailable; contact support if the status is unexpected.'];
     }
     if (!change) return ['Request a review', 'Choose one outcome. We will review it against the current policy and payment record.'];
     if (change.status === 'REQUESTED') return ['Submitted', 'Your request is under review. No refund, credit or transfer has been promised.'];
@@ -34,14 +38,18 @@
     const gate = application.gate2 || {};
     const change = gate.learnerChange;
     const refund = gate.refund;
-    const copy = describe(change, refund);
+    const copy = describe(change, refund, gate.enrolment);
     state.replaceChildren(text('h2', copy[0]), text('p', copy[1]));
+    if (gate.communication && gate.communication.status === 'FAILED') {
+      state.appendChild(text('p', 'A notification could not be confirmed. The request, decision and refund status shown here are unchanged.'));
+    }
     details.replaceChildren();
     addDetail('Course', application.course && application.course.title);
     addDetail('Current place', gate.enrolment && gate.enrolment.status);
     addDetail('Amount received', money(gate.payment && gate.payment.capturedAmount, gate.payment && gate.payment.currency));
     addDetail('Refund status', refund && refund.status);
     addDetail('Refund amount', refund ? money(refund.amount, gate.payment && gate.payment.currency) : 'Not started');
+    addDetail('Notification', gate.communication && gate.communication.status === 'FAILED' ? 'Delivery needs attention; status unchanged' : gate.communication && gate.communication.status);
     addDetail('Cancellation policy', payment.review && payment.review.policyVersions && payment.review.policyVersions.cancellation);
     addDetail('Refund policy', payment.review && payment.review.policyVersions && payment.review.policyVersions.refund);
     addDetail('Transfer policy', payment.review && payment.review.policyVersions && payment.review.policyVersions.transfer);
@@ -49,7 +57,7 @@
     panel.hidden = false;
   }
   async function initialise() {
-    const id = enrolmentId(); panel.hidden = true; errors.hidden = true; status.hidden = false; status.textContent = 'Restoring your secure session...';
+    const id = enrolmentId(); context = null; panel.hidden = true; errors.hidden = true; status.hidden = false; status.textContent = 'Restoring your secure session...';
     if (!id) { status.textContent = 'This request link is incomplete. Return to My Learning.'; errors.hidden = false; return; }
     try {
       const user = await auth.restore(); if (!user) { location.replace(loginUrl()); return; }
@@ -65,6 +73,12 @@
   }
   form.addEventListener('submit', async (event) => {
     event.preventDefault(); if (!context) return;
+    if (requiresReconciliation) {
+      requiresReconciliation = false;
+      await initialise();
+      const gate = context && context.application && context.application.gate2;
+      if (!context || (gate && (gate.learnerChange || gate.refund))) return;
+    }
     const selected = new FormData(form).get('requestType');
     const kind = selected === 'TRANSFER' ? 'TRANSFER' : 'CANCELLATION';
     const outcome = selected === 'DISCUSS_OPTIONS' ? 'DISCUSS_OPTIONS' : selected;
@@ -75,7 +89,18 @@
       await auth.request('/me/enrolments/' + encodeURIComponent(context.id) + '/' + kind.toLowerCase() + '-requests', { method: 'POST', headers: { 'Idempotency-Key': key(context.id, kind) }, body: JSON.stringify({ category: document.getElementById('change-category').value, requestedOutcome: outcome, explanation: document.getElementById('change-explanation').value, policyAcknowledgement: { documentId: 'software-signal-' + kind.toLowerCase() + '-development-policy', version: policy } }) });
       await initialise();
     } catch (error) {
-      status.textContent = error.status === 409 ? 'A request already exists or eligibility changed. Check the current status.' : 'The request could not be submitted. No refund, credit or transfer was created.'; errors.hidden = false;
+      if (error.status === 0) {
+        requiresReconciliation = true;
+        await initialise();
+        const gate = context && context.application && context.application.gate2;
+        if (!gate || (!gate.learnerChange && !gate.refund)) {
+          status.hidden = false;
+          status.textContent = 'The service did not confirm whether the request was received. Check status before retrying; the same request key will be reused.';
+          errors.hidden = false;
+        }
+      } else {
+        status.textContent = error.status === 409 ? 'A request already exists or eligibility changed. Check the current status.' : 'The request could not be submitted. No refund, credit or transfer was created.'; errors.hidden = false;
+      }
     } finally { submit.disabled = false; }
   });
   document.getElementById('change-retry').addEventListener('click', initialise);

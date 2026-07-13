@@ -37,4 +37,13 @@ test('status copy separates request, decision and refund execution truth', () =>
   assert.match(script, /\['Completed'/);
   assert.match(script, /\['Action needed'/);
   assert.match(script, /Razorpay test-mode processing is still separate/);
+  assert.match(script, /This place is already closed or transferred/);
+  assert.match(script, /notification could not be confirmed[\s\S]*status shown here are unchanged/);
+});
+
+test('ambiguous submission reconciles authoritative truth before same-key retry', () => {
+  assert.match(script, /if \(error\.status === 0\)/);
+  assert.match(script, /requiresReconciliation = true;[\s\S]*await initialise\(\)/);
+  assert.match(script, /if \(requiresReconciliation\)[\s\S]*await initialise\(\)/);
+  assert.match(script, /same request key will be reused/);
 });
