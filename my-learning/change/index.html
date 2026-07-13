@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Private Software Signal cancellation, transfer and refund request status for authenticated learners.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Request a change | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/my-learning/change/">
+  <meta property="og:title" content="Request a change | Suyog Joshi">
+  <meta property="og:description" content="Private Software Signal learner request status.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://suyogjoshi.com/my-learning/change/">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PKL56GJ38H',{page_location:'https://suyogjoshi.com/my-learning/change/',page_path:'/my-learning/change/'});</script>
+</head>
+<body class="learner-page">
+  <header class="site-header"><div class="container header-inner"><a href="../../index.html" class="brand-lockup"><span class="brand-mark" aria-hidden="true">SJ</span><span class="brand-text">suyogjoshi.com</span></a><a class="btn btn-secondary" href="../">Back to My Learning</a></div></header>
+  <main class="container learner-payment-main">
+    <div id="change-status" class="learner-shell-status" role="status" aria-live="polite">Restoring your secure session...</div>
+    <section id="change-panel" class="learner-payment-panel" hidden aria-labelledby="change-title">
+      <p class="eyebrow">Private learner area · Requests</p><h1 id="change-title">Cancellation, transfer or refund help</h1>
+      <div id="change-state" class="learner-payment-state" aria-live="polite"></div>
+      <dl id="change-details" class="learner-payment-details"></dl>
+      <form id="change-form" class="learner-change-form" hidden>
+        <fieldset><legend>What would you like us to review?</legend>
+          <label><input type="radio" name="requestType" value="CANCELLATION" required> Cancel my place</label>
+          <label><input type="radio" name="requestType" value="TRANSFER"> Ask about a transfer</label>
+          <label><input type="radio" name="requestType" value="DISCUSS_OPTIONS"> Discuss my options</label>
+        </fieldset>
+        <label for="change-category">Reason category</label><select id="change-category" required><option value="">Choose one</option><option>Personal circumstances</option><option>Schedule conflict</option><option>Course suitability</option><option>Other circumstances</option></select>
+        <label for="change-explanation">What should we know?</label><textarea id="change-explanation" minlength="3" maxlength="1000" required></textarea>
+        <label class="learner-payment-acknowledgement"><input id="change-ack" type="checkbox" required> <span>I understand this is a request for review. It does not promise or calculate a refund, credit or transfer.</span></label>
+        <button id="change-submit" class="btn btn-primary" type="submit">Submit request</button>
+      </form>
+      <p class="learner-payment-safety">The organiser's decision and any payment-provider refund are separate stages. Status and amounts shown here come only from the Software Signal service.</p>
+      <nav class="learner-support-links" aria-label="Request support"><a href="../../contact/">Contact support</a><a href="../../training/policies/">Policies and privacy</a><a href="../../training/policies/#support-and-grievance-process">Grievance process</a></nav>
+    </section>
+    <div id="change-error-actions" class="learner-error-actions" hidden><button id="change-retry" class="btn btn-primary" type="button">Check request status</button><a class="btn btn-secondary" href="../../contact/">Contact support</a></div>
+  </main>
+  <script src="../../js/learner-auth.js"></script><script src="../../js/learner-change-recovery.js"></script><script src="../../js/learner-change.js"></script>
+</body>
+</html>
