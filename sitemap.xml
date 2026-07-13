@@ -265,4 +265,34 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://suyogjoshi.com/training/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/training/python-foundations-ai-data/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/training/applied-python-ai-ml/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/training/policies/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/training/provider/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
