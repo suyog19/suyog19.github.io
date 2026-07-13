@@ -25,6 +25,10 @@
     return envelope;
   }
   function clear(storage, id) { storage.removeItem(storageKey(id)); }
+  function reconcile(storage, id, authoritativeExists) {
+    if (authoritativeExists) { clear(storage, id); return null; }
+    return read(storage, id);
+  }
   function isAmbiguous(status) { return status === 0 || (Number.isInteger(status) && status >= 500); }
-  window.sjLearnerChangeRecovery = { clear, create, isAmbiguous, read, storageKey };
+  window.sjLearnerChangeRecovery = { clear, create, isAmbiguous, read, reconcile, storageKey };
 }());

@@ -66,7 +66,9 @@
       const application = findApplication(results[0], id); const payment = results[1].payment || results[1];
       if (!application || !application.gate2 || !payment) throw Object.assign(new Error('NOT_AVAILABLE'), { status: 404 });
       context = { id, application, payment }; render(application, payment); status.hidden = true;
-      if (!application.gate2.learnerChange && !application.gate2.refund && recovery.read(sessionStorage, id)) {
+      const pending = recovery.reconcile(sessionStorage, id, Boolean(application.gate2.learnerChange || application.gate2.refund));
+      if (application.gate2.learnerChange || application.gate2.refund) requiresReconciliation = false;
+      if (!application.gate2.learnerChange && !application.gate2.refund && pending) {
         requiresReconciliation = true;
         status.hidden = false;
         status.textContent = 'A previous submission has an uncertain outcome. Check authoritative status before the exact request is retried.';

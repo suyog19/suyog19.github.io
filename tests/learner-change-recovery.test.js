@@ -34,8 +34,9 @@ test('uncertain command preserves its exact payload and key despite edited form 
 test('unavailable reconciliation retains command until authoritative success or definitive failure', () => {
   const storage = memoryStorage();
   recovery.create(storage, { randomUUID: () => 'retry-key' }, 'enr_one', 'CANCELLATION', payload);
+  assert.ok(recovery.reconcile(storage, 'enr_one', false));
   assert.ok(recovery.read(storage, 'enr_one'));
-  recovery.clear(storage, 'enr_one');
+  assert.equal(recovery.reconcile(storage, 'enr_one', true), null);
   assert.equal(recovery.read(storage, 'enr_one'), null);
 });
 
