@@ -146,6 +146,26 @@ test('renderer keeps Gate 2 domain stages separate and links only to focused jou
   assert.equal(card.children.some((child) => /Request cancellation/.test(child.textContent)), false);
 });
 
+test('unsupported Gate 3 and Gate 4 actions render neutral and inert', () => {
+  for (const code of ['BALANCE_DUE', 'VIEW_COURSE_RESOURCES']) {
+    const { elements, shell } = harness();
+    shell.renderSummary(summary({
+      currentAction: { code, label: code === 'BALANCE_DUE' ? 'Pay balance' : 'Open course resources', href: '/my-learning/' },
+      applications: [{
+        reference: 'APP-FUTURE', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' },
+        action: { label: code === 'BALANCE_DUE' ? 'Pay balance' : 'Open course resources' },
+        gate2: { action: { code, label: 'Future action' }, enrolment: { status: 'RESERVED', seatReserved: true } },
+      }],
+    }));
+    const current = elements['learner-current-action'];
+    assert.equal(current.children[1].textContent, 'No action is currently available');
+    assert.equal(current.children[2].tag, 'p');
+    assert.equal(current.children[2].href, '');
+    const cardText = elements['learner-applications'].children[0].children.map((child) => child.textContent).join(' | ');
+    assert.doesNotMatch(cardText, /Pay balance|Open course resources|Future action/);
+  }
+});
+
 test('renderer offers correction only when backend marks the current application eligible', () => {
   const { elements, shell } = harness();
   shell.renderSummary(summary({

@@ -51,6 +51,8 @@ test('Gate 2 links require backend action codes and bounded owned enrolment ids'
   assert.equal(view.gate2Href({ ...payment, offer: { enrolmentId: '../admin' } }), null);
   assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'BALANCE_DUE' } } }), null);
   assert.equal(view.gate2ChangeHref({ ...payment, gate2: { ...payment.gate2, learnerChange: { status: 'REQUESTED' } } }), null);
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'RESERVED' }, learnerChange: { status: 'DECIDED', decision: 'TRANSFER_OFFERED' } } }), '/my-learning/change/?enrolmentId=enr_one');
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'RESERVED' }, enrolment: { status: 'CANCELLED' } } }), '/my-learning/change/?enrolmentId=enr_one');
 });
 
 test('Gate 2 domain enums use bounded learner-friendly labels', () => {

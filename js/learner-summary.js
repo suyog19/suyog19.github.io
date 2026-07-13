@@ -45,13 +45,16 @@
     const id = application && application.offer && application.offer.enrolmentId;
     const code = gate && gate.action && gate.action.code;
     if (!/^[A-Za-z0-9_-]{1,128}$/.test(id || '')) return null;
+    if (code === 'PAYMENT_ACTION_NEEDED') return '/contact/';
+    if (gate.refund || gate.learnerChange || (gate.enrolment && ['CANCELLED', 'TRANSFERRED'].includes(gate.enrolment.status))) {
+      return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
+    }
     if (['DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED'].includes(code)) {
       return '/my-learning/payment/?enrolmentId=' + encodeURIComponent(id);
     }
     if (['CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED'].includes(code)) {
       return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
     }
-    if (code === 'PAYMENT_ACTION_NEEDED') return '/contact/';
     return null;
   }
 

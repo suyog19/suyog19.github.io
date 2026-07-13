@@ -65,11 +65,17 @@
       application.gate2 && application.gate2.action
       && application.gate2.action.code === action.code
     ));
+    const currentGate2Href = summaryView.gate2Href(currentGate2);
     currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
-    currentAction.appendChild(textElement('h2', '', action.label || 'My Learning'));
-    const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
-    actionLink.href = summaryView.gate2Href(currentGate2) || summaryView.safeActionHref(action.href);
-    currentAction.appendChild(actionLink);
+    const currentLabel = currentGate2 && !currentGate2Href ? 'No action is currently available' : action.label || 'My Learning';
+    currentAction.appendChild(textElement('h2', '', currentLabel));
+    if (!currentGate2 || currentGate2Href) {
+      const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
+      actionLink.href = currentGate2Href || summaryView.safeActionHref(action.href);
+      currentAction.appendChild(actionLink);
+    } else {
+      currentAction.appendChild(textElement('p', '', 'This status is not enabled in the current learner experience.'));
+    }
 
     applicationList.replaceChildren();
     if (!applications.length) {
@@ -77,15 +83,15 @@
     }
     applications.forEach((application) => {
       const card = textElement('article', 'learner-application-card', '');
-      card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
-      card.appendChild(textElement('h2', '', application.action && application.action.label));
-      card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
       const gate2 = application.gate2;
+      const gate2ActionHref = summaryView.gate2Href(application);
+      card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
+      card.appendChild(textElement('h2', '', gate2 && !gate2ActionHref ? 'Status available' : application.action && application.action.label));
+      card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
       if (gate2) {
         const enrolment = gate2.enrolment || {};
         card.appendChild(textElement('p', 'learner-offer-note', 'Place status: ' + summaryView.gate2StatusLabel('enrolment', enrolment.status)));
         if (enrolment.seatReserved === true) card.appendChild(textElement('p', '', 'Seat reservation is confirmed by the service.'));
-        const gate2ActionHref = summaryView.gate2Href(application);
         if (gate2ActionHref) {
           const gate2Action = textElement('a', 'btn btn-primary learner-gate2-link', gate2.action && gate2.action.label || 'View status');
           gate2Action.href = gate2ActionHref;
