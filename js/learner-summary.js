@@ -40,6 +40,40 @@
     return Boolean(offer && offer.status === 'OFFERED');
   }
 
+  function gate2Href(application) {
+    const gate = application && application.gate2;
+    const id = application && application.offer && application.offer.enrolmentId;
+    const code = gate && gate.action && gate.action.code;
+    if (!/^[A-Za-z0-9_-]{1,128}$/.test(id || '')) return null;
+    if (['DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED'].includes(code)) {
+      return '/my-learning/payment/?enrolmentId=' + encodeURIComponent(id);
+    }
+    if (['CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED'].includes(code)) {
+      return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
+    }
+    if (code === 'PAYMENT_ACTION_NEEDED') return '/contact/';
+    return null;
+  }
+
+  function gate2ChangeHref(application) {
+    const gate = application && application.gate2;
+    const id = application && application.offer && application.offer.enrolmentId;
+    const status = gate && gate.enrolment && gate.enrolment.status;
+    if (!/^[A-Za-z0-9_-]{1,128}$/.test(id || '') || !['OFFERED', 'RESERVED'].includes(status)) return null;
+    if (gate.learnerChange || gate.refund) return null;
+    return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
+  }
+
+  function gate2StatusLabel(kind, value) {
+    const labels = {
+      enrolment: { OFFERED: 'Offer available', RESERVED: 'Seat reserved', CANCELLED: 'Place cancelled', TRANSFERRED: 'Place transferred' },
+      request: { REQUESTED: 'Submitted', DECIDED: 'Decision recorded' },
+      decision: { APPROVED: 'Approved', REJECTED: 'Rejected', TRANSFER_OFFERED: 'Transfer offered', ACTION_NEEDED: 'Action needed' },
+      refund: { PENDING_SUBMISSION: 'Refund processing', SUBMITTING: 'Refund processing', PROCESSING: 'Refund processing', COMPLETED: 'Completed', FAILED_FINAL: 'Action needed', ACTION_NEEDED: 'Action needed' },
+    };
+    return labels[kind] && labels[kind][value] || 'Action needed';
+  }
+
   function booleanLabel(value, whenTrue, whenFalse) {
     if (value === true) return whenTrue;
     if (value === false) return whenFalse;
@@ -66,6 +100,9 @@
     acknowledgementLabel,
     booleanLabel,
     correctionHref,
+    gate2ChangeHref,
+    gate2Href,
+    gate2StatusLabel,
     hasActionableOffer,
     safeCourseHref,
     safeActionHref,

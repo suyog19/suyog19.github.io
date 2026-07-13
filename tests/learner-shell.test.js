@@ -117,7 +117,33 @@ test('renderer shows an offer only for the backend OFFERED state', () => {
   const text = elements['learner-applications'].children[0].children
     .map((child) => child.textContent).join(' | ');
   assert.match(text, /A cohort offer is available/);
-  assert.match(text, /No payment workflow is enabled in Gate 1/);
+});
+
+test('renderer keeps Gate 2 domain stages separate and links only to focused journeys', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'REFUND_PROCESSING', label: 'View refund status', href: '/my-learning/payments/enr_one/' },
+    applications: [{
+      reference: 'APP-G2', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' },
+      action: { label: 'View refund status' },
+      gate2: {
+        journeyStatus: 'REFUND_PROCESSING', action: { code: 'REFUND_PROCESSING', label: 'View refund status' },
+        enrolment: { status: 'RESERVED', seatReserved: true },
+        learnerChange: { type: 'CANCELLATION', status: 'DECIDED', decision: 'APPROVED' },
+        refund: { status: 'PROCESSING', amount: 1000 }, communication: { status: 'FAILED' },
+      },
+    }],
+  }));
+  assert.equal(elements['learner-current-action'].children[2].href, '/my-learning/change/?enrolmentId=enr_one');
+  const card = elements['learner-applications'].children[0];
+  const joined = card.children.map((child) => child.textContent).join(' | ');
+  assert.match(joined, /Place status: Seat reserved/);
+  assert.match(joined, /Seat reservation is confirmed by the service/);
+  assert.match(joined, /Organiser request: Decision recorded · Approved/);
+  assert.match(joined, /Provider refund: Refund processing/);
+  assert.match(joined, /message could not be confirmed[\s\S]*status above are unchanged/);
+  assert.ok(card.children.find((child) => child.href === '/my-learning/change/?enrolmentId=enr_one'));
+  assert.equal(card.children.some((child) => /Request cancellation/.test(child.textContent)), false);
 });
 
 test('renderer offers correction only when backend marks the current application eligible', () => {

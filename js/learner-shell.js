@@ -60,14 +60,18 @@
   function renderSummary(summary) {
     currentAction.replaceChildren();
     const action = summary.currentAction || {};
+    const applications = Array.isArray(summary.applications) ? summary.applications : [];
+    const currentGate2 = applications.find((application) => (
+      application.gate2 && application.gate2.action
+      && application.gate2.action.code === action.code
+    ));
     currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
     currentAction.appendChild(textElement('h2', '', action.label || 'My Learning'));
     const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
-    actionLink.href = summaryView.safeActionHref(action.href);
+    actionLink.href = summaryView.gate2Href(currentGate2) || summaryView.safeActionHref(action.href);
     currentAction.appendChild(actionLink);
 
     applicationList.replaceChildren();
-    const applications = Array.isArray(summary.applications) ? summary.applications : [];
     if (!applications.length) {
       applicationList.appendChild(textElement('p', 'learner-empty', 'No current application yet.'));
     }
@@ -76,6 +80,33 @@
       card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
       card.appendChild(textElement('h2', '', application.action && application.action.label));
       card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
+      const gate2 = application.gate2;
+      if (gate2) {
+        const enrolment = gate2.enrolment || {};
+        card.appendChild(textElement('p', 'learner-offer-note', 'Place status: ' + summaryView.gate2StatusLabel('enrolment', enrolment.status)));
+        if (enrolment.seatReserved === true) card.appendChild(textElement('p', '', 'Seat reservation is confirmed by the service.'));
+        const gate2ActionHref = summaryView.gate2Href(application);
+        if (gate2ActionHref) {
+          const gate2Action = textElement('a', 'btn btn-primary learner-gate2-link', gate2.action && gate2.action.label || 'View status');
+          gate2Action.href = gate2ActionHref;
+          card.appendChild(gate2Action);
+        }
+        const changeHref = summaryView.gate2ChangeHref(application);
+        if (changeHref) {
+          const change = textElement('a', 'btn btn-secondary learner-gate2-change-link', 'Request cancellation or transfer review');
+          change.href = changeHref;
+          card.appendChild(change);
+        }
+        if (gate2.learnerChange) {
+          const requestLabel = summaryView.gate2StatusLabel('request', gate2.learnerChange.status);
+          const decisionLabel = gate2.learnerChange.decision ? ' · ' + summaryView.gate2StatusLabel('decision', gate2.learnerChange.decision) : '';
+          card.appendChild(textElement('p', '', 'Organiser request: ' + requestLabel + decisionLabel));
+        }
+        if (gate2.refund) card.appendChild(textElement('p', '', 'Provider refund: ' + summaryView.gate2StatusLabel('refund', gate2.refund.status)));
+        if (gate2.communication && gate2.communication.status === 'FAILED') {
+          card.appendChild(textElement('p', 'learner-communication-warning', 'A Gate 2 message could not be confirmed. Payment, place, request and refund status above are unchanged.'));
+        }
+      }
       const correctionHref = summaryView.correctionHref(application);
       if (correctionHref) {
         const correction = textElement('a', 'btn btn-secondary learner-correction-link', 'Correct or update application');
@@ -83,8 +114,8 @@
         card.appendChild(correction);
         card.appendChild(textElement('p', 'field-hint', 'Opening correction does not withdraw or change your current application.'));
       }
-      if (summaryView.hasActionableOffer(application.offer)) {
-        card.appendChild(textElement('p', 'learner-offer-note', 'A cohort offer is available. No payment workflow is enabled in Gate 1.'));
+      if (!gate2 && summaryView.hasActionableOffer(application.offer)) {
+        card.appendChild(textElement('p', 'learner-offer-note', 'A cohort offer is available.'));
       }
       const recommendedCourse = application.decision && application.decision.recommendedCourse;
       const recommendationHref = recommendedCourse && summaryView.safeCourseHref(recommendedCourse.href);
