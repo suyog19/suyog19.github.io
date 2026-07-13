@@ -4931,6 +4931,12 @@
   display: none !important;
 }
 
+.training-hero .eyebrow,
+.learner-page .eyebrow,
+.admin-page .eyebrow {
+  opacity: 1;
+}
+
 .learner-auth-main {
   min-height: calc(100vh - 76px);
   display: grid;
