@@ -86,21 +86,46 @@
   function render(data) {
     const descriptor = STATES[data.journeyStatus] || STATES.PAYMENT_ACTION_NEEDED;
     const payment = data.payment || {};
+    const review = data.review || {};
     const paymentAction = payment.paymentAction || {};
     stateBox.replaceChildren(text('h2', descriptor[0]), text('p', descriptor[1]));
     details.replaceChildren();
     addDetail('Purpose', payment.purpose === 'DEPOSIT' ? 'Course deposit' : 'Not available');
+    addDetail('Course', review.courseTitle);
+    addDetail('Cohort', review.cohortLabel);
+    addDetail('Provided by', review.brandLabel && review.providerLabel ? review.brandLabel + ' · ' + review.providerLabel : 'Not available');
     addDetail('Amount due', money(payment.amountDue, payment.currency));
     addDetail('Payment received', money(payment.capturedAmount, payment.currency));
     addDetail('Refunded', money(payment.refundedAmount, payment.currency));
-    addDetail('Confirmation', payment.receiptAvailable === true ? 'Authoritative confirmation available' : 'Not yet available');
+    addDetail('Confirmation format', review.confirmation && review.confirmation.label);
+    addDetail('Confirmation status', payment.receiptAvailable === true ? 'Available' : 'Not yet available');
+    const policies = review.policyVersions || {};
+    const policySet = [policies.cancellation, policies.refund, policies.transfer]
+      .filter((value) => typeof value === 'string' && /^[A-Za-z0-9+._-]{1,160}$/.test(value));
+    addDetail('Policy versions', policySet.length === 3 ? policySet.join(' · ') : 'Not available');
     addDetail('Deadline', paymentAction.deadline ? new Date(paymentAction.deadline).toLocaleString() : 'Not available');
     action.replaceChildren();
     const url = paymentAction.available === true ? safePaymentUrl(paymentAction.safeUrl) : null;
     if (data.journeyStatus === 'DEPOSIT_DUE' && url) {
       const link = text('a', 'Continue to secure payment', 'btn btn-primary');
-      link.href = url;
       link.rel = 'noopener noreferrer';
+      link.setAttribute('aria-disabled', 'true');
+      const acknowledgement = document.createElement('label');
+      acknowledgement.className = 'learner-payment-acknowledgement';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+          link.href = url;
+          link.removeAttribute('aria-disabled');
+        } else {
+          link.removeAttribute('href');
+          link.setAttribute('aria-disabled', 'true');
+        }
+      });
+      acknowledgement.appendChild(checkbox);
+      acknowledgement.appendChild(document.createTextNode(' I reviewed the current deposit details and the linked policies before continuing.'));
+      action.appendChild(acknowledgement);
       action.appendChild(link);
       action.appendChild(text('p', 'This opens the current payment page supplied by the service. Return here to check authoritative status.', 'field-hint'));
     } else if (data.journeyStatus === 'PAYMENT_ACTION_NEEDED') {
@@ -125,8 +150,13 @@
       const user = await auth.restore();
       if (!user) { window.location.replace(loginUrl()); return; }
       status.textContent = 'Checking authoritative payment status…';
-      const data = await auth.request('/me/enrolments/' + encodeURIComponent(id) + '/payment', { method: 'GET' });
-      render(data);
+      const response = await auth.request('/me/enrolments/' + encodeURIComponent(id) + '/payment', { method: 'GET' });
+      if (Object.hasOwn(response, 'payment') && response.payment === null) {
+        status.hidden = true;
+        renderPreparation(id);
+        return;
+      }
+      render(response.payment || response);
       panel.hidden = false;
       status.hidden = true;
     } catch (error) {

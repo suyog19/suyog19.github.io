@@ -5110,6 +5110,9 @@
 .learner-payment-details dt { color: var(--color-text-muted); }
 .learner-payment-details dd { margin: 0; font-weight: 500; }
 .learner-payment-action { margin-top: 2rem; }
+.learner-payment-acknowledgement { display: flex; gap: .65rem; align-items: flex-start; max-width: 44rem; margin-bottom: 1rem; }
+.learner-payment-acknowledgement input { margin-top: .25rem; flex: 0 0 auto; }
+.learner-payment-action [aria-disabled="true"] { opacity: .55; pointer-events: none; }
 .learner-payment-action .field-hint { margin-top: .75rem; max-width: 42rem; }
 .learner-payment-safety { color: var(--color-text-muted); max-width: 44rem; }
 
