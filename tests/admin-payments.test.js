@@ -78,3 +78,13 @@ test('forms consume only backend-projected command eligibility and refund limits
   assert.match(script, /item\.isFull === false/);
   assert.match(script, /Number\(item\.capacityRemaining\) > 0/);
 });
+
+test('refund modes emit only backend-projected exact full or bounded partial amounts', () => {
+  const option = { allowedModes: ['FULL', 'PARTIAL_EXCEPTION'], maximumAmountMinorUnits: 5000, fullAmountMinorUnits: 5000 };
+  assert.deepEqual({ ...tools.refundModeConfig(option, 'FULL') }, { amountMinorUnits: 5000, editable: false });
+  assert.deepEqual({ ...tools.refundModeConfig(option, 'PARTIAL_EXCEPTION') }, { amountMinorUnits: null, editable: true });
+  assert.equal(tools.refundModeConfig({ ...option, fullAmountMinorUnits: 4999, maximumAmountMinorUnits: 4000 }, 'FULL'), null);
+  assert.equal(tools.refundModeConfig({ ...option, allowedModes: ['FULL'] }, 'PARTIAL_EXCEPTION'), null);
+  assert.match(script, /modeConfig\.editable \? Number\(form\.get\('amountMinorUnits'\)\) : modeConfig\.amountMinorUnits/);
+  assert.match(script, /readOnly: true/);
+});

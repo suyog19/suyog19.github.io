@@ -9,7 +9,16 @@
     let input;
     if (options && options.values) { input = document.createElement('select'); options.values.forEach(([value, title]) => { const option = document.createElement('option'); option.value = value; option.textContent = title; input.appendChild(option); }); }
     else { input = document.createElement(options && options.multiline ? 'textarea' : 'input'); if (options && options.type) input.type = options.type; }
-    input.name = name; input.required = !(options && options.optional); if (options && options.min) input.min = options.min; if (options && options.max) input.max = options.max; wrap.appendChild(input); return wrap;
+    input.name = name; input.required = !(options && options.optional); if (options && options.min) input.min = options.min; if (options && options.max) input.max = options.max; if (options && options.value !== undefined) input.value = options.value; if (options && options.readOnly) input.readOnly = true; wrap.appendChild(input); return wrap;
+  }
+  function refundModeConfig(option, mode) {
+    if (!option || !Array.isArray(option.allowedModes) || !option.allowedModes.includes(mode) || !Number.isSafeInteger(option.maximumAmountMinorUnits) || option.maximumAmountMinorUnits < 1) return null;
+    if (mode === 'FULL') {
+      if (!Number.isSafeInteger(option.fullAmountMinorUnits) || option.fullAmountMinorUnits < 1 || option.fullAmountMinorUnits > option.maximumAmountMinorUnits) return null;
+      return { amountMinorUnits: option.fullAmountMinorUnits, editable: false };
+    }
+    if (mode === 'PARTIAL_EXCEPTION') return { amountMinorUnits: null, editable: true };
+    return null;
   }
   function commandForm(title, fields, onSubmit) {
     const section = text('section', '', 'admin-payment-command'); section.appendChild(text('h4', title));
@@ -75,7 +84,13 @@
         detail.appendChild(commandForm('Apply approved transfer after required refund', [{ label: 'Target open cohort', name: 'targetCohortId', values: choices }, ...baseFields], (form) => { const cohort = cohorts.find((item) => item.cohortId === form.get('targetCohortId')); return command('/admin/training/transfer-requests/' + encodeURIComponent(request.requestId) + '/apply', 'transfer:' + request.requestId, { targetCohortId: cohort.cohortId, expectedRequestVersion: Number(request.version), expectedDecisionVersion: Number(decision.version), expectedSourceEnrolmentVersion: Number(data.enrolment.version), expectedTargetCohortVersion: Number(cohort.version), ...common(form) }); }));
       });
       const captures = data.captures || [];
-      (data.refundOptions || []).forEach((option) => detail.appendChild(commandForm('Initiate backend-bounded test refund for ' + option.providerPaymentReference, [{ label: 'Mode', name: 'mode', values: option.allowedModes.map((mode) => [mode, mode === 'FULL' ? 'Full remaining refundable amount' : 'Approved partial exception']) }, { label: 'Amount in minor units (maximum ' + option.maximumAmountMinorUnits + ')', name: 'amountMinorUnits', type: 'number', min: '1', max: String(option.maximumAmountMinorUnits) }, { label: 'Approved decision evidence', name: 'decisionId', values: option.reasonCode === 'ORGANISER_DECISION' ? option.decisionIds.map((id) => [id, id]) : [['', 'Not applicable to excess capture']] }, ...baseFields], (form) => command('/admin/training/payments/' + encodeURIComponent(obligation.paymentObligationId) + '/refunds', 'refund:' + obligation.paymentObligationId + ':' + option.providerPaymentReference, { mode: form.get('mode'), amountMinorUnits: Number(form.get('amountMinorUnits')), providerPaymentReference: option.providerPaymentReference, reasonCode: option.reasonCode, decisionId: option.reasonCode === 'EXCESS_CAPTURE_REFUND' ? null : form.get('decisionId'), expectedObligationVersion: Number(obligation.version), ...common(form) }))));
+      (data.refundOptions || []).forEach((option) => (option.allowedModes || []).forEach((mode) => {
+        const modeConfig = refundModeConfig(option, mode); if (!modeConfig) return;
+        const amountField = modeConfig.editable
+          ? { label: 'Partial amount in minor units (maximum ' + option.maximumAmountMinorUnits + ')', name: 'amountMinorUnits', type: 'number', min: '1', max: String(option.maximumAmountMinorUnits) }
+          : { label: 'Exact full refundable amount in minor units', name: 'amountMinorUnits', type: 'number', min: String(modeConfig.amountMinorUnits), max: String(modeConfig.amountMinorUnits), value: String(modeConfig.amountMinorUnits), readOnly: true };
+        detail.appendChild(commandForm((mode === 'FULL' ? 'Initiate exact full' : 'Initiate approved partial') + ' test refund for ' + option.providerPaymentReference, [amountField, { label: 'Approved decision evidence', name: 'decisionId', values: option.reasonCode === 'ORGANISER_DECISION' ? option.decisionIds.map((id) => [id, id]) : [['', 'Not applicable to excess capture']] }, ...baseFields], (form) => command('/admin/training/payments/' + encodeURIComponent(obligation.paymentObligationId) + '/refunds', 'refund:' + obligation.paymentObligationId + ':' + option.providerPaymentReference + ':' + mode, { mode, amountMinorUnits: modeConfig.editable ? Number(form.get('amountMinorUnits')) : modeConfig.amountMinorUnits, providerPaymentReference: option.providerPaymentReference, reasonCode: option.reasonCode, decisionId: option.reasonCode === 'EXCESS_CAPTURE_REFUND' ? null : form.get('decisionId'), expectedObligationVersion: Number(obligation.version), ...common(form) })));
+      }));
       (data.refunds || []).filter((item) => item.status === 'FAILED_RETRYABLE').forEach((item) => detail.appendChild(commandForm('Retry failed test refund ' + item.refundId, baseFields, (form) => command('/admin/training/refunds/' + encodeURIComponent(item.refundId) + '/retry', 'refund-retry:' + item.refundId, { expectedVersion: Number(item.version), ...common(form) }))));
       detail.appendChild(commandForm('Record provider operational status', [{ label: 'Provider status', name: 'providerStatus', values: ['DELAYED_SETTLEMENT', 'DISPUTE', 'CHARGEBACK', 'ACCOUNT_RESTRICTED', 'UNKNOWN', 'CLEARED'].map((value) => [value, value.replaceAll('_', ' ')]) }, ...baseFields], (form) => command('/admin/training/payments/' + encodeURIComponent(obligation.paymentObligationId) + '/reconcile', 'provider-status:' + obligation.paymentObligationId, { command: 'RECORD_PROVIDER_STATUS', providerStatus: form.get('providerStatus'), expectedObligationVersion: Number(obligation.version), ...common(form) })));
       const allocatable = captures.filter((item) => item.allocationCommandAvailable === true);
@@ -91,5 +106,5 @@
     refresh.addEventListener('click', () => { loaded = false; load(true); if (selected) loadDetail(selected); });
     return { clear() { loaded = false; selected = ''; list.replaceChildren(); detail.replaceChildren(text('p', 'Select a payment obligation to review.', 'admin-empty')); }, load };
   }
-  window.sjAdminPayments = { create, money, safeId };
+  window.sjAdminPayments = { create, money, safeId, refundModeConfig };
 }());
