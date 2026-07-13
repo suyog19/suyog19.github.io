@@ -290,7 +290,11 @@
         needsProfile = true;
         profileFields.hidden = false;
       }
-      const existing = await currentApplication();
+      // A first-time learner cannot have a current application yet because the
+      // application API requires the learner profile we are about to create.
+      // Avoid turning that expected prerequisite into a fatal initialization
+      // error before the inline profile form can be shown.
+      const existing = needsProfile ? null : await currentApplication();
       if (correctionMode) {
         if (!existing || existing.applicationId !== sourceApplicationId || !['NEW', 'UNDER_REVIEW'].includes(existing.status)) {
           throw Object.assign(new Error('APPLICATION_REPLACEMENT_CONFLICT'), { status: 409, body: { error: 'APPLICATION_REPLACEMENT_CONFLICT' } });
