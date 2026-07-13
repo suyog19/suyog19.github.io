@@ -149,6 +149,32 @@ test('page remains private-by-default and contains no payment integration', () =
   assert.match(script, /Your original remains active until you resubmit/);
 });
 
+test('first-time learner sees inline profile form before application lookup', async () => {
+  const calls = [];
+  const { elements, page } = pageHarness('?courseId=crs_python_foundations', async (path) => {
+    calls.push(path);
+    if (path === '/training/courses/python-foundations-ai-data') {
+      return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
+    }
+    if (path === '/learners/me') {
+      const error = new Error('missing profile');
+      error.status = 404;
+      throw error;
+    }
+    if (path.startsWith('/me/applications/current')) {
+      throw new Error('Application lookup must wait until the profile exists');
+    }
+    throw new Error('Unexpected ' + path);
+  });
+
+  await page.initialise();
+
+  assert.equal(elements['profile-fields'].hidden, false);
+  assert.equal(elements['application-form'].hidden, false);
+  assert.equal(elements['application-recovery'].hidden, true);
+  assert.equal(calls.some((path) => path.startsWith('/me/applications/current')), false);
+});
+
 test('eligible correction is prefilled and submits the exact immutable replacement', async () => {
   const calls = [];
   const source = {
