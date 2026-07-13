@@ -24,6 +24,58 @@ function validValue() {
   };
 }
 
+class Element {
+  constructor() {
+    this.value = ''; this.checked = false; this.hidden = false; this.disabled = false;
+    this.textContent = ''; this.className = ''; this.listeners = {}; this.attributes = {};
+  }
+  addEventListener(name, callback) { this.listeners[name] = callback; }
+  setAttribute(name, value) { this.attributes[name] = value; }
+  removeAttribute(name) { delete this.attributes[name]; }
+  focus() { this.focused = true; }
+  querySelector() { return new Element(); }
+  querySelectorAll() { return []; }
+}
+
+function pageHarness(search, request) {
+  const ids = [
+    'application-form', 'application-status', 'application-recovery', 'application-retry',
+    'application-submit', 'application-result', 'application-reference',
+    'application-result-title', 'application-result-detail', 'application-course-summary',
+    'profile-fields', 'application-user-label', 'application-logout', 'application-cancel',
+    'application-full-name', 'application-timezone', 'application-adult', 'application-terms',
+    'application-recording', 'application-experience', 'application-goal',
+    'application-availability',
+  ];
+  const elements = Object.fromEntries(ids.map((id) => [id, new Element()]));
+  elements['application-form'].hidden = true;
+  elements['application-recovery'].hidden = true;
+  elements['application-result'].hidden = true;
+  elements['application-timezone'].value = 'Asia/Kolkata';
+  const storage = new Map();
+  const context = {
+    URLSearchParams, Uint32Array,
+    crypto: { getRandomValues(values) { values.set([1, 2, 3, 4]); return values; } },
+    sessionStorage: {
+      getItem(key) { return storage.has(key) ? storage.get(key) : null; },
+      setItem(key, value) { storage.set(key, String(value)); },
+      removeItem(key) { storage.delete(key); },
+    },
+    document: { getElementById(id) { return elements[id]; } },
+    window: {
+      __SJ_DISABLE_AUTO_INIT__: true,
+      location: { search, replace(value) { this.redirected = value; } },
+      sjLearnerAuth: {
+        restore: async () => ({ emailId: 'learner@example.com' }), request,
+        logout: async () => true,
+      },
+    },
+  };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'js/course-application-model.js'), 'utf8'), context);
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'js/course-application.js'), 'utf8'), context);
+  return { context, elements, page: context.window.sjCourseApplicationPage, storage };
+}
+
 test('only approved Gate 1 course identifiers are accepted', () => {
   const model = loadModel();
   assert.equal(model.course('crs_python_foundations').slug, 'python-foundations-ai-data');
@@ -86,4 +138,96 @@ test('page remains private-by-default and contains no payment integration', () =
   assert.match(script, /Idempotency-Key/);
   assert.match(script, /\/replacements/);
   assert.match(script, /Your original remains active until you resubmit/);
+});
+
+test('eligible correction is prefilled and submits the exact immutable replacement', async () => {
+  const calls = [];
+  const source = {
+    applicationId: 'app_source', reference: 'APP-SOURCE', courseId: 'crs_python_foundations',
+    status: 'NEW', version: 4,
+    answers: { programmingExperience: 'Old experience', learningGoal: 'Old goal', weeklyAvailability: 'Old availability' },
+  };
+  const { elements, page } = pageHarness('?courseId=crs_python_foundations&applicationId=app_source', async (path, options) => {
+    calls.push({ path, options });
+    if (path === '/training/courses/python-foundations-ai-data') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
+    if (path === '/learners/me') return { learner: { adultEligibilityConfirmed: true, acknowledgements: [
+      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+    ] } };
+    if (path.startsWith('/me/applications/current')) return { application: source };
+    if (path === '/me/applications/app_source') return { application: source };
+    if (path === '/me/applications/app_source/replacements') return { application: { applicationId: 'app_new', reference: 'APP-NEW' } };
+    throw new Error('Unexpected ' + path);
+  });
+  await page.initialise();
+  assert.equal(elements['application-experience'].value, 'Old experience');
+  assert.equal(elements['application-submit'].textContent, 'Submit corrected application');
+  assert.equal(elements['application-cancel'].hidden, false);
+  elements['application-terms'].checked = true;
+  elements['application-recording'].checked = true;
+  await page.submitApplication();
+  const replacement = calls.find((call) => call.path.endsWith('/replacements'));
+  assert.equal(replacement.options.headers['Idempotency-Key'], 'web-00000001000000020000000300000004');
+  assert.deepEqual(JSON.parse(replacement.options.body), {
+    courseId: 'crs_python_foundations', expectedVersion: 4,
+    answers: { programmingExperience: 'Old experience', learningGoal: 'Old goal', weeklyAvailability: 'Old availability' },
+    acknowledgements: [
+      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+    ],
+  });
+  assert.equal(elements['application-result-title'].textContent, 'Updated application received');
+  assert.match(elements['application-result-detail'].textContent, /replaces your earlier submission/);
+});
+
+test('replacement conflict hides resubmission and leaves support available', async () => {
+  const source = { applicationId: 'app_source', courseId: 'crs_python_foundations', status: 'ACCEPTED', version: 5 };
+  const { elements, page } = pageHarness('?courseId=crs_python_foundations&applicationId=app_source', async (path) => {
+    if (path === '/training/courses/python-foundations-ai-data') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
+    if (path === '/learners/me') return { learner: { adultEligibilityConfirmed: true, acknowledgements: [] } };
+    if (path.startsWith('/me/applications/current')) return { application: source };
+    throw new Error('Unexpected ' + path);
+  });
+  await page.initialise();
+  assert.equal(elements['application-form'].hidden, true);
+  assert.equal(elements['application-recovery'].hidden, false);
+  assert.equal(elements['application-retry'].hidden, true);
+  assert.match(elements['application-status'].textContent, /can no longer be corrected/);
+});
+
+test('uncertain replacement retry reuses its key and resolves without duplication', async () => {
+  const source = {
+    applicationId: 'app_source', reference: 'APP-SOURCE', courseId: 'crs_python_foundations', status: 'NEW', version: 2,
+    answers: { programmingExperience: 'Experience', learningGoal: 'Goal', weeklyAvailability: 'Availability' },
+  };
+  const keys = [];
+  let currentReads = 0;
+  let attempts = 0;
+  const { elements, page } = pageHarness('?courseId=crs_python_foundations&applicationId=app_source', async (path, options) => {
+    if (path === '/training/courses/python-foundations-ai-data') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
+    if (path === '/learners/me') return { learner: { adultEligibilityConfirmed: true, acknowledgements: [
+      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+    ] } };
+    if (path.startsWith('/me/applications/current')) {
+      currentReads += 1;
+      return { application: currentReads === 1 ? source : null };
+    }
+    if (path === '/me/applications/app_source') return { application: source };
+    if (path.endsWith('/replacements')) {
+      keys.push(options.headers['Idempotency-Key']);
+      attempts += 1;
+      if (attempts === 1) { const error = new Error('network'); error.status = 0; throw error; }
+      return { application: { applicationId: 'app_new', reference: 'APP-NEW' } };
+    }
+    throw new Error('Unexpected ' + path);
+  });
+  await page.initialise();
+  elements['application-terms'].checked = true;
+  elements['application-recording'].checked = true;
+  await page.submitApplication();
+  await page.submitApplication();
+  assert.equal(keys.length, 2);
+  assert.equal(keys[0], keys[1]);
+  assert.equal(elements['application-reference'].textContent, 'APP-NEW');
 });
