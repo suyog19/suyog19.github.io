@@ -3497,6 +3497,82 @@
     max-height: none;
   }
 }
+
+/* Gate 1 application */
+.application-main {
+  padding: 4rem var(--container-px);
+}
+
+.application-shell {
+  max-width: 48rem;
+  padding: 2.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-bg);
+}
+
+.application-shell form {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.application-shell fieldset {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+}
+
+.application-shell legend {
+  padding: 0 .5rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.application-check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .75rem;
+  align-items: start;
+  line-height: 1.55;
+}
+
+.application-check input {
+  margin-top: .3rem;
+}
+
+.application-disclosure {
+  padding: 1rem;
+  border-left: 3px solid #b91c1c;
+  background: var(--color-surface);
+}
+
+.application-result {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #bbf7d0;
+  border-radius: .75rem;
+  background: #f0fdf4;
+}
+
+.application-result .btn {
+  margin-top: 1rem;
+}
+
+@media (max-width: 600px) {
+  .application-main {
+    padding: 2rem 1rem;
+  }
+
+  .application-shell,
+  .application-shell fieldset {
+    padding: 1.25rem;
+  }
+}
 /* ============================================================
    Vendor Onboarding RAG Demo
    ============================================================ */
