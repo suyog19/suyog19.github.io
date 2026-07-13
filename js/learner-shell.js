@@ -34,8 +34,8 @@
     try {
       const user = await auth.restore();
       if (!user) { window.location.replace(loginUrl()); return; }
-      userLabel.textContent = user.emailId || 'Learner session';
       const summary = await auth.request('/me/learning-summary', { method: 'GET' });
+      userLabel.textContent = user.emailId || 'Learner session';
       renderSummary(summary);
       shell.hidden = false;
       status.hidden = true;
