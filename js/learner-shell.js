@@ -21,6 +21,12 @@
   }
 
   async function initialise() {
+    shell.hidden = true;
+    userLabel.textContent = '';
+    currentAction.replaceChildren();
+    applicationList.replaceChildren();
+    profileDetails.replaceChildren();
+    profileEmpty.hidden = true;
     retryButton.disabled = true;
     errorActions.hidden = true;
     status.textContent = 'Restoring your secure session…';

@@ -149,6 +149,28 @@ test('initialise exposes retry and support recovery after a network error', asyn
   assert.equal(typeof elements['learner-retry'].listeners.click, 'function');
 });
 
+test('a failed refresh clears and hides previously rendered private state', async () => {
+  let fail = false;
+  const { elements, shell } = harness({
+    request: async () => {
+      if (fail) { const error = new Error('network'); error.status = 0; throw error; }
+      return summary({
+        learner: { verifiedEmail: 'private@example.com', fullName: 'Private Learner', timezone: 'Asia/Kolkata', adultEligibilityConfirmed: true, acknowledgements: [] },
+        applications: [{ reference: 'APP-PRIVATE', course: { title: 'Private course' }, action: { label: 'Application received' } }],
+      });
+    },
+  });
+  await shell.initialise();
+  assert.equal(elements['learner-shell'].hidden, false);
+  fail = true;
+  await shell.initialise();
+  assert.equal(elements['learner-shell'].hidden, true);
+  assert.equal(elements['learner-user-label'].textContent, '');
+  assert.equal(elements['learner-applications'].children.length, 0);
+  assert.equal(elements['learner-profile-details'].children.length, 0);
+  assert.equal(elements['learner-current-action'].children.length, 0);
+});
+
 test('initialise redirects expired sessions without exposing the shell', async () => {
   let redirected = '';
   const { context, elements, shell } = harness({
