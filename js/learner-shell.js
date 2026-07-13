@@ -9,6 +9,9 @@
   const currentAction = document.getElementById('learner-current-action');
   const applicationList = document.getElementById('learner-applications');
   const profileDetails = document.getElementById('learner-profile-details');
+  const profileEmpty = document.getElementById('learner-profile-empty');
+  const errorActions = document.getElementById('learner-error-actions');
+  const retryButton = document.getElementById('learner-retry');
   const supportLink = document.getElementById('learner-support-link');
   const privacyLink = document.getElementById('learner-privacy-link');
   const grievanceLink = document.getElementById('learner-grievance-link');
@@ -18,6 +21,10 @@
   }
 
   async function initialise() {
+    retryButton.disabled = true;
+    errorActions.hidden = true;
+    status.textContent = 'Restoring your secure session…';
+    status.hidden = false;
     try {
       const user = await auth.restore();
       if (!user) { window.location.replace(loginUrl()); return; }
@@ -26,10 +33,14 @@
       renderSummary(summary);
       shell.hidden = false;
       status.hidden = true;
+      errorActions.hidden = true;
     } catch (error) {
       if (error.status === 401 || error.status === 403) { window.location.replace(loginUrl()); return; }
-      status.textContent = 'My Learning is temporarily unavailable. Check your connection and retry.';
+      status.textContent = 'My Learning is temporarily unavailable.';
       status.hidden = false;
+      errorActions.hidden = false;
+    } finally {
+      retryButton.disabled = false;
     }
   }
 
@@ -59,7 +70,7 @@
       card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
       card.appendChild(textElement('h2', '', application.action && application.action.label));
       card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
-      if (application.offer) {
+      if (summaryView.hasActionableOffer(application.offer)) {
         card.appendChild(textElement('p', 'learner-offer-note', 'A cohort offer is available. No payment workflow is enabled in Gate 1.'));
       }
       const recommendedCourse = application.decision && application.decision.recommendedCourse;
@@ -85,9 +96,10 @@
     );
 
     profileDetails.replaceChildren();
+    profileEmpty.hidden = true;
     const learner = summary.learner;
     if (!learner) {
-      profileDetails.appendChild(textElement('p', '', 'Complete your learner profile to apply.'));
+      profileEmpty.hidden = false;
       return;
     }
     addDetail('Verified email', learner.verifiedEmail);
@@ -125,5 +137,7 @@
     status.textContent = 'Signed out on this device, but the service could not confirm server sign-out. Close this browser window on a shared device and contact support if this continues.';
     status.hidden = false;
   });
-  initialise();
+  retryButton.addEventListener('click', initialise);
+  window.sjLearnerShell = { initialise, renderSummary };
+  if (!window.__SJ_DISABLE_AUTO_INIT__) initialise();
 }());

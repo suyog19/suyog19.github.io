@@ -35,6 +35,13 @@ test('boolean labels preserve true, false, and missing truth states', () => {
   assert.equal(view.booleanLabel(undefined, 'Yes', 'No'), 'Not available');
 });
 
+test('only an explicit OFFERED state is actionable', () => {
+  assert.equal(view.hasActionableOffer({ status: 'OFFERED' }), true);
+  assert.equal(view.hasActionableOffer({ status: 'WITHDRAWN' }), false);
+  assert.equal(view.hasActionableOffer({}), false);
+  assert.equal(view.hasActionableOffer(null), false);
+});
+
 test('acknowledgements render only complete approved records', () => {
   assert.equal(view.acknowledgementLabel([]), 'Not recorded');
   assert.equal(view.acknowledgementLabel(null), 'Not available');

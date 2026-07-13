@@ -5006,6 +5006,17 @@
   margin-top: 4rem;
 }
 
+.learner-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.learner-error-actions[hidden] {
+  display: none;
+}
+
 .learner-shell {
   padding: 2.5rem;
   background: var(--color-bg);

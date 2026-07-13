@@ -49,6 +49,10 @@
   </header>
   <main>
     <div id="learner-shell-status" class="container learner-shell-status" role="status" aria-live="polite">Restoring your secure session…</div>
+    <div id="learner-error-actions" class="container learner-error-actions" hidden>
+      <button id="learner-retry" class="btn btn-primary" type="button">Retry</button>
+      <a class="btn btn-secondary" href="../contact/">Contact support</a>
+    </div>
     <section id="learner-shell" class="container learner-shell" hidden>
       <p class="eyebrow">Private learner area</p>
       <h1>My Learning</h1>
@@ -56,6 +60,7 @@
       <div id="learner-applications" class="learner-application-list" aria-label="Current learning journeys"></div>
       <section class="learner-profile" aria-labelledby="learner-profile-title">
         <h2 id="learner-profile-title">Your profile</h2>
+        <p id="learner-profile-empty" hidden>Complete your learner profile to apply.</p>
         <dl id="learner-profile-details"></dl>
       </section>
       <nav class="learner-support-links" aria-label="Learner support">

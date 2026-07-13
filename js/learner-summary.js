@@ -28,6 +28,10 @@
       : null;
   }
 
+  function hasActionableOffer(offer) {
+    return Boolean(offer && offer.status === 'OFFERED');
+  }
+
   function booleanLabel(value, whenTrue, whenFalse) {
     if (value === true) return whenTrue;
     if (value === false) return whenFalse;
@@ -53,6 +57,7 @@
   window.sjLearnerSummary = {
     acknowledgementLabel,
     booleanLabel,
+    hasActionableOffer,
     safeCourseHref,
     safeActionHref,
     safeSupportHref,
