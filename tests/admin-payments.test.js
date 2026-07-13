@@ -58,3 +58,23 @@ test('financial and lifecycle evidence stays separated in the detail view', () =
   assert.match(script, /backend-controlled verified capture allocation/);
   assert.match(page, /browser does not allocate money, reserve seats, calculate credit, or prove provider completion/);
 });
+
+test('authorization failure clears existing private controller state through the admin shell', () => {
+  assert.match(script, /error\.status === 401 \|\| error\.status === 403/);
+  assert.match(script, /config\.clearSession\('Your admin session is no longer authorized/);
+  const admin = fs.readFileSync('js/admin.js', 'utf8');
+  assert.match(admin, /clearSession: \(message\) => clearSession\(message\)/);
+  assert.match(admin, /sjAdminPaymentsController\.clear\(\)/);
+});
+
+test('forms consume only backend-projected command eligibility and refund limits', () => {
+  assert.match(script, /current\.availableCommands/);
+  assert.match(script, /current\.replacementModes/);
+  assert.match(script, /data\.refundOptions/);
+  assert.match(script, /max: String\(option\.maximumAmountMinorUnits\)/);
+  assert.match(script, /option\.reasonCode/);
+  assert.match(script, /option\.decisionIds/);
+  assert.match(script, /allocationCommandAvailable === true/);
+  assert.match(script, /item\.isFull === false/);
+  assert.match(script, /Number\(item\.capacityRemaining\) > 0/);
+});

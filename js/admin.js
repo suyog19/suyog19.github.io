@@ -1229,6 +1229,7 @@
       setStatus,
       friendlyError,
       sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
     });
     validateStoredSession();
   }
