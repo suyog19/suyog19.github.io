@@ -3,7 +3,7 @@
 
   const TOKEN_KEY = 'sj_learner_access_token';
   const USER_KEY = 'sj_learner_user';
-  const SAFE_DESTINATIONS = new Set(['/my-learning/', '/learn/', '/apply/']);
+  const SAFE_DESTINATIONS = new Set(['/my-learning/', '/my-learning/payment/', '/learn/', '/apply/']);
   const SAFE_COURSE_PATH = /^\/courses\/[a-z0-9-]{1,128}\/$/;
 
   function apiBaseUrl() {
@@ -21,7 +21,7 @@
       const allowed = SAFE_DESTINATIONS.has(url.pathname) || SAFE_COURSE_PATH.test(url.pathname);
       if (!allowed) return '/my-learning/';
       const safeQuery = new URLSearchParams();
-      ['courseId', 'applicationId'].forEach((name) => {
+      ['courseId', 'applicationId', 'enrolmentId'].forEach((name) => {
         const candidate = url.searchParams.get(name);
         if (candidate && /^[A-Za-z0-9_-]{1,128}$/.test(candidate)) {
           safeQuery.set(name, candidate);
