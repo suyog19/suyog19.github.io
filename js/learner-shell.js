@@ -57,6 +57,20 @@
     return element;
   }
 
+  function money(value, currency) {
+    return Number.isSafeInteger(value) && value >= 0 && currency === 'INR'
+      ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value / 100)
+      : 'Not available';
+  }
+
+  function dateTime(value) {
+    if (typeof value !== 'string') return 'Not available';
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? 'Not available' : new Intl.DateTimeFormat('en-IN', {
+      dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Kolkata',
+    }).format(parsed);
+  }
+
   function renderSummary(summary) {
     currentAction.replaceChildren();
     const action = summary.currentAction || {};
@@ -65,16 +79,26 @@
       application.gate2 && application.gate2.action
       && application.gate2.action.code === action.code
     ));
+    const currentGate3 = applications.find((application) => (
+      application.gate3 && application.journeyStatus === action.code
+    ));
     const currentGate2Href = summaryView.gate2Href(currentGate2);
-    const currentSupported = summaryView.isV1ActionCode(action.code)
-      && (!summaryView.isGate2ActionCode(action.code) || Boolean(currentGate2 && currentGate2Href));
+    const currentGate3Href = summaryView.gate3Href(currentGate3);
+    const currentSupported = summaryView.isV1ActionCode(action.code) && (
+      summaryView.isGate2ActionCode(action.code) ? Boolean(currentGate2 && currentGate2Href)
+        : summaryView.isGate3ActionCode(action.code) ? Boolean(currentGate3)
+          : true
+    );
     currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
-    const currentLabel = !currentSupported || (currentGate2 && !currentGate2Href) ? 'No action is currently available' : action.label || 'My Learning';
+    const currentLabel = !currentSupported ? 'No action is currently available' : action.label || 'My Learning';
     currentAction.appendChild(textElement('h2', '', currentLabel));
-    if (currentSupported && (!currentGate2 || currentGate2Href)) {
+    const currentHref = currentGate3 ? currentGate3Href : currentGate2 ? currentGate2Href : summaryView.safeActionHref(action.href);
+    if (currentSupported && currentHref) {
       const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
-      actionLink.href = currentGate2Href || summaryView.safeActionHref(action.href);
+      actionLink.href = currentHref;
       currentAction.appendChild(actionLink);
+    } else if (currentSupported && currentGate3) {
+      currentAction.appendChild(textElement('p', '', 'No duplicate payment or course-resource action is available. Review the authoritative status below.'));
     } else {
       currentAction.appendChild(textElement('p', '', 'This status is not enabled in the current learner experience.'));
     }
@@ -86,14 +110,19 @@
     applications.forEach((application) => {
       const card = textElement('article', 'learner-application-card', '');
       const gate2 = application.gate2;
+      const gate3 = application.gate3;
       const gate2ActionHref = summaryView.gate2Href(application);
+      const gate3ActionHref = summaryView.gate3Href(application);
       const applicationAction = application.action || {};
       const applicationSupported = !applicationAction.code || (
-        summaryView.isV1ActionCode(applicationAction.code)
-        && (!summaryView.isGate2ActionCode(applicationAction.code) || Boolean(gate2 && gate2ActionHref))
+        summaryView.isV1ActionCode(applicationAction.code) && (
+          summaryView.isGate2ActionCode(applicationAction.code) ? Boolean(gate2 && gate2ActionHref)
+            : summaryView.isGate3ActionCode(applicationAction.code) ? Boolean(gate3)
+              : true
+        )
       );
       card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
-      card.appendChild(textElement('h2', '', !applicationSupported || (gate2 && !gate2ActionHref) ? 'Status available' : applicationAction.label));
+      card.appendChild(textElement('h2', '', !applicationSupported ? 'Status available' : applicationAction.label));
       card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
       if (gate2) {
         const enrolment = gate2.enrolment || {};
@@ -118,6 +147,35 @@
         if (gate2.refund) card.appendChild(textElement('p', '', 'Provider refund: ' + summaryView.gate2StatusLabel('refund', gate2.refund.status)));
         if (gate2.communication && gate2.communication.status === 'FAILED') {
           card.appendChild(textElement('p', 'learner-communication-warning', 'A Gate 2 message could not be confirmed. Payment, place, request and refund status above are unchanged.'));
+        }
+      }
+      if (gate3) {
+        card.appendChild(textElement('p', 'learner-offer-note', 'Cohort: ' + summaryView.gate3StatusLabel('decision', gate3.cohortDecision)));
+        if (gate3.schedule) {
+          card.appendChild(textElement('p', '', 'Final schedule: ' + dateTime(gate3.schedule.startsAt) + ' to ' + dateTime(gate3.schedule.endsAt) + ' · ' + (gate3.schedule.timezone || 'Timezone not available')));
+        }
+        card.appendChild(textElement('p', '', 'Remaining fee: ' + summaryView.gate3StatusLabel('balance', gate3.balanceStatus)));
+        card.appendChild(textElement('p', '', 'Amount due: ' + money(gate3.amountDue, gate3.currency)));
+        card.appendChild(textElement('p', '', 'Approved credit or waiver: ' + money(gate3.creditAmount, gate3.currency)));
+        if (gate3.balanceDeadline) card.appendChild(textElement('p', '', 'Balance deadline: ' + dateTime(gate3.balanceDeadline)));
+        if (gate3.graceUntil) card.appendChild(textElement('p', '', 'Grace ends: ' + dateTime(gate3.graceUntil)));
+        if (gate3.extensionUntil) card.appendChild(textElement('p', '', 'Approved extension ends: ' + dateTime(gate3.extensionUntil)));
+        const seat = gate3.seatReleased === true ? 'Released' : gate3.seatReserved === true ? 'Reserved' : 'Not available';
+        card.appendChild(textElement('p', '', 'Seat status: ' + seat));
+        card.appendChild(textElement('p', '', 'Enrolment activation: ' + summaryView.gate3StatusLabel('activation', gate3.activationStatus)));
+        card.appendChild(textElement('p', '', 'Joining instructions: ' + summaryView.gate3StatusLabel('joining', gate3.joiningEligibility)));
+        if (gate3.depositDispositionOutcome) card.appendChild(textElement('p', '', 'Deposit treatment: ' + summaryView.gate3StatusLabel('disposition', gate3.depositDispositionOutcome)));
+        if (gate3.balanceStatus === 'OVERDUE_IN_GRACE') card.appendChild(textElement('p', 'field-hint', 'The balance is overdue, but the backend still records the seat as reserved during the allowed grace period.'));
+        if (gate3.balanceStatus === 'CONFIRMING') card.appendChild(textElement('p', 'field-hint', 'Payment confirmation is in progress. Do not pay again.'));
+        if (gate3.balanceStatus === 'CLOSED_NON_PAYMENT') card.appendChild(textElement('p', 'field-hint', 'The seat has been released. A normal payment cannot reactivate this enrolment automatically.'));
+        if (gate3.balanceStatus === 'ACTION_NEEDED') card.appendChild(textElement('p', 'field-hint', 'Payment evidence needs organiser review and does not activate the enrolment automatically.'));
+        if (applicationSupported && gate3ActionHref) {
+          const gate3Action = textElement('a', 'btn btn-primary learner-gate3-link', applicationAction.label || 'View status');
+          gate3Action.href = gate3ActionHref;
+          card.appendChild(gate3Action);
+        }
+        if (gate3.communication) {
+          card.appendChild(textElement('p', gate3.communication.status === 'FAILED' ? 'learner-communication-warning' : '', 'Gate 3 message: ' + summaryView.gate3StatusLabel('communication', gate3.communication.status) + '. Payment, cohort, seat and enrolment truth above are unchanged.'));
         }
       }
       const correctionHref = summaryView.correctionHref(application);

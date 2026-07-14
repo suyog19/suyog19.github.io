@@ -63,14 +63,34 @@ test('Gate 2 domain enums use bounded learner-friendly labels', () => {
   assert.equal(view.gate2StatusLabel('refund', 'UNRECOGNISED'), 'Action needed');
 });
 
-test('only Gate 1 and Gate 2 action codes are supported in V1', () => {
+test('only Gate 1 through Gate 3 action codes are supported in V1', () => {
   assert.equal(view.isV1ActionCode('APPLICATION_RECEIVED'), true);
   assert.equal(view.isV1ActionCode('REFUND_PROCESSING'), true);
-  assert.equal(view.isV1ActionCode('BALANCE_DUE'), false);
+  assert.equal(view.isV1ActionCode('BALANCE_DUE'), true);
   assert.equal(view.isV1ActionCode('VIEW_COURSE_RESOURCES'), false);
   assert.equal(view.isGate2ActionCode('DEPOSIT_DUE'), true);
   assert.equal(view.isGate2ActionCode('REFUND_PROCESSING'), true);
   assert.equal(view.isGate2ActionCode('APPLICATION_RECEIVED'), false);
+  assert.equal(view.isGate3ActionCode('BALANCE_DUE'), true);
+  assert.equal(view.isGate3ActionCode('ACTIVE'), true);
+  assert.equal(view.isGate3ActionCode('VIEW_COURSE_RESOURCES'), false);
+});
+
+test('Gate 3 links require an exact owned enrolment and bounded backend action', () => {
+  const application = { offer: { enrolmentId: 'enr_one' }, gate3: { action: { code: 'PAY_BALANCE' } } };
+  assert.equal(view.gate3Href(application), '/my-learning/balance/?enrolmentId=enr_one');
+  assert.equal(view.gate3Href({ ...application, gate3: { action: { code: 'CONTACT_SUPPORT' } } }), '/contact/');
+  assert.equal(view.gate3Href({ ...application, gate3: { action: { code: 'NONE' } } }), null);
+  assert.equal(view.gate3Href({ ...application, offer: { enrolmentId: '../admin' } }), null);
+  assert.equal(view.gate3Href({ ...application, gate3: { action: { code: 'VIEW_COURSE_RESOURCES' } } }), null);
+});
+
+test('Gate 3 domain enums use bounded learner-friendly labels', () => {
+  assert.equal(view.gate3StatusLabel('decision', 'POSTPONED'), 'Postponed');
+  assert.equal(view.gate3StatusLabel('balance', 'OVERDUE_IN_GRACE'), 'Overdue within grace');
+  assert.equal(view.gate3StatusLabel('activation', 'ACTIVE'), 'Active');
+  assert.equal(view.gate3StatusLabel('joining', 'ELIGIBLE'), 'Available without course-resource links');
+  assert.equal(view.gate3StatusLabel('balance', 'UNKNOWN'), 'Not available');
 });
 
 test('correction links require explicit eligibility and bounded owned identifiers', () => {

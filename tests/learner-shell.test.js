@@ -153,7 +153,7 @@ test('unsupported Gate 3 and Gate 4 actions render neutral and inert', () => {
       currentAction: { code, label: code === 'BALANCE_DUE' ? 'Pay balance' : 'Open course resources', href: '/my-learning/' },
       applications: [{
         reference: 'APP-FUTURE', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' },
-        action: { label: code === 'BALANCE_DUE' ? 'Pay balance' : 'Open course resources' },
+        action: { code, label: code === 'BALANCE_DUE' ? 'Pay balance' : 'Open course resources' },
         gate2: { action: { code, label: 'Future action' }, enrolment: { status: 'RESERVED', seatReserved: true } },
       }],
     }));
@@ -198,6 +198,85 @@ test('Gate 2-only actions stay inert when their authoritative projection is miss
     assert.equal(card.children[1].textContent, 'Status available');
     assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay deposit|View refund status/);
   });
+});
+
+test('Gate 3 renders backend-owned fee, grace, extension, credit, and safe balance action', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'BALANCE_EXTENDED', label: 'Pay remaining fee' },
+    applications: [{
+      reference: 'APP-G3', journeyStatus: 'BALANCE_EXTENDED', course: { title: 'Python' },
+      offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code: 'BALANCE_EXTENDED', label: 'Pay remaining fee' },
+      gate3: {
+        cohortDecision: 'CONFIRMED', schedule: { startsAt: '2026-08-01T04:30:00Z', endsAt: '2026-08-01T06:30:00Z', timezone: 'Asia/Kolkata' },
+        balanceStatus: 'EXTENDED', amountDue: 120000, creditAmount: 5000, currency: 'INR',
+        balanceDeadline: '2026-07-20T18:29:59Z', extensionUntil: '2026-07-25T18:29:59Z',
+        seatReserved: true, seatReleased: false, activationStatus: 'ELIGIBLE', joiningEligibility: 'NOT_ELIGIBLE',
+        action: { code: 'PAY_BALANCE' }, communication: { status: 'SENT' },
+      },
+    }],
+  }));
+  assert.equal(elements['learner-current-action'].children[2].href, '/my-learning/balance/?enrolmentId=enr_one');
+  const card = elements['learner-applications'].children[0];
+  const text = card.children.map((child) => child.textContent).join(' | ');
+  assert.match(text, /Cohort: Confirmed/);
+  assert.match(text, /Remaining fee: Deadline extended/);
+  assert.match(text, /Amount due: .*1,200/);
+  assert.match(text, /Approved credit or waiver: .*50/);
+  assert.match(text, /Approved extension ends:/);
+  assert.match(text, /Seat status: Reserved/);
+  assert.ok(card.children.find((child) => child.href === '/my-learning/balance/?enrolmentId=enr_one'));
+});
+
+test('Gate 3 confirming, non-payment closure, and communication failure remain separate', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'CLOSED_NON_PAYMENT', label: 'Contact support' },
+    applications: [{
+      reference: 'APP-CLOSED', journeyStatus: 'CLOSED_NON_PAYMENT', course: { title: 'Python' },
+      offer: { enrolmentId: 'enr_closed' }, action: { code: 'CLOSED_NON_PAYMENT', label: 'Contact support' },
+      gate3: {
+        cohortDecision: 'CONFIRMED', balanceStatus: 'CLOSED_NON_PAYMENT', amountDue: 10000, creditAmount: 0, currency: 'INR',
+        seatReserved: false, seatReleased: true, activationStatus: 'NOT_ELIGIBLE', joiningEligibility: 'NOT_ELIGIBLE',
+        depositDispositionOutcome: 'ACTION_NEEDED', action: { code: 'CONTACT_SUPPORT' }, communication: { status: 'FAILED' },
+      },
+    }],
+  }));
+  const card = elements['learner-applications'].children[0];
+  const text = card.children.map((child) => child.textContent).join(' | ');
+  assert.match(text, /Seat status: Released/);
+  assert.match(text, /Deposit treatment: Organiser review required/);
+  assert.match(text, /cannot reactivate this enrolment automatically/);
+  assert.match(text, /Gate 3 message: Action needed.*truth above are unchanged/);
+  assert.ok(card.children.find((child) => child.href === '/contact/'));
+});
+
+test('Gate 3 activation and joining never expose Gate 4 resources', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'ACTIVE', label: 'Enrolment active', href: '/course/private' },
+    applications: [{
+      reference: 'APP-ACTIVE', journeyStatus: 'ACTIVE', course: { title: 'Python' },
+      offer: { enrolmentId: 'enr_active' }, action: { code: 'ACTIVE', label: 'Enrolment active' },
+      gate3: { cohortDecision: 'CONFIRMED', balanceStatus: 'SATISFIED', amountDue: 0, creditAmount: 0, currency: 'INR', seatReserved: true, seatReleased: false, activationStatus: 'ACTIVE', joiningEligibility: 'ELIGIBLE', action: { code: 'NONE' }, communication: { status: 'NOT_APPLICABLE' } },
+    }],
+  }));
+  const all = [elements['learner-current-action'], elements['learner-applications'].children[0]];
+  const text = all.flatMap((element) => element.children).map((child) => child.textContent).join(' | ');
+  assert.match(text, /Joining instructions: Available without course-resource links/);
+  assert.equal(all.flatMap((element) => element.children).some((child) => /course\/private|teams|onedrive/i.test(child.href)), false);
+});
+
+test('Gate 3 malformed ownership and unknown enums fail closed', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'BALANCE_DUE', label: 'Pay balance' },
+    applications: [{ reference: 'APP-BAD', journeyStatus: 'BALANCE_DUE', course: { title: 'Python' }, offer: { enrolmentId: '../admin' }, action: { code: 'BALANCE_DUE', label: 'Pay balance' }, gate3: { cohortDecision: 'UNKNOWN', balanceStatus: 'UNKNOWN', action: { code: 'PAY_BALANCE' } } }],
+  }));
+  assert.equal(elements['learner-current-action'].children[2].tag, 'p');
+  const card = elements['learner-applications'].children[0];
+  assert.equal(card.children.some((child) => child.href), false);
+  assert.match(card.children.map((child) => child.textContent).join(' | '), /Cohort: Not available.*Remaining fee: Not available/);
 });
 
 test('renderer offers correction only when backend marks the current application eligible', () => {

@@ -16,10 +16,18 @@
     'ACCEPTED', 'WAITLISTED', 'RECOMMENDED', 'DECLINED', 'WITHDRAWN',
     'DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED', 'PAYMENT_ACTION_NEEDED',
     'CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED',
+    'BALANCE_ACTION_NEEDED', 'CLOSED_NON_PAYMENT', 'COHORT_CANCELLED',
+    'COHORT_POSTPONED', 'BALANCE_OVERDUE_IN_GRACE', 'BALANCE_EXTENDED',
+    'BALANCE_DUE', 'BALANCE_CONFIRMING', 'ACTIVATION_PENDING', 'ACTIVE',
   ]);
   const GATE2_ACTION_CODES = new Set([
     'DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED', 'PAYMENT_ACTION_NEEDED',
     'CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED',
+  ]);
+  const GATE3_ACTION_CODES = new Set([
+    'BALANCE_ACTION_NEEDED', 'CLOSED_NON_PAYMENT', 'COHORT_CANCELLED',
+    'COHORT_POSTPONED', 'BALANCE_OVERDUE_IN_GRACE', 'BALANCE_EXTENDED',
+    'BALANCE_DUE', 'BALANCE_CONFIRMING', 'ACTIVATION_PENDING', 'ACTIVE',
   ]);
 
   function safeActionHref(value) {
@@ -77,6 +85,30 @@
     return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
   }
 
+  function gate3Href(application) {
+    const gate = application && application.gate3;
+    const id = application && application.offer && application.offer.enrolmentId;
+    const code = gate && gate.action && gate.action.code;
+    if (!gate || !/^[A-Za-z0-9_-]{1,128}$/.test(id || '')) return null;
+    if (code === 'PAY_BALANCE') {
+      return '/my-learning/balance/?enrolmentId=' + encodeURIComponent(id);
+    }
+    if (code === 'CONTACT_SUPPORT') return '/contact/';
+    return null;
+  }
+
+  function gate3StatusLabel(kind, value) {
+    const labels = {
+      decision: { PENDING: 'Decision pending', CONFIRMED: 'Confirmed', POSTPONED: 'Postponed', CANCELLED: 'Cancelled' },
+      balance: { NOT_OPEN: 'Not open', DUE: 'Remaining fee due', CONFIRMING: 'Payment confirmation in progress', OVERDUE_IN_GRACE: 'Overdue within grace', EXTENDED: 'Deadline extended', SATISFIED: 'Remaining fee completed', CLOSED_NON_PAYMENT: 'Closed for non-payment', ACTION_NEEDED: 'Action needed' },
+      activation: { NOT_ELIGIBLE: 'Not yet eligible', ELIGIBLE: 'Activation pending', ACTIVE: 'Active', ACTION_NEEDED: 'Action needed' },
+      joining: { NOT_ELIGIBLE: 'Not yet available', ELIGIBLE: 'Available without course-resource links' },
+      communication: { PENDING: 'Sending', SENT: 'Sent', FAILED: 'Action needed', NOT_APPLICABLE: 'Not applicable' },
+      disposition: { ACTION_NEEDED: 'Organiser review required' },
+    };
+    return labels[kind] && labels[kind][value] || 'Not available';
+  }
+
   function gate2StatusLabel(kind, value) {
     const labels = {
       enrolment: { OFFERED: 'Offer available', RESERVED: 'Seat reserved', CANCELLED: 'Place cancelled', TRANSFERRED: 'Place transferred' },
@@ -89,6 +121,7 @@
 
   function isV1ActionCode(value) { return typeof value === 'string' && V1_ACTION_CODES.has(value); }
   function isGate2ActionCode(value) { return typeof value === 'string' && GATE2_ACTION_CODES.has(value); }
+  function isGate3ActionCode(value) { return typeof value === 'string' && GATE3_ACTION_CODES.has(value); }
 
   function booleanLabel(value, whenTrue, whenFalse) {
     if (value === true) return whenTrue;
@@ -119,9 +152,12 @@
     gate2ChangeHref,
     gate2Href,
     gate2StatusLabel,
+    gate3Href,
+    gate3StatusLabel,
     hasActionableOffer,
     isV1ActionCode,
     isGate2ActionCode,
+    isGate3ActionCode,
     safeCourseHref,
     safeActionHref,
     safeSupportHref,
