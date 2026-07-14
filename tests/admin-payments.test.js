@@ -18,6 +18,16 @@ test('Gate 2 admin uses a separate accessible tab without replacing existing vie
   assert.match(page, /noindex, nofollow/);
 });
 
+test('Gate 3 balance operations extend rather than replace Gate 2 payments', () => {
+  assert.match(page, /Gate 2–3 payments and changes/);
+  for (const label of ['Balance deadline', 'Grace until', 'Current extension', 'Deposit treatment', 'Balance adjustment history']) assert.match(script, new RegExp(label));
+  for (const action of ['balance-request', 'balance-adjustment', 'balance-lifecycle', 'RECORD_CREDIT_OR_WAIVER', 'EXTEND_DEADLINE', 'MARK_OVERDUE', 'CLOSE_NON_PAYMENT']) assert.match(script, new RegExp(action));
+  assert.match(script, /obligation\.purpose === 'BALANCE'/);
+  assert.match(script, /expectedObligationVersion/);
+  assert.match(script, /\.\.\.common\(form\)/);
+  assert.doesNotMatch(script, /Date\.now\(\).*OVERDUE|new Date\(\).*CLOSE_NON_PAYMENT/);
+});
+
 test('identifiers and financial display fail closed without calculation', () => {
   assert.equal(tools.safeId('obl_abc-123'), 'obl_abc-123');
   assert.equal(tools.safeId('../admin'), null);

@@ -54,6 +54,7 @@
     feedbackPanel: document.getElementById('admin-feedback-panel'),
     trainingPanel: document.getElementById('admin-training-panel'),
     paymentsPanel: document.getElementById('admin-payments-panel'),
+    gate3Panel: document.getElementById('admin-gate3-panel'),
     refreshTraining: document.getElementById('admin-refresh-training'),
     trainingCourses: document.getElementById('admin-training-courses'),
     trainingCohorts: document.getElementById('admin-training-cohorts'),
@@ -239,6 +240,7 @@
     state.selectedFeedbackId = '';
     operationKeys.clearAll();
     if (window.sjAdminPaymentsController) window.sjAdminPaymentsController.clear();
+    if (window.sjAdminGate3Controller) window.sjAdminGate3Controller.clear();
     clearNode(els.trainingCourses);
     clearNode(els.trainingCohorts);
     clearNode(els.cohortCourse);
@@ -653,11 +655,13 @@
     els.feedbackPanel.hidden = view !== 'feedback';
     els.trainingPanel.hidden = view !== 'training';
     els.paymentsPanel.hidden = view !== 'payments';
+    els.gate3Panel.hidden = view !== 'gate3';
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
     }
     if (view === 'training' && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
+    if (view === 'gate3' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
   }
 
   async function loadTraining() {
@@ -1226,6 +1230,14 @@
     window.sjAdminPaymentsController = window.sjAdminPayments.create({
       request: apiRequest,
       idempotencyKey: (scope, body) => operationKeys.key('gate2-' + scope, body),
+      setStatus,
+      friendlyError,
+      sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminGate3Controller = window.sjAdminGate3.create({
+      request: apiRequest,
+      idempotencyKey: (scope, body) => operationKeys.key('gate3-' + scope, body),
       setStatus,
       friendlyError,
       sessionActive: () => Boolean(state.token),
