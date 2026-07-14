@@ -1,0 +1,64 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const test = require('node:test');
+const vm = require('node:vm');
+
+const script = fs.readFileSync('js/admin-gate3.js', 'utf8');
+const page = fs.readFileSync('admin/index.html', 'utf8');
+const context = { window: {}, Date, Number, Set };
+vm.runInNewContext(script, context);
+const tools = context.window.sjAdminGate3;
+
+function form(values) { return { get: (name) => values[name] == null ? null : values[name] }; }
+
+test('Gate 3 uses a separate accessible noindex admin tab and preserves existing areas', () => {
+  for (const label of ['Messages', 'Feedback', 'Training', 'Payments', 'Gate 3']) assert.match(page, new RegExp('>' + label + '<'));
+  assert.match(page, /id="admin-gate3-tab"[^>]*role="tab"[^>]*aria-controls="admin-gate3-panel"/);
+  assert.match(page, /id="admin-gate3-panel"[^>]*role="tabpanel"[^>]*aria-labelledby="admin-gate3-tab"/);
+  assert.match(page, /noindex, nofollow/);
+  assert.match(page, /admin-gate3\.js/);
+});
+
+test('decision commands are enabled only by exact backend allowlist', () => {
+  const summary = { allowedCommands: ['CONFIRM', 'CANCEL'] };
+  assert.equal(tools.allowed(summary, 'CONFIRM'), true);
+  assert.equal(tools.allowed(summary, 'POSTPONE'), false);
+  assert.equal(tools.allowed({ allowedCommands: ['DELETE'] }, 'DELETE'), false);
+  assert.equal(tools.allowed(null, 'CONFIRM'), false);
+});
+
+test('confirmation payload uses exact versions and approved bounded policy enums', () => {
+  const values = {
+    confirmation: 'on', reason: 'Threshold and evidence reviewed', evidenceReference: 'dev-evidence',
+    timezone: 'Asia/Kolkata', startsAt: '2099-02-01T04:30:00Z', endsAt: '2099-02-01T06:30:00Z', scheduleVersion: 'development-v1',
+    balanceDeadline: '2099-01-20T18:29:59Z', graceUntil: '2099-01-25T18:29:59Z', policyId: 'development-policy', policyVersion: 'development-v1',
+    extensionRulesVersion: 'development-v1', creditWaiverRulesVersion: 'development-v1', depositApplicationRule: 'APPLY_NET_PAID_TO_COURSE_FEE', depositDispositionRule: 'ACTION_NEEDED', depositDispositionPolicyVersion: 'development-v1', nonPaymentClosurePolicyVersion: 'development-v1',
+  };
+  const payload = tools.confirmationPayload(form(values), { cohortVersion: 7, decisionSequence: 2 });
+  assert.equal(payload.expectedCohortVersion, 7);
+  assert.equal(payload.expectedDecisionSequence, 2);
+  assert.equal(payload.confirmation, true);
+  assert.equal(payload.finalSchedule.timezone, 'Asia/Kolkata');
+  assert.equal(payload.policy.approvalStatus, 'APPROVED_FOR_DEVELOPMENT');
+  assert.equal(payload.policy.depositDispositionRule, 'ACTION_NEEDED');
+  assert.deepEqual(Array.from(payload.policy.commercialDocumentVersions), []);
+  assert.equal('amountDue' in payload, false);
+  assert.equal('eligibleCount' in payload, false);
+});
+
+test('Gate 3 identifiers and source avoid unsafe rendering or Gate 4 links', () => {
+  assert.equal(tools.safeId('coh_one-2'), 'coh_one-2');
+  assert.equal(tools.safeId('../admin'), null);
+  assert.doesNotMatch(script, /innerHTML|Teams|OneDrive|GitHub learner|VIEW_COURSE_RESOURCES/);
+  assert.match(script, /textContent/);
+  assert.match(page, /no Gate 4 access or provider resource link is published/);
+});
+
+test('authorization failure clears private state and ambiguous commands reload authority', () => {
+  assert.match(script, /error\.status === 401 \|\| error\.status === 403/);
+  assert.match(script, /config\.clearSession/);
+  assert.match(script, /await load\(true\)/);
+  assert.match(script, /'Idempotency-Key'/);
+  assert.match(script, /expectedCohortVersion/);
+  assert.match(script, /expectedDecisionSequence/);
+});
