@@ -77,7 +77,9 @@
     try {
       const url = new URL(value);
       const allowedHost = url.hostname === 'pay.test.invalid' || url.hostname === 'rzp.io';
-      return url.protocol === 'https:' && allowedHost && !url.username && !url.password
+      const developmentHost = ['dev.suyogjoshi.com', 'localhost', '127.0.0.1']
+        .includes(window.location.hostname || '');
+      return developmentHost && url.protocol === 'https:' && allowedHost && !url.username && !url.password
         && !url.hash && !url.search && (url.port === '' || url.port === '443') ? url.href : null;
     } catch (_) { return null; }
   }

@@ -8,9 +8,10 @@ Retain the existing mock host for local and development regression coverage.
 
 ## Security boundary
 
-The frontend accepts only the exact hosts `pay.test.invalid` and `rzp.io`, with
-HTTPS, no credentials, fragment, query string, or non-default port. Deceptive
-subdomains remain non-actionable. The backend remains authoritative for
+The frontend accepts only the exact hosts `pay.test.invalid` and `rzp.io` on
+`dev.suyogjoshi.com`, `localhost`, or `127.0.0.1`, with HTTPS, no credentials,
+fragment, query string, or non-default port. Production and unknown page hosts
+reject both test-link hosts. Deceptive subdomains remain non-actionable. The backend remains authoritative for
 availability, amount, deadline, expiry, and payment state.
 
 ## Validation and rollback

@@ -44,7 +44,7 @@ function harness(overrides = {}) {
       crypto: { randomUUID: () => 'fixed-idempotency-key' },
       setTimeout: (callback) => { timers.push(callback); return timers.length; },
       clearTimeout: () => {},
-      location: { pathname: '/my-learning/balance/', search: '?enrolmentId=enr_one', replace() {} },
+      location: { hostname: 'localhost', pathname: '/my-learning/balance/', search: '?enrolmentId=enr_one', replace() {} },
       sjLearnerAuth: {
         restore: async () => ({ userId: 'usr_one' }),
         request: async () => ({}),
@@ -83,6 +83,15 @@ test('only exact mock and Razorpay test payment URLs are actionable', () => {
   assert.equal(balance.safePaymentUrl('https://rzp.io/i/test?token=value'), null);
   assert.equal(balance.safePaymentUrl('https://rzp.io:444/i/test'), null);
   assert.equal(balance.safePaymentUrl('javascript:alert(1)'), null);
+});
+
+test('production and unknown hosts reject all development payment URLs', () => {
+  const { balance, context } = harness();
+  for (const hostname of ['suyogjoshi.com', 'www.suyogjoshi.com', 'preview.example']) {
+    context.window.location.hostname = hostname;
+    assert.equal(balance.safePaymentUrl('https://rzp.io/i/test-one'), null);
+    assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), null);
+  }
 });
 
 test('renderer displays backend aggregates and keeps test action acknowledged', () => {
