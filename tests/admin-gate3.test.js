@@ -62,3 +62,46 @@ test('authorization failure clears private state and ambiguous commands reload a
   assert.match(script, /expectedCohortVersion/);
   assert.match(script, /expectedDecisionSequence/);
 });
+
+test('an in-flight response cannot repopulate private Gate 3 state after session clear', async () => {
+  class Element {
+    constructor() { this.children = []; this.dataset = {}; this.listeners = {}; this.textContent = ''; }
+    appendChild(child) { this.children.push(child); return child; }
+    replaceChildren(...children) { this.children = children; }
+    addEventListener(name, callback) { this.listeners[name] = callback; }
+  }
+  const elements = {
+    'admin-gate3-cohorts': new Element(),
+    'admin-gate3-detail': new Element(),
+    'admin-refresh-gate3': new Element(),
+  };
+  const guardedContext = {
+    window: {}, Date, Number, Set,
+    document: {
+      createElement: () => new Element(),
+      getElementById: (id) => elements[id],
+    },
+  };
+  vm.runInNewContext(script, guardedContext);
+  let resolveCourses;
+  let sessionActive = true;
+  let followupRequests = 0;
+  const controller = guardedContext.window.sjAdminGate3.create({
+    sessionActive: () => sessionActive,
+    request: (path) => {
+      if (path === '/admin/training/courses') return new Promise((resolve) => { resolveCourses = resolve; });
+      followupRequests += 1;
+      return Promise.resolve({ items: [] });
+    },
+    clearSession: () => {}, setStatus: () => {}, friendlyError: String,
+  });
+  const pending = controller.load();
+  sessionActive = false;
+  controller.clear();
+  resolveCourses({ items: [{ courseId: 'private-course', title: 'Private course' }] });
+  await pending;
+  assert.equal(followupRequests, 0);
+  assert.equal(elements['admin-gate3-cohorts'].children.length, 0);
+  assert.equal(elements['admin-gate3-detail'].children.length, 1);
+  assert.equal(elements['admin-gate3-detail'].children[0].textContent, 'Select a cohort to review.');
+});
