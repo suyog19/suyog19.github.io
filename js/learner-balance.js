@@ -76,8 +76,9 @@
   function safePaymentUrl(value) {
     try {
       const url = new URL(value);
-      return url.protocol === 'https:' && url.hostname === 'pay.test.invalid'
-        && !url.username && !url.password && !url.hash ? url.href : null;
+      const allowedHost = url.hostname === 'pay.test.invalid' || url.hostname === 'rzp.io';
+      return url.protocol === 'https:' && allowedHost && !url.username && !url.password
+        && !url.hash && !url.search && (url.port === '' || url.port === '443') ? url.href : null;
     } catch (_) { return null; }
   }
   function idempotencyKey(id) {

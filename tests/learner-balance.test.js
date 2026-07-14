@@ -73,11 +73,15 @@ function projection(overrides = {}) {
   };
 }
 
-test('only development test payment URLs are actionable', () => {
+test('only exact mock and Razorpay test payment URLs are actionable', () => {
   const { balance } = harness();
   assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), 'https://pay.test.invalid/requests/one');
-  assert.equal(balance.safePaymentUrl('https://rzp.io/i/live'), null);
+  assert.equal(balance.safePaymentUrl('https://rzp.io/i/test-one'), 'https://rzp.io/i/test-one');
   assert.equal(balance.safePaymentUrl('https://pay.test.invalid/#token'), null);
+  assert.equal(balance.safePaymentUrl('https://rzp.io.evil.example/i/test'), null);
+  assert.equal(balance.safePaymentUrl('https://user@rzp.io/i/test'), null);
+  assert.equal(balance.safePaymentUrl('https://rzp.io/i/test?token=value'), null);
+  assert.equal(balance.safePaymentUrl('https://rzp.io:444/i/test'), null);
   assert.equal(balance.safePaymentUrl('javascript:alert(1)'), null);
 });
 
