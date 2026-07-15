@@ -5,6 +5,10 @@
   --learning-border: #99d5cf;
 }
 
+.software-signal-learning [hidden] {
+  display: none !important;
+}
+
 .software-signal-learning .learning-eyebrow {
   color: var(--learning-accent-strong);
   font: 600 .78rem/1.4 var(--font-sans);
@@ -100,10 +104,33 @@
   padding: 1rem 1.25rem;
 }
 
+.software-signal-learning .learner-private-header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.software-signal-learning .learner-private-user {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media (max-width: 480px) {
   .software-signal-learning .header-inner,
   .software-signal-learning .learner-session {
     align-items: flex-start;
+  }
+
+  .software-signal-learning .learner-private-user {
+    flex-basis: 100%;
+    max-width: 100%;
+    text-align: right;
   }
 
   .software-signal-learning .learner-session {

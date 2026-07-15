@@ -106,7 +106,7 @@
     } catch (error) {
       clearPrivate();
       status.textContent = error.status === 409
-        ? 'The balance changed. Check the current authoritative status before continuing.'
+        ? 'The remaining-fee status changed. Check the current status before continuing.'
         : 'Remaining-fee details could not be prepared. No payment was started.';
       errorActions.hidden = false;
     } finally { button.disabled = false; }
@@ -122,7 +122,7 @@
       check.addEventListener('click', initialise);
       action.appendChild(check);
     } else if (['OPEN', 'OVERDUE'].includes(balance.status) && url) {
-      const link = text('a', 'Continue to test payment', 'btn btn-primary');
+      const link = text('a', 'Continue to secure payment', 'btn btn-primary btn-learning');
       link.rel = 'noopener noreferrer';
       link.setAttribute('aria-disabled', 'true');
       const acknowledgement = document.createElement('label');
@@ -133,28 +133,34 @@
         if (checkbox.checked) { link.href = url; link.removeAttribute('aria-disabled'); }
         else { link.removeAttribute('href'); link.setAttribute('aria-disabled', 'true'); }
       });
+      link.addEventListener('click', (event) => {
+        if (!link.href || link.dataset.opening === 'true') { event.preventDefault(); return; }
+        link.dataset.opening = 'true';
+        link.textContent = 'Opening secure payment…';
+        link.setAttribute('aria-disabled', 'true');
+      });
       acknowledgement.appendChild(checkbox);
       acknowledgement.appendChild(document.createTextNode(' I reviewed the current remaining-fee details and policies before continuing.'));
       action.appendChild(acknowledgement);
       action.appendChild(link);
-      action.appendChild(text('p', 'Only a development test-payment page is allowed in this gate. Return here for authoritative confirmation.', 'field-hint'));
+      action.appendChild(text('p', 'This opens the current secure payment page. Return here to check confirmation.', 'field-hint'));
     } else if (['OPEN', 'OVERDUE'].includes(balance.status) && !balance.paymentRequestId) {
-      const button = text('button', 'Prepare test payment details', 'btn btn-primary');
+      const button = text('button', 'Prepare payment details', 'btn btn-primary btn-learning');
       button.type = 'button';
       button.addEventListener('click', () => prepare(id, button));
       action.appendChild(button);
     } else if (['OPEN', 'OVERDUE'].includes(balance.status)) {
       action.appendChild(text('p', 'The previous payment action is unavailable or expired. Do not reuse it or pay again until the service returns a current action.', 'field-hint'));
-      const check = text('button', 'Check authoritative status', 'btn btn-primary');
+      const check = text('button', 'Check current status', 'btn btn-primary btn-learning');
       check.type = 'button';
       check.addEventListener('click', initialise);
       action.appendChild(check);
       const support = text('a', 'Contact support', 'btn btn-secondary');
-      support.href = '/contact/';
+      support.href = '/contact/?topic=learning-payment-review';
       action.appendChild(support);
     } else if (balance.status === 'ACTION_NEEDED' || balance.status === 'CLOSED_NON_PAYMENT') {
-      const support = text('a', 'Contact support', 'btn btn-primary');
-      support.href = '/contact/';
+      const support = text('a', 'Contact support', 'btn btn-primary btn-learning');
+      support.href = '/contact/?topic=learning-payment-review';
       action.appendChild(support);
     }
   }
@@ -168,7 +174,7 @@
     const requestedId = expectedId || enrolmentId();
     if (!balance || balance.enrolmentId !== requestedId || balance.purpose !== 'BALANCE' || !STATES[balance.status]) throw new Error('INVALID_BALANCE');
     const descriptor = balance.confirmationStatus === 'CONFIRMING'
-      ? ['We are confirming your payment', 'Verified test payment evidence is being reconciled. Do not pay again.']
+      ? ['We are confirming your remaining-fee payment', 'Please do not pay again. We will update this page when confirmation is complete.']
       : STATES[balance.status];
     stateBox.replaceChildren(text('h2', descriptor[0]), text('p', descriptor[1]));
     details.replaceChildren();
@@ -179,7 +185,7 @@
     addDetail('Completed refunds', money(balance.refundedAmount, balance.currency));
     addDetail('Net payment applied', money(balance.netPaid, balance.currency));
     addDetail('Approved credit or waiver', money(balance.creditAmount, balance.currency));
-    addDetail('Authoritative amount due', money(balance.amountDue, balance.currency));
+    addDetail('Amount to pay', money(balance.amountDue, balance.currency));
     addDetail('Balance deadline', dateTime(balance.balanceDeadline));
     addDetail('Grace deadline', dateTime(balance.graceUntil));
     addDetail('Approved extension until', dateTime(balance.extensionUntil));
@@ -209,7 +215,7 @@
       const user = await auth.restore();
       if (generation !== loadGeneration) return;
       if (!user) { window.location.replace(loginUrl()); return; }
-      status.textContent = 'Checking authoritative remaining-fee status...';
+      status.textContent = 'Checking the current remaining-fee status...';
       const response = await auth.request('/me/enrolments/' + encodeURIComponent(id) + '/balance', { method: 'GET' });
       if (generation !== loadGeneration) return;
       if (!response.balance || response.balance.enrolmentId !== id) throw new Error('BALANCE_NOT_AVAILABLE');

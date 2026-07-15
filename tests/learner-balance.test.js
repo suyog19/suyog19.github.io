@@ -13,6 +13,7 @@ class Element {
     this.href = '';
     this.listeners = {};
     this.attributes = {};
+    this.dataset = {};
   }
   appendChild(child) { this.children.push(child); return child; }
   replaceChildren(...children) { this.children = children; }
@@ -107,6 +108,12 @@ test('renderer displays backend aggregates and keeps test action acknowledged', 
   acknowledgement.children[0].checked = true;
   acknowledgement.children[0].listeners.change();
   assert.equal(link.href, 'https://pay.test.invalid/requests/req_one');
+  let prevented = false;
+  link.listeners.click({ preventDefault() { prevented = true; } });
+  assert.equal(link.textContent, 'Opening secure payment…');
+  assert.equal(link.attributes['aria-disabled'], 'true');
+  link.listeners.click({ preventDefault() { prevented = true; } });
+  assert.equal(prevented, true);
 });
 
 test('closed non-payment is support-only and shows backend deposit outcome', () => {
@@ -122,7 +129,7 @@ test('closed non-payment is support-only and shows backend deposit outcome', () 
   assert.match(values, /Released/);
   assert.match(values, /Action needed under the recorded policy/);
   assert.equal(elements['balance-action'].children.length, 1);
-  assert.equal(elements['balance-action'].children[0].href, '/contact/');
+  assert.equal(elements['balance-action'].children[0].href, '/contact/?topic=learning-payment-review');
 });
 
 test('overdue, satisfied, and action-needed states remain distinct', () => {
@@ -164,7 +171,7 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
   }));
   const actionText = actionNeeded.elements['balance-state'].children.map((child) => child.textContent).join(' ');
   assert.match(actionText, /not automatically active/);
-  assert.equal(actionNeeded.elements['balance-action'].children[0].href, '/contact/');
+  assert.equal(actionNeeded.elements['balance-action'].children[0].href, '/contact/?topic=learning-payment-review');
 });
 
 test('confirming suppresses payment and schedules bounded authoritative polling', () => {

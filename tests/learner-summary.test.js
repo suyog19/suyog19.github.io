@@ -7,6 +7,35 @@ const context = { window: {} };
 vm.runInNewContext(fs.readFileSync('js/learner-summary.js', 'utf8'), context);
 const view = context.window.sjLearnerSummary;
 
+test('every supported learner state has bounded plain-language presentation', () => {
+  const codes = [
+    'APPLY', 'COMPLETE_PROFILE', 'APPLICATION_RECEIVED', 'UNDER_REVIEW', 'OFFERED',
+    'ACCEPTED', 'WAITLISTED', 'RECOMMENDED', 'DECLINED', 'WITHDRAWN',
+    'DEPOSIT_DUE', 'PAYMENT_CONFIRMING', 'RESERVED', 'PAYMENT_ACTION_NEEDED',
+    'CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED',
+    'BALANCE_ACTION_NEEDED', 'CLOSED_NON_PAYMENT', 'COHORT_CANCELLED',
+    'COHORT_POSTPONED', 'BALANCE_OVERDUE_IN_GRACE', 'BALANCE_EXTENDED',
+    'BALANCE_DUE', 'BALANCE_CONFIRMING', 'ACTIVATION_PENDING', 'ACTIVE',
+  ];
+  for (const code of codes) {
+    const presentation = view.statusPresentation(code);
+    assert.ok(presentation.heading.length > 3, code);
+    assert.ok(presentation.explanation.length > 12, code);
+    assert.doesNotMatch(
+      presentation.heading + ' ' + presentation.explanation + ' ' + (presentation.actionLabel || ''),
+      /\b(?:Gate [1-4]|backend|webhook|allocation|provider callback|development|mock|test payment|canonical|projection|reconciliation)\b/i,
+      code,
+    );
+  }
+});
+
+test('unknown state fails closed without repeating raw state or action copy', () => {
+  const presentation = view.statusPresentation('RAW_INTERNAL_STATE');
+  assert.equal(presentation.heading, 'View your current learning status');
+  assert.doesNotMatch(presentation.explanation, /RAW_INTERNAL_STATE/);
+  assert.equal(presentation.actionLabel, null);
+});
+
 test('action links accept only exact backend-owned destinations', () => {
   assert.equal(view.safeActionHref('/contact/'), '/contact/');
   assert.equal(view.safeActionHref('/contact/?email=victim@example.com'), '/my-learning/');
@@ -47,7 +76,7 @@ test('Gate 2 links require backend action codes and bounded owned enrolment ids'
   assert.equal(view.gate2Href(payment), '/my-learning/payment/?enrolmentId=enr_one');
   assert.equal(view.gate2ChangeHref(payment), '/my-learning/change/?enrolmentId=enr_one');
   assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'REFUND_PROCESSING' } } }), '/my-learning/change/?enrolmentId=enr_one');
-  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'PAYMENT_ACTION_NEEDED' } } }), '/contact/');
+  assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'PAYMENT_ACTION_NEEDED' } } }), '/contact/?topic=learning-payment-review');
   assert.equal(view.gate2Href({ ...payment, offer: { enrolmentId: '../admin' } }), null);
   assert.equal(view.gate2Href({ ...payment, gate2: { ...payment.gate2, action: { code: 'BALANCE_DUE' } } }), null);
   assert.equal(view.gate2ChangeHref({ ...payment, gate2: { ...payment.gate2, learnerChange: { status: 'REQUESTED' } } }), null);
@@ -79,10 +108,18 @@ test('only Gate 1 through Gate 3 action codes are supported in V1', () => {
 test('Gate 3 links require an exact owned enrolment and bounded backend action', () => {
   const application = { offer: { enrolmentId: 'enr_one' }, gate3: { action: { code: 'PAY_BALANCE' } } };
   assert.equal(view.gate3Href(application), '/my-learning/balance/?enrolmentId=enr_one');
-  assert.equal(view.gate3Href({ ...application, gate3: { action: { code: 'CONTACT_SUPPORT' } } }), '/contact/');
+  assert.equal(view.gate3Href({ ...application, gate3: { action: { code: 'CONTACT_SUPPORT' } } }), '/contact/?topic=learning-payment-review');
   assert.equal(view.gate3Href({ ...application, gate3: { action: { code: 'NONE' } } }), null);
   assert.equal(view.gate3Href({ ...application, offer: { enrolmentId: '../admin' } }), null);
   assert.equal(view.gate3Href({ ...application, gate3: { action: { code: 'VIEW_COURSE_RESOURCES' } } }), null);
+});
+
+test('course hub links require active enrolment and an allow-listed local route', () => {
+  const active = { gate3: { activationStatus: 'ACTIVE', courseHub: { eligible: true, href: '/my-learning/enr_one/' } } };
+  assert.equal(view.courseHubHref(active), '/my-learning/enr_one/');
+  assert.equal(view.courseHubHref({ gate3: { ...active.gate3, activationStatus: 'ELIGIBLE' } }), null);
+  assert.equal(view.courseHubHref({ gate3: { ...active.gate3, courseHub: { eligible: true, href: 'https://teams.example/meeting' } } }), null);
+  assert.equal(view.courseHubHref({ gate3: { ...active.gate3, courseHub: { eligible: true, href: '/my-learning/../admin/' } } }), null);
 });
 
 test('Gate 3 domain enums use bounded learner-friendly labels', () => {

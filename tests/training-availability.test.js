@@ -61,3 +61,12 @@ test('production and unknown hosts never call the dev API or expose applications
     assert.equal(page.status.textContent, '');
   }
 });
+
+test('public availability distinguishes open, waitlist, full, and closed without inference', () => {
+  const { controller } = harness();
+  const present = (items) => JSON.parse(JSON.stringify(controller.availabilityPresentation(items, 'crs_one')));
+  assert.deepEqual(present([{ courseId: 'crs_one', availability: 'OPEN' }]), { open: true, message: 'Applications open for review' });
+  assert.deepEqual(present([{ courseId: 'crs_one', availability: 'WAITLIST_ONLY' }]), { open: false, message: 'Waitlist applications only. A seat is not currently available.' });
+  assert.deepEqual(present([{ courseId: 'crs_one', availability: 'FULL' }]), { open: false, message: 'This cohort is full. Compare the other course or contact support about future availability.' });
+  assert.deepEqual(present([]), { open: false, message: 'Applications are currently closed' });
+});

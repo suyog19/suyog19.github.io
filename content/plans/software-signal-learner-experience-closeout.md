@@ -16,7 +16,7 @@ This record covers frontend epic #222 and stories #223–#230 against the develo
 
 ## Automated and self-validation
 
-The repository Node test suite, static learner terminology check, learning-stylesheet isolation check, local route rendering, required viewports and browser console results are recorded in the PR validation section. No backend contract or business-state calculation changed.
+The repository Node test suite, static learner terminology check, learning-stylesheet isolation check, local route rendering, required viewports and browser console results are recorded in the PR validation section. The final browser pass covered the training index, both course detail pages, learner login and allow-listed contact handoffs at 390px and 1440px with no horizontal overflow or console errors. It also found and closed a fail-closed styling defect where a hidden course application link could remain visually displayed. No backend contract or business-state calculation changed.
 
 ## Required human sessions
 
@@ -26,12 +26,12 @@ These cannot truthfully be completed by an implementation agent. Suyog must reco
 
 | Area | Result |
 |---|---|
-| Automated frontend suite | 98/98 Node tests pass locally |
-| Desktop/tablet/mobile and 200% zoom | Public/mobile and desktop self-pass; authenticated fixtures and 200% observed pass pending |
+| Automated frontend suite | 108/108 Node tests pass locally |
+| Desktop/tablet/mobile and 200% zoom | Public routes self-pass at 390px and 1440px; authenticated integrated fixtures, tablet and 200% observed pass pending |
 | Keyboard critical flows | Pending observed pass |
 | Screen reader | Pending named tool/browser pass |
 | Recovery matrix | Pending integrated environment |
-| Non-learning regression | Contact, Writing and Admin verified without learning stylesheet/wrapper; remaining observed routes pending |
+| Non-learning regression | Contact support handoff, Writing and Admin verified without learning stylesheet/wrapper; remaining observed routes pending |
 | Human task sessions | Pending Product Owner coordination |
 | Critical/High findings | None accepted; create focused issue if found |
 

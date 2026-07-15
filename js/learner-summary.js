@@ -4,6 +4,9 @@
   const ACTION_PATHS = new Set(['/my-learning/', '/training/', '/contact/']);
   const SUPPORT_PATHS = new Set([
     '/contact/',
+    '/contact/?topic=learning-application',
+    '/contact/?topic=learning-payment-review',
+    '/contact/?topic=learning-course-access',
     '/training/policies/',
     '/training/policies/#support-and-grievance-process',
   ]);
@@ -40,7 +43,7 @@
     WITHDRAWN: ['Application withdrawn', 'This application is no longer active. You can compare courses when you are ready to apply again.', 'View courses'],
     OFFERED: ['Your application has been accepted', 'Your place is not reserved yet. Payment instructions will appear when the offer is ready.', null],
     ACCEPTED: ['Your application has been accepted', 'Your place is not reserved yet. Review the current offer and its next step.', null],
-    DEPOSIT_DUE: ['Deposit due', 'Review the authoritative deposit amount, deadline and terms before opening secure payment.', 'Pay the deposit'],
+    DEPOSIT_DUE: ['Deposit due', 'Review the confirmed deposit amount, deadline and terms before opening secure payment.', 'Pay the deposit'],
     PAYMENT_CONFIRMING: ['We are confirming your deposit', 'Please do not pay again. We will update this page when confirmation is complete.', 'Check payment confirmation'],
     RESERVED: ['Your seat is reserved', 'Your deposit is confirmed. We will update you when the cohort decision is recorded.', null],
     PAYMENT_ACTION_NEEDED: ['A payment needs organiser review', 'A payment may have been received, but it has not been applied automatically. Please do not pay again.', 'Contact support'],
@@ -101,7 +104,7 @@
     const id = application && application.offer && application.offer.enrolmentId;
     const code = gate && gate.action && gate.action.code;
     if (!gate || !/^[A-Za-z0-9_-]{1,128}$/.test(id || '')) return null;
-    if (code === 'PAYMENT_ACTION_NEEDED') return '/contact/';
+    if (code === 'PAYMENT_ACTION_NEEDED') return '/contact/?topic=learning-payment-review';
     if (gate.refund || gate.learnerChange || (gate.enrolment && ['CANCELLED', 'TRANSFERRED'].includes(gate.enrolment.status))) {
       return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
     }
@@ -131,8 +134,16 @@
     if (code === 'PAY_BALANCE') {
       return '/my-learning/balance/?enrolmentId=' + encodeURIComponent(id);
     }
-    if (code === 'CONTACT_SUPPORT') return '/contact/';
+    if (code === 'CONTACT_SUPPORT') return '/contact/?topic=learning-payment-review';
     return null;
+  }
+
+  function courseHubHref(application) {
+    const gate = application && application.gate3;
+    const hub = gate && gate.courseHub;
+    if (!gate || gate.activationStatus !== 'ACTIVE' || !hub || hub.eligible !== true) return null;
+    return typeof hub.href === 'string' && /^\/my-learning\/[A-Za-z0-9_-]{1,128}\/$/.test(hub.href)
+      ? hub.href : null;
   }
 
   function gate3StatusLabel(kind, value) {
@@ -187,6 +198,7 @@
     acknowledgementLabel,
     booleanLabel,
     correctionHref,
+    courseHubHref,
     gate2ChangeHref,
     gate2Href,
     gate2StatusLabel,

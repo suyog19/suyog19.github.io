@@ -35,29 +35,31 @@
 <body class="learner-page software-signal-learning">
   <header class="site-header"><div class="container header-inner">
     <a href="../../index.html" class="brand-lockup"><span class="brand-mark" aria-hidden="true">SJ</span><span class="brand-text">suyogjoshi.com</span></a>
-    <a class="btn btn-secondary" href="../">Back to My Learning</a>
+    <div class="learner-private-header"><span id="learner-page-user" class="learner-private-user" hidden></span><a class="btn btn-secondary" href="../">Back to My Learning</a><button id="learner-page-logout" class="btn btn-secondary" type="button">Log out</button></div>
   </div></header>
   <main class="container learner-payment-main">
     <div id="balance-status" class="learner-shell-status" role="status" aria-live="polite">Restoring your secure session&hellip;</div>
     <section id="balance-panel" class="learner-payment-panel" hidden aria-labelledby="balance-title">
       <p class="learning-eyebrow">Software Signal Learning · Remaining fee</p>
       <h1 id="balance-title">Remaining-fee status</h1>
-      <div id="balance-state" class="learner-payment-state" aria-live="polite"></div>
-      <dl id="balance-details" class="learner-payment-details"></dl>
+      <p>Review the amount due for your confirmed cohort and check enrolment activation.</p>
+      <div id="balance-state" class="learner-payment-state learning-status-card" aria-live="polite"></div>
       <div id="balance-action" class="learner-payment-action"></div>
-      <p class="learner-payment-safety">Amounts, deadlines, seat status, credits, and deposit treatment come from the Software Signal service. This page never calculates them, and a browser return is never proof of payment.</p>
+      <details class="learning-details"><summary>View payment details</summary><dl id="balance-details" class="learner-payment-details"></dl></details>
+      <p class="learner-payment-safety">A return from the payment page is not proof that payment completed. The amount, deadline and seat status shown here reflect the latest confirmed record.</p>
       <nav class="learner-support-links" aria-label="Remaining-fee support">
-        <a href="../../contact/">Contact support</a>
+        <a href="../../contact/?topic=learning-payment-review">Contact support</a>
         <a href="../../training/policies/">Policies and privacy</a>
         <a href="../../training/policies/#support-and-grievance-process">Grievance process</a>
       </nav>
     </section>
     <div id="balance-error-actions" class="learner-error-actions" hidden>
-      <button id="balance-retry" class="btn btn-primary" type="button">Check current status</button>
-      <a class="btn btn-secondary" href="../../contact/">Contact support</a>
+      <button id="balance-retry" class="btn btn-primary btn-learning" type="button">Check current status</button>
+      <a class="btn btn-secondary" href="../../contact/?topic=learning-payment-review">Contact support</a>
     </div>
   </main>
   <script src="../../js/learner-auth.js"></script>
+  <script src="../../js/learner-page-header.js"></script>
   <script src="../../js/learner-balance.js"></script>
 </body>
 </html>

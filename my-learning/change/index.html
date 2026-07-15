@@ -25,29 +25,29 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PKL56GJ38H',{page_location:'https://suyogjoshi.com/my-learning/change/',page_path:'/my-learning/change/'});</script>
 </head>
 <body class="learner-page software-signal-learning">
-  <header class="site-header"><div class="container header-inner"><a href="../../index.html" class="brand-lockup"><span class="brand-mark" aria-hidden="true">SJ</span><span class="brand-text">suyogjoshi.com</span></a><a class="btn btn-secondary" href="../">Back to My Learning</a></div></header>
+  <header class="site-header"><div class="container header-inner"><a href="../../index.html" class="brand-lockup"><span class="brand-mark" aria-hidden="true">SJ</span><span class="brand-text">suyogjoshi.com</span></a><div class="learner-private-header"><span id="learner-page-user" class="learner-private-user" hidden></span><a class="btn btn-secondary" href="../">Back to My Learning</a><button id="learner-page-logout" class="btn btn-secondary" type="button">Log out</button></div></div></header>
   <main class="container learner-payment-main">
     <div id="change-status" class="learner-shell-status" role="status" aria-live="polite">Restoring your secure session...</div>
     <section id="change-panel" class="learner-payment-panel" hidden aria-labelledby="change-title">
       <p class="learning-eyebrow">Software Signal Learning · Requests</p><h1 id="change-title">Request a change</h1><p>Ask us to review a cancellation, possible transfer or another course-related option.</p>
-      <div id="change-state" class="learner-payment-state" aria-live="polite"></div>
-      <dl id="change-details" class="learner-payment-details"></dl>
+      <div id="change-state" class="learner-payment-state learning-status-card" aria-live="polite"></div>
       <form id="change-form" class="learner-change-form" hidden>
         <fieldset><legend>What would you like us to review?</legend>
           <label><input type="radio" name="requestType" value="CANCELLATION" required> Cancel my place</label>
           <label><input type="radio" name="requestType" value="TRANSFER"> Ask about moving to another cohort</label>
           <label><input type="radio" name="requestType" value="DISCUSS_OPTIONS"> Discuss other options</label>
         </fieldset>
-        <label for="change-category">Reason category</label><select id="change-category" required><option value="">Choose one</option><option>Personal circumstances</option><option>Schedule conflict</option><option>Course suitability</option><option>Other circumstances</option></select>
+        <label for="change-category">Reason category</label><select id="change-category" required><option value="">Choose one</option><option value="Personal circumstances">Personal circumstances</option><option value="Schedule conflict">Schedule conflict</option><option value="Course suitability">Course suitability concern</option><option value="Other circumstances">Other</option></select>
         <label for="change-explanation">Tell us what changed and what outcome you would prefer</label><textarea id="change-explanation" minlength="3" maxlength="1000" aria-describedby="change-explanation-hint" required></textarea><p id="change-explanation-hint" class="field-hint">Do not include card, bank, UPI PIN, password or other sensitive payment details.</p>
-        <label class="learner-payment-acknowledgement"><input id="change-ack" type="checkbox" required> <span>I understand this is a request for review. It does not promise or calculate a refund, credit or transfer.</span></label>
+        <label class="learner-payment-acknowledgement"><input id="change-ack" type="checkbox" required> <span>I understand this is a request for review. It does not guarantee a cancellation outcome, transfer, credit or refund amount.</span></label>
         <button id="change-submit" class="btn btn-primary" type="submit">Submit request</button>
       </form>
+      <details class="learning-details"><summary>View current payment details</summary><dl id="change-details" class="learner-payment-details"></dl></details>
       <p class="learner-payment-safety">The organiser's decision and any payment-provider refund are separate stages. Status and amounts shown here come only from the Software Signal service.</p>
-      <nav class="learner-support-links" aria-label="Request support"><a href="../../contact/">Contact support</a><a href="../../training/policies/">Policies and privacy</a><a href="../../training/policies/#support-and-grievance-process">Grievance process</a></nav>
+      <nav class="learner-support-links" aria-label="Request support"><a href="../../contact/?topic=learning-payment-review">Contact support</a><a href="../../training/policies/">Policies and privacy</a><a href="../../training/policies/#support-and-grievance-process">Grievance process</a></nav>
     </section>
-    <div id="change-error-actions" class="learner-error-actions" hidden><button id="change-retry" class="btn btn-primary" type="button">Check request status</button><a class="btn btn-secondary" href="../../contact/">Contact support</a></div>
+    <div id="change-error-actions" class="learner-error-actions" hidden><button id="change-retry" class="btn btn-primary btn-learning" type="button">Check request status</button><a class="btn btn-secondary" href="../../contact/?topic=learning-payment-review">Contact support</a></div>
   </main>
-  <script src="../../js/learner-auth.js"></script><script src="../../js/learner-change-recovery.js"></script><script src="../../js/learner-change.js"></script>
+  <script src="../../js/learner-auth.js"></script><script src="../../js/learner-page-header.js"></script><script src="../../js/learner-change-recovery.js"></script><script src="../../js/learner-change.js"></script>
 </body>
 </html>

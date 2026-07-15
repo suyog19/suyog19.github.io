@@ -27,6 +27,14 @@
     action.hidden = !open;
   }
 
+  function availabilityPresentation(items, courseId) {
+    const cohorts = Array.isArray(items) ? items.filter((item) => item && item.courseId === courseId) : [];
+    if (cohorts.some((item) => item.availability === 'OPEN')) return { open: true, message: 'Applications open for review' };
+    if (cohorts.some((item) => item.availability === 'WAITLIST_ONLY')) return { open: false, message: 'Waitlist applications only. A seat is not currently available.' };
+    if (cohorts.some((item) => item.availability === 'FULL')) return { open: false, message: 'This cohort is full. Compare the other course or contact support about future availability.' };
+    return { open: false, message: 'Applications are currently closed' };
+  }
+
   async function initialise() {
     const baseUrl = apiBaseUrl(window.location.hostname);
     if (!baseUrl || !courseId || !courseSlug) return;
@@ -45,19 +53,15 @@
       if (!responses.every((response) => response.ok)) throw new Error('COURSE_UNAVAILABLE');
       const [courseBody, cohortsBody] = await Promise.all(responses.map((response) => response.json()));
       const course = courseBody.course;
-      const open = Boolean(
-        course
-        && course.courseId === courseId
-        && course.publicationStatus === 'PUBLISHED'
-        && Array.isArray(cohortsBody.items)
-        && cohortsBody.items.some((cohort) => cohort.courseId === courseId && cohort.availability === 'OPEN')
-      );
-      render(open, open ? 'Applications open for review' : 'Applications not currently open');
+      const availability = course && course.courseId === courseId && course.publicationStatus === 'PUBLISHED'
+        ? availabilityPresentation(cohortsBody.items, courseId)
+        : { open: false, message: 'Applications are currently closed' };
+      render(availability.open, availability.message);
     } catch (_) {
       render(false, 'Application availability could not be confirmed');
     }
   }
 
-  window.sjTrainingAvailability = { apiBaseUrl, applicationsEnabled, initialise };
+  window.sjTrainingAvailability = { apiBaseUrl, applicationsEnabled, availabilityPresentation, initialise };
   if (!window.__SJ_DISABLE_AUTO_INIT__) initialise();
 }());

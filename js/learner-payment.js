@@ -34,6 +34,7 @@
     return new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(value / 100);
   }
   function addDetail(label, value) {
+    if (!value || value === 'Not available') return;
     details.appendChild(text('dt', label));
     details.appendChild(text('dd', value || 'Not available'));
   }
@@ -57,16 +58,16 @@
     panel.hidden = false;
     stateBox.replaceChildren(
       text('h2', 'Prepare deposit details'),
-      text('p', 'The service will verify your current offer and return the authoritative amount, deadline, and payment action. Nothing is paid by this step.')
+      text('p', 'We will check your current offer and show the amount, deadline and payment option. Nothing is paid by this step.')
     );
     details.replaceChildren();
     action.replaceChildren();
-    const prepare = text('button', 'Prepare deposit details', 'btn btn-primary');
+    const prepare = text('button', 'Prepare deposit details', 'btn btn-primary btn-learning');
     prepare.type = 'button';
     prepare.addEventListener('click', async () => {
       prepare.disabled = true;
       status.hidden = false;
-      status.textContent = 'Preparing authoritative deposit details…';
+      status.textContent = 'Preparing current deposit details…';
       try {
         const data = await auth.request('/me/enrolments/' + encodeURIComponent(id) + '/deposit-requests', {
           method: 'POST',
@@ -107,7 +108,7 @@
     action.replaceChildren();
     const url = paymentAction.available === true ? safePaymentUrl(paymentAction.safeUrl) : null;
     if (data.journeyStatus === 'DEPOSIT_DUE' && url) {
-      const link = text('a', 'Continue to secure payment', 'btn btn-primary');
+      const link = text('a', 'Continue to secure payment', 'btn btn-primary btn-learning');
       link.rel = 'noopener noreferrer';
       link.setAttribute('aria-disabled', 'true');
       const acknowledgement = document.createElement('label');
@@ -123,17 +124,32 @@
           link.setAttribute('aria-disabled', 'true');
         }
       });
+      link.addEventListener('click', (event) => {
+        if (!link.href || link.dataset.opening === 'true') { event.preventDefault(); return; }
+        link.dataset.opening = 'true';
+        link.textContent = 'Opening secure payment…';
+        link.setAttribute('aria-disabled', 'true');
+      });
       acknowledgement.appendChild(checkbox);
       acknowledgement.appendChild(document.createTextNode(' I reviewed the current deposit details and the linked policies before continuing.'));
       action.appendChild(acknowledgement);
       action.appendChild(link);
-      action.appendChild(text('p', 'This opens the current payment page supplied by the service. Return here to check authoritative status.', 'field-hint'));
+      action.appendChild(text('p', 'This opens the current secure payment page. Return here to check confirmation.', 'field-hint'));
+    } else if (data.journeyStatus === 'DEPOSIT_DUE') {
+      stateBox.replaceChildren(
+        text('h2', 'This payment link is no longer available'),
+        text('p', 'The earlier payment option cannot be used. Check the current status before trying to pay.')
+      );
+      const check = text('button', 'Check current status', 'btn btn-primary btn-learning');
+      check.type = 'button';
+      check.addEventListener('click', initialise);
+      action.appendChild(check);
     } else if (data.journeyStatus === 'PAYMENT_ACTION_NEEDED') {
-      const support = text('a', 'Contact support', 'btn btn-primary');
-      support.href = '/contact/';
+      const support = text('a', 'Contact support', 'btn btn-primary btn-learning');
+      support.href = '/contact/?topic=learning-payment-review';
       action.appendChild(support);
     } else if (data.journeyStatus === 'PAYMENT_CONFIRMING') {
-      const check = text('button', 'Check payment status', 'btn btn-primary');
+      const check = text('button', 'Check payment confirmation', 'btn btn-primary btn-learning');
       check.type = 'button';
       check.addEventListener('click', initialise);
       action.appendChild(check);
@@ -149,7 +165,7 @@
     try {
       const user = await auth.restore();
       if (!user) { window.location.replace(loginUrl()); return; }
-      status.textContent = 'Checking authoritative payment status…';
+      status.textContent = 'Checking current payment status…';
       const response = await auth.request('/me/enrolments/' + encodeURIComponent(id) + '/payment', { method: 'GET' });
       if (Object.hasOwn(response, 'payment') && response.payment === null) {
         status.hidden = true;
@@ -165,7 +181,7 @@
         status.hidden = true;
         renderPreparation(id);
       } else {
-        status.textContent = 'Payment status is temporarily unavailable. Do not pay again until the service confirms the current action.';
+        status.textContent = 'We cannot confirm the current payment status right now. This display problem does not change your payment or seat record. Do not pay again until the status is available.';
         errorActions.hidden = false;
       }
     }

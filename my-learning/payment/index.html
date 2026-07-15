@@ -35,29 +35,31 @@
 <body class="learner-page software-signal-learning">
   <header class="site-header"><div class="container header-inner">
     <a href="../../index.html" class="brand-lockup"><span class="brand-mark" aria-hidden="true">SJ</span><span class="brand-text">suyogjoshi.com</span></a>
-    <a class="btn btn-secondary" href="../">Back to My Learning</a>
+    <div class="learner-private-header"><span id="learner-page-user" class="learner-private-user" hidden></span><a class="btn btn-secondary" href="../">Back to My Learning</a><button id="learner-page-logout" class="btn btn-secondary" type="button">Log out</button></div>
   </div></header>
   <main class="container learner-payment-main">
     <div id="payment-status" class="learner-shell-status" role="status" aria-live="polite">Restoring your secure session…</div>
     <section id="payment-panel" class="learner-payment-panel" hidden aria-labelledby="payment-title">
       <p class="learning-eyebrow">Software Signal Learning · Payment</p>
       <h1 id="payment-title">Deposit status</h1>
-      <div id="payment-state" class="learner-payment-state" aria-live="polite"></div>
-      <dl id="payment-details" class="learner-payment-details"></dl>
+      <p>Review the deposit for your course and check its current confirmation status.</p>
+      <div id="payment-state" class="learner-payment-state learning-status-card" aria-live="polite"></div>
       <div id="payment-action" class="learner-payment-action"></div>
-      <p class="learner-payment-safety">Payment and seat status come from the Software Signal service. A browser return or message is never treated as proof of payment.</p>
+      <details class="learning-details"><summary>View payment details</summary><dl id="payment-details" class="learner-payment-details"></dl></details>
+      <p class="learner-payment-safety">A return from the payment page is not proof that payment completed. Wait for the confirmed status shown here before taking another action.</p>
       <nav class="learner-support-links" aria-label="Payment support">
-        <a href="../../contact/">Contact support</a>
+        <a href="../../contact/?topic=learning-payment-review">Contact support</a>
         <a href="../../training/policies/">Policies and privacy</a>
         <a href="../../training/policies/#support-and-grievance-process">Grievance process</a>
       </nav>
     </section>
     <div id="payment-error-actions" class="learner-error-actions" hidden>
-      <button id="payment-retry" class="btn btn-primary" type="button">Check payment status</button>
-      <a class="btn btn-secondary" href="../../contact/">Contact support</a>
+      <button id="payment-retry" class="btn btn-primary btn-learning" type="button">Check payment status</button>
+      <a class="btn btn-secondary" href="../../contact/?topic=learning-payment-review">Contact support</a>
     </div>
   </main>
   <script src="../../js/learner-auth.js"></script>
+  <script src="../../js/learner-page-header.js"></script>
   <script src="../../js/learner-payment.js"></script>
 </body>
 </html>
