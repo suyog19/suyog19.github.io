@@ -160,7 +160,8 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
   }));
   const satisfiedText = satisfied.elements['balance-details'].children.map((child) => child.textContent).join(' | ');
   assert.match(satisfiedText, /Active/);
-  assert.match(satisfiedText, /Payment confirmation \| Development test payment confirmation/);
+  assert.match(satisfiedText, /Payment confirmation \| Payment confirmation/);
+  assert.doesNotMatch(satisfiedText, /development|test payment/i);
   assert.match(satisfiedText, /not a tax invoice/);
   assert.match(satisfiedText, /course area is ready/);
   assert.equal(satisfied.elements['balance-action'].children.length, 0);

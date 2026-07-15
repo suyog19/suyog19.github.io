@@ -65,7 +65,7 @@
       && confirmation.label === CONFIRMATION_LABEL
       && confirmation.treatmentVersion === CONFIRMATION_TREATMENT
       && dateTime(confirmation.verifiedAt) !== 'Not available'
-      ? confirmation.label + ' · ' + dateTime(confirmation.verifiedAt)
+      ? 'Payment confirmation — not a tax invoice · ' + dateTime(confirmation.verifiedAt)
       : 'Not yet available';
   }
   function joiningLabel(balance) {
