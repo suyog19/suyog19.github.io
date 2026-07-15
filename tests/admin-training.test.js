@@ -63,3 +63,41 @@ test('detail and request guards preserve structured and session truth', () => {
   assert.equal(tools.requestStillCurrent({ ...expected, sessionToken: 'token-2' }, expected), false);
   assert.equal(tools.requestStillCurrent({ ...expected, sequence: 5 }, expected), false);
 });
+
+test('cohort command retries one transport failure', async () => {
+  let attempts = 0;
+  const result = await tools.requestWithTransportRetry(async () => {
+    attempts += 1;
+    if (attempts === 1) throw new TypeError('Failed to fetch');
+    return { lifecycle: 'OPEN' };
+  });
+
+  assert.equal(attempts, 2);
+  assert.equal(result.lifecycle, 'OPEN');
+});
+
+test('cohort command does not retry an HTTP response error', async () => {
+  let attempts = 0;
+  const responseError = Object.assign(new Error('Conflict'), { status: 409 });
+
+  await assert.rejects(
+    tools.requestWithTransportRetry(async () => {
+      attempts += 1;
+      throw responseError;
+    }),
+    responseError
+  );
+  assert.equal(attempts, 1);
+});
+
+test('cohort command explains a persistent transport failure', async () => {
+  let attempts = 0;
+  await assert.rejects(
+    tools.requestWithTransportRetry(async () => {
+      attempts += 1;
+      throw new TypeError('Failed to fetch');
+    }),
+    (error) => error.body.message.includes('development API after retrying')
+  );
+  assert.equal(attempts, 2);
+});

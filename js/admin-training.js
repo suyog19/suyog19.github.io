@@ -79,12 +79,32 @@
       && current.sequence === expected.sequence;
   }
 
+  async function requestWithTransportRetry(request) {
+    try {
+      return await request();
+    } catch (error) {
+      if (error.status !== undefined) throw error;
+    }
+
+    try {
+      return await request();
+    } catch (error) {
+      if (error.status === undefined) {
+        error.body = {
+          message: 'Unable to reach the development API after retrying. Check your connection and try again.',
+        };
+      }
+      throw error;
+    }
+  }
+
   window.sjAdminTraining = {
     createIdempotencyTracker,
     detailValue,
     nextTabIndex,
     offerableCohort,
     requestStillCurrent,
+    requestWithTransportRetry,
     resendAllowed,
     validateCohort,
   };
