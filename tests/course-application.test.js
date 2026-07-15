@@ -147,6 +147,7 @@ test('page remains private-by-default and contains no payment integration', () =
   assert.match(script, /Idempotency-Key/);
   assert.match(script, /\/replacements/);
   assert.match(script, /Your original remains active until you resubmit/);
+  assert.equal((html.match(/class="application-check"><input[^>]+><span>/g) || []).length, 3);
 });
 
 test('first-time learner sees inline profile form before application lookup', async () => {
@@ -213,6 +214,8 @@ test('eligible correction is prefilled and submits the exact immutable replaceme
   });
   assert.equal(elements['application-result-title'].textContent, 'Updated application received');
   assert.match(elements['application-result-detail'].textContent, /replaces your earlier submission/);
+  assert.equal(elements['application-status'].textContent, '');
+  assert.equal(elements['application-status'].hidden, true);
 });
 
 test('replacement conflict hides resubmission and leaves support available', async () => {

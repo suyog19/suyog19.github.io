@@ -121,6 +121,7 @@
     return data.application || null;
   }
   function showSuccess(application, trackCompletion = true) {
+    message('', '');
     form.hidden = true;
     recovery.hidden = true;
     result.hidden = false;
