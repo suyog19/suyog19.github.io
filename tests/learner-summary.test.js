@@ -38,9 +38,9 @@ test('unknown state fails closed without repeating raw state or action copy', ()
 
 test('action links accept only exact backend-owned destinations', () => {
   assert.equal(view.safeActionHref('/contact/'), '/contact/');
-  assert.equal(view.safeActionHref('/contact/?email=victim@example.com'), '/my-learning/');
-  assert.equal(view.safeActionHref('https://evil.example/'), '/my-learning/');
-  assert.equal(view.safeActionHref('javascript:alert(1)'), '/my-learning/');
+  assert.equal(view.safeActionHref('/contact/?email=victim@example.com'), null);
+  assert.equal(view.safeActionHref('https://evil.example/'), null);
+  assert.equal(view.safeActionHref('javascript:alert(1)'), null);
 });
 
 test('support and course links allow only bounded internal destinations', () => {

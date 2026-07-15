@@ -86,10 +86,22 @@ test('renderer preserves empty-profile semantics and support fallbacks', () => {
   assert.equal(elements['learner-profile-empty'].hidden, false);
   assert.equal(elements['learner-profile-details'].children.length, 0);
   assert.equal(elements['learner-privacy-link'].href, '/training/policies/');
-  assert.equal(
-    elements['learner-applications'].children[0].textContent,
-    ''
-  );
+  assert.equal(elements['learner-applications'].children.length, 0);
+});
+
+test('new learner without an application is sent to course selection without a duplicate or self-link', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    learner: null,
+    currentAction: { code: 'COMPLETE_PROFILE', label: 'Complete your profile', href: '/my-learning/' },
+    applications: [],
+  }));
+  const current = elements['learner-current-action'];
+  assert.equal(current.children[1].textContent, 'Choose a course to begin');
+  assert.match(current.children[2].textContent, /do not have a current application/i);
+  assert.ok(findByHref(current, '/training/'));
+  assert.equal(findByHref(current, '/my-learning/'), undefined);
+  assert.equal(elements['learner-applications'].children.length, 0);
 });
 
 test('renderer shows only explicit offers, safe recommendations, and failed delivery guidance', () => {
