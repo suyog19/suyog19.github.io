@@ -3552,6 +3552,10 @@
   margin-top: .3rem;
 }
 
+.application-check > span {
+  min-width: 0;
+}
+
 .application-disclosure {
   padding: 1rem;
   border-left: 3px solid #b91c1c;
