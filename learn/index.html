@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/learning.css">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
   <meta http-equiv="Cache-Control" content="no-store">
@@ -34,7 +35,7 @@
     });
   </script>
 </head>
-<body class="learner-page">
+<body class="learner-page software-signal-learning">
   <header class="site-header">
     <div class="container header-inner">
       <a href="../index.html" class="brand-lockup">
@@ -45,16 +46,16 @@
   </header>
   <main class="learner-auth-main">
     <section class="learner-auth-card" aria-labelledby="learner-auth-title">
-      <p class="eyebrow">Learner access</p>
+      <p class="learning-eyebrow">Software Signal Learning</p>
       <h1 id="learner-auth-title">Continue with email</h1>
-      <p>New and returning learners use the same secure one-time-code journey.</p>
+      <p>We will send a one-time code. New and returning learners use the same secure step.</p>
       <div id="learner-auth-status" class="learner-status" role="status" aria-live="polite" aria-atomic="true" hidden></div>
       <form id="learner-email-form" novalidate>
         <div class="form-field">
           <label for="learner-email">Email address</label>
           <input id="learner-email" type="email" autocomplete="email" required>
         </div>
-        <button class="btn btn-primary" type="submit">Continue with email</button>
+        <button class="btn btn-primary btn-learning" type="submit">Send code</button>
       </form>
       <form id="learner-otp-form" novalidate hidden>
         <div class="form-field">
@@ -62,9 +63,9 @@
           <input id="learner-otp" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required>
         </div>
         <div class="learner-form-actions">
-          <button class="btn btn-primary" type="submit">Verify and continue</button>
-          <button class="btn btn-secondary" id="learner-resend" type="button">Resend code</button>
-          <button class="learner-text-button" id="learner-change-email" type="button">Use another email</button>
+          <button class="btn btn-primary btn-learning" type="submit">Verify and continue</button>
+          <button class="btn btn-secondary" id="learner-resend" type="button">Send a new code</button>
+          <button class="learner-text-button" id="learner-change-email" type="button">Use a different email</button>
         </div>
       </form>
     </section>

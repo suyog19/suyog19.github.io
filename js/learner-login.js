@@ -25,8 +25,8 @@
   }
 
   function friendly(error) {
-    if (error.status === 401) return 'That code is invalid, expired, or already used. Request a new code and try again.';
-    if (error.status === 403) return 'This account cannot continue. Contact support if you believe this is an error.';
+    if (error.status === 401) return 'That code could not be verified. Check the code or request a new one.';
+    if (error.status === 403) return 'This learner account cannot be used right now. Contact support for help.';
     if (!error.status) return 'We could not reach the service. Check your connection and try again.';
     if (error.status === 429) return 'Too many attempts. Please wait before trying again.';
     return 'We could not complete that request. Please try again.';
@@ -54,7 +54,7 @@
       otpForm.hidden = false;
       otp.value = '';
       otp.focus();
-      message('If this email can continue, a 6 digit code has been sent.', 'success');
+      message('Enter the code we sent. The code is time-limited; request a new one if it is no longer accepted.', 'success');
     } catch (error) { message(friendly(error), 'error'); }
     finally { busy(false); }
   }

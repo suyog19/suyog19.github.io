@@ -10,12 +10,12 @@
   const retry = document.getElementById('payment-retry');
   const ID = /^[A-Za-z0-9_-]{1,128}$/;
   const STATES = {
-    DEPOSIT_DUE: ['Payment due', 'Review the deposit details below. Only the current service-provided payment action can be opened.'],
-    PAYMENT_CONFIRMING: ['We are confirming your payment', 'Please do not pay again while confirmation is in progress.'],
-    RESERVED: ['Deposit completed', 'Your deposit is verified and the service reports that your seat is reserved.'],
-    PAYMENT_ACTION_NEEDED: ['Payment needs review', 'Money may have been received, but the service cannot safely confirm allocation. Do not pay again; contact support.'],
-    REFUND_PROCESSING: ['Refund processing', 'A refund is being processed. This does not change until the service confirms it.'],
-    REFUNDED: ['Refund completed', 'The service reports that the refund is complete.'],
+    DEPOSIT_DUE: ['Deposit due', 'Review the deposit amount, deadline and terms before continuing to secure payment.'],
+    PAYMENT_CONFIRMING: ['We are confirming your deposit', 'Please do not pay again. Confirmation can take a few moments.'],
+    RESERVED: ['Deposit complete', 'Your deposit is confirmed and your seat is reserved while the cohort decision is pending.'],
+    PAYMENT_ACTION_NEEDED: ['A payment needs organiser review', 'A payment may have been received, but it has not been applied automatically to your course. Please do not pay again.'],
+    REFUND_PROCESSING: ['Refund being processed', 'The refund is being processed. No further action is required right now.'],
+    REFUNDED: ['Refund complete', 'The refund is recorded as complete.'],
   };
 
   function loginUrl() { return '/learn/?continue=' + encodeURIComponent(window.location.pathname + window.location.search); }

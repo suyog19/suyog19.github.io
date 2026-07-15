@@ -89,23 +89,29 @@
         : summaryView.isGate3ActionCode(action.code) ? Boolean(currentGate3)
           : true
     );
-    currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
-    const currentLabel = !currentSupported ? 'No action is currently available' : action.label || 'My Learning';
-    currentAction.appendChild(textElement('h2', '', currentLabel));
+    const presentation = summaryView.statusPresentation(action.code);
+    currentAction.appendChild(textElement('p', 'learning-status-marker', 'Current status'));
+    const currentHeading = currentSupported ? presentation.heading : 'View your current learning status';
+    const heading = textElement('h2', '', currentHeading);
+    heading.tabIndex = -1;
+    currentAction.appendChild(heading);
     const currentHref = currentGate3 ? currentGate3Href : currentGate2 ? currentGate2Href : summaryView.safeActionHref(action.href);
     if (currentSupported && currentHref) {
-      const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
+      const actionLink = textElement('a', 'btn btn-primary btn-learning', presentation.actionLabel || action.label || 'View current status');
       actionLink.href = currentHref;
       currentAction.appendChild(actionLink);
-    } else if (currentSupported && currentGate3) {
-      currentAction.appendChild(textElement('p', '', 'No duplicate payment or course-resource action is available. Review the authoritative status below.'));
-    } else {
-      currentAction.appendChild(textElement('p', '', 'This status is not enabled in the current learner experience.'));
     }
+    currentAction.appendChild(textElement('p', '', currentSupported ? presentation.explanation : 'The latest authorised status is shown below. Refresh or contact support if you cannot identify the next step.'));
 
     applicationList.replaceChildren();
     if (!applications.length) {
-      applicationList.appendChild(textElement('p', 'learner-empty', 'No current application yet.'));
+      const empty = textElement('article', 'learner-application-card learner-empty', 'No current application yet.');
+      empty.appendChild(textElement('h2', '', 'Choose a course to begin'));
+      empty.appendChild(textElement('p', '', 'You do not have a current application. Compare the available courses and apply when you are ready.'));
+      const courses = textElement('a', 'btn btn-primary btn-learning', 'View courses');
+      courses.href = '/training/';
+      empty.appendChild(courses);
+      applicationList.appendChild(empty);
     }
     applications.forEach((application) => {
       const card = textElement('article', 'learner-application-card', '');
@@ -127,7 +133,7 @@
       if (gate2) {
         const enrolment = gate2.enrolment || {};
         card.appendChild(textElement('p', 'learner-offer-note', 'Place status: ' + summaryView.gate2StatusLabel('enrolment', enrolment.status)));
-        if (enrolment.seatReserved === true) card.appendChild(textElement('p', '', 'Seat reservation is confirmed by the service.'));
+        if (enrolment.seatReserved === true) card.appendChild(textElement('p', '', 'Your seat is reserved.'));
         if (applicationSupported && gate2ActionHref) {
           const gate2Action = textElement('a', 'btn btn-primary learner-gate2-link', gate2.action && gate2.action.label || 'View status');
           gate2Action.href = gate2ActionHref;
@@ -146,7 +152,7 @@
         }
         if (gate2.refund) card.appendChild(textElement('p', '', 'Provider refund: ' + summaryView.gate2StatusLabel('refund', gate2.refund.status)));
         if (gate2.communication && gate2.communication.status === 'FAILED') {
-          card.appendChild(textElement('p', 'learner-communication-warning', 'A Gate 2 message could not be confirmed. Payment, place, request and refund status above are unchanged.'));
+          card.appendChild(textElement('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your payment, place, request and refund status shown above is unchanged.'));
         }
       }
       if (gate3) {
@@ -165,7 +171,7 @@
         card.appendChild(textElement('p', '', 'Enrolment activation: ' + summaryView.gate3StatusLabel('activation', gate3.activationStatus)));
         card.appendChild(textElement('p', '', 'Joining instructions: ' + summaryView.gate3StatusLabel('joining', gate3.joiningEligibility)));
         if (gate3.depositDispositionOutcome) card.appendChild(textElement('p', '', 'Deposit treatment: ' + summaryView.gate3StatusLabel('disposition', gate3.depositDispositionOutcome)));
-        if (gate3.balanceStatus === 'OVERDUE_IN_GRACE') card.appendChild(textElement('p', 'field-hint', 'The balance is overdue, but the backend still records the seat as reserved during the allowed grace period.'));
+        if (gate3.balanceStatus === 'OVERDUE_IN_GRACE') card.appendChild(textElement('p', 'field-hint', 'The remaining fee is overdue, but your seat is still reserved during the current grace period.'));
         if (gate3.balanceStatus === 'CONFIRMING') card.appendChild(textElement('p', 'field-hint', 'Payment confirmation is in progress. Do not pay again.'));
         if (gate3.balanceStatus === 'CLOSED_NON_PAYMENT') card.appendChild(textElement('p', 'field-hint', 'The seat has been released. A normal payment cannot reactivate this enrolment automatically.'));
         if (gate3.balanceStatus === 'ACTION_NEEDED') card.appendChild(textElement('p', 'field-hint', 'Payment evidence needs organiser review and does not activate the enrolment automatically.'));
@@ -175,7 +181,7 @@
           card.appendChild(gate3Action);
         }
         if (gate3.communication) {
-          card.appendChild(textElement('p', gate3.communication.status === 'FAILED' ? 'learner-communication-warning' : '', 'Gate 3 message: ' + summaryView.gate3StatusLabel('communication', gate3.communication.status) + '. Payment, cohort, seat and enrolment truth above are unchanged.'));
+          if (gate3.communication.status === 'FAILED') card.appendChild(textElement('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your payment, cohort, seat and enrolment status shown above is unchanged.'));
         }
       }
       const correctionHref = summaryView.correctionHref(application);

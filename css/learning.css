@@ -1,0 +1,125 @@
+.software-signal-learning {
+  --learning-accent: #0f766e;
+  --learning-accent-strong: #115e59;
+  --learning-accent-soft: #f0fdfa;
+  --learning-border: #99d5cf;
+}
+
+.software-signal-learning .learning-eyebrow {
+  color: var(--learning-accent-strong);
+  font: 600 .78rem/1.4 var(--font-sans);
+  letter-spacing: .1em;
+  margin: 0 0 .75rem;
+  text-transform: uppercase;
+}
+
+.software-signal-learning .btn-learning {
+  background: var(--learning-accent-strong);
+  border-color: var(--learning-accent-strong);
+  color: #fff;
+}
+
+.software-signal-learning .btn-learning:hover {
+  background: #0b4f4a;
+  border-color: #0b4f4a;
+}
+
+.software-signal-learning :is(a, button, input, textarea, select, summary):focus-visible {
+  outline: 3px solid var(--learning-accent);
+  outline-offset: 3px;
+}
+
+.software-signal-learning .learning-header-context {
+  color: var(--learning-accent-strong);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+.software-signal-learning .learning-status-card {
+  background: var(--learning-accent-soft);
+  border: 1px solid var(--learning-border);
+  border-left: 4px solid var(--learning-accent);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.software-signal-learning .learning-status-marker {
+  color: var(--learning-accent-strong);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.software-signal-learning .learning-deadline {
+  border-top: 1px solid var(--learning-border);
+  font-weight: 600;
+  margin-top: 1rem;
+  padding-top: .75rem;
+}
+
+.software-signal-learning .learning-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.25rem;
+}
+
+.software-signal-learning .learning-details {
+  border-top: 1px solid var(--learning-border);
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+}
+
+.software-signal-learning .learning-details summary {
+  color: var(--learning-accent-strong);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.software-signal-learning .learning-intro {
+  margin-bottom: 2rem;
+}
+
+.software-signal-learning .learning-support-guidance {
+  border-left: 3px solid var(--learning-border);
+  color: var(--color-text-muted);
+  margin-top: 1.25rem;
+  padding-left: 1rem;
+}
+
+.training-page .training-card,
+.training-page .training-comparison {
+  border-top-color: var(--learning-accent);
+}
+
+.training-page .training-recommendation {
+  background: var(--learning-accent-soft);
+  border-left: 3px solid var(--learning-accent);
+  padding: 1rem 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .software-signal-learning .header-inner,
+  .software-signal-learning .learner-session {
+    align-items: flex-start;
+  }
+
+  .software-signal-learning .learner-session {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  .software-signal-learning .learner-session span {
+    max-width: 11rem;
+    overflow-wrap: anywhere;
+  }
+
+  .software-signal-learning .learning-actions,
+  .software-signal-learning .learning-actions .btn,
+  .software-signal-learning .learner-form-actions .btn {
+    width: 100%;
+  }
+}

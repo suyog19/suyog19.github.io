@@ -11,16 +11,16 @@
   const ID = /^[A-Za-z0-9_-]{1,128}$/;
   const CONFIRMATION_LABEL = 'Development test payment confirmation — not a tax invoice';
   const CONFIRMATION_TREATMENT = 'DEV-TEST-CONFIRMATION-NOT-TAX-INVOICE-v1';
-  const JOINING_GUIDANCE = 'Joining instructions are available without session or resource links. Access remains unavailable until the separate Gate 4 status.';
+  const JOINING_GUIDANCE = 'Joining instructions will be available when the course area is ready.';
   let loadGeneration = 0;
   let confirmingPolls = 0;
   let pollTimer = null;
   const STATES = {
-    OPEN: ['Remaining fee due', 'Review the authoritative balance and current test payment action below.'],
-    OVERDUE: ['Overdue within the allowed period', 'Your seat remains reserved while the service keeps this obligation open through the displayed grace or extension time.'],
-    SATISFIED: ['Remaining fee completed', 'The service reports that this obligation is satisfied.'],
-    CLOSED_NON_PAYMENT: ['Closed for non-payment', 'The service reports that the seat has been released. A late payment cannot reactivate the enrolment automatically.'],
-    ACTION_NEEDED: ['Payment needs review', 'Verified money may have arrived, but it cannot safely activate this enrolment. Do not pay again; contact support.'],
+    OPEN: ['Remaining fee due', 'Review the amount to pay and current deadline before continuing to secure payment.'],
+    OVERDUE: ['Remaining fee overdue', 'Your seat is still reserved during the current grace period. Complete payment by the displayed date.'],
+    SATISFIED: ['No remaining payment is required', 'Your remaining-fee requirement is complete. Check My Learning for activation status.'],
+    CLOSED_NON_PAYMENT: ['Your reserved place has been released', 'The payment period ended. A normal payment cannot reactivate the enrolment automatically.'],
+    ACTION_NEEDED: ['A payment needs organiser review', 'A payment may have been received, but your enrolment is not automatically active. Please do not pay again.'],
   };
   const DISPOSITIONS = {
     RETAIN: 'Retained under the recorded policy',
@@ -116,8 +116,8 @@
     const paymentAction = balance.paymentAction || {};
     const url = paymentAction.available === true ? safePaymentUrl(paymentAction.safeUrl) : null;
     if (balance.confirmationStatus === 'CONFIRMING') {
-      action.appendChild(text('p', 'Verified test payment evidence is being reconciled. Do not pay again while confirmation is in progress.', 'field-hint'));
-      const check = text('button', 'Check confirmation status', 'btn btn-primary');
+      action.appendChild(text('p', 'We are confirming your remaining-fee payment. Please do not pay again.', 'field-hint'));
+      const check = text('button', 'Check payment confirmation', 'btn btn-primary btn-learning');
       check.type = 'button';
       check.addEventListener('click', initialise);
       action.appendChild(check);

@@ -140,7 +140,7 @@ test('page remains private-by-default and contains no payment integration', () =
   const html = fs.readFileSync(path.join(root, 'apply/index.html'), 'utf8');
   const script = fs.readFileSync(path.join(root, 'js/course-application.js'), 'utf8');
   assert.match(html, /noindex, nofollow/);
-  assert.match(html, /No payment is collected in Gate 1/);
+  assert.match(html, /No payment is collected with an application/);
   assert.doesNotMatch(html + script, /Razorpay|checkout\.js|payment-button/i);
   assert.doesNotMatch(script, /emailId.*gtag|application\.reference.*gtag/);
   assert.match(script, /sessionStorage/);

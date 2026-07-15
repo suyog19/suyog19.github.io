@@ -29,6 +29,44 @@
     'COHORT_POSTPONED', 'BALANCE_OVERDUE_IN_GRACE', 'BALANCE_EXTENDED',
     'BALANCE_DUE', 'BALANCE_CONFIRMING', 'ACTIVATION_PENDING', 'ACTIVE',
   ]);
+  const STATUS_PRESENTATIONS = Object.freeze({
+    APPLY: ['Choose a course to begin', 'You do not have a current application. Compare the available courses and apply when you are ready.', 'View courses'],
+    COMPLETE_PROFILE: ['Complete your learner details', 'Add the learner details required before your application can be completed.', 'Complete your application'],
+    APPLICATION_RECEIVED: ['Application received', 'Your application is ready for review. We will email you when a decision or meaningful update is recorded.', null],
+    UNDER_REVIEW: ['Application under review', 'We are reviewing your application. We will email you when a decision is recorded.', null],
+    WAITLISTED: ['You are on the waitlist', 'A seat is not confirmed. We will contact you if availability changes.', null],
+    RECOMMENDED: ['Another course may be a better fit', 'Review the recommended course before deciding what to do next.', 'View recommended course'],
+    DECLINED: ['Application not accepted for this cohort', 'This application will not progress for the current cohort. You can review other courses when you are ready.', null],
+    WITHDRAWN: ['Application withdrawn', 'This application is no longer active. You can compare courses when you are ready to apply again.', 'View courses'],
+    OFFERED: ['Your application has been accepted', 'Your place is not reserved yet. Payment instructions will appear when the offer is ready.', null],
+    ACCEPTED: ['Your application has been accepted', 'Your place is not reserved yet. Review the current offer and its next step.', null],
+    DEPOSIT_DUE: ['Deposit due', 'Review the authoritative deposit amount, deadline and terms before opening secure payment.', 'Pay the deposit'],
+    PAYMENT_CONFIRMING: ['We are confirming your deposit', 'Please do not pay again. We will update this page when confirmation is complete.', 'Check payment confirmation'],
+    RESERVED: ['Your seat is reserved', 'Your deposit is confirmed. We will update you when the cohort decision is recorded.', null],
+    PAYMENT_ACTION_NEEDED: ['A payment needs organiser review', 'A payment may have been received, but it has not been applied automatically. Please do not pay again.', 'Contact support'],
+    CANCELLATION_REQUESTED: ['Your request is under review', 'We will email you when the organiser records a decision or meaningful update.', 'Check your request'],
+    REFUND_PROCESSING: ['Refund being processed', 'The request outcome is recorded and the refund is now being processed. No further action is required right now.', 'Check refund status'],
+    REFUNDED: ['Refund complete', 'The refund is recorded as complete. Confirmation details remain available in your request.', null],
+    BALANCE_DUE: ['Your cohort is confirmed', 'The remaining fee is now due. Review the amount and current payment deadline.', 'Review the remaining fee'],
+    BALANCE_OVERDUE_IN_GRACE: ['Remaining fee overdue', 'Your seat is still reserved during the current grace period. Review the current payment deadline.', 'Review the remaining fee'],
+    BALANCE_EXTENDED: ['Payment deadline extended', 'An approved extension is active. Review the new deadline and remaining fee.', 'Review the remaining fee'],
+    BALANCE_CONFIRMING: ['We are confirming your remaining-fee payment', 'Please do not pay again. We will update this page when confirmation is complete.', 'Check payment confirmation'],
+    ACTIVATION_PENDING: ['Payment complete — activating your enrolment', 'No further payment is required. We are updating your enrolment status.', null],
+    ACTIVE: ['Your enrolment is active', 'Your payment and enrolment are complete. We will email you when joining details and the course area are available.', null],
+    CLOSED_NON_PAYMENT: ['Your reserved place has been released', 'The payment period ended. A normal payment can no longer reactivate this enrolment automatically.', null],
+    COHORT_POSTPONED: ['Your cohort has been postponed', 'We will show the revised schedule or next decision update when it is available.', null],
+    COHORT_CANCELLED: ['This cohort has been cancelled', 'The cohort will not proceed. Any request or refund status is shown separately.', null],
+    BALANCE_ACTION_NEEDED: ['A payment needs organiser review', 'Money may have been received, but your enrolment is not automatically active. Please do not pay again.', 'Contact support'],
+  });
+
+  function statusPresentation(code) {
+    const value = STATUS_PRESENTATIONS[code];
+    return value ? { heading: value[0], explanation: value[1], actionLabel: value[2] } : {
+      heading: 'View your current learning status',
+      explanation: 'The latest authorised status is shown below. Refresh or contact support if you cannot identify the next step.',
+      actionLabel: null,
+    };
+  }
 
   function safeActionHref(value) {
     return typeof value === 'string' && ACTION_PATHS.has(value)
@@ -161,5 +199,6 @@
     safeCourseHref,
     safeActionHref,
     safeSupportHref,
+    statusPresentation,
   };
 }());

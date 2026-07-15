@@ -21,17 +21,18 @@
   function findApplication(summary, id) { return (Array.isArray(summary.applications) ? summary.applications : []).find((item) => item.offer && item.offer.enrolmentId === id) || null; }
   function describe(change, refund, enrolment) {
     if (refund) {
-      if (['PENDING_SUBMISSION', 'SUBMITTING', 'PROCESSING'].includes(refund.status)) return ['Refund processing', 'The organiser decision is complete. Razorpay test-mode processing is still separate and not yet complete.'];
-      if (refund.status === 'COMPLETED') return ['Completed', 'The service reports that the refund has completed.'];
-      return ['Action needed', 'The refund needs organiser review. Do not make another payment or assume completion.'];
+      if (['PENDING_SUBMISSION', 'SUBMITTING', 'PROCESSING'].includes(refund.status)) return ['Refund being processed', 'The organiser decision is complete. Refund processing is a separate stage and is not yet complete.'];
+      if (refund.status === 'COMPLETED') return ['Refund complete', 'The refund is recorded as complete.'];
+      return ['Refund needs attention', 'The refund needs organiser review. Do not make another payment or assume completion.'];
     }
     if (enrolment && ['CANCELLED', 'TRANSFERRED'].includes(enrolment.status)) {
       return ['Action needed', 'This place is already closed or transferred. A new request is unavailable; contact support if the status is unexpected.'];
     }
-    if (!change) return ['Request a review', 'Choose one outcome. We will review it against the current policy and payment record.'];
-    if (change.status === 'REQUESTED') return ['Submitted', 'Your request is under review. No refund, credit or transfer has been promised.'];
-    if (change.decision === 'APPROVED' || change.decision === 'TRANSFER_OFFERED') return ['Approved', 'The organiser approved the request. Any refund processing or separate transfer offer will appear as its own stage.'];
-    if (change.decision === 'REJECTED') return ['Rejected', 'The organiser did not approve this request. Contact support if you need clarification.'];
+    if (!change) return ['Request a change', 'Choose the outcome you prefer. We will review it against the current policy and payment record.'];
+    if (change.status === 'REQUESTED') return ['Your request is under review', 'No cancellation, refund, credit or transfer has been promised. We will email you when a decision is recorded.'];
+    if (change.decision === 'APPROVED') return ['Request approved', 'The organiser approved the request. Any refund processing appears as a separate stage.'];
+    if (change.decision === 'TRANSFER_OFFERED') return ['A transfer option is available', 'The organiser has offered a transfer. The next organiser-led step will be shown here.'];
+    if (change.decision === 'REJECTED') return ['Your request was not approved', 'Contact support if you need clarification about the recorded decision.'];
     return ['Action needed', 'The organiser needs more information or manual review.'];
   }
   function render(application, payment) {
