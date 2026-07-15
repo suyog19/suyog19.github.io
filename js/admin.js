@@ -1141,11 +1141,15 @@
     if (!window.confirm((action === 'open' ? 'Open' : 'Close') + ' registration for this cohort?')) return;
     const body = { courseId: button.dataset.trainingCohortCourse, expectedVersion: Number(button.dataset.trainingCohortVersion), reason: 'Manual admin ' + action };
     const scope = 'cohort-' + action + ':' + button.dataset.trainingCohortId;
+    const requestOptions = {
+      method: 'POST', body: JSON.stringify(body),
+      headers: { 'Idempotency-Key': operationKeys.key(scope, body) },
+    };
     try {
-      await apiRequest('/admin/training/cohorts/' + encodeURIComponent(button.dataset.trainingCohortId) + '/' + action, {
-        method: 'POST', body: JSON.stringify(body),
-        headers: { 'Idempotency-Key': operationKeys.key(scope, body) },
-      });
+      await trainingTools.requestWithTransportRetry(() => apiRequest(
+        '/admin/training/cohorts/' + encodeURIComponent(button.dataset.trainingCohortId) + '/' + action,
+        requestOptions
+      ));
       operationKeys.clear(scope);
       await loadTraining(); setStatus('Cohort registration updated.', 'success');
     } catch (error) {
