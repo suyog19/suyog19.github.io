@@ -53,10 +53,20 @@
         <a href="../../training/policies/#support-and-grievance-process">Grievance process</a>
       </nav>
     </section>
-    <div id="balance-error-actions" class="learner-error-actions" hidden>
-      <button id="balance-retry" class="btn btn-primary btn-learning" type="button">Check current status</button>
-      <a class="btn btn-secondary" href="../../contact/?topic=learning-payment-review">Contact support</a>
-    </div>
+    <section id="balance-error-panel" class="learner-payment-panel" hidden aria-labelledby="balance-error-title">
+      <p class="learning-eyebrow">Software Signal Learning &middot; Remaining fee</p>
+      <h1 id="balance-error-title">We could not verify your payment details</h1>
+      <div class="learner-payment-state learning-status-card">
+        <h2 id="balance-error-heading">Your payment details are not available yet</h2>
+        <p id="balance-error-message">Do not make another payment until the current amount and payment action are confirmed here.</p>
+      </div>
+      <p class="learner-payment-safety">Your seat, deposit and payment records are not changed by this display problem.</p>
+      <div id="balance-error-actions" class="learner-error-actions">
+        <button id="balance-retry" class="btn btn-primary btn-learning" type="button">Check current status</button>
+        <a class="btn btn-secondary" href="../">Back to My Learning</a>
+        <a class="btn btn-secondary" href="../../contact/?topic=learning-payment-review">Contact support</a>
+      </div>
+    </section>
   </main>
   <script src="../../js/learner-auth.js"></script>
   <script src="../../js/learner-page-header.js"></script>

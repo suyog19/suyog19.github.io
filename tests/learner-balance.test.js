@@ -23,9 +23,11 @@ class Element {
 }
 
 function harness(overrides = {}) {
-  const ids = ['balance-status', 'balance-panel', 'balance-state', 'balance-details', 'balance-action', 'balance-error-actions', 'balance-retry'];
+  const ids = ['balance-status', 'balance-panel', 'balance-state', 'balance-details', 'balance-action',
+    'balance-error-panel', 'balance-error-heading', 'balance-error-message', 'balance-error-actions', 'balance-retry'];
   const elements = Object.fromEntries(ids.map((id) => [id, new Element()]));
   elements['balance-panel'].hidden = true;
+  elements['balance-error-panel'].hidden = true;
   elements['balance-error-actions'].hidden = true;
   const storage = new Map();
   const timers = [];
@@ -229,8 +231,26 @@ test('initialise uses the owned balance endpoint and hides private panel on fail
   const failed = harness({ request: async () => { const error = new Error('down'); error.status = 503; throw error; } });
   await failed.balance.initialise();
   assert.equal(failed.elements['balance-panel'].hidden, true);
-  assert.equal(failed.elements['balance-error-actions'].hidden, false);
-  assert.match(failed.elements['balance-status'].textContent, /Do not pay again/);
+  assert.equal(failed.elements['balance-error-panel'].hidden, false);
+  assert.equal(failed.elements['balance-status'].hidden, true);
+  assert.match(failed.elements['balance-error-heading'].textContent, /temporarily unavailable/);
+  assert.match(failed.elements['balance-error-message'].textContent, /records have not changed/);
+});
+
+test('known evidence, network, and missing-obligation failures give distinct safe guidance', async () => {
+  const cases = [
+    [{ status: 409, body: { error: 'BALANCE_EVIDENCE_NOT_AVAILABLE' } }, /being verified/, /older payment link/],
+    [{ status: 0 }, /could not connect/, /Check your connection/],
+    [{ status: 404 }, /No remaining fee/, /Return to My Learning/],
+  ];
+  for (const [failure, heading, message] of cases) {
+    const page = harness({ request: async () => { throw Object.assign(new Error('failure'), failure); } });
+    await page.balance.initialise();
+    assert.equal(page.elements['balance-panel'].hidden, true);
+    assert.equal(page.elements['balance-error-panel'].hidden, false);
+    assert.match(page.elements['balance-error-heading'].textContent, heading);
+    assert.match(page.elements['balance-error-message'].textContent, message);
+  }
 });
 
 test('invalid identifiers and live URLs fail closed', async () => {
@@ -238,7 +258,8 @@ test('invalid identifiers and live URLs fail closed', async () => {
   context.window.location.search = '?enrolmentId=../admin';
   await balance.initialise();
   assert.equal(elements['balance-panel'].hidden, true);
-  assert.match(elements['balance-status'].textContent, /incomplete/);
+  assert.equal(elements['balance-error-panel'].hidden, false);
+  assert.match(elements['balance-error-heading'].textContent, /incomplete/);
 });
 
 test('mismatched GET and POST enrolment responses clear private state', async () => {
@@ -255,6 +276,7 @@ test('mismatched GET and POST enrolment responses clear private state', async ()
   postMismatch.balance.render(projection({ paymentRequestId: null, paymentAction: { available: false, safeUrl: null } }));
   await postMismatch.elements['balance-action'].children[0].listeners.click();
   assert.equal(postMismatch.elements['balance-panel'].hidden, true);
+  assert.equal(postMismatch.elements['balance-error-panel'].hidden, false);
   assert.equal(postMismatch.elements['balance-details'].children.length, 0);
 });
 
@@ -306,5 +328,7 @@ test('private page is noindex, no-store, labelled, and exposes no Gate 4 link', 
   assert.match(html, /<meta http-equiv="Cache-Control" content="no-store">/);
   assert.match(html, /aria-live="polite"/);
   assert.match(html, /aria-label="Remaining-fee support"/);
+  assert.match(html, /Your seat, deposit and payment records are not changed by this display problem/);
+  assert.match(html, /Back to My Learning/);
   assert.doesNotMatch(html, /Teams|OneDrive|GitHub learner|course resources|recording/i);
 });

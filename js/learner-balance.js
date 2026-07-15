@@ -6,6 +6,9 @@
   const stateBox = document.getElementById('balance-state');
   const details = document.getElementById('balance-details');
   const action = document.getElementById('balance-action');
+  const errorPanel = document.getElementById('balance-error-panel');
+  const errorHeading = document.getElementById('balance-error-heading');
+  const errorMessage = document.getElementById('balance-error-message');
   const errorActions = document.getElementById('balance-error-actions');
   const retry = document.getElementById('balance-retry');
   const ID = /^[A-Za-z0-9_-]{1,128}$/;
@@ -55,9 +58,58 @@
   }
   function clearPrivate() {
     panel.hidden = true;
+    errorPanel.hidden = true;
     stateBox.replaceChildren();
     details.replaceChildren();
     action.replaceChildren();
+  }
+  function errorCode(error) {
+    return error && error.body && typeof error.body.error === 'string' ? error.body.error : '';
+  }
+  function errorState(error) {
+    const code = errorCode(error);
+    if (error && error.status === 404) {
+      return [
+        'No remaining fee is available for this enrolment',
+        'Return to My Learning to check your current course status. You do not need to make a payment from this page.',
+      ];
+    }
+    if (code === 'INVALID_LINK') {
+      return [
+        'This remaining-fee link is incomplete',
+        'Return to My Learning and open the payment action from your current course status.',
+      ];
+    }
+    if (code === 'BALANCE_EVIDENCE_NOT_AVAILABLE') {
+      return [
+        'Your payment details are being verified',
+        'We have not safely confirmed the current amount and payment action. Do not use an older payment link or pay again. Check here again later.',
+      ];
+    }
+    if (code === 'GATE3_DISABLED' || (error && [502, 503, 504].includes(error.status))) {
+      return [
+        'The remaining-fee service is temporarily unavailable',
+        'Your seat and payment records have not changed. Do not pay using an older link. Please check the current status again shortly.',
+      ];
+    }
+    if (error && error.status === 0) {
+      return [
+        'We could not connect to the remaining-fee service',
+        'Check your connection and try again. Do not pay using an older link while the current status is unavailable.',
+      ];
+    }
+    return [
+      'We could not safely verify your payment details',
+      'The current amount or payment action could not be confirmed. Do not use an older payment link or pay again. Check here again or contact support.',
+    ];
+  }
+  function showError(error) {
+    const descriptor = errorState(error);
+    status.hidden = true;
+    errorHeading.textContent = descriptor[0];
+    errorMessage.textContent = descriptor[1];
+    errorPanel.hidden = false;
+    errorActions.hidden = false;
   }
   function confirmationLabel(balance) {
     const confirmation = balance.confirmation;
@@ -105,10 +157,7 @@
       status.hidden = true;
     } catch (error) {
       clearPrivate();
-      status.textContent = error.status === 409
-        ? 'The remaining-fee status changed. Check the current status before continuing.'
-        : 'Remaining-fee details could not be prepared. No payment was started.';
-      errorActions.hidden = false;
+      showError(error);
     } finally { button.disabled = false; }
   }
   function renderPaymentAction(balance, id) {
@@ -210,7 +259,7 @@
     errorActions.hidden = true;
     status.hidden = false;
     status.textContent = 'Restoring your secure session...';
-    if (!id) { status.textContent = 'This remaining-fee link is incomplete. Return to My Learning.'; errorActions.hidden = false; return; }
+    if (!id) { showError({ body: { error: 'INVALID_LINK' } }); return; }
     try {
       const user = await auth.restore();
       if (generation !== loadGeneration) return;
@@ -224,13 +273,10 @@
     } catch (error) {
       if (generation !== loadGeneration) return;
       if (error.status === 401 || error.status === 403) { window.location.replace(loginUrl()); return; }
-      status.textContent = error.status === 404
-        ? 'A remaining-fee obligation is not available for this enrolment.'
-        : 'Remaining-fee status is temporarily unavailable. Do not pay again until the service confirms the current action.';
-      errorActions.hidden = false;
+      showError(error);
     }
   }
   retry.addEventListener('click', initialise);
-  window.sjLearnerBalance = { dateTime, enrolmentId, initialise, money, render, safePaymentUrl };
+  window.sjLearnerBalance = { dateTime, enrolmentId, initialise, money, render, safePaymentUrl, errorState };
   if (!window.__SJ_DISABLE_AUTO_INIT__) initialise();
 }());
