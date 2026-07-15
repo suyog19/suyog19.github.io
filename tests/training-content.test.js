@@ -91,6 +91,40 @@ test('Python Foundations detail UX exposes anchored decision sections', () => {
   assert.match(html, /data-course-availability-action hidden/);
 });
 
+test('Applied Python publishes a concrete, bounded applied syllabus', () => {
+  const html = fs.readFileSync('training/applied-python-ai-ml/index.html', 'utf8');
+  const modules = html.match(/data-applied-syllabus-module/g) || [];
+  assert.equal(modules.length, 8);
+  for (const topic of [
+    'Applied workflow and problem framing',
+    'Numerical work with NumPy',
+    'Tabular workflows with pandas',
+    'Data quality and feature preparation',
+    'Exploration and visual reasoning',
+    'Machine-learning framing and baselines',
+    'scikit-learn pipelines and evaluation',
+    'Integrated applied project',
+  ]) assert.match(html, new RegExp(topic));
+  assert.doesNotMatch(html, /The detailed syllabus and project format are not yet published/);
+  assert.match(html, /learning objectives, not guaranteed outcomes/i);
+  assert.match(html, /Exact dataset, submission, review and support arrangements will be published before applications open/);
+});
+
+test('Applied Python detail UX preserves level, commercial facts and anchored sections', () => {
+  const html = fs.readFileSync('training/applied-python-ai-ml/index.html', 'utf8');
+  assert.match(html, /Python basics required/);
+  assert.match(html, /Start with Python Foundations/);
+  assert.match(html, /data-course-id="crs_applied_python"/);
+  assert.match(html, /&#8377;8,000 INR/);
+  assert.match(html, /&#8377;2,000 INR/);
+  assert.match(html, /&#8377;6,000 INR/);
+  for (const id of ['overview', 'outcomes', 'syllabus', 'course-facts', 'fees']) {
+    assert.match(html, new RegExp(`href="#${id}"`));
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  assert.match(html, /data-course-availability-action hidden/);
+});
+
 test('course pages load the fail-closed availability controller', () => {
   for (const relative of ['training/python-foundations-ai-data/index.html', 'training/applied-python-ai-ml/index.html']) {
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
