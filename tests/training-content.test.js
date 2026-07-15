@@ -52,6 +52,16 @@ test('learning styles preserve fail-closed hidden controls over button display r
   assert.match(css, /\.software-signal-learning \[hidden\]\s*\{[^}]*display:\s*none\s*!important/s);
 });
 
+test('course comparison has readable cells and a responsive scroll treatment', () => {
+  const html = fs.readFileSync('training/index.html', 'utf8');
+  const css = fs.readFileSync('css/learning.css', 'utf8');
+  assert.match(html, /class="training-comparison-scroll-hint"/);
+  assert.match(html, /class="table-scroll" tabindex="0" aria-describedby="comparison-scroll-hint"/);
+  assert.match(css, /\.training-page \.training-comparison :is\(th, td\)\s*\{[^}]*padding:\s*\.9rem 1rem/s);
+  assert.match(css, /\.training-page \.training-comparison \.table-scroll\s*\{[^}]*overflow-x:\s*auto/s);
+  assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.training-page \.training-comparison table\s*\{[^}]*min-width:\s*42rem/s);
+});
+
 test('course pages load the fail-closed availability controller', () => {
   for (const relative of ['training/python-foundations-ai-data/index.html', 'training/applied-python-ai-ml/index.html']) {
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
