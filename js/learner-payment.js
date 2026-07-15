@@ -54,6 +54,24 @@
     }
     return value;
   }
+  function isRecoverableOffer(summary, id) {
+    const applications = summary && Array.isArray(summary.applications) ? summary.applications : [];
+    return applications.some((application) => {
+      const offer = application && application.offer;
+      return offer && offer.status === 'OFFERED' && offer.enrolmentId === id && !application.gate2;
+    });
+  }
+  async function recoverPreparation(id) {
+    try {
+      const summary = await auth.request('/me/learning-summary', { method: 'GET' });
+      if (!isRecoverableOffer(summary, id)) return false;
+      status.hidden = true;
+      renderPreparation(id);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
   function renderPreparation(id) {
     panel.hidden = false;
     stateBox.replaceChildren(
@@ -180,13 +198,13 @@
       if (error.status === 404) {
         status.hidden = true;
         renderPreparation(id);
-      } else {
+      } else if (!(await recoverPreparation(id))) {
         status.textContent = 'We cannot confirm the current payment status right now. This display problem does not change your payment or seat record. Do not pay again until the status is available.';
         errorActions.hidden = false;
       }
     }
   }
   retry.addEventListener('click', initialise);
-  window.sjLearnerPayment = { enrolmentId, initialise, money, render, renderPreparation, safePaymentUrl };
+  window.sjLearnerPayment = { enrolmentId, initialise, isRecoverableOffer, money, render, renderPreparation, safePaymentUrl };
   if (!window.__SJ_DISABLE_AUTO_INIT__) initialise();
 }());
