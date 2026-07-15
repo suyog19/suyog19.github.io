@@ -62,6 +62,35 @@ test('course comparison has readable cells and a responsive scroll treatment', (
   assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.training-page \.training-comparison table\s*\{[^}]*min-width:\s*42rem/s);
 });
 
+test('Python Foundations publishes a concrete, bounded foundations syllabus', () => {
+  const html = fs.readFileSync('training/python-foundations-ai-data/index.html', 'utf8');
+  const modules = html.match(/data-syllabus-module/g) || [];
+  assert.equal(modules.length, 8);
+  for (const topic of [
+    'Values, variables and expressions',
+    'Decisions, loops and problem decomposition',
+    'Strings and core collections',
+    'Functions and reusable code',
+    'Files and structured data',
+    'Errors, debugging and confidence checks',
+    'Integrated data exercise',
+  ]) assert.match(html, new RegExp(topic));
+  assert.doesNotMatch(html, /The detailed syllabus and project format are not yet published/);
+  assert.match(html, /learning objectives, not guaranteed outcomes/i);
+  assert.match(html, /Exact submission, review and support arrangements will be published before applications open/);
+});
+
+test('Python Foundations detail UX exposes anchored decision sections', () => {
+  const html = fs.readFileSync('training/python-foundations-ai-data/index.html', 'utf8');
+  assert.match(html, /aria-label="On this page"/);
+  for (const id of ['overview', 'outcomes', 'syllabus', 'course-facts', 'fees']) {
+    assert.match(html, new RegExp(`href="#${id}"`));
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  assert.match(html, /data-course-id="crs_python_foundations"/);
+  assert.match(html, /data-course-availability-action hidden/);
+});
+
 test('course pages load the fail-closed availability controller', () => {
   for (const relative of ['training/python-foundations-ai-data/index.html', 'training/applied-python-ai-ml/index.html']) {
     const html = fs.readFileSync(path.join(root, relative), 'utf8');
