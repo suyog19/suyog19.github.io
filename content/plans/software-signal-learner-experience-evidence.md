@@ -18,7 +18,7 @@ Human-session screenshots and any signed-in development evidence must be stored 
 
 ## Implementation self-validation — 15 July 2026
 
-The 110-test Node suite passes, including exact-state matrix structure, bounded status mappings, fail-closed hidden actions, payment double-activation prevention, private subpage logout, safe support context and existing contract/recovery coverage. Local browser rendering at 390×844 passed without horizontal overflow for the training overview, both course pages, email entry and safe Contact handoff. The training overview, both course pages and Contact handoff also passed at 1440×900 with no console warning/error. The closed-course action was verified hidden in computed styles. Authenticated screenshots and remaining required viewports remain part of the controlled synthetic-data sessions required by #230.
+The 110-test Node suite passes, including exact-state matrix structure, bounded status mappings, fail-closed hidden actions, payment double-activation prevention, private subpage logout, safe support context and existing contract/recovery coverage. An agent-run browser matrix completed 90 checks across 18 learning, support and representative non-learning routes at 1440×900, 1280×720, 768×1024, 390×844 and 360×800 with no horizontal overflow, learning-stylesheet leakage or visually exposed hidden controls. A 640×360 reflow proxy passed critical signed-out routes, public email focus order was exercised with keyboard input, and semantic accessibility-tree inspection covered the payment-support handoff. Suyog explicitly waived independent human, authenticated integrated, real screen-reader and second-browser observation on 15 July 2026. Those gaps are not represented as passing evidence.
 
 ## Terminology audit
 
