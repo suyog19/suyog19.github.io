@@ -54,10 +54,14 @@ test('Gate 3 identifiers and source avoid unsafe rendering or Gate 4 links', () 
   assert.match(page, /no Gate 4 access or provider resource link is published/);
 });
 
-test('authorization failure clears private state and ambiguous commands reload authority', () => {
+test('authorization failure clears private state and only stale commands reload authority', () => {
   assert.match(script, /error\.status === 401 \|\| error\.status === 403/);
   assert.match(script, /config\.clearSession/);
-  assert.match(script, /await load\(true\)/);
+  assert.equal(tools.shouldReloadAfterCommand({ status: 409 }), true);
+  assert.equal(tools.shouldReloadAfterCommand({ status: 412 }), true);
+  assert.equal(tools.shouldReloadAfterCommand({ status: 503, body: { error: 'GATE3_DISABLED' } }), false);
+  assert.equal(tools.shouldReloadAfterCommand({ status: 400 }), false);
+  assert.match(script, /if \(shouldReloadAfterCommand\(error\)\) await load\(true\); fail\(error\)/);
   assert.match(script, /'Idempotency-Key'/);
   assert.match(script, /expectedCohortVersion/);
   assert.match(script, /expectedDecisionSequence/);

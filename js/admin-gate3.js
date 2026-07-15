@@ -12,6 +12,7 @@
     if (options.type) input.type = options.type; input.name = name; input.required = options.optional !== true; if (options.value != null) input.value = options.value; wrap.appendChild(input); return wrap;
   }
   function allowed(summary, command) { return COMMANDS.has(command) && Array.isArray(summary && summary.allowedCommands) && summary.allowedCommands.includes(command); }
+  function shouldReloadAfterCommand(error) { return Boolean(error && (error.status === 409 || error.status === 412)); }
   function iso(value) { const date = new Date(value); return value && !Number.isNaN(date.getTime()) ? date.toISOString() : null; }
   function common(form, summary) {
     const body = {
@@ -40,7 +41,7 @@
     function commandForm(title, command, summary, fields, payload) {
       const section = text('section', '', 'admin-payment-command'); section.appendChild(text('h4', title)); const form = document.createElement('form'); form.className = 'admin-payment-command-form';
       fields.forEach((item) => form.appendChild(field(item.label, item.name, item))); form.appendChild(field('I confirm this development-only decision against the displayed versions', 'confirmation', { type: 'checkbox' })); const button = text('button', 'Submit decision', 'btn btn-secondary'); button.type = 'submit'; form.appendChild(button);
-      form.addEventListener('submit', async (event) => { event.preventDefault(); if (!allowed(summary, command)) return; button.disabled = true; const body = payload(new FormData(form), summary); const action = { CONFIRM: 'confirm', POSTPONE: 'postpone', CANCEL: 'cancel' }[command]; try { await config.request('/admin/training/cohorts/' + encodeURIComponent(summary.cohortId) + '/' + action, { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': config.idempotencyKey('decision:' + summary.cohortId + ':' + command, body) } }); config.setStatus('Decision accepted. Reloading authoritative state...', 'success'); await load(true); } catch (error) { fail(error); await load(true); } finally { button.disabled = false; } });
+      form.addEventListener('submit', async (event) => { event.preventDefault(); if (!allowed(summary, command)) return; button.disabled = true; const body = payload(new FormData(form), summary); const action = { CONFIRM: 'confirm', POSTPONE: 'postpone', CANCEL: 'cancel' }[command]; try { await config.request('/admin/training/cohorts/' + encodeURIComponent(summary.cohortId) + '/' + action, { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': config.idempotencyKey('decision:' + summary.cohortId + ':' + command, body) } }); config.setStatus('Decision accepted. Reloading authoritative state...', 'success'); await load(true); } catch (error) { if (shouldReloadAfterCommand(error)) await load(true); fail(error); } finally { button.disabled = false; } });
       section.appendChild(form); return section;
     }
     function renderList() { list.replaceChildren(); if (!records.length) return list.appendChild(text('p', 'No cohorts are available.', 'admin-empty')); records.forEach((record) => { const button = text('button', record.cohort.label + ' · ' + (record.summary.decisionState || 'PENDING'), 'admin-list-item'); button.type = 'button'; button.dataset.gate3CohortId = record.cohort.cohortId; button.appendChild(text('span', record.course.title || record.course.courseId, 'admin-list-meta')); list.appendChild(button); }); }
@@ -63,5 +64,5 @@
     list.addEventListener('click', (event) => { const button = event.target.closest('[data-gate3-cohort-id]'); if (!button || !safeId(button.dataset.gate3CohortId)) return; selected = button.dataset.gate3CohortId; renderDetail(records.find((item) => item.cohort.cohortId === selected)); }); refresh.addEventListener('click', () => { loaded = false; load(true); });
     return { load, clear() { generation += 1; loaded = false; selected = ''; records = []; list.replaceChildren(); detail.replaceChildren(text('p', 'Select a cohort to review.', 'admin-empty')); } };
   }
-  window.sjAdminGate3 = { allowed, confirmationPayload, create, safeId };
+  window.sjAdminGate3 = { allowed, confirmationPayload, create, safeId, shouldReloadAfterCommand };
 }());
