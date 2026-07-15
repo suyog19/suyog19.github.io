@@ -142,6 +142,39 @@ test('renderer shows an offer only for the backend OFFERED state', () => {
   assert.match(text, /Your application has been accepted/);
 });
 
+test('offered enrolment without a payment projection links to learner-owned deposit preparation', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'OFFERED', label: 'View your offer', href: '/my-learning/' },
+    applications: [{
+      reference: 'APP-OFFER', journeyStatus: 'OFFERED', course: { title: 'Python' },
+      action: { code: 'OFFERED', label: 'View your offer', href: '/my-learning/' },
+      offer: { status: 'OFFERED', enrolmentId: 'enr_offer' },
+    }],
+  }));
+  const href = '/my-learning/payment/?enrolmentId=enr_offer';
+  assert.ok(findByHref(elements['learner-current-action'], href));
+  assert.ok(findByHref(elements['learner-applications'], href));
+  assert.match(flattenedText(elements['learner-current-action']), /place is not reserved yet/i);
+  assert.match(flattenedText(elements['learner-current-action']), /Review deposit details/);
+});
+
+test('malformed or non-offered enrolments cannot expose initial deposit preparation', () => {
+  for (const offer of [
+    { status: 'OFFERED', enrolmentId: '../admin' },
+    { status: 'RESERVED', enrolmentId: 'enr_one' },
+    { status: 'OFFERED' },
+  ]) {
+    const { elements, shell } = harness();
+    shell.renderSummary(summary({
+      currentAction: { code: 'OFFERED', label: 'View your offer', href: '/my-learning/' },
+      applications: [{ course: { title: 'Python' }, action: { code: 'OFFERED' }, offer }],
+    }));
+    assert.equal(findByHref(elements['learner-current-action'], '/my-learning/payment/?enrolmentId=enr_one'), undefined);
+    assert.equal(findByHref(elements['learner-applications'], '/my-learning/payment/?enrolmentId=enr_one'), undefined);
+  }
+});
+
 test('renderer keeps Gate 2 domain stages separate and links only to focused journeys', () => {
   const { elements, shell } = harness();
   shell.renderSummary(summary({

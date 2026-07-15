@@ -41,7 +41,7 @@
     RECOMMENDED: ['Another course may be a better fit', 'Review the recommended course before deciding what to do next.', 'View recommended course'],
     DECLINED: ['Application not accepted for this cohort', 'This application will not progress for the current cohort. You can review other courses when you are ready.', null],
     WITHDRAWN: ['Application withdrawn', 'This application is no longer active. You can compare courses when you are ready to apply again.', 'View courses'],
-    OFFERED: ['Your application has been accepted', 'Your place is not reserved yet. Payment instructions will appear when the offer is ready.', null],
+    OFFERED: ['Your application has been accepted', 'Your place is not reserved yet. Review the deposit details and prepare the current payment option when you are ready.', 'Review deposit details'],
     ACCEPTED: ['Your application has been accepted', 'Your place is not reserved yet. Review the current offer and its next step.', null],
     DEPOSIT_DUE: ['Deposit due', 'Review the confirmed deposit amount, deadline and terms before opening secure payment.', 'Pay the deposit'],
     PAYMENT_CONFIRMING: ['We are confirming your deposit', 'Please do not pay again. We will update this page when confirmation is complete.', 'Check payment confirmation'],
@@ -115,6 +115,14 @@
       return '/my-learning/change/?enrolmentId=' + encodeURIComponent(id);
     }
     return null;
+  }
+
+  function offerPaymentHref(application) {
+    const offer = application && application.offer;
+    const id = offer && offer.enrolmentId;
+    return offer && offer.status === 'OFFERED' && /^[A-Za-z0-9_-]{1,128}$/.test(id || '')
+      ? '/my-learning/payment/?enrolmentId=' + encodeURIComponent(id)
+      : null;
   }
 
   function gate2ChangeHref(application) {
@@ -208,6 +216,7 @@
     isV1ActionCode,
     isGate2ActionCode,
     isGate3ActionCode,
+    offerPaymentHref,
     safeCourseHref,
     safeActionHref,
     safeSupportHref,

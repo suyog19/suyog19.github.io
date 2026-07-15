@@ -71,6 +71,16 @@ test('only an explicit OFFERED state is actionable', () => {
   assert.equal(view.hasActionableOffer(null), false);
 });
 
+test('initial deposit route requires an explicit offered enrolment with a bounded id', () => {
+  assert.equal(
+    view.offerPaymentHref({ offer: { status: 'OFFERED', enrolmentId: 'enr_one' } }),
+    '/my-learning/payment/?enrolmentId=enr_one',
+  );
+  assert.equal(view.offerPaymentHref({ offer: { status: 'RESERVED', enrolmentId: 'enr_one' } }), null);
+  assert.equal(view.offerPaymentHref({ offer: { status: 'OFFERED', enrolmentId: '../admin' } }), null);
+  assert.equal(view.offerPaymentHref({ offer: { status: 'OFFERED' } }), null);
+});
+
 test('Gate 2 links require backend action codes and bounded owned enrolment ids', () => {
   const payment = { offer: { enrolmentId: 'enr_one' }, gate2: { action: { code: 'DEPOSIT_DUE' }, enrolment: { status: 'OFFERED' } } };
   assert.equal(view.gate2Href(payment), '/my-learning/payment/?enrolmentId=enr_one');

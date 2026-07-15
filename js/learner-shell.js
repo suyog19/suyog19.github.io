@@ -74,6 +74,8 @@
       const label = view.statusPresentation((application.action || {}).code || application.journeyStatus).actionLabel;
       return { href: actionHref, label: label || (actionHref === '/contact/' ? 'Contact support' : 'View current status') };
     }
+    const offerHref = view.offerPaymentHref(application);
+    if (offerHref) return { href: offerHref, label: 'Review deposit details' };
     const correction = view.correctionHref(application);
     if (correction) return { href: correction, label: 'Review your application', correction: true };
     const recommended = application.decision && application.decision.recommendedCourse;
@@ -146,9 +148,13 @@
       : reportedAction;
     const gate2 = applications.find((item) => item.gate2 && item.gate2.action && item.gate2.action.code === action.code);
     const gate3 = applications.find((item) => item.gate3 && item.journeyStatus === action.code);
+    const offered = action.code === 'OFFERED'
+      ? applications.find((item) => item.offer && item.offer.status === 'OFFERED')
+      : null;
     const href2 = view.gate2Href(gate2);
     const href3 = view.courseHubHref(gate3) || view.gate3Href(gate3);
-    const isSupported = view.isV1ActionCode(action.code) && (view.isGate2ActionCode(action.code) ? Boolean(gate2 && href2) : view.isGate3ActionCode(action.code) ? Boolean(gate3) : true);
+    const offerHref = view.offerPaymentHref(offered);
+    const isSupported = view.isV1ActionCode(action.code) && (action.code === 'OFFERED' ? Boolean(offerHref) : view.isGate2ActionCode(action.code) ? Boolean(gate2 && href2) : view.isGate3ActionCode(action.code) ? Boolean(gate3) : true);
     const presentation = view.statusPresentation(action.code);
     currentAction.appendChild(element('p', 'learning-status-marker', 'Current status'));
     const heading = element('h2', '', isSupported ? presentation.heading : 'View your current learning status');
@@ -157,7 +163,7 @@
     currentAction.appendChild(element('p', '', isSupported ? presentation.explanation : 'The latest authorised status is shown below. Refresh or contact support if you cannot identify the next step.'));
     const date = importantDate(gate3 || gate2);
     if (date) currentAction.appendChild(element('p', 'learning-deadline', date));
-    const href = gate3 ? href3 : gate2 ? href2 : view.safeActionHref(action.href);
+    const href = gate3 ? href3 : gate2 ? href2 : offerHref || view.safeActionHref(action.href);
     const primaryLabel = view.courseHubHref(gate3) ? 'Open your course area' : presentation.actionLabel;
     if (isSupported && href && primaryLabel) {
       const link = element('a', 'btn btn-primary btn-learning', primaryLabel);
