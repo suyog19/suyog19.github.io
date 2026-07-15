@@ -140,7 +140,10 @@
   }
   function renderCurrent(summary, applications) {
     currentAction.replaceChildren();
-    const action = summary.currentAction || {};
+    const reportedAction = summary.currentAction || {};
+    const action = !summary.learner && applications.length === 0 && reportedAction.code === 'COMPLETE_PROFILE'
+      ? { code: 'APPLY', href: '/training/' }
+      : reportedAction;
     const gate2 = applications.find((item) => item.gate2 && item.gate2.action && item.gate2.action.code === action.code);
     const gate3 = applications.find((item) => item.gate3 && item.journeyStatus === action.code);
     const href2 = view.gate2Href(gate2);
@@ -177,13 +180,7 @@
     const applications = Array.isArray(summary.applications) ? summary.applications : [];
     renderCurrent(summary, applications);
     applicationList.replaceChildren();
-    if (!applications.length) {
-      const empty = element('article', 'learner-application-card learner-empty', '');
-      empty.appendChild(element('h2', '', 'Choose a course to begin'));
-      empty.appendChild(element('p', '', 'You do not have a current application. Compare the available courses and apply when you are ready.'));
-      const courses = element('a', 'btn btn-primary btn-learning', 'View courses'); courses.href = '/training/'; empty.appendChild(courses);
-      applicationList.appendChild(empty);
-    } else applications.forEach((application) => applicationList.appendChild(renderJourney(application)));
+    if (applications.length) applications.forEach((application) => applicationList.appendChild(renderJourney(application)));
     const support = summary.support || {};
     supportLink.href = view.safeSupportHref(support.supportUrl, '/contact/');
     privacyLink.href = view.safeSupportHref(support.privacyUrl, '/training/policies/');

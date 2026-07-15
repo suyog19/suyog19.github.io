@@ -34,7 +34,7 @@
   ]);
   const STATUS_PRESENTATIONS = Object.freeze({
     APPLY: ['Choose a course to begin', 'You do not have a current application. Compare the available courses and apply when you are ready.', 'View courses'],
-    COMPLETE_PROFILE: ['Complete your learner details', 'Add the learner details required before your application can be completed.', 'Complete your application'],
+    COMPLETE_PROFILE: ['Choose a course to begin', 'Your learner details are completed as part of a course application. Choose a course when you are ready.', 'View courses'],
     APPLICATION_RECEIVED: ['Application received', 'Your application is ready for review. We will email you when a decision or meaningful update is recorded.', null],
     UNDER_REVIEW: ['Application under review', 'We are reviewing your application. We will email you when a decision is recorded.', null],
     WAITLISTED: ['You are on the waitlist', 'A seat is not confirmed. We will contact you if availability changes.', null],
@@ -74,7 +74,7 @@
   function safeActionHref(value) {
     return typeof value === 'string' && ACTION_PATHS.has(value)
       ? value
-      : '/my-learning/';
+      : null;
   }
 
   function safeSupportHref(value, fallback) {
