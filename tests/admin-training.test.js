@@ -10,9 +10,9 @@ const tools = context.window.sjAdminTraining;
 function validCohort() {
   return {
     courseId: 'crs_python', label: 'August cohort', timezone: 'Asia/Kolkata',
-    capacity: '10', minimumSize: '5', tentativeStartAt: '2026-09-01T10:00',
-    tentativeEndAt: '2026-09-30T10:00', registrationOpensAt: '2026-08-01T10:00',
-    registrationClosesAt: '2026-08-31T10:00',
+    capacity: '10', minimumSize: '5', tentativeStartAt: '2026-09-01',
+    tentativeEndAt: '2026-09-30', registrationOpensAt: '2026-08-01',
+    registrationClosesAt: '2026-08-31',
   };
 }
 
@@ -20,8 +20,33 @@ test('cohort validation enforces backend numeric and date invariants', () => {
   assert.deepEqual(Object.keys(tools.validateCohort(validCohort())), []);
   assert.equal(tools.validateCohort({ ...validCohort(), minimumSize: '11' }).minimumSize, 'Minimum size cannot exceed capacity.');
   assert.equal(tools.validateCohort({ ...validCohort(), capacity: '1.5' }).capacity, 'Capacity must be a whole number of at least 1.');
-  assert.equal(tools.validateCohort({ ...validCohort(), registrationClosesAt: '2026-07-01T10:00' }).registrationClosesAt, 'Registration must close after it opens.');
-  assert.equal(tools.validateCohort({ ...validCohort(), tentativeEndAt: '2026-08-01T10:00' }).tentativeEndAt, 'Tentative end must be after tentative start.');
+  assert.equal(tools.validateCohort({ ...validCohort(), registrationClosesAt: '2026-07-01' }).registrationClosesAt, 'Registration must close after it opens.');
+  assert.equal(tools.validateCohort({ ...validCohort(), tentativeEndAt: '2026-08-01' }).tentativeEndAt, 'Tentative end must be after tentative start.');
+});
+
+test('date-only cohort controls preserve inclusive day boundaries in ISO payloads', () => {
+  const opening = new Date(tools.dateToIso('2026-08-01', false));
+  const closing = new Date(tools.dateToIso('2026-08-01', true));
+  assert.equal(opening.getHours(), 0);
+  assert.equal(opening.getMinutes(), 0);
+  assert.equal(closing.getHours(), 23);
+  assert.equal(closing.getMinutes(), 59);
+  assert.equal(closing.getSeconds(), 59);
+  assert.equal(closing.getMilliseconds(), 999);
+  assert.equal(tools.isoToDateInput(opening.toISOString()), '2026-08-01');
+  assert.equal(tools.isoToDateInput(closing.toISOString()), '2026-08-01');
+  assert.equal(tools.dateToIso('2026-02-30', false), null);
+  assert.deepEqual(Object.keys(tools.validateCohort({
+    ...validCohort(), tentativeStartAt: '2026-09-01', tentativeEndAt: '2026-09-01',
+  })), []);
+});
+
+test('admin cohort editor uses date-only inputs', () => {
+  const html = fs.readFileSync('admin/index.html', 'utf8');
+  for (const id of ['admin-cohort-start', 'admin-cohort-end', 'admin-registration-open', 'admin-registration-close']) {
+    assert.match(html, new RegExp('id="' + id + '" type="date"'));
+  }
+  assert.doesNotMatch(html, /type="datetime-local"/);
 });
 
 test('idempotency key is stable for an ambiguous retry and rotates on payload change', () => {

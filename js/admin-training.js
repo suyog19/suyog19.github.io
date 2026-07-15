@@ -1,25 +1,50 @@
 (function () {
   'use strict';
 
+  function dateToIso(value, endOfDay) {
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
+    if (!match) return null;
+    const year = Number(match[1]);
+    const month = Number(match[2]) - 1;
+    const day = Number(match[3]);
+    const date = endOfDay
+      ? new Date(year, month, day, 23, 59, 59, 999)
+      : new Date(year, month, day, 0, 0, 0, 0);
+    if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return null;
+    return date.toISOString();
+  }
+
+  function isoToDateInput(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return '';
+    const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return local.toISOString().slice(0, 10);
+  }
+
   function validateCohort(values) {
     const errors = {};
     const capacity = Number(values.capacity);
     const minimumSize = Number(values.minimumSize);
-    const registrationOpen = new Date(values.registrationOpensAt);
-    const registrationClose = new Date(values.registrationClosesAt);
-    const tentativeStart = values.tentativeStartAt ? new Date(values.tentativeStartAt) : null;
-    const tentativeEnd = values.tentativeEndAt ? new Date(values.tentativeEndAt) : null;
+    const registrationOpenIso = dateToIso(values.registrationOpensAt, false);
+    const registrationCloseIso = dateToIso(values.registrationClosesAt, true);
+    const tentativeStartIso = values.tentativeStartAt ? dateToIso(values.tentativeStartAt, false) : null;
+    const tentativeEndIso = values.tentativeEndAt ? dateToIso(values.tentativeEndAt, true) : null;
+    const registrationOpen = registrationOpenIso ? new Date(registrationOpenIso) : null;
+    const registrationClose = registrationCloseIso ? new Date(registrationCloseIso) : null;
+    const tentativeStart = tentativeStartIso ? new Date(tentativeStartIso) : null;
+    const tentativeEnd = tentativeEndIso ? new Date(tentativeEndIso) : null;
     if (!values.courseId) errors.courseId = 'Choose a course.';
     if (!values.label || !values.label.trim() || values.label.trim().length > 120) errors.label = 'Enter a cohort label of 1 to 120 characters.';
     if (!values.timezone || !values.timezone.trim()) errors.timezone = 'Enter a timezone.';
     if (!Number.isInteger(capacity) || capacity < 1) errors.capacity = 'Capacity must be a whole number of at least 1.';
     if (!Number.isInteger(minimumSize) || minimumSize < 1) errors.minimumSize = 'Minimum size must be a whole number of at least 1.';
     if (!errors.capacity && !errors.minimumSize && minimumSize > capacity) errors.minimumSize = 'Minimum size cannot exceed capacity.';
-    if (Number.isNaN(registrationOpen.getTime())) errors.registrationOpensAt = 'Enter a valid registration opening time.';
-    if (Number.isNaN(registrationClose.getTime())) errors.registrationClosesAt = 'Enter a valid registration closing time.';
+    if (!registrationOpen) errors.registrationOpensAt = 'Enter a valid registration opening date.';
+    if (!registrationClose) errors.registrationClosesAt = 'Enter a valid registration closing date.';
     if (!errors.registrationOpensAt && !errors.registrationClosesAt && registrationOpen >= registrationClose) errors.registrationClosesAt = 'Registration must close after it opens.';
-    if (tentativeStart && Number.isNaN(tentativeStart.getTime())) errors.tentativeStartAt = 'Enter a valid tentative start.';
-    if (tentativeEnd && Number.isNaN(tentativeEnd.getTime())) errors.tentativeEndAt = 'Enter a valid tentative end.';
+    if (values.tentativeStartAt && !tentativeStart) errors.tentativeStartAt = 'Enter a valid tentative start date.';
+    if (values.tentativeEndAt && !tentativeEnd) errors.tentativeEndAt = 'Enter a valid tentative end date.';
     if (tentativeStart && tentativeEnd && !errors.tentativeStartAt && !errors.tentativeEndAt && tentativeStart >= tentativeEnd) errors.tentativeEndAt = 'Tentative end must be after tentative start.';
     return errors;
   }
@@ -100,7 +125,9 @@
 
   window.sjAdminTraining = {
     createIdempotencyTracker,
+    dateToIso,
     detailValue,
+    isoToDateInput,
     nextTabIndex,
     offerableCohort,
     requestStillCurrent,

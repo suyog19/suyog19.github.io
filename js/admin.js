@@ -1046,9 +1046,6 @@
     els.applicationCourseFilter.value = selectedCourse; els.applicationCohortFilter.value = selectedCohort;
   }
 
-  function iso(value) { return value ? new Date(value).toISOString() : null; }
-  function localDate(value) { if (!value) return ''; const date = new Date(value); return Number.isNaN(date.getTime()) ? '' : new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16); }
-
   async function saveCohort(event) {
     event.preventDefault();
     const values = {
@@ -1077,9 +1074,9 @@
     }
     const body = {
       courseId: els.cohortCourse.value, label: els.cohortLabel.value.trim(), timezone: els.cohortTimezone.value.trim(),
-      tentativeStartAt: iso(els.cohortStart.value), tentativeEndAt: iso(els.cohortEnd.value),
+      tentativeStartAt: trainingTools.dateToIso(els.cohortStart.value, false), tentativeEndAt: trainingTools.dateToIso(els.cohortEnd.value, true),
       capacity: Number(els.cohortCapacity.value), minimumSize: Number(els.cohortMinimum.value),
-      registrationOpensAt: iso(els.registrationOpen.value), registrationClosesAt: iso(els.registrationClose.value),
+      registrationOpensAt: trainingTools.dateToIso(els.registrationOpen.value, false), registrationClosesAt: trainingTools.dateToIso(els.registrationClose.value, true),
     };
     const editing = Boolean(els.cohortId.value);
     if (editing) body.expectedVersion = Number(els.cohortVersion.value);
@@ -1110,8 +1107,8 @@
     els.cohortId.value = cohort.cohortId; els.cohortVersion.value = cohort.version; els.cohortCourse.value = cohort.courseId;
     els.cohortCourse.disabled = true; els.cohortLabel.value = cohort.label; els.cohortTimezone.value = cohort.timezone;
     els.cohortCapacity.value = cohort.capacity; els.cohortMinimum.value = cohort.minimumSize;
-    els.cohortStart.value = localDate(cohort.tentativeStartAt); els.cohortEnd.value = localDate(cohort.tentativeEndAt);
-    els.registrationOpen.value = localDate(cohort.registrationOpensAt); els.registrationClose.value = localDate(cohort.registrationClosesAt);
+    els.cohortStart.value = trainingTools.isoToDateInput(cohort.tentativeStartAt); els.cohortEnd.value = trainingTools.isoToDateInput(cohort.tentativeEndAt);
+    els.registrationOpen.value = trainingTools.isoToDateInput(cohort.registrationOpensAt); els.registrationClose.value = trainingTools.isoToDateInput(cohort.registrationClosesAt);
     els.cohortLabel.focus();
   }
 
