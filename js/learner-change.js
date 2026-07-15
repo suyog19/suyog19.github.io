@@ -18,20 +18,23 @@
   function text(tag, value) { const node = document.createElement(tag); node.textContent = value || ''; return node; }
   function addDetail(label, value) { details.appendChild(text('dt', label)); details.appendChild(text('dd', value || 'Not available')); }
   function money(value, currency) { return Number.isSafeInteger(value) && value >= 0 && /^[A-Z]{3}$/.test(currency || '') ? new Intl.NumberFormat('en-IN', { style: 'currency', currency }).format(value / 100) : 'Not available'; }
+  function placeLabel(value) { return ({ OFFERED: 'Offer available', RESERVED: 'Seat reserved', CANCELLED: 'Place cancelled', TRANSFERRED: 'Place transferred' })[value] || 'Current status available in My Learning'; }
+  function refundLabel(value) { return ({ PENDING_SUBMISSION: 'Refund under review', SUBMITTING: 'Refund being prepared', PROCESSING: 'Refund being processed', COMPLETED: 'Refund complete', FAILED_FINAL: 'Refund needs attention', ACTION_NEEDED: 'Refund needs attention' })[value] || 'No refund action recorded yet'; }
   function findApplication(summary, id) { return (Array.isArray(summary.applications) ? summary.applications : []).find((item) => item.offer && item.offer.enrolmentId === id) || null; }
   function describe(change, refund, enrolment) {
     if (refund) {
-      if (['PENDING_SUBMISSION', 'SUBMITTING', 'PROCESSING'].includes(refund.status)) return ['Refund processing', 'The organiser decision is complete. Razorpay test-mode processing is still separate and not yet complete.'];
-      if (refund.status === 'COMPLETED') return ['Completed', 'The service reports that the refund has completed.'];
-      return ['Action needed', 'The refund needs organiser review. Do not make another payment or assume completion.'];
+      if (['PENDING_SUBMISSION', 'SUBMITTING', 'PROCESSING'].includes(refund.status)) return ['Refund being processed', 'The organiser decision is complete. Refund processing is a separate stage and is not yet complete.'];
+      if (refund.status === 'COMPLETED') return ['Refund complete', 'The refund is recorded as complete.'];
+      return ['Refund needs attention', 'The refund needs organiser review. Do not make another payment or assume completion.'];
     }
     if (enrolment && ['CANCELLED', 'TRANSFERRED'].includes(enrolment.status)) {
       return ['Action needed', 'This place is already closed or transferred. A new request is unavailable; contact support if the status is unexpected.'];
     }
-    if (!change) return ['Request a review', 'Choose one outcome. We will review it against the current policy and payment record.'];
-    if (change.status === 'REQUESTED') return ['Submitted', 'Your request is under review. No refund, credit or transfer has been promised.'];
-    if (change.decision === 'APPROVED' || change.decision === 'TRANSFER_OFFERED') return ['Approved', 'The organiser approved the request. Any refund processing or separate transfer offer will appear as its own stage.'];
-    if (change.decision === 'REJECTED') return ['Rejected', 'The organiser did not approve this request. Contact support if you need clarification.'];
+    if (!change) return ['Request a change', 'Choose the outcome you prefer. We will review it against the current policy and payment record.'];
+    if (change.status === 'REQUESTED') return ['Request received', 'We will review the request and email you when a decision or meaningful update is recorded. No refund, credit or transfer has been promised.'];
+    if (change.decision === 'APPROVED') return ['Request approved', 'The organiser approved the request. Any refund processing appears as a separate stage.'];
+    if (change.decision === 'TRANSFER_OFFERED') return ['A transfer option is available', 'The organiser has offered a transfer. The next organiser-led step will be shown here.'];
+    if (change.decision === 'REJECTED') return ['Your request was not approved', 'Contact support if you need clarification about the recorded decision.'];
     return ['Action needed', 'The organiser needs more information or manual review.'];
   }
   function render(application, payment) {
@@ -45,11 +48,11 @@
     }
     details.replaceChildren();
     addDetail('Course', application.course && application.course.title);
-    addDetail('Current place', gate.enrolment && gate.enrolment.status);
+    addDetail('Current place', placeLabel(gate.enrolment && gate.enrolment.status));
     addDetail('Amount received', money(gate.payment && gate.payment.capturedAmount, gate.payment && gate.payment.currency));
-    addDetail('Refund status', refund && refund.status);
+    addDetail('Refund status', refundLabel(refund && refund.status));
     addDetail('Refund amount', refund ? money(refund.amount, gate.payment && gate.payment.currency) : 'Not started');
-    addDetail('Notification', gate.communication && gate.communication.status === 'FAILED' ? 'Delivery needs attention; status unchanged' : gate.communication && gate.communication.status);
+    if (gate.communication && gate.communication.status === 'FAILED') addDetail('Email delivery', 'Delivery could not be confirmed; status unchanged');
     addDetail('Cancellation policy', payment.review && payment.review.policyVersions && payment.review.policyVersions.cancellation);
     addDetail('Refund policy', payment.review && payment.review.policyVersions && payment.review.policyVersions.refund);
     addDetail('Transfer policy', payment.review && payment.review.policyVersions && payment.review.policyVersions.transfer);
@@ -61,7 +64,7 @@
     if (!id) { status.textContent = 'This request link is incomplete. Return to My Learning.'; errors.hidden = false; return; }
     try {
       const user = await auth.restore(); if (!user) { location.replace(loginUrl()); return; }
-      status.textContent = 'Checking authoritative request status...';
+      status.textContent = 'Checking the current request status...';
       const results = await Promise.all([auth.request('/me/learning-summary', { method: 'GET' }), auth.request('/me/enrolments/' + encodeURIComponent(id) + '/payment', { method: 'GET' })]);
       const application = findApplication(results[0], id); const payment = results[1].payment || results[1];
       if (!application || !application.gate2 || !payment) throw Object.assign(new Error('NOT_AVAILABLE'), { status: 404 });
@@ -71,7 +74,7 @@
       if (!application.gate2.learnerChange && !application.gate2.refund && pending) {
         requiresReconciliation = true;
         status.hidden = false;
-        status.textContent = 'A previous submission has an uncertain outcome. Check authoritative status before the exact request is retried.';
+        status.textContent = 'We could not confirm whether the previous request was received. Check the current status before retrying.';
       }
     } catch (error) {
       if (error.status === 401 || error.status === 403) { location.replace(loginUrl()); return; }

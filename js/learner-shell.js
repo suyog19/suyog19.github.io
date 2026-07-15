@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   const auth = window.sjLearnerAuth;
-  const summaryView = window.sjLearnerSummary;
+  const view = window.sjLearnerSummary;
   const shell = document.getElementById('learner-shell');
   const status = document.getElementById('learner-shell-status');
   const userLabel = document.getElementById('learner-user-label');
@@ -16,249 +16,198 @@
   const privacyLink = document.getElementById('learner-privacy-link');
   const grievanceLink = document.getElementById('learner-grievance-link');
 
-  function loginUrl() {
-    return '/learn/?continue=' + encodeURIComponent(window.location.pathname + window.location.search);
+  function loginUrl() { return '/learn/?continue=' + encodeURIComponent(window.location.pathname + window.location.search); }
+  function element(tag, className, text) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    node.textContent = text || '';
+    return node;
   }
-
-  async function initialise() {
-    shell.hidden = true;
-    userLabel.textContent = '';
-    currentAction.replaceChildren();
-    applicationList.replaceChildren();
-    profileDetails.replaceChildren();
-    profileEmpty.hidden = true;
-    retryButton.disabled = true;
-    errorActions.hidden = true;
-    status.textContent = 'Restoring your secure session…';
-    status.hidden = false;
-    try {
-      const user = await auth.restore();
-      if (!user) { window.location.replace(loginUrl()); return; }
-      const summary = await auth.request('/me/learning-summary', { method: 'GET' });
-      userLabel.textContent = user.emailId || 'Learner session';
-      renderSummary(summary);
-      shell.hidden = false;
-      status.hidden = true;
-      errorActions.hidden = true;
-    } catch (error) {
-      if (error.status === 401 || error.status === 403) { window.location.replace(loginUrl()); return; }
-      status.textContent = 'My Learning is temporarily unavailable.';
-      status.hidden = false;
-      errorActions.hidden = false;
-    } finally {
-      retryButton.disabled = false;
-    }
-  }
-
-  function textElement(tag, className, text) {
-    const element = document.createElement(tag);
-    if (className) element.className = className;
-    element.textContent = text || '';
-    return element;
-  }
-
   function money(value, currency) {
     return Number.isSafeInteger(value) && value >= 0 && currency === 'INR'
-      ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value / 100)
-      : 'Not available';
+      ? new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value / 100) : null;
   }
-
   function dateTime(value) {
-    if (typeof value !== 'string') return 'Not available';
+    if (typeof value !== 'string') return null;
     const parsed = new Date(value);
-    return Number.isNaN(parsed.getTime()) ? 'Not available' : new Intl.DateTimeFormat('en-IN', {
+    return Number.isNaN(parsed.getTime()) ? null : new Intl.DateTimeFormat('en-IN', {
       dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Kolkata',
     }).format(parsed);
   }
+  function addDetail(list, label, value) {
+    if (value === undefined || value === null || value === '' || value === 'Not available') return;
+    list.appendChild(element('dt', '', label));
+    list.appendChild(element('dd', '', value));
+  }
+  function disclosure(label) {
+    const details = document.createElement('details');
+    details.className = 'learning-details';
+    details.appendChild(element('summary', '', label));
+    const list = document.createElement('dl');
+    details.appendChild(list);
+    return { details, list };
+  }
+  function importantDate(application) {
+    const gate3 = application && application.gate3;
+    if (!gate3) return null;
+    if (gate3.extensionUntil) return 'Extended payment deadline: ' + dateTime(gate3.extensionUntil);
+    if (gate3.graceUntil) return 'Current grace period ends: ' + dateTime(gate3.graceUntil);
+    if (gate3.balanceDeadline) return 'Payment deadline: ' + dateTime(gate3.balanceDeadline);
+    if (gate3.cohortDecisionDate) return 'Cohort decision expected: ' + dateTime(gate3.cohortDecisionDate);
+    if (gate3.schedule && gate3.schedule.startsAt) return 'Course starts: ' + dateTime(gate3.schedule.startsAt);
+    return null;
+  }
+  function supported(application) {
+    const action = application.action || {};
+    if (!action.code) return true;
+    if (!view.isV1ActionCode(action.code)) return false;
+    if (view.isGate2ActionCode(action.code)) return Boolean(application.gate2 && view.gate2Href(application));
+    if (view.isGate3ActionCode(action.code)) return Boolean(application.gate3);
+    return true;
+  }
+  function journeyHref(application) {
+    if (!supported(application)) return null;
+    const hubHref = view.courseHubHref(application);
+    if (hubHref) return { href: hubHref, label: 'Open your course area' };
+    const actionHref = view.gate3Href(application) || view.gate2Href(application);
+    if (actionHref) {
+      const label = view.statusPresentation((application.action || {}).code || application.journeyStatus).actionLabel;
+      return { href: actionHref, label: label || (actionHref === '/contact/' ? 'Contact support' : 'View current status') };
+    }
+    const correction = view.correctionHref(application);
+    if (correction) return { href: correction, label: 'Review your application', correction: true };
+    const recommended = application.decision && application.decision.recommendedCourse;
+    const recommendation = recommended && view.safeCourseHref(recommended.href);
+    if (recommendation) return { href: recommendation, label: 'View recommended course' };
+    const change = view.gate2ChangeHref(application);
+    return change ? { href: change, label: 'Request a change' } : null;
+  }
+  function renderJourney(application) {
+    const card = element('article', 'learner-application-card', '');
+    const title = application.course && application.course.title || 'Course';
+    const action = application.action || {};
+    const presentation = view.statusPresentation(action.code || application.journeyStatus || (application.offer && application.offer.status));
+    card.setAttribute('aria-label', title + ' learning journey');
+    card.appendChild(element('p', 'learning-status-marker', title));
+    card.appendChild(element('h2', '', supported(application) ? presentation.heading : 'View your current learning status'));
+    card.appendChild(element('p', '', supported(application) ? presentation.explanation : 'The latest authorised status is available. Return to My Learning or contact support if the next step is unclear.'));
+    const date = importantDate(application);
+    if (date) card.appendChild(element('p', 'learning-deadline', date));
 
-  function renderSummary(summary) {
+    const details = disclosure('View details');
+    addDetail(details.list, 'Application reference', application.reference);
+    const gate2 = application.gate2;
+    if (gate2) {
+      const enrolment = gate2.enrolment || {};
+      addDetail(details.list, 'Place status', view.gate2StatusLabel('enrolment', enrolment.status));
+      if (gate2.learnerChange) {
+        const decision = gate2.learnerChange.decision ? ' · ' + view.gate2StatusLabel('decision', gate2.learnerChange.decision) : '';
+        addDetail(details.list, 'Request outcome', view.gate2StatusLabel('request', gate2.learnerChange.status) + decision);
+      }
+      if (gate2.refund) addDetail(details.list, 'Refund status', view.gate2StatusLabel('refund', gate2.refund.status));
+      if (gate2.communication && gate2.communication.status === 'FAILED') card.appendChild(element('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your payment, place, request and refund status shown above is unchanged.'));
+    }
+    const gate3 = application.gate3;
+    if (gate3) {
+      addDetail(details.list, 'Cohort status', view.gate3StatusLabel('decision', gate3.cohortDecision));
+      if (gate3.schedule) addDetail(details.list, 'Final schedule', dateTime(gate3.schedule.startsAt) + ' to ' + dateTime(gate3.schedule.endsAt) + ' · ' + (gate3.schedule.timezone || 'Timezone not available'));
+      addDetail(details.list, 'Remaining fee', view.gate3StatusLabel('balance', gate3.balanceStatus));
+      addDetail(details.list, 'Amount due', money(gate3.amountDue, gate3.currency));
+      addDetail(details.list, 'Approved credit or waiver', money(gate3.creditAmount, gate3.currency));
+      addDetail(details.list, 'Original payment deadline', dateTime(gate3.balanceDeadline));
+      addDetail(details.list, 'Grace ends', dateTime(gate3.graceUntil));
+      addDetail(details.list, 'Approved extension ends', dateTime(gate3.extensionUntil));
+      addDetail(details.list, 'Seat status', gate3.seatReleased === true ? 'Released' : gate3.seatReserved === true ? 'Reserved' : null);
+      addDetail(details.list, 'Enrolment activation', view.gate3StatusLabel('activation', gate3.activationStatus));
+      addDetail(details.list, 'Joining details', view.gate3StatusLabel('joining', gate3.joiningEligibility));
+      if (gate3.depositDispositionOutcome) addDetail(details.list, 'Deposit treatment', view.gate3StatusLabel('disposition', gate3.depositDispositionOutcome));
+      if (gate3.balanceStatus === 'OVERDUE_IN_GRACE') card.appendChild(element('p', 'field-hint', 'The remaining fee is overdue, but your seat is still reserved during the current grace period.'));
+      if (gate3.balanceStatus === 'CONFIRMING') card.appendChild(element('p', 'field-hint', 'Payment confirmation is in progress. Do not pay again.'));
+      if (gate3.balanceStatus === 'CLOSED_NON_PAYMENT') card.appendChild(element('p', 'field-hint', 'The seat has been released. A normal payment cannot reactivate this enrolment automatically.'));
+      if (gate3.balanceStatus === 'ACTION_NEEDED') card.appendChild(element('p', 'field-hint', 'A payment needs organiser review and does not activate the enrolment automatically. Do not pay again.'));
+      if (gate3.communication && gate3.communication.status === 'FAILED') card.appendChild(element('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your payment, cohort, seat and enrolment status shown above is unchanged.'));
+    }
+    if (details.list.children.length) card.appendChild(details.details);
+    const next = journeyHref(application);
+    if (next) {
+      const link = element('a', 'btn btn-secondary learner-journey-link', next.label);
+      link.href = next.href;
+      card.appendChild(link);
+      if (next.correction) card.appendChild(element('p', 'field-hint', 'Opening correction does not withdraw or change your current application.'));
+    }
+    if (application.communication && application.communication.status === 'FAILED') card.appendChild(element('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your application status shown above is unchanged.'));
+    return card;
+  }
+  function renderCurrent(summary, applications) {
     currentAction.replaceChildren();
     const action = summary.currentAction || {};
-    const applications = Array.isArray(summary.applications) ? summary.applications : [];
-    const currentGate2 = applications.find((application) => (
-      application.gate2 && application.gate2.action
-      && application.gate2.action.code === action.code
-    ));
-    const currentGate3 = applications.find((application) => (
-      application.gate3 && application.journeyStatus === action.code
-    ));
-    const currentGate2Href = summaryView.gate2Href(currentGate2);
-    const currentGate3Href = summaryView.gate3Href(currentGate3);
-    const currentSupported = summaryView.isV1ActionCode(action.code) && (
-      summaryView.isGate2ActionCode(action.code) ? Boolean(currentGate2 && currentGate2Href)
-        : summaryView.isGate3ActionCode(action.code) ? Boolean(currentGate3)
-          : true
-    );
-    currentAction.appendChild(textElement('p', 'eyebrow', 'Next action'));
-    const currentLabel = !currentSupported ? 'No action is currently available' : action.label || 'My Learning';
-    currentAction.appendChild(textElement('h2', '', currentLabel));
-    const currentHref = currentGate3 ? currentGate3Href : currentGate2 ? currentGate2Href : summaryView.safeActionHref(action.href);
-    if (currentSupported && currentHref) {
-      const actionLink = textElement('a', 'btn btn-primary', action.label || 'Continue');
-      actionLink.href = currentHref;
-      currentAction.appendChild(actionLink);
-    } else if (currentSupported && currentGate3) {
-      currentAction.appendChild(textElement('p', '', 'No duplicate payment or course-resource action is available. Review the authoritative status below.'));
-    } else {
-      currentAction.appendChild(textElement('p', '', 'This status is not enabled in the current learner experience.'));
+    const gate2 = applications.find((item) => item.gate2 && item.gate2.action && item.gate2.action.code === action.code);
+    const gate3 = applications.find((item) => item.gate3 && item.journeyStatus === action.code);
+    const href2 = view.gate2Href(gate2);
+    const href3 = view.courseHubHref(gate3) || view.gate3Href(gate3);
+    const isSupported = view.isV1ActionCode(action.code) && (view.isGate2ActionCode(action.code) ? Boolean(gate2 && href2) : view.isGate3ActionCode(action.code) ? Boolean(gate3) : true);
+    const presentation = view.statusPresentation(action.code);
+    currentAction.appendChild(element('p', 'learning-status-marker', 'Current status'));
+    const heading = element('h2', '', isSupported ? presentation.heading : 'View your current learning status');
+    heading.tabIndex = -1;
+    currentAction.appendChild(heading);
+    currentAction.appendChild(element('p', '', isSupported ? presentation.explanation : 'The latest authorised status is shown below. Refresh or contact support if you cannot identify the next step.'));
+    const date = importantDate(gate3 || gate2);
+    if (date) currentAction.appendChild(element('p', 'learning-deadline', date));
+    const href = gate3 ? href3 : gate2 ? href2 : view.safeActionHref(action.href);
+    const primaryLabel = view.courseHubHref(gate3) ? 'Open your course area' : presentation.actionLabel;
+    if (isSupported && href && primaryLabel) {
+      const link = element('a', 'btn btn-primary btn-learning', primaryLabel);
+      link.href = href;
+      currentAction.appendChild(link);
     }
-
+  }
+  function renderProfile(learner) {
+    profileDetails.replaceChildren();
+    profileEmpty.hidden = Boolean(learner);
+    if (!learner) return;
+    addDetail(profileDetails, 'Verified email', learner.verifiedEmail);
+    addDetail(profileDetails, 'Full name', learner.fullName);
+    addDetail(profileDetails, 'Timezone', learner.timezone);
+    addDetail(profileDetails, 'Adult eligibility', view.booleanLabel(learner.adultEligibilityConfirmed, 'Confirmed', 'Not confirmed'));
+    addDetail(profileDetails, 'Required acknowledgements', view.acknowledgementLabel(learner.acknowledgements));
+    if (learner.promotionalConsent !== undefined && learner.promotionalConsent !== null) addDetail(profileDetails, 'Promotional consent', view.booleanLabel(learner.promotionalConsent, 'Recorded', 'Not recorded'));
+  }
+  function renderSummary(summary) {
+    const applications = Array.isArray(summary.applications) ? summary.applications : [];
+    renderCurrent(summary, applications);
     applicationList.replaceChildren();
     if (!applications.length) {
-      applicationList.appendChild(textElement('p', 'learner-empty', 'No current application yet.'));
-    }
-    applications.forEach((application) => {
-      const card = textElement('article', 'learner-application-card', '');
-      const gate2 = application.gate2;
-      const gate3 = application.gate3;
-      const gate2ActionHref = summaryView.gate2Href(application);
-      const gate3ActionHref = summaryView.gate3Href(application);
-      const applicationAction = application.action || {};
-      const applicationSupported = !applicationAction.code || (
-        summaryView.isV1ActionCode(applicationAction.code) && (
-          summaryView.isGate2ActionCode(applicationAction.code) ? Boolean(gate2 && gate2ActionHref)
-            : summaryView.isGate3ActionCode(applicationAction.code) ? Boolean(gate3)
-              : true
-        )
-      );
-      card.appendChild(textElement('p', 'eyebrow', application.course && application.course.title));
-      card.appendChild(textElement('h2', '', !applicationSupported ? 'Status available' : applicationAction.label));
-      card.appendChild(textElement('p', '', 'Reference: ' + (application.reference || 'Available in support records')));
-      if (gate2) {
-        const enrolment = gate2.enrolment || {};
-        card.appendChild(textElement('p', 'learner-offer-note', 'Place status: ' + summaryView.gate2StatusLabel('enrolment', enrolment.status)));
-        if (enrolment.seatReserved === true) card.appendChild(textElement('p', '', 'Seat reservation is confirmed by the service.'));
-        if (applicationSupported && gate2ActionHref) {
-          const gate2Action = textElement('a', 'btn btn-primary learner-gate2-link', gate2.action && gate2.action.label || 'View status');
-          gate2Action.href = gate2ActionHref;
-          card.appendChild(gate2Action);
-        }
-        const changeHref = summaryView.gate2ChangeHref(application);
-        if (changeHref) {
-          const change = textElement('a', 'btn btn-secondary learner-gate2-change-link', 'Request cancellation or transfer review');
-          change.href = changeHref;
-          card.appendChild(change);
-        }
-        if (gate2.learnerChange) {
-          const requestLabel = summaryView.gate2StatusLabel('request', gate2.learnerChange.status);
-          const decisionLabel = gate2.learnerChange.decision ? ' · ' + summaryView.gate2StatusLabel('decision', gate2.learnerChange.decision) : '';
-          card.appendChild(textElement('p', '', 'Organiser request: ' + requestLabel + decisionLabel));
-        }
-        if (gate2.refund) card.appendChild(textElement('p', '', 'Provider refund: ' + summaryView.gate2StatusLabel('refund', gate2.refund.status)));
-        if (gate2.communication && gate2.communication.status === 'FAILED') {
-          card.appendChild(textElement('p', 'learner-communication-warning', 'A Gate 2 message could not be confirmed. Payment, place, request and refund status above are unchanged.'));
-        }
-      }
-      if (gate3) {
-        card.appendChild(textElement('p', 'learner-offer-note', 'Cohort: ' + summaryView.gate3StatusLabel('decision', gate3.cohortDecision)));
-        if (gate3.schedule) {
-          card.appendChild(textElement('p', '', 'Final schedule: ' + dateTime(gate3.schedule.startsAt) + ' to ' + dateTime(gate3.schedule.endsAt) + ' · ' + (gate3.schedule.timezone || 'Timezone not available')));
-        }
-        card.appendChild(textElement('p', '', 'Remaining fee: ' + summaryView.gate3StatusLabel('balance', gate3.balanceStatus)));
-        card.appendChild(textElement('p', '', 'Amount due: ' + money(gate3.amountDue, gate3.currency)));
-        card.appendChild(textElement('p', '', 'Approved credit or waiver: ' + money(gate3.creditAmount, gate3.currency)));
-        if (gate3.balanceDeadline) card.appendChild(textElement('p', '', 'Balance deadline: ' + dateTime(gate3.balanceDeadline)));
-        if (gate3.graceUntil) card.appendChild(textElement('p', '', 'Grace ends: ' + dateTime(gate3.graceUntil)));
-        if (gate3.extensionUntil) card.appendChild(textElement('p', '', 'Approved extension ends: ' + dateTime(gate3.extensionUntil)));
-        const seat = gate3.seatReleased === true ? 'Released' : gate3.seatReserved === true ? 'Reserved' : 'Not available';
-        card.appendChild(textElement('p', '', 'Seat status: ' + seat));
-        card.appendChild(textElement('p', '', 'Enrolment activation: ' + summaryView.gate3StatusLabel('activation', gate3.activationStatus)));
-        card.appendChild(textElement('p', '', 'Joining instructions: ' + summaryView.gate3StatusLabel('joining', gate3.joiningEligibility)));
-        if (gate3.depositDispositionOutcome) card.appendChild(textElement('p', '', 'Deposit treatment: ' + summaryView.gate3StatusLabel('disposition', gate3.depositDispositionOutcome)));
-        if (gate3.balanceStatus === 'OVERDUE_IN_GRACE') card.appendChild(textElement('p', 'field-hint', 'The balance is overdue, but the backend still records the seat as reserved during the allowed grace period.'));
-        if (gate3.balanceStatus === 'CONFIRMING') card.appendChild(textElement('p', 'field-hint', 'Payment confirmation is in progress. Do not pay again.'));
-        if (gate3.balanceStatus === 'CLOSED_NON_PAYMENT') card.appendChild(textElement('p', 'field-hint', 'The seat has been released. A normal payment cannot reactivate this enrolment automatically.'));
-        if (gate3.balanceStatus === 'ACTION_NEEDED') card.appendChild(textElement('p', 'field-hint', 'Payment evidence needs organiser review and does not activate the enrolment automatically.'));
-        if (applicationSupported && gate3ActionHref) {
-          const gate3Action = textElement('a', 'btn btn-primary learner-gate3-link', applicationAction.label || 'View status');
-          gate3Action.href = gate3ActionHref;
-          card.appendChild(gate3Action);
-        }
-        if (gate3.communication) {
-          card.appendChild(textElement('p', gate3.communication.status === 'FAILED' ? 'learner-communication-warning' : '', 'Gate 3 message: ' + summaryView.gate3StatusLabel('communication', gate3.communication.status) + '. Payment, cohort, seat and enrolment truth above are unchanged.'));
-        }
-      }
-      const correctionHref = summaryView.correctionHref(application);
-      if (correctionHref) {
-        const correction = textElement('a', 'btn btn-secondary learner-correction-link', 'Correct or update application');
-        correction.href = correctionHref;
-        card.appendChild(correction);
-        card.appendChild(textElement('p', 'field-hint', 'Opening correction does not withdraw or change your current application.'));
-      }
-      if (!gate2 && summaryView.hasActionableOffer(application.offer)) {
-        card.appendChild(textElement('p', 'learner-offer-note', 'A cohort offer is available.'));
-      }
-      const recommendedCourse = application.decision && application.decision.recommendedCourse;
-      const recommendationHref = recommendedCourse && summaryView.safeCourseHref(recommendedCourse.href);
-      if (recommendationHref) {
-        const recommendation = textElement('a', 'learner-course-link', 'View recommended course: ' + (recommendedCourse.title || 'Course'));
-        recommendation.href = recommendationHref;
-        card.appendChild(recommendation);
-      }
-      if (application.communication && application.communication.status === 'FAILED') {
-        card.appendChild(textElement('p', 'learner-communication-warning', 'A status message could not be confirmed. Your application status above is unchanged; contact support if you need help.'));
-      }
-      applicationList.appendChild(card);
-    });
-
+      const empty = element('article', 'learner-application-card learner-empty', '');
+      empty.appendChild(element('h2', '', 'Choose a course to begin'));
+      empty.appendChild(element('p', '', 'You do not have a current application. Compare the available courses and apply when you are ready.'));
+      const courses = element('a', 'btn btn-primary btn-learning', 'View courses'); courses.href = '/training/'; empty.appendChild(courses);
+      applicationList.appendChild(empty);
+    } else applications.forEach((application) => applicationList.appendChild(renderJourney(application)));
     const support = summary.support || {};
-    supportLink.href = summaryView.safeSupportHref(support.supportUrl, '/contact/');
-    privacyLink.href = summaryView.safeSupportHref(
-      support.privacyUrl, '/training/policies/'
-    );
-    grievanceLink.href = summaryView.safeSupportHref(
-      support.grievanceUrl, '/training/policies/#support-and-grievance-process'
-    );
-
-    profileDetails.replaceChildren();
-    profileEmpty.hidden = true;
-    const learner = summary.learner;
-    if (!learner) {
-      profileEmpty.hidden = false;
-      return;
-    }
-    addDetail('Verified email', learner.verifiedEmail);
-    addDetail('Full name', learner.fullName);
-    addDetail('Timezone', learner.timezone);
-    addDetail(
-      'Adult eligibility',
-      summaryView.booleanLabel(
-        learner.adultEligibilityConfirmed, 'Confirmed', 'Not confirmed'
-      )
-    );
-    addDetail(
-      'Required acknowledgements',
-      summaryView.acknowledgementLabel(learner.acknowledgements)
-    );
-    addDetail(
-      'Promotional consent',
-      summaryView.booleanLabel(learner.promotionalConsent, 'Recorded', 'Not recorded')
-    );
+    supportLink.href = view.safeSupportHref(support.supportUrl, '/contact/');
+    privacyLink.href = view.safeSupportHref(support.privacyUrl, '/training/policies/');
+    grievanceLink.href = view.safeSupportHref(support.grievanceUrl, '/training/policies/#support-and-grievance-process');
+    renderProfile(summary.learner);
   }
-
-  function addDetail(label, value) {
-    profileDetails.appendChild(textElement('dt', '', label));
-    profileDetails.appendChild(textElement('dd', '', value || 'Not available'));
+  async function initialise() {
+    shell.hidden = true; userLabel.textContent = ''; currentAction.replaceChildren(); applicationList.replaceChildren(); profileDetails.replaceChildren(); profileEmpty.hidden = true;
+    retryButton.disabled = true; errorActions.hidden = true; status.textContent = 'Checking your secure session…'; status.hidden = false;
+    try {
+      const user = await auth.restore(); if (!user) { window.location.replace(loginUrl()); return; }
+      const summary = await auth.request('/me/learning-summary', { method: 'GET' });
+      userLabel.textContent = user.emailId || 'Learner session'; renderSummary(summary); shell.hidden = false; status.hidden = true;
+    } catch (error) {
+      if (error.status === 401 || error.status === 403) { window.location.replace(loginUrl()); return; }
+      status.textContent = 'My Learning is temporarily unavailable. Your application, payment and enrolment records are not changed by this display problem.'; errorActions.hidden = false;
+    } finally { retryButton.disabled = false; }
   }
-
   logoutButton.addEventListener('click', async () => {
-    logoutButton.disabled = true;
-    userLabel.textContent = '';
-    currentAction.replaceChildren();
-    applicationList.replaceChildren();
-    profileDetails.replaceChildren();
-    profileEmpty.hidden = true;
-    const revoked = await auth.logout();
-    if (revoked) {
-      window.location.replace('/learn/');
-      return;
-    }
-    shell.hidden = true;
-    status.textContent = 'Signed out on this device, but the service could not confirm server sign-out. Close this browser window on a shared device and contact support if this continues.';
-    status.hidden = false;
-    errorActions.hidden = false;
+    logoutButton.disabled = true; userLabel.textContent = ''; currentAction.replaceChildren(); applicationList.replaceChildren(); profileDetails.replaceChildren(); profileEmpty.hidden = true;
+    if (await auth.logout()) { window.location.replace('/learn/'); return; }
+    shell.hidden = true; status.textContent = 'Signed out on this device, but the service could not confirm server sign-out. Close this window on a shared device and contact support if this continues.'; status.hidden = false; errorActions.hidden = false;
   });
   retryButton.addEventListener('click', initialise);
-  window.sjLearnerShell = { initialise, renderSummary };
+  window.sjLearnerShell = { initialise, renderJourney, renderSummary };
   if (!window.__SJ_DISABLE_AUTO_INIT__) initialise();
 }());

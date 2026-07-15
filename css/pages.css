@@ -584,6 +584,13 @@
   padding: 2.5rem;
 }
 
+.contact-learning-context {
+  background: var(--color-surface);
+  border-left: 3px solid var(--color-text);
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+}
+
 .contact-context-panel {
   padding-top: 1.5rem;
   border-top: 1px solid var(--color-border);

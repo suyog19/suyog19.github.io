@@ -41,10 +41,15 @@ test('course schema matches approved platform facts', () => {
 
 test('course application actions are hidden by default and payment stays disabled', () => {
   const combined = pages.map(([relative]) => fs.readFileSync(path.join(root, relative), 'utf8')).join('\n');
-  assert.match(combined, /Applications not yet open/);
+  assert.match(combined, /Applications not currently open/);
   assert.match(combined, /data-course-availability-action hidden/);
   assert.doesNotMatch(combined, /href="[^\"]*(checkout|payment)/i);
   assert.doesNotMatch(combined, /Razorpay|payment-button|checkout\.js/i);
+});
+
+test('learning styles preserve fail-closed hidden controls over button display rules', () => {
+  const css = fs.readFileSync('css/learning.css', 'utf8');
+  assert.match(css, /\.software-signal-learning \[hidden\]\s*\{[^}]*display:\s*none\s*!important/s);
 });
 
 test('course pages load the fail-closed availability controller', () => {

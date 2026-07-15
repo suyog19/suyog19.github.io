@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/pages.css">
+  <link rel="stylesheet" href="../css/learning.css">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
   <meta http-equiv="Cache-Control" content="no-store">
@@ -34,13 +35,14 @@
     });
   </script>
 </head>
-<body class="learner-page">
+<body class="learner-page software-signal-learning">
   <header class="site-header">
     <div class="container header-inner">
       <a href="../index.html" class="brand-lockup">
         <span class="brand-mark" aria-hidden="true">SJ</span>
         <span class="brand-text">suyogjoshi.com</span>
       </a>
+      <span class="learning-header-context">Software Signal Learning</span>
       <div class="learner-session">
         <span id="learner-user-label"></span>
         <button id="learner-logout" class="btn btn-secondary" type="button">Log out</button>
@@ -54,15 +56,15 @@
       <a class="btn btn-secondary" href="../contact/">Contact support</a>
     </div>
     <section id="learner-shell" class="container learner-shell" hidden>
-      <p class="eyebrow">Private learner area</p>
+      <p class="learning-eyebrow">Software Signal Learning</p>
       <h1>My Learning</h1>
-      <div id="learner-current-action" class="learner-current-action"></div>
+      <p class="learning-intro">See your current course status, next action and important dates.</p>
+      <div id="learner-current-action" class="learner-current-action learning-status-card"></div>
       <div id="learner-applications" class="learner-application-list" aria-label="Current learning journeys"></div>
-      <section class="learner-profile" aria-labelledby="learner-profile-title">
-        <h2 id="learner-profile-title">Your profile</h2>
+      <details class="learner-profile learning-details"><summary id="learner-profile-title">Your learner details</summary>
         <p id="learner-profile-empty" hidden>Complete your learner profile to apply.</p>
         <dl id="learner-profile-details"></dl>
-      </section>
+      </details>
       <nav class="learner-support-links" aria-label="Learner support">
         <a id="learner-support-link" href="../contact/">Support</a>
         <a id="learner-privacy-link" href="../training/policies/">Privacy</a>

@@ -13,6 +13,7 @@ class Element {
     this.href = '';
     this.listeners = {};
     this.attributes = {};
+    this.dataset = {};
   }
   appendChild(child) { this.children.push(child); return child; }
   replaceChildren(...children) { this.children = children; }
@@ -107,6 +108,12 @@ test('renderer displays backend aggregates and keeps test action acknowledged', 
   acknowledgement.children[0].checked = true;
   acknowledgement.children[0].listeners.change();
   assert.equal(link.href, 'https://pay.test.invalid/requests/req_one');
+  let prevented = false;
+  link.listeners.click({ preventDefault() { prevented = true; } });
+  assert.equal(link.textContent, 'Opening secure payment…');
+  assert.equal(link.attributes['aria-disabled'], 'true');
+  link.listeners.click({ preventDefault() { prevented = true; } });
+  assert.equal(prevented, true);
 });
 
 test('closed non-payment is support-only and shows backend deposit outcome', () => {
@@ -118,11 +125,11 @@ test('closed non-payment is support-only and shows backend deposit outcome', () 
   }));
   const state = elements['balance-state'].children.map((child) => child.textContent).join(' ');
   const values = elements['balance-details'].children.map((child) => child.textContent).join(' | ');
-  assert.match(state, /seat has been released/);
+  assert.match(state, /reserved place has been released/);
   assert.match(values, /Released/);
   assert.match(values, /Action needed under the recorded policy/);
   assert.equal(elements['balance-action'].children.length, 1);
-  assert.equal(elements['balance-action'].children[0].href, '/contact/');
+  assert.equal(elements['balance-action'].children[0].href, '/contact/?topic=learning-payment-review');
 });
 
 test('overdue, satisfied, and action-needed states remain distinct', () => {
@@ -132,7 +139,7 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
   }));
   assert.match(
     overdue.elements['balance-state'].children.map((child) => child.textContent).join(' '),
-    /seat remains reserved/,
+    /seat is still reserved/,
   );
 
   const satisfied = harness();
@@ -147,15 +154,16 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
     },
     joining: {
       status: 'ELIGIBLE_NO_ACCESS_LINKS',
-      guidance: 'Joining instructions are available without session or resource links. Access remains unavailable until the separate Gate 4 status.',
+      guidance: 'Joining instructions will be available when the course area is ready.',
     },
     paymentAction: { available: false, safeUrl: null },
   }));
   const satisfiedText = satisfied.elements['balance-details'].children.map((child) => child.textContent).join(' | ');
   assert.match(satisfiedText, /Active/);
-  assert.match(satisfiedText, /Payment confirmation \| Development test payment confirmation/);
+  assert.match(satisfiedText, /Payment confirmation \| Payment confirmation/);
+  assert.doesNotMatch(satisfiedText, /development|test payment/i);
   assert.match(satisfiedText, /not a tax invoice/);
-  assert.match(satisfiedText, /Access remains unavailable/);
+  assert.match(satisfiedText, /course area is ready/);
   assert.equal(satisfied.elements['balance-action'].children.length, 0);
 
   const actionNeeded = harness();
@@ -163,8 +171,8 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
     status: 'ACTION_NEEDED', paymentAction: { available: false, safeUrl: null },
   }));
   const actionText = actionNeeded.elements['balance-state'].children.map((child) => child.textContent).join(' ');
-  assert.match(actionText, /cannot safely activate/);
-  assert.equal(actionNeeded.elements['balance-action'].children[0].href, '/contact/');
+  assert.match(actionText, /not automatically active/);
+  assert.equal(actionNeeded.elements['balance-action'].children[0].href, '/contact/?topic=learning-payment-review');
 });
 
 test('confirming suppresses payment and schedules bounded authoritative polling', () => {
@@ -172,8 +180,8 @@ test('confirming suppresses payment and schedules bounded authoritative polling'
   balance.render(projection({ confirmationStatus: 'CONFIRMING' }));
   const state = elements['balance-state'].children.map((child) => child.textContent).join(' ');
   const actionText = elements['balance-action'].children.map((child) => child.textContent).join(' ');
-  assert.match(state, /confirming your payment/);
-  assert.match(actionText, /Do not pay again/);
+  assert.match(actionText, /confirming your remaining-fee payment/);
+  assert.match(actionText, /do not pay again/i);
   assert.doesNotMatch(actionText, /Continue to test payment|Prepare test payment/);
   assert.equal(timers.length, 1);
 });
@@ -271,7 +279,7 @@ test('out-of-order refresh cannot overwrite the newest authoritative response', 
   resolveFirst({ balance: stale });
   await older;
   const state = elements['balance-state'].children.map((child) => child.textContent).join(' ');
-  assert.match(state, /Remaining fee completed/);
+  assert.match(state, /No remaining payment is required/);
   assert.doesNotMatch(state, /Remaining fee due/);
 });
 

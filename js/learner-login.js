@@ -7,6 +7,8 @@
   const email = document.getElementById('learner-email');
   const otp = document.getElementById('learner-otp');
   const status = document.getElementById('learner-auth-status');
+  const title = document.getElementById('learner-auth-title');
+  const intro = document.getElementById('learner-auth-intro');
   const resend = document.getElementById('learner-resend');
   const changeEmail = document.getElementById('learner-change-email');
   let emailId = '';
@@ -25,11 +27,29 @@
   }
 
   function friendly(error) {
-    if (error.status === 401) return 'That code is invalid, expired, or already used. Request a new code and try again.';
-    if (error.status === 403) return 'This account cannot continue. Contact support if you believe this is an error.';
+    if (error.status === 401 && error.body && ['OTP_EXPIRED', 'OTP_SUPERSEDED'].includes(error.body.error)) return 'This code is no longer valid. Send a new code to continue.';
+    if (error.status === 401) return 'That code could not be verified. Check the code or request a new one.';
+    if (error.status === 403) return 'This learner account cannot be used right now. Contact support for help.';
     if (!error.status) return 'We could not reach the service. Check your connection and try again.';
     if (error.status === 429) return 'Too many attempts. Please wait before trying again.';
     return 'We could not complete that request. Please try again.';
+  }
+
+  function maskEmail(value) {
+    const parts = String(value || '').split('@');
+    if (parts.length !== 2) return 'your email address';
+    const local = parts[0];
+    return (local.length <= 2 ? local[0] || '*' : local.slice(0, 2)) + '***@' + parts[1];
+  }
+
+  function showEmailStep() {
+    title.textContent = 'Continue with email';
+    intro.textContent = 'We will send a one-time code. New and returning learners use the same secure step.';
+  }
+
+  function showCodeStep() {
+    title.textContent = 'Enter the code we sent';
+    intro.textContent = 'We sent a code to ' + maskEmail(emailId) + '. The code is time-limited; request a new one if it is no longer accepted.';
   }
 
   async function sendCode() {
@@ -52,9 +72,10 @@
       await auth.request('/auth/otp/request', { method: 'POST', body: JSON.stringify({ emailId }) });
       emailForm.hidden = true;
       otpForm.hidden = false;
+      showCodeStep();
       otp.value = '';
       otp.focus();
-      message('If this email can continue, a 6 digit code has been sent.', 'success');
+      message('Enter the code we sent. The code is time-limited; request a new one if it is no longer accepted.', 'success');
     } catch (error) { message(friendly(error), 'error'); }
     finally { busy(false); }
   }
@@ -87,6 +108,7 @@
       window.location.assign(destination);
     } catch (error) {
       otp.value = '';
+      if (error.status === 403) title.textContent = 'This learner account cannot be used right now';
       message(friendly(error), 'error');
       otp.focus();
     } finally { busy(false); }
@@ -99,6 +121,8 @@
     otp.value = '';
     registrationAttempted = false;
     message('', '');
+    showEmailStep();
+    showEmailStep();
     email.focus();
   });
 

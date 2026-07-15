@@ -15,8 +15,8 @@ test('change journey is private, non-indexed and excludes learner ids from analy
 });
 
 test('request input is bounded and acknowledgement describes non-promissory review', () => {
-  assert.match(page, /minlength="3" maxlength="1000" required/);
-  assert.match(page, /does not promise or calculate a refund, credit or transfer/);
+  assert.match(page, /minlength="3" maxlength="1000"[^>]*required/);
+  assert.match(page, /does not guarantee a cancellation outcome, transfer, credit or refund amount/);
   assert.match(page, /organiser's decision and any payment-provider refund are separate stages/);
   assert.doesNotMatch(page, /name="amount"|name="currency"|name="refundAmount"/);
 });
@@ -30,13 +30,13 @@ test('client submits only the two approved owner routes with idempotency', () =>
 });
 
 test('status copy separates request, decision and refund execution truth', () => {
-  assert.match(script, /\['Submitted'/);
-  assert.match(script, /\['Approved'/);
-  assert.match(script, /\['Rejected'/);
-  assert.match(script, /\['Refund processing'/);
-  assert.match(script, /\['Completed'/);
-  assert.match(script, /\['Action needed'/);
-  assert.match(script, /Razorpay test-mode processing is still separate/);
+  assert.match(script, /\['Request received'/);
+  assert.match(script, /\['Request approved'/);
+  assert.match(script, /\['Your request was not approved'/);
+  assert.match(script, /\['Refund being processed'/);
+  assert.match(script, /\['Refund complete'/);
+  assert.match(script, /\['Refund needs attention'/);
+  assert.match(script, /Refund processing is a separate stage/);
   assert.match(script, /This place is already closed or transferred/);
   assert.match(script, /notification could not be confirmed[\s\S]*status shown here are unchanged/);
 });
