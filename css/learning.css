@@ -98,9 +98,89 @@
   border-top-color: var(--learning-accent);
 }
 
+.training-page .training-comparison {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.training-page .training-comparison h3 {
+  margin: 0;
+}
+
+.training-page .training-comparison-intro {
+  color: var(--color-text-muted);
+  margin: .5rem 0 0;
+}
+
+.training-page .training-comparison-scroll-hint {
+  color: var(--learning-accent-strong);
+  display: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin: 1rem 0 .5rem;
+}
+
+.training-page .training-comparison .table-scroll {
+  border: 1px solid var(--color-border);
+  border-radius: .5rem;
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.training-page .training-comparison .table-scroll:focus-visible {
+  outline: 3px solid var(--learning-accent);
+  outline-offset: 3px;
+}
+
+.training-page .training-comparison table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.training-page .training-comparison :is(th, td) {
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  line-height: 1.55;
+  overflow-wrap: break-word;
+  padding: .9rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.training-page .training-comparison thead th {
+  background: var(--learning-accent-strong);
+  color: #fff;
+}
+
+.training-page .training-comparison :is(th, td):first-child {
+  width: 20%;
+}
+
+.training-page .training-comparison :is(th, td):not(:first-child) {
+  width: 40%;
+}
+
+.training-page .training-comparison tbody th {
+  background: var(--learning-accent-soft);
+  color: var(--learning-accent-strong);
+}
+
+.training-page .training-comparison tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.training-page .training-comparison :is(th, td):last-child {
+  border-right: 0;
+}
+
 .training-page .training-recommendation {
   background: var(--learning-accent-soft);
   border-left: 3px solid var(--learning-accent);
+  margin: 1.25rem 0 0;
   padding: 1rem 1.25rem;
 }
 
@@ -122,6 +202,18 @@
 }
 
 @media (max-width: 480px) {
+  .training-page .training-comparison-scroll-hint {
+    display: block;
+  }
+
+  .training-page .training-comparison .table-scroll {
+    margin-top: .5rem;
+  }
+
+  .training-page .training-comparison table {
+    min-width: 42rem;
+  }
+
   .software-signal-learning .header-inner,
   .software-signal-learning .learner-session {
     align-items: flex-start;
