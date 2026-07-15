@@ -35,8 +35,8 @@
   const STATUS_PRESENTATIONS = Object.freeze({
     APPLY: ['Choose a course to begin', 'You do not have a current application. Compare the available courses and apply when you are ready.', 'View courses'],
     COMPLETE_PROFILE: ['Choose a course to begin', 'Your learner details are completed as part of a course application. Choose a course when you are ready.', 'View courses'],
-    APPLICATION_RECEIVED: ['Application received', 'Your application is ready for review. We will email you when a decision or meaningful update is recorded.', null],
-    UNDER_REVIEW: ['Application under review', 'We are reviewing your application. We will email you when a decision is recorded.', null],
+    APPLICATION_RECEIVED: ['Application received', 'No action is required right now. Your application is waiting for review. We’ll email you when its status changes.', null],
+    UNDER_REVIEW: ['Application under review', 'No action is required right now. We are reviewing your application and will email you when a decision is available.', null],
     WAITLISTED: ['You are on the waitlist', 'A seat is not confirmed. We will contact you if availability changes.', null],
     RECOMMENDED: ['Another course may be a better fit', 'Review the recommended course before deciding what to do next.', 'View recommended course'],
     DECLINED: ['Application not accepted for this cohort', 'This application will not progress for the current cohort. You can review other courses when you are ready.', null],

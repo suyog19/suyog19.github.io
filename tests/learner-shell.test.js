@@ -333,6 +333,7 @@ test('active course-area action uses only current authorised local eligibility',
   }));
   const current = findByHref(elements['learner-current-action'], '/my-learning/enr_hub/');
   const journey = findByHref(elements['learner-applications'], '/my-learning/enr_hub/');
+  assert.equal(elements['learner-current-action'].hidden, false);
   assert.equal(current.textContent, 'Open your course area');
   assert.equal(journey.textContent, 'Open your course area');
 });
@@ -343,7 +344,7 @@ test('Gate 3 malformed ownership and unknown enums fail closed', () => {
     currentAction: { code: 'BALANCE_DUE', label: 'Pay balance' },
     applications: [{ reference: 'APP-BAD', journeyStatus: 'BALANCE_DUE', course: { title: 'Python' }, offer: { enrolmentId: '../admin' }, action: { code: 'BALANCE_DUE', label: 'Pay balance' }, gate3: { cohortDecision: 'UNKNOWN', balanceStatus: 'UNKNOWN', action: { code: 'PAY_BALANCE' } } }],
   }));
-  assert.equal(elements['learner-current-action'].children[2].tag, 'p');
+  assert.equal(elements['learner-current-action'].hidden, false);
   const card = elements['learner-applications'].children[0];
   assert.equal(card.children.some((child) => child.href), false);
   assert.doesNotMatch(flattenedText(card), /UNKNOWN/);
@@ -354,14 +355,40 @@ test('renderer offers correction only when backend marks the current application
   shell.renderSummary(summary({
     applications: [{
       applicationId: 'app_abc', reference: 'APP-3', canReplace: true,
+      submittedAt: '2026-07-15T08:00:00Z', updatedAt: '2026-07-15T08:05:00Z',
       course: { courseId: 'crs_python_foundations', title: 'Python' },
-      action: { label: 'Application received' }, offer: null,
+      action: { code: 'APPLICATION_RECEIVED', label: 'Application received' }, offer: null,
     }],
   }));
   const card = elements['learner-applications'].children[0];
   const correction = findByHref(card, '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
   assert.equal(correction.href, '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
-  assert.match(card.children.map((child) => child.textContent).join(' | '), /does not withdraw or change/);
+  assert.equal(correction.textContent, 'View or correct your application');
+  const text = flattenedText(card);
+  assert.match(text, /No action is required right now/);
+  assert.match(text, /Corrections are optional/);
+  assert.match(text, /Application details/);
+  assert.match(text, /Application reference.*APP-3/);
+  assert.match(text, /Submitted/);
+  assert.match(text, /Submitted.*Under review.*Decision/);
+  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].children.length, 0);
+});
+
+test('global current status remains available for zero or multiple application journeys', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({ applications: [] }));
+  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.equal(elements['learner-current-action'].children[1].textContent, 'Application received');
+
+  shell.renderSummary(summary({
+    applications: [
+      { reference: 'APP-1', course: { title: 'Python' }, action: { code: 'APPLICATION_RECEIVED' } },
+      { reference: 'APP-2', course: { title: 'Applied Python' }, action: { code: 'UNDER_REVIEW' } },
+    ],
+  }));
+  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.ok(elements['learner-current-action'].children.length > 0);
 });
 
 test('initialise exposes retry and support recovery after a network error', async () => {

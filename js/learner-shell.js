@@ -77,7 +77,7 @@
     const offerHref = view.offerPaymentHref(application);
     if (offerHref) return { href: offerHref, label: 'Review deposit details' };
     const correction = view.correctionHref(application);
-    if (correction) return { href: correction, label: 'Review your application', correction: true };
+    if (correction) return { href: correction, label: 'View or correct your application', correction: true };
     const recommended = application.decision && application.decision.recommendedCourse;
     const recommendation = recommended && view.safeCourseHref(recommended.href);
     if (recommendation) return { href: recommendation, label: 'View recommended course' };
@@ -90,14 +90,30 @@
     const action = application.action || {};
     const presentation = view.statusPresentation(action.code || application.journeyStatus || (application.offer && application.offer.status));
     card.setAttribute('aria-label', title + ' learning journey');
+    if (action.code === 'APPLICATION_RECEIVED' || action.code === 'UNDER_REVIEW') card.className += ' learner-application-card--waiting';
     card.appendChild(element('p', 'learning-status-marker', title));
     card.appendChild(element('h2', '', supported(application) ? presentation.heading : 'View your current learning status'));
     card.appendChild(element('p', '', supported(application) ? presentation.explanation : 'The latest authorised status is available. Return to My Learning or contact support if the next step is unclear.'));
+    if (action.code === 'APPLICATION_RECEIVED' || action.code === 'UNDER_REVIEW') {
+      const progress = element('ol', 'learner-application-progress', '');
+      progress.setAttribute('aria-label', 'Application progress');
+      const stages = action.code === 'UNDER_REVIEW'
+        ? [['Submitted', 'complete'], ['Under review', 'current'], ['Decision', 'pending']]
+        : [['Submitted', 'current'], ['Under review', 'pending'], ['Decision', 'pending']];
+      stages.forEach(([label, state]) => {
+        const item = element('li', 'learner-application-progress__step learner-application-progress__step--' + state, label);
+        if (state === 'current') item.setAttribute('aria-current', 'step');
+        progress.appendChild(item);
+      });
+      card.appendChild(progress);
+    }
     const date = importantDate(application);
     if (date) card.appendChild(element('p', 'learning-deadline', date));
 
-    const details = disclosure('View details');
+    const details = disclosure('Application details');
     addDetail(details.list, 'Application reference', application.reference);
+    addDetail(details.list, 'Submitted', dateTime(application.submittedAt));
+    addDetail(details.list, 'Last updated', dateTime(application.updatedAt));
     const gate2 = application.gate2;
     if (gate2) {
       const enrolment = gate2.enrolment || {};
@@ -135,7 +151,7 @@
       const link = element('a', 'btn btn-secondary learner-journey-link', next.label);
       link.href = next.href;
       card.appendChild(link);
-      if (next.correction) card.appendChild(element('p', 'field-hint', 'Opening correction does not withdraw or change your current application.'));
+      if (next.correction) card.appendChild(element('p', 'field-hint', 'Corrections are optional. Opening the form does not change your current application unless you submit an update.'));
     }
     if (application.communication && application.communication.status === 'FAILED') card.appendChild(element('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your application status shown above is unchanged.'));
     return card;
@@ -143,6 +159,12 @@
   function renderCurrent(summary, applications) {
     currentAction.replaceChildren();
     const reportedAction = summary.currentAction || {};
+    const singleApplicationCode = applications.length === 1
+      ? ((applications[0].action || {}).code || applications[0].journeyStatus)
+      : null;
+    const passiveSingleApplication = singleApplicationCode === 'APPLICATION_RECEIVED' || singleApplicationCode === 'UNDER_REVIEW';
+    currentAction.hidden = passiveSingleApplication;
+    if (passiveSingleApplication) return;
     const action = !summary.learner && applications.length === 0 && reportedAction.code === 'COMPLETE_PROFILE'
       ? { code: 'APPLY', href: '/training/' }
       : reportedAction;
@@ -179,7 +201,7 @@
     addDetail(profileDetails, 'Full name', learner.fullName);
     addDetail(profileDetails, 'Timezone', learner.timezone);
     addDetail(profileDetails, 'Adult eligibility', view.booleanLabel(learner.adultEligibilityConfirmed, 'Confirmed', 'Not confirmed'));
-    addDetail(profileDetails, 'Required acknowledgements', view.acknowledgementLabel(learner.acknowledgements));
+    addDetail(profileDetails, 'Agreements on record', view.acknowledgementLabel(learner.acknowledgements));
     if (learner.promotionalConsent !== undefined && learner.promotionalConsent !== null) addDetail(profileDetails, 'Promotional consent', view.booleanLabel(learner.promotionalConsent, 'Recorded', 'Not recorded'));
   }
   function renderSummary(summary) {
