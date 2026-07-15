@@ -159,12 +159,8 @@
   function renderCurrent(summary, applications) {
     currentAction.replaceChildren();
     const reportedAction = summary.currentAction || {};
-    const singleApplicationCode = applications.length === 1
-      ? ((applications[0].action || {}).code || applications[0].journeyStatus)
-      : null;
-    const passiveSingleApplication = singleApplicationCode === 'APPLICATION_RECEIVED' || singleApplicationCode === 'UNDER_REVIEW';
-    currentAction.hidden = passiveSingleApplication;
-    if (passiveSingleApplication) return;
+    currentAction.hidden = applications.length === 1;
+    if (applications.length === 1) return;
     const action = !summary.learner && applications.length === 0 && reportedAction.code === 'COMPLETE_PROFILE'
       ? { code: 'APPLY', href: '/training/' }
       : reportedAction;
