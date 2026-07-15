@@ -5067,6 +5067,38 @@
   background: var(--color-surface);
 }
 
+.learner-application-card--waiting {
+  border-left: 4px solid #0f766e;
+  background: #f0fdfa;
+}
+
+.learner-application-progress {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .5rem;
+  margin: 1.25rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.learner-application-progress__step {
+  position: relative;
+  padding-top: .75rem;
+  color: var(--color-text-muted);
+  border-top: 3px solid var(--color-border);
+  font-size: .875rem;
+}
+
+.learner-application-progress__step--complete,
+.learner-application-progress__step--current {
+  color: var(--color-text);
+  border-color: #0f766e;
+}
+
+.learner-application-progress__step--current {
+  font-weight: 600;
+}
+
 .learner-offer-note {
   margin-top: 1rem;
 }
@@ -5167,6 +5199,21 @@
 
   .learner-profile dd {
     margin-bottom: .75rem;
+  }
+
+  .learner-application-progress {
+    grid-template-columns: 1fr;
+  }
+
+  .learner-application-progress__step {
+    padding: .2rem 0 .2rem .75rem;
+    border-top: 0;
+    border-left: 3px solid var(--color-border);
+  }
+
+  .learner-application-progress__step--complete,
+  .learner-application-progress__step--current {
+    border-color: #0f766e;
   }
 }
 
