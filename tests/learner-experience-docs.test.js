@@ -20,9 +20,10 @@ test('the #223 approval matrix has every required column and one exact-state row
   ]) assert.match(rows[0], new RegExp(`\\| ${column.replace('/', '\\/')} `));
 });
 
-test('the closeout record keeps human and integrated gates explicitly pending', () => {
+test('the closeout record captures matrix approval while human and integrated gates remain pending', () => {
   const closeout = fs.readFileSync('content/plans/software-signal-learner-experience-closeout.md', 'utf8');
-  assert.match(closeout, /Product Owner and independent human validation pending/i);
+  assert.match(closeout, /remediation matrix approved; independent human validation pending/i);
+  assert.match(closeout, /approved by Suyog on 15 July 2026 without recorded exceptions/i);
   assert.match(closeout, /three distinct roles/i);
   assert.match(closeout, /claims no production deployment/i);
 });

@@ -1,6 +1,6 @@
 # Software Signal learner experience matrix
 
-Authoritative frontend remediation specification for #223 and epic #222. Backend contracts and state machines remain authoritative and unchanged. Product Owner approval: pending explicit review.
+Authoritative frontend remediation specification for #223 and epic #222. Backend contracts and state machines remain authoritative and unchanged. Product Owner approval: approved by Suyog on 15 July 2026.
 
 ## Route inventory
 
@@ -60,7 +60,7 @@ Legend: `A` = backend action/status code; `D` = backend date field; `No change` 
 6. High: active enrolment had an implementation dead end before the hub → #229.
 7. High: integrated responsive, accessibility, recovery and human proof remains required → #230.
 
-Backend blocker candidates: none. Product Owner review: accepted/deferred/rejected decisions pending explicit review; implementation must not be treated as release-ready until this section and #230 closeout are approved.
+Backend blocker candidates: none. Product Owner review: the matrix is approved without recorded exceptions as of 15 July 2026. Release readiness remains subject to the independent validation and closeout requirements in #230.
 
 ## Exact-state approval matrix
 
