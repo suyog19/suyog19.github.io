@@ -92,10 +92,11 @@
     const host = window.location.hostname;
     const isLocal = host === 'localhost' || host === '127.0.0.1';
     if (override && isLocal) return override.replace(/\/$/, '');
-    if (isLocal || host === 'dev.suyogjoshi.com') {
+    if (isLocal || host === 'dev.suyogjoshi.com' || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(host || '')) {
       return 'https://api-dev.suyogjoshi.com';
     }
-    return 'https://api.suyogjoshi.com';
+    if (host === 'suyogjoshi.com' || host === 'www.suyogjoshi.com') return 'https://api.suyogjoshi.com';
+    return '';
   }
 
   function readSessionUser() {
@@ -191,6 +192,7 @@
   }
 
   async function apiRequest(path, options) {
+    if (!state.apiBase) { const error = new Error('Untrusted host'); error.status = 0; throw error; }
     const headers = {};
     if (options && options.body) headers['Content-Type'] = 'application/json';
     if (state.token) headers.Authorization = 'Bearer ' + state.token;
@@ -358,6 +360,7 @@
     const token = state.token;
     clearSession('Signed out.');
     if (!token) return;
+    if (!state.apiBase) return;
     try {
       await fetch(state.apiBase + '/auth/logout', {
         method: 'POST',
@@ -1229,6 +1232,7 @@
     els.apiNote.textContent = 'API: ' + state.apiBase;
     bindEvents();
     window.sjAdminPaymentsController = window.sjAdminPayments.create({
+      environment: state.apiBase === 'https://api.suyogjoshi.com' ? 'production' : 'development',
       request: apiRequest,
       idempotencyKey: (scope, body) => operationKeys.key('gate2-' + scope, body),
       setStatus,
@@ -1237,6 +1241,7 @@
       clearSession: (message) => clearSession(message),
     });
     window.sjAdminGate3Controller = window.sjAdminGate3.create({
+      environment: state.apiBase === 'https://api.suyogjoshi.com' ? 'production' : 'development',
       request: apiRequest,
       idempotencyKey: (scope, body) => operationKeys.key('gate3-' + scope, body),
       setStatus,

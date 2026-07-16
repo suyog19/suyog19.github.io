@@ -46,6 +46,24 @@ test('confirmation payload uses exact versions and approved bounded policy enums
   assert.equal('eligibleCount' in payload, false);
 });
 
+test('production confirmation uses only production approval and contract identifiers', () => {
+  const defaults = tools.contract('production');
+  assert.equal(defaults.approvalStatus, 'APPROVED_FOR_PRODUCTION');
+  assert.equal(Object.values(defaults).some((value) => /development|test/i.test(value)), false);
+  const values = {
+    confirmation: 'on', reason: 'Production evidence reviewed', evidenceReference: 'prod-evidence',
+    timezone: 'Asia/Kolkata', startsAt: '2099-02-01T04:30:00Z', endsAt: '2099-02-01T06:30:00Z',
+    balanceDeadline: '2099-01-20T18:29:59Z', graceUntil: '2099-01-25T18:29:59Z',
+    depositApplicationRule: 'APPLY_NET_PAID_TO_COURSE_FEE', depositDispositionRule: 'ACTION_NEEDED',
+    ...defaults,
+  };
+  const payload = tools.confirmationPayload(form(values), { cohortVersion: 7, decisionSequence: 0 }, 'production');
+  assert.equal(payload.policy.approvalStatus, 'APPROVED_FOR_PRODUCTION');
+  assert.equal(payload.policy.policyVersion, 'PROD-G3-BALANCE-v1');
+  assert.equal(payload.finalSchedule.scheduleVersion, 'PROD-G3-SCHEDULE-v1');
+  assert.equal(JSON.stringify(payload).includes('development'), false);
+});
+
 test('Gate 3 identifiers and source avoid unsafe rendering or Gate 4 links', () => {
   assert.equal(tools.safeId('coh_one-2'), 'coh_one-2');
   assert.equal(tools.safeId('../admin'), null);

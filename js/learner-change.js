@@ -2,6 +2,13 @@
   'use strict';
   const auth = window.sjLearnerAuth;
   const recovery = window.sjLearnerChangeRecovery;
+  function policyDocumentId(kind, hostname) {
+    const normalized = String(kind || '').toLowerCase();
+    if (!['cancellation', 'transfer'].includes(normalized)) return null;
+    if (hostname === 'suyogjoshi.com' || hostname === 'www.suyogjoshi.com') return 'software-signal-' + normalized + '-production-policy';
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '[::1]' || hostname === 'dev.suyogjoshi.com' || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(hostname || '')) return 'software-signal-' + normalized + '-development-policy';
+    return null;
+  }
   const status = document.getElementById('change-status');
   const panel = document.getElementById('change-panel');
   const state = document.getElementById('change-state');
@@ -97,8 +104,9 @@
       const kind = selected === 'TRANSFER' ? 'TRANSFER' : 'CANCELLATION';
       const outcome = selected === 'DISCUSS_OPTIONS' ? 'DISCUSS_OPTIONS' : selected;
       const policy = context.payment.review && context.payment.review.policyVersions && context.payment.review.policyVersions[kind.toLowerCase()];
-      if (!policy || document.getElementById('change-ack').checked !== true) { status.hidden = false; status.textContent = 'Review and acknowledge the current policy before submitting.'; return; }
-      envelope = recovery.create(sessionStorage, window.crypto, context.id, kind, { category: document.getElementById('change-category').value, requestedOutcome: outcome, explanation: document.getElementById('change-explanation').value, policyAcknowledgement: { documentId: 'software-signal-' + kind.toLowerCase() + '-development-policy', version: policy } });
+      const documentId = policyDocumentId(kind, window.location.hostname);
+      if (!policy || !documentId || document.getElementById('change-ack').checked !== true) { status.hidden = false; status.textContent = 'Review and acknowledge the current policy before submitting.'; return; }
+      envelope = recovery.create(sessionStorage, window.crypto, context.id, kind, { category: document.getElementById('change-category').value, requestedOutcome: outcome, explanation: document.getElementById('change-explanation').value, policyAcknowledgement: { documentId, version: policy } });
     }
     submit.disabled = true; status.hidden = false; status.textContent = 'Submitting your request...';
     try {
@@ -122,6 +130,6 @@
     } finally { submit.disabled = false; }
   });
   document.getElementById('change-retry').addEventListener('click', initialise);
-  window.sjLearnerChange = { describe, enrolmentId, findApplication, initialise, money, render };
+  window.sjLearnerChange = { describe, enrolmentId, findApplication, initialise, money, policyDocumentId, render };
   if (!window.__SJ_DISABLE_AUTO_INIT__) initialise();
 }());
