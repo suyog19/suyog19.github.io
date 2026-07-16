@@ -10,16 +10,14 @@
   const courseSlug = root.dataset.courseSlug || '';
 
   function applicationsEnabled(hostname) {
-    return hostname === 'dev.suyogjoshi.com'
-      || hostname === 'localhost'
-      || hostname === '127.0.0.1'
-      || hostname === '::1'
-      || hostname === '[::1]'
-      || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(hostname || '');
+    return Boolean(window.sjTrainingRelease
+      && window.sjTrainingRelease.capabilityEnabled('applications', hostname));
   }
 
   function apiBaseUrl(hostname) {
-    return applicationsEnabled(hostname) ? 'https://api-dev.suyogjoshi.com' : '';
+    return window.sjTrainingRelease
+      ? window.sjTrainingRelease.apiBaseUrl('applications', hostname)
+      : '';
   }
 
   function render(open, message) {

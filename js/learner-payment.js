@@ -39,11 +39,9 @@
     details.appendChild(text('dd', value || 'Not available'));
   }
   function safePaymentUrl(value) {
-    try {
-      const url = new URL(value);
-      const allowedHost = url.hostname === 'pay.test.invalid' || url.hostname === 'rzp.io';
-      return url.protocol === 'https:' && allowedHost && !url.username && !url.password && !url.hash ? url.href : null;
-    } catch (_) { return null; }
+    return window.sjTrainingRelease
+      ? window.sjTrainingRelease.safePaymentUrl(value, 'depositPayments', window.location.hostname)
+      : null;
   }
   function idempotencyKey(id) {
     const key = 'sj_gate2_deposit_request_' + id;

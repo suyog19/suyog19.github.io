@@ -55,6 +55,7 @@ function harness(overrides = {}) {
       },
     },
   };
+  vm.runInNewContext(fs.readFileSync('js/training-release.js', 'utf8'), context);
   vm.runInNewContext(fs.readFileSync('js/learner-balance.js', 'utf8'), context);
   return { balance: context.window.sjLearnerBalance, context, elements, storage, timers };
 }

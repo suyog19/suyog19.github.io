@@ -24,6 +24,7 @@ function harness(hostname, replies) {
     fetch: async (url) => { calls.push(url); return replies[calls.length - 1]; },
     Promise, encodeURIComponent,
   };
+  vm.runInNewContext(fs.readFileSync('js/training-release.js', 'utf8'), context);
   vm.runInNewContext(script, context);
   return { action, calls, controller: context.window.sjTrainingAvailability, status };
 }

@@ -12,6 +12,7 @@ function loadModel() {
     crypto: { getRandomValues(values) { values.set([1, 2, 3, 4]); return values; } },
     Uint32Array,
   };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'js/training-release.js'), 'utf8'), context);
   vm.runInNewContext(fs.readFileSync(path.join(root, 'js/course-application-model.js'), 'utf8'), context);
   return context.window.sjCourseApplication;
 }
@@ -71,6 +72,7 @@ function pageHarness(search, request) {
       },
     },
   };
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'js/training-release.js'), 'utf8'), context);
   vm.runInNewContext(fs.readFileSync(path.join(root, 'js/course-application-model.js'), 'utf8'), context);
   vm.runInNewContext(fs.readFileSync(path.join(root, 'js/course-application.js'), 'utf8'), context);
   return { context, elements, page: context.window.sjCourseApplicationPage, storage };

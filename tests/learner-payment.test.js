@@ -49,6 +49,7 @@ function harness(request) {
       sjLearnerAuth: { restore: async () => ({ userId: 'usr_one' }), request },
     },
   };
+  vm.runInNewContext(fs.readFileSync('js/training-release.js', 'utf8'), context);
   vm.runInNewContext(fs.readFileSync('js/learner-payment.js', 'utf8'), context);
   return { elements, payment: context.window.sjLearnerPayment };
 }
