@@ -175,7 +175,7 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
     },
     joining: {
       status: 'ELIGIBLE_NO_ACCESS_LINKS',
-      guidance: 'Joining instructions will be available when the course area is ready.',
+      guidance: 'Joining instructions are available without session or resource links. Access remains unavailable until the separate Gate 4 status.',
     },
     paymentAction: { available: false, safeUrl: null },
   }));
@@ -184,7 +184,7 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
   assert.match(satisfiedText, /Payment confirmation \| Payment confirmation/);
   assert.doesNotMatch(satisfiedText, /development|test payment/i);
   assert.match(satisfiedText, /not a tax invoice/);
-  assert.match(satisfiedText, /course area is ready/);
+  assert.match(satisfiedText, /available without session or resource links/);
   assert.equal(satisfied.elements['balance-action'].children.length, 0);
 
   const actionNeeded = harness();

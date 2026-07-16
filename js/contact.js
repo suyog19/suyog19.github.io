@@ -36,12 +36,14 @@
     return true;
   }
 
-  const API_BASE_URL =
-    (window.location.hostname === 'dev.suyogjoshi.com' ||
-     window.location.hostname === 'localhost' ||
-     window.location.hostname === '127.0.0.1')
-      ? 'https://api-dev.suyogjoshi.com'
-      : 'https://api.suyogjoshi.com';
+  function apiBaseUrl(hostname) {
+    if (hostname === 'dev.suyogjoshi.com' || hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '[::1]') {
+      return 'https://api-dev.suyogjoshi.com';
+    }
+    if (hostname === 'suyogjoshi.com' || hostname === 'www.suyogjoshi.com') return 'https://api.suyogjoshi.com';
+    return '';
+  }
+  const API_BASE_URL = apiBaseUrl(window.location.hostname);
 
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -120,6 +122,12 @@
 
     if (!validate()) return;
 
+    if (!API_BASE_URL) {
+      statusEl.textContent = 'This form is unavailable on this host. Please use suyogjoshi.com or email contact@suyogjoshi.com.';
+      statusEl.classList.add('is-error');
+      return;
+    }
+
     const submitBtn = form.querySelector('[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
@@ -169,5 +177,5 @@
     });
   });
   applyLearningContext(window.location.search);
-  window.sjContact = { applyLearningContext, isValidEmail };
+  window.sjContact = { apiBaseUrl, applyLearningContext, isValidEmail };
 }());
