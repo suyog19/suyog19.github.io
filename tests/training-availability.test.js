@@ -53,14 +53,21 @@ test('unpublished, closed, and failed responses remain unavailable', async () =>
   }
 });
 
-test('production and unknown hosts never call the dev API or expose applications', async () => {
-  for (const hostname of ['suyogjoshi.com', 'www.suyogjoshi.com', 'untrusted.example']) {
-    const page = harness(hostname, []);
-    await page.controller.initialise();
-    assert.equal(page.calls.length, 0);
-    assert.equal(page.action.hidden, true);
-    assert.equal(page.status.textContent, '');
-  }
+test('production uses only the production API while unknown hosts remain closed', async () => {
+  const production = harness('suyogjoshi.com', [
+    response({ course: { courseId: 'crs_python_foundations', publicationStatus: 'PUBLISHED' } }),
+    response({ items: [{ courseId: 'crs_python_foundations', availability: 'OPEN' }] }),
+  ]);
+  await production.controller.initialise();
+  assert.equal(production.calls.length, 2);
+  assert.equal(production.calls.every((url) => url.startsWith('https://api.suyogjoshi.com/')), true);
+  assert.equal(production.action.hidden, false);
+
+  const unknown = harness('untrusted.example', []);
+  await unknown.controller.initialise();
+  assert.equal(unknown.calls.length, 0);
+  assert.equal(unknown.action.hidden, true);
+  assert.equal(unknown.status.textContent, '');
 });
 
 test('public availability distinguishes open, waitlist, full, and closed without inference', () => {

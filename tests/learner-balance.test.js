@@ -89,25 +89,31 @@ test('only exact mock and Razorpay test payment URLs are actionable', () => {
   assert.equal(balance.safePaymentUrl('javascript:alert(1)'), null);
 });
 
-test('production and unknown hosts make no remaining-fee requests', async () => {
-  for (const hostname of ['suyogjoshi.com', 'unknown.example']) {
-    const calls = [];
-    const { balance, context, elements } = harness({ request: async (...args) => { calls.push(args); return {}; } });
-    context.window.location.hostname = hostname;
-    await balance.initialise();
-    assert.equal(calls.length, 0);
-    assert.equal(elements['balance-panel'].hidden, true);
-    assert.match(elements['balance-status'].textContent, /not currently available/);
-  }
+test('production requests authoritative balance state while unknown hosts remain closed', async () => {
+  const productionCalls = [];
+  const production = harness({ request: async (...args) => { productionCalls.push(args); return {}; } });
+  production.context.window.location.hostname = 'suyogjoshi.com';
+  await production.balance.initialise();
+  assert.equal(productionCalls.length, 1);
+  assert.equal(productionCalls[0][0], '/me/enrolments/enr_one/balance');
+
+  const unknownCalls = [];
+  const unknown = harness({ request: async (...args) => { unknownCalls.push(args); return {}; } });
+  unknown.context.window.location.hostname = 'unknown.example';
+  await unknown.balance.initialise();
+  assert.equal(unknownCalls.length, 0);
+  assert.equal(unknown.elements['balance-panel'].hidden, true);
+  assert.match(unknown.elements['balance-status'].textContent, /not currently available/);
 });
 
-test('production and unknown hosts reject all development payment URLs', () => {
+test('production accepts exact Razorpay URLs and rejects development or unknown-host URLs', () => {
   const { balance, context } = harness();
-  for (const hostname of ['suyogjoshi.com', 'www.suyogjoshi.com', 'preview.example']) {
-    context.window.location.hostname = hostname;
-    assert.equal(balance.safePaymentUrl('https://rzp.io/i/test-one'), null);
-    assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), null);
-  }
+  context.window.location.hostname = 'suyogjoshi.com';
+  assert.equal(balance.safePaymentUrl('https://rzp.io/i/live-one'), 'https://rzp.io/i/live-one');
+  assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), null);
+  context.window.location.hostname = 'preview.example';
+  assert.equal(balance.safePaymentUrl('https://rzp.io/i/live-one'), null);
+  assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), null);
 });
 
 test('renderer displays backend aggregates and keeps test action acknowledged', () => {

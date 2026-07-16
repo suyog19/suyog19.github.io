@@ -2,7 +2,7 @@
   'use strict';
   const PRODUCTION = new Set(['suyogjoshi.com', 'www.suyogjoshi.com']);
   const LOCAL = new Set(['localhost', '127.0.0.1', '::1', '[::1]']);
-  const PRODUCTION_CONTROLS = Object.freeze({ applications: false, depositPayments: false, balancePayments: false });
+  const PRODUCTION_CONTROLS = Object.freeze({ applications: true, depositPayments: true, balancePayments: true });
 
   function environment(hostname) {
     if (LOCAL.has(hostname) || hostname === 'dev.suyogjoshi.com'

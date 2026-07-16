@@ -85,10 +85,10 @@ test('only approved Gate 1 course identifiers are accepted', () => {
   assert.equal(model.course('../admin'), null);
 });
 
-test('production and unknown hosts remain hard-disabled until launch approval', () => {
+test('production is enabled after launch approval while unknown hosts remain disabled', () => {
   const model = loadModel();
-  assert.equal(model.applicationsEnabled('suyogjoshi.com'), false);
-  assert.equal(model.applicationsEnabled('www.suyogjoshi.com'), false);
+  assert.equal(model.applicationsEnabled('suyogjoshi.com'), true);
+  assert.equal(model.applicationsEnabled('www.suyogjoshi.com'), true);
   assert.equal(model.applicationsEnabled('untrusted.example'), false);
   assert.equal(model.applicationsEnabled('dev.suyogjoshi.com'), true);
   assert.equal(model.applicationsEnabled('preview.suyogjoshi-dev.pages.dev'), true);
@@ -331,10 +331,10 @@ test('lost profile-bootstrap response reconciles before application submission',
   assert.equal(elements['application-reference'].textContent, 'APP-NEW');
 });
 
-test('production guard prevents authentication or API requests', async () => {
+test('unknown-host guard prevents authentication or API requests', async () => {
   let requests = 0;
   const { context, elements, page } = pageHarness('?courseId=crs_python_foundations', async () => { requests += 1; return {}; });
-  context.window.location.hostname = 'suyogjoshi.com';
+  context.window.location.hostname = 'untrusted.example';
   context.window.sjLearnerAuth.restore = async () => { requests += 1; return {}; };
   await page.initialise();
   assert.equal(requests, 0);
