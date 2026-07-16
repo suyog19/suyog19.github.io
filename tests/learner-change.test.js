@@ -27,6 +27,15 @@ test('client submits only the two approved owner routes with idempotency', () =>
   assert.match(script, /policyAcknowledgement:/);
   assert.match(script, /requestedOutcome: outcome/);
   assert.doesNotMatch(script, /amountMinorUnits|providerPaymentReference|creditAmount/);
+  assert.match(script, /software-signal-' \+ normalized \+ '-production-policy/);
+  assert.match(script, /return null;/);
+});
+
+test('learner change policy identifiers are stage-specific and unknown hosts fail closed', () => {
+  assert.match(script, /hostname === 'suyogjoshi\.com' \|\| hostname === 'www\.suyogjoshi\.com'/);
+  assert.match(script, /-production-policy/);
+  assert.match(script, /-development-policy/);
+  assert.match(script, /if \(!policy \|\| !documentId/);
 });
 
 test('status copy separates request, decision and refund execution truth', () => {

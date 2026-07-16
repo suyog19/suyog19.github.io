@@ -8,9 +8,9 @@
 
   function apiBaseUrl() {
     const host = window.location.hostname;
-    return host === 'localhost' || host === '127.0.0.1' || host === '::1' || host === '[::1]' || host === 'dev.suyogjoshi.com'
-      ? 'https://api-dev.suyogjoshi.com'
-      : 'https://api.suyogjoshi.com';
+    if (host === 'localhost' || host === '127.0.0.1' || host === '::1' || host === '[::1]' || host === 'dev.suyogjoshi.com' || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(host || '')) return 'https://api-dev.suyogjoshi.com';
+    if (host === 'suyogjoshi.com' || host === 'www.suyogjoshi.com') return 'https://api.suyogjoshi.com';
+    return '';
   }
 
   function safeDestination(value) {
@@ -51,12 +51,14 @@
   }
 
   async function request(path, options) {
+    const base = apiBaseUrl();
+    if (!base) { const error = new Error('UNTRUSTED_HOST'); error.status = 0; throw error; }
     const headers = { ...(options && options.headers ? options.headers : {}) };
     if (options && options.body) headers['Content-Type'] = 'application/json';
     if (token()) headers.Authorization = 'Bearer ' + token();
     let response;
     try {
-      response = await fetch(apiBaseUrl() + path, { ...options, headers, cache: 'no-store' });
+      response = await fetch(base + path, { ...options, headers, cache: 'no-store' });
     } catch (_) {
       const error = new Error('NETWORK_ERROR');
       error.status = 0;
@@ -89,8 +91,10 @@
     const accessToken = token();
     clearSession();
     if (!accessToken) return true;
+    const base = apiBaseUrl();
+    if (!base) return false;
     try {
-      const response = await fetch(apiBaseUrl() + '/auth/logout', {
+      const response = await fetch(base + '/auth/logout', {
         method: 'POST', cache: 'no-store', headers: { Authorization: 'Bearer ' + accessToken },
       });
       return response.ok || response.status === 401 || response.status === 403;
@@ -99,5 +103,5 @@
     }
   }
 
-  window.sjLearnerAuth = { clearSession, logout, readUser, request, restore, safeDestination, saveSession, token };
+  window.sjLearnerAuth = { apiBaseUrl, clearSession, logout, readUser, request, restore, safeDestination, saveSession, token };
 }());
