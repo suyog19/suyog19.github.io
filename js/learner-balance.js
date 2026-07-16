@@ -130,6 +130,10 @@
       ? window.sjTrainingRelease.safePaymentUrl(value, 'balancePayments', window.location.hostname)
       : null;
   }
+  function paymentCapabilityEnabled() {
+    return Boolean(window.sjTrainingRelease
+      && window.sjTrainingRelease.capabilityEnabled('balancePayments', window.location.hostname));
+  }
   function idempotencyKey(id) {
     const key = 'sj_gate3_balance_request_' + id;
     let value = sessionStorage.getItem(key);
@@ -140,6 +144,12 @@
     return value;
   }
   async function prepare(id, button) {
+    if (!paymentCapabilityEnabled()) {
+      clearPrivate();
+      status.hidden = false;
+      status.textContent = 'Remaining-fee payments are not currently available.';
+      return;
+    }
     button.disabled = true;
     status.hidden = false;
     status.textContent = 'Preparing current remaining-fee details...';
@@ -253,6 +263,10 @@
     clearPrivate();
     errorActions.hidden = true;
     status.hidden = false;
+    if (!paymentCapabilityEnabled()) {
+      status.textContent = 'Remaining-fee payments are not currently available.';
+      return;
+    }
     status.textContent = 'Restoring your secure session...';
     if (!id) { showError({ body: { error: 'INVALID_LINK' } }); return; }
     try {

@@ -89,6 +89,18 @@ test('only exact mock and Razorpay test payment URLs are actionable', () => {
   assert.equal(balance.safePaymentUrl('javascript:alert(1)'), null);
 });
 
+test('production and unknown hosts make no remaining-fee requests', async () => {
+  for (const hostname of ['suyogjoshi.com', 'unknown.example']) {
+    const calls = [];
+    const { balance, context, elements } = harness({ request: async (...args) => { calls.push(args); return {}; } });
+    context.window.location.hostname = hostname;
+    await balance.initialise();
+    assert.equal(calls.length, 0);
+    assert.equal(elements['balance-panel'].hidden, true);
+    assert.match(elements['balance-status'].textContent, /not currently available/);
+  }
+});
+
 test('production and unknown hosts reject all development payment URLs', () => {
   const { balance, context } = harness();
   for (const hostname of ['suyogjoshi.com', 'www.suyogjoshi.com', 'preview.example']) {

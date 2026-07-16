@@ -51,7 +51,7 @@ function harness(request) {
   };
   vm.runInNewContext(fs.readFileSync('js/training-release.js', 'utf8'), context);
   vm.runInNewContext(fs.readFileSync('js/learner-payment.js', 'utf8'), context);
-  return { elements, payment: context.window.sjLearnerPayment };
+  return { context, elements, payment: context.window.sjLearnerPayment };
 }
 
 function offeredSummary(overrides = {}) {
@@ -71,6 +71,18 @@ test('only an exact offered enrolment without Gate 2 is recoverable', () => {
   assert.equal(payment.isRecoverableOffer(offeredSummary({ offer: { status: 'RESERVED', enrolmentId: 'enr_one' } }), 'enr_one'), false);
   assert.equal(payment.isRecoverableOffer(offeredSummary(), 'enr_other'), false);
   assert.equal(payment.isRecoverableOffer({}, 'enr_one'), false);
+});
+
+test('production and unknown hosts make no payment requests', async () => {
+  for (const hostname of ['suyogjoshi.com', 'unknown.example']) {
+    const calls = [];
+    const { context, elements, payment } = harness(async (...args) => { calls.push(args); return {}; });
+    context.window.location.hostname = hostname;
+    await payment.initialise();
+    assert.equal(calls.length, 0);
+    assert.equal(elements['payment-panel'].hidden, true);
+    assert.match(elements['payment-status'].textContent, /not currently available/);
+  }
 });
 
 test('failed initial payment read recovers preparation from authoritative offered summary', async () => {
