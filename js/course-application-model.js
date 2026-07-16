@@ -43,12 +43,8 @@
     return 'web-' + Array.from(random, (value) => value.toString(16).padStart(8, '0')).join('');
   }
   function applicationsEnabled(hostname) {
-    return hostname === 'dev.suyogjoshi.com'
-      || hostname === 'localhost'
-      || hostname === '127.0.0.1'
-      || hostname === '::1'
-      || hostname === '[::1]'
-      || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(hostname || '');
+    return Boolean(window.sjTrainingRelease
+      && window.sjTrainingRelease.capabilityEnabled('applications', hostname));
   }
   function errorMessage(error) {
     const code = error && error.body && error.body.error;

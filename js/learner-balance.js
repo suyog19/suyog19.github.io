@@ -126,14 +126,13 @@
       && joining.guidance === JOINING_GUIDANCE ? joining.guidance : 'Not yet available';
   }
   function safePaymentUrl(value) {
-    try {
-      const url = new URL(value);
-      const allowedHost = url.hostname === 'pay.test.invalid' || url.hostname === 'rzp.io';
-      const developmentHost = ['dev.suyogjoshi.com', 'localhost', '127.0.0.1']
-        .includes(window.location.hostname || '');
-      return developmentHost && url.protocol === 'https:' && allowedHost && !url.username && !url.password
-        && !url.hash && !url.search && (url.port === '' || url.port === '443') ? url.href : null;
-    } catch (_) { return null; }
+    return window.sjTrainingRelease
+      ? window.sjTrainingRelease.safePaymentUrl(value, 'balancePayments', window.location.hostname)
+      : null;
+  }
+  function paymentCapabilityEnabled() {
+    return Boolean(window.sjTrainingRelease
+      && window.sjTrainingRelease.capabilityEnabled('balancePayments', window.location.hostname));
   }
   function idempotencyKey(id) {
     const key = 'sj_gate3_balance_request_' + id;
@@ -145,6 +144,12 @@
     return value;
   }
   async function prepare(id, button) {
+    if (!paymentCapabilityEnabled()) {
+      clearPrivate();
+      status.hidden = false;
+      status.textContent = 'Remaining-fee payments are not currently available.';
+      return;
+    }
     button.disabled = true;
     status.hidden = false;
     status.textContent = 'Preparing current remaining-fee details...';
@@ -258,6 +263,10 @@
     clearPrivate();
     errorActions.hidden = true;
     status.hidden = false;
+    if (!paymentCapabilityEnabled()) {
+      status.textContent = 'Remaining-fee payments are not currently available.';
+      return;
+    }
     status.textContent = 'Restoring your secure session...';
     if (!id) { showError({ body: { error: 'INVALID_LINK' } }); return; }
     try {

@@ -39,11 +39,9 @@
     details.appendChild(text('dd', value || 'Not available'));
   }
   function safePaymentUrl(value) {
-    try {
-      const url = new URL(value);
-      const allowedHost = url.hostname === 'pay.test.invalid' || url.hostname === 'rzp.io';
-      return url.protocol === 'https:' && allowedHost && !url.username && !url.password && !url.hash ? url.href : null;
-    } catch (_) { return null; }
+    return window.sjTrainingRelease
+      ? window.sjTrainingRelease.safePaymentUrl(value, 'depositPayments', window.location.hostname)
+      : null;
   }
   function idempotencyKey(id) {
     const key = 'sj_gate2_deposit_request_' + id;
@@ -83,6 +81,12 @@
     const prepare = text('button', 'Prepare deposit details', 'btn btn-primary btn-learning');
     prepare.type = 'button';
     prepare.addEventListener('click', async () => {
+      if (!paymentCapabilityEnabled()) {
+        panel.hidden = true;
+        status.hidden = false;
+        status.textContent = 'Deposit payments are not currently available.';
+        return;
+      }
       prepare.disabled = true;
       status.hidden = false;
       status.textContent = 'Preparing current deposit details…';
@@ -101,6 +105,10 @@
       } finally { prepare.disabled = false; }
     });
     action.appendChild(prepare);
+  }
+  function paymentCapabilityEnabled() {
+    return Boolean(window.sjTrainingRelease
+      && window.sjTrainingRelease.capabilityEnabled('depositPayments', window.location.hostname));
   }
   function render(data) {
     const descriptor = STATES[data.journeyStatus] || STATES.PAYMENT_ACTION_NEEDED;
@@ -178,6 +186,10 @@
     panel.hidden = true;
     errorActions.hidden = true;
     status.hidden = false;
+    if (!paymentCapabilityEnabled()) {
+      status.textContent = 'Deposit payments are not currently available.';
+      return;
+    }
     status.textContent = 'Restoring your secure session…';
     if (!id) { status.textContent = 'This payment link is incomplete. Return to My Learning.'; errorActions.hidden = false; return; }
     try {
