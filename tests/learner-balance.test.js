@@ -196,6 +196,59 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
   assert.equal(actionNeeded.elements['balance-action'].children[0].href, '/contact/?topic=learning-payment-review');
 });
 
+test('payment confirmation contract is exact and stage-aware', () => {
+  const production = harness();
+  production.context.window.location.hostname = 'suyogjoshi.com';
+  production.balance.render(projection({
+    status: 'SATISFIED', amountDue: 0, receiptAvailable: true,
+    confirmation: {
+      label: 'Payment confirmation — not a tax invoice',
+      treatmentVersion: 'PROD-PAYMENT-CONFIRMATION-NOT-TAX-INVOICE-v1',
+      verifiedAt: '2099-01-02T00:00:00Z',
+    },
+    paymentAction: { available: false, safeUrl: null },
+  }));
+  const productionText = production.elements['balance-details'].children
+    .map((child) => child.textContent).join(' | ');
+  assert.match(productionText, /Payment confirmation — not a tax invoice/);
+  const productionDetails = production.elements['balance-details'].children;
+  const productionConfirmation = productionDetails[
+    productionDetails.findIndex((child) => child.textContent === 'Payment confirmation') + 1
+  ].textContent;
+  assert.doesNotMatch(productionConfirmation, /Not yet available/);
+
+  const forgedDevelopment = harness();
+  forgedDevelopment.context.window.location.hostname = 'suyogjoshi.com';
+  forgedDevelopment.balance.render(projection({
+    status: 'SATISFIED', amountDue: 0, receiptAvailable: true,
+    confirmation: {
+      label: 'Development test payment confirmation — not a tax invoice',
+      treatmentVersion: 'DEV-TEST-CONFIRMATION-NOT-TAX-INVOICE-v1',
+      verifiedAt: '2099-01-02T00:00:00Z',
+    },
+    paymentAction: { available: false, safeUrl: null },
+  }));
+  assert.match(
+    forgedDevelopment.elements['balance-details'].children.map((child) => child.textContent).join(' | '),
+    /Not yet available/,
+  );
+
+  const forgedProduction = harness();
+  forgedProduction.balance.render(projection({
+    status: 'SATISFIED', amountDue: 0, receiptAvailable: true,
+    confirmation: {
+      label: 'Payment confirmation — not a tax invoice',
+      treatmentVersion: 'PROD-PAYMENT-CONFIRMATION-NOT-TAX-INVOICE-v1',
+      verifiedAt: '2099-01-02T00:00:00Z',
+    },
+    paymentAction: { available: false, safeUrl: null },
+  }));
+  assert.match(
+    forgedProduction.elements['balance-details'].children.map((child) => child.textContent).join(' | '),
+    /Not yet available/,
+  );
+});
+
 test('confirming suppresses payment and schedules bounded authoritative polling', () => {
   const { balance, elements, timers } = harness();
   balance.render(projection({ confirmationStatus: 'CONFIRMING' }));
