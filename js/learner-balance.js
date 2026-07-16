@@ -22,7 +22,7 @@
       treatmentVersion: 'PROD-PAYMENT-CONFIRMATION-NOT-TAX-INVOICE-v1',
     }),
   });
-  const JOINING_GUIDANCE = 'Joining instructions will be available when the course area is ready.';
+  const JOINING_GUIDANCE = 'Joining instructions are available without session or resource links. Access remains unavailable until the separate Gate 4 status.';
   let loadGeneration = 0;
   let confirmingPolls = 0;
   let pollTimer = null;

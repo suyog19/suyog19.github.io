@@ -45,3 +45,16 @@ test('tampered persisted commands fail closed', () => {
   storage.setItem(recovery.storageKey('enr_one'), JSON.stringify({ kind: 'REFUND', key: 'web_bad', payload: { amountMinorUnits: 1 } }));
   assert.equal(recovery.read(storage, 'enr_one'), null);
 });
+
+test('policy acknowledgement is bound to the version stage', () => {
+  const production = { ...payload, policyAcknowledgement: { documentId: 'software-signal-cancellation-production-policy', version: 'PROD-G2-CANCELLATION-v1' } };
+  assert.ok(recovery.create(memoryStorage(), { randomUUID: () => 'prod-key' }, 'enr_prod', 'CANCELLATION', production));
+  assert.throws(() => recovery.create(memoryStorage(), { randomUUID: () => 'bad-key' }, 'enr_bad', 'CANCELLATION', {
+    ...production,
+    policyAcknowledgement: { ...production.policyAcknowledgement, documentId: 'software-signal-cancellation-development-policy' },
+  }), /INVALID_CHANGE_COMMAND/);
+  assert.throws(() => recovery.create(memoryStorage(), { randomUUID: () => 'bad-version' }, 'enr_unknown', 'CANCELLATION', {
+    ...production,
+    policyAcknowledgement: { ...production.policyAcknowledgement, version: 'UNKNOWN-v1' },
+  }), /INVALID_CHANGE_COMMAND/);
+});

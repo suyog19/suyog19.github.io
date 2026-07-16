@@ -10,7 +10,13 @@
     if (!outcomes.includes(payload.requestedOutcome)) return false;
     const acknowledgement = payload.policyAcknowledgement || {};
     const lower = envelope.kind.toLowerCase();
-    return acknowledgement.documentId === 'software-signal-' + lower + '-development-policy'
+    const stage = typeof acknowledgement.version === 'string' && acknowledgement.version.startsWith('DEV-')
+      ? 'development'
+      : typeof acknowledgement.version === 'string' && acknowledgement.version.startsWith('PROD-')
+        ? 'production'
+        : null;
+    return stage !== null
+      && acknowledgement.documentId === 'software-signal-' + lower + '-' + stage + '-policy'
       && typeof acknowledgement.version === 'string' && acknowledgement.version.length <= 160;
   }
   function read(storage, id) {
