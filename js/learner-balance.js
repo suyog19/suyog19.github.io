@@ -12,8 +12,16 @@
   const errorActions = document.getElementById('balance-error-actions');
   const retry = document.getElementById('balance-retry');
   const ID = /^[A-Za-z0-9_-]{1,128}$/;
-  const CONFIRMATION_LABEL = 'Development test payment confirmation — not a tax invoice';
-  const CONFIRMATION_TREATMENT = 'DEV-TEST-CONFIRMATION-NOT-TAX-INVOICE-v1';
+  const CONFIRMATION_CONTRACTS = Object.freeze({
+    development: Object.freeze({
+      label: 'Development test payment confirmation — not a tax invoice',
+      treatmentVersion: 'DEV-TEST-CONFIRMATION-NOT-TAX-INVOICE-v1',
+    }),
+    production: Object.freeze({
+      label: 'Payment confirmation — not a tax invoice',
+      treatmentVersion: 'PROD-PAYMENT-CONFIRMATION-NOT-TAX-INVOICE-v1',
+    }),
+  });
   const JOINING_GUIDANCE = 'Joining instructions will be available when the course area is ready.';
   let loadGeneration = 0;
   let confirmingPolls = 0;
@@ -113,9 +121,13 @@
   }
   function confirmationLabel(balance) {
     const confirmation = balance.confirmation;
+    const environment = window.sjTrainingRelease
+      ? window.sjTrainingRelease.environment(window.location.hostname) : 'unknown';
+    const contract = CONFIRMATION_CONTRACTS[environment];
     return balance.receiptAvailable === true && confirmation
-      && confirmation.label === CONFIRMATION_LABEL
-      && confirmation.treatmentVersion === CONFIRMATION_TREATMENT
+      && contract
+      && confirmation.label === contract.label
+      && confirmation.treatmentVersion === contract.treatmentVersion
       && dateTime(confirmation.verifiedAt) !== 'Not available'
       ? 'Payment confirmation — not a tax invoice · ' + dateTime(confirmation.verifiedAt)
       : 'Not yet available';

@@ -89,25 +89,31 @@ test('only exact mock and Razorpay test payment URLs are actionable', () => {
   assert.equal(balance.safePaymentUrl('javascript:alert(1)'), null);
 });
 
-test('production and unknown hosts make no remaining-fee requests', async () => {
-  for (const hostname of ['suyogjoshi.com', 'unknown.example']) {
-    const calls = [];
-    const { balance, context, elements } = harness({ request: async (...args) => { calls.push(args); return {}; } });
-    context.window.location.hostname = hostname;
-    await balance.initialise();
-    assert.equal(calls.length, 0);
-    assert.equal(elements['balance-panel'].hidden, true);
-    assert.match(elements['balance-status'].textContent, /not currently available/);
-  }
+test('production requests authoritative balance state while unknown hosts remain closed', async () => {
+  const productionCalls = [];
+  const production = harness({ request: async (...args) => { productionCalls.push(args); return {}; } });
+  production.context.window.location.hostname = 'suyogjoshi.com';
+  await production.balance.initialise();
+  assert.equal(productionCalls.length, 1);
+  assert.equal(productionCalls[0][0], '/me/enrolments/enr_one/balance');
+
+  const unknownCalls = [];
+  const unknown = harness({ request: async (...args) => { unknownCalls.push(args); return {}; } });
+  unknown.context.window.location.hostname = 'unknown.example';
+  await unknown.balance.initialise();
+  assert.equal(unknownCalls.length, 0);
+  assert.equal(unknown.elements['balance-panel'].hidden, true);
+  assert.match(unknown.elements['balance-status'].textContent, /not currently available/);
 });
 
-test('production and unknown hosts reject all development payment URLs', () => {
+test('production accepts exact Razorpay URLs and rejects development or unknown-host URLs', () => {
   const { balance, context } = harness();
-  for (const hostname of ['suyogjoshi.com', 'www.suyogjoshi.com', 'preview.example']) {
-    context.window.location.hostname = hostname;
-    assert.equal(balance.safePaymentUrl('https://rzp.io/i/test-one'), null);
-    assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), null);
-  }
+  context.window.location.hostname = 'suyogjoshi.com';
+  assert.equal(balance.safePaymentUrl('https://rzp.io/i/live-one'), 'https://rzp.io/i/live-one');
+  assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), null);
+  context.window.location.hostname = 'preview.example';
+  assert.equal(balance.safePaymentUrl('https://rzp.io/i/live-one'), null);
+  assert.equal(balance.safePaymentUrl('https://pay.test.invalid/requests/one'), null);
 });
 
 test('renderer displays backend aggregates and keeps test action acknowledged', () => {
@@ -188,6 +194,59 @@ test('overdue, satisfied, and action-needed states remain distinct', () => {
   const actionText = actionNeeded.elements['balance-state'].children.map((child) => child.textContent).join(' ');
   assert.match(actionText, /not automatically active/);
   assert.equal(actionNeeded.elements['balance-action'].children[0].href, '/contact/?topic=learning-payment-review');
+});
+
+test('payment confirmation contract is exact and stage-aware', () => {
+  const production = harness();
+  production.context.window.location.hostname = 'suyogjoshi.com';
+  production.balance.render(projection({
+    status: 'SATISFIED', amountDue: 0, receiptAvailable: true,
+    confirmation: {
+      label: 'Payment confirmation — not a tax invoice',
+      treatmentVersion: 'PROD-PAYMENT-CONFIRMATION-NOT-TAX-INVOICE-v1',
+      verifiedAt: '2099-01-02T00:00:00Z',
+    },
+    paymentAction: { available: false, safeUrl: null },
+  }));
+  const productionText = production.elements['balance-details'].children
+    .map((child) => child.textContent).join(' | ');
+  assert.match(productionText, /Payment confirmation — not a tax invoice/);
+  const productionDetails = production.elements['balance-details'].children;
+  const productionConfirmation = productionDetails[
+    productionDetails.findIndex((child) => child.textContent === 'Payment confirmation') + 1
+  ].textContent;
+  assert.doesNotMatch(productionConfirmation, /Not yet available/);
+
+  const forgedDevelopment = harness();
+  forgedDevelopment.context.window.location.hostname = 'suyogjoshi.com';
+  forgedDevelopment.balance.render(projection({
+    status: 'SATISFIED', amountDue: 0, receiptAvailable: true,
+    confirmation: {
+      label: 'Development test payment confirmation — not a tax invoice',
+      treatmentVersion: 'DEV-TEST-CONFIRMATION-NOT-TAX-INVOICE-v1',
+      verifiedAt: '2099-01-02T00:00:00Z',
+    },
+    paymentAction: { available: false, safeUrl: null },
+  }));
+  assert.match(
+    forgedDevelopment.elements['balance-details'].children.map((child) => child.textContent).join(' | '),
+    /Not yet available/,
+  );
+
+  const forgedProduction = harness();
+  forgedProduction.balance.render(projection({
+    status: 'SATISFIED', amountDue: 0, receiptAvailable: true,
+    confirmation: {
+      label: 'Payment confirmation — not a tax invoice',
+      treatmentVersion: 'PROD-PAYMENT-CONFIRMATION-NOT-TAX-INVOICE-v1',
+      verifiedAt: '2099-01-02T00:00:00Z',
+    },
+    paymentAction: { available: false, safeUrl: null },
+  }));
+  assert.match(
+    forgedProduction.elements['balance-details'].children.map((child) => child.textContent).join(' | '),
+    /Not yet available/,
+  );
 });
 
 test('confirming suppresses payment and schedules bounded authoritative polling', () => {

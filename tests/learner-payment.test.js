@@ -73,16 +73,21 @@ test('only an exact offered enrolment without Gate 2 is recoverable', () => {
   assert.equal(payment.isRecoverableOffer({}, 'enr_one'), false);
 });
 
-test('production and unknown hosts make no payment requests', async () => {
-  for (const hostname of ['suyogjoshi.com', 'unknown.example']) {
-    const calls = [];
-    const { context, elements, payment } = harness(async (...args) => { calls.push(args); return {}; });
-    context.window.location.hostname = hostname;
-    await payment.initialise();
-    assert.equal(calls.length, 0);
-    assert.equal(elements['payment-panel'].hidden, true);
-    assert.match(elements['payment-status'].textContent, /not currently available/);
-  }
+test('production requests authoritative payment state while unknown hosts remain closed', async () => {
+  const productionCalls = [];
+  const production = harness(async (...args) => { productionCalls.push(args); return {}; });
+  production.context.window.location.hostname = 'suyogjoshi.com';
+  await production.payment.initialise();
+  assert.equal(productionCalls.length, 1);
+  assert.equal(productionCalls[0][0], '/me/enrolments/enr_one/payment');
+
+  const unknownCalls = [];
+  const unknown = harness(async (...args) => { unknownCalls.push(args); return {}; });
+  unknown.context.window.location.hostname = 'unknown.example';
+  await unknown.payment.initialise();
+  assert.equal(unknownCalls.length, 0);
+  assert.equal(unknown.elements['payment-panel'].hidden, true);
+  assert.match(unknown.elements['payment-status'].textContent, /not currently available/);
 });
 
 test('failed initial payment read recovers preparation from authoritative offered summary', async () => {
