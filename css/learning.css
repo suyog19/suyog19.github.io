@@ -1,0 +1,519 @@
+.software-signal-learning {
+  --learning-accent: #0f766e;
+  --learning-accent-strong: #115e59;
+  --learning-accent-soft: #f0fdfa;
+  --learning-border: #99d5cf;
+}
+
+.software-signal-learning [hidden] {
+  display: none !important;
+}
+
+.software-signal-learning .learning-eyebrow {
+  color: var(--learning-accent-strong);
+  font: 600 .78rem/1.4 var(--font-sans);
+  letter-spacing: .1em;
+  margin: 0 0 .75rem;
+  text-transform: uppercase;
+}
+
+.software-signal-learning .btn-learning {
+  background: var(--learning-accent-strong);
+  border-color: var(--learning-accent-strong);
+  color: #fff;
+}
+
+.software-signal-learning .btn-learning:hover {
+  background: #0b4f4a;
+  border-color: #0b4f4a;
+}
+
+.software-signal-learning :is(a, button, input, textarea, select, summary):focus-visible {
+  outline: 3px solid var(--learning-accent);
+  outline-offset: 3px;
+}
+
+.software-signal-learning .learning-header-context {
+  color: var(--learning-accent-strong);
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+
+.software-signal-learning .learning-status-card {
+  background: var(--learning-accent-soft);
+  border: 1px solid var(--learning-border);
+  border-left: 4px solid var(--learning-accent);
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.software-signal-learning .learning-status-marker {
+  color: var(--learning-accent-strong);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.software-signal-learning .learning-deadline {
+  border-top: 1px solid var(--learning-border);
+  font-weight: 600;
+  margin-top: 1rem;
+  padding-top: .75rem;
+}
+
+.software-signal-learning .learning-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.25rem;
+}
+
+.software-signal-learning .learning-details {
+  border-top: 1px solid var(--learning-border);
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+}
+
+.software-signal-learning .learning-details summary {
+  color: var(--learning-accent-strong);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.software-signal-learning .learning-intro {
+  margin-bottom: 2rem;
+}
+
+.software-signal-learning .learning-support-guidance {
+  border-left: 3px solid var(--learning-border);
+  color: var(--color-text-muted);
+  margin-top: 1.25rem;
+  padding-left: 1rem;
+}
+
+.training-page .training-card,
+.training-page .training-comparison {
+  border-top-color: var(--learning-accent);
+}
+
+.training-page .training-comparison {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.training-page .training-comparison h3 {
+  margin: 0;
+}
+
+.training-page .training-comparison-intro {
+  color: var(--color-text-muted);
+  margin: .5rem 0 0;
+}
+
+.training-page .training-comparison-scroll-hint {
+  color: var(--learning-accent-strong);
+  display: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin: 1rem 0 .5rem;
+}
+
+.training-page .training-comparison .table-scroll {
+  border: 1px solid var(--color-border);
+  border-radius: .5rem;
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.training-page .training-comparison .table-scroll:focus-visible {
+  outline: 3px solid var(--learning-accent);
+  outline-offset: 3px;
+}
+
+.training-page .training-comparison table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.training-page .training-comparison :is(th, td) {
+  border-bottom: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  line-height: 1.55;
+  overflow-wrap: break-word;
+  padding: .9rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.training-page .training-comparison thead th {
+  background: var(--learning-accent-strong);
+  color: #fff;
+}
+
+.training-page .training-comparison :is(th, td):first-child {
+  width: 20%;
+}
+
+.training-page .training-comparison :is(th, td):not(:first-child) {
+  width: 40%;
+}
+
+.training-page .training-comparison tbody th {
+  background: var(--learning-accent-soft);
+  color: var(--learning-accent-strong);
+}
+
+.training-page .training-comparison tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.training-page .training-comparison :is(th, td):last-child {
+  border-right: 0;
+}
+
+.training-page .training-recommendation {
+  background: var(--learning-accent-soft);
+  border-left: 3px solid var(--learning-accent);
+  margin: 1.25rem 0 0;
+  padding: 1rem 1.25rem;
+}
+
+.training-page .training-back-link {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.training-page .training-course-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  list-style: none;
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+}
+
+.training-page .training-course-highlights li {
+  background: var(--learning-accent-soft);
+  border: 1px solid var(--learning-border);
+  border-radius: 999px;
+  color: var(--learning-accent-strong);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  padding: .5rem .8rem;
+}
+
+.training-page .training-course-nav {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+}
+
+.training-page .training-course-nav .container {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: .9rem;
+  padding-top: .9rem;
+}
+
+.training-page .training-course-nav a {
+  color: var(--color-text-muted);
+  flex: 0 0 auto;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.training-page .training-course-nav a:hover {
+  color: var(--learning-accent-strong);
+}
+
+.training-page :is(#overview, #outcomes, #syllabus, #course-facts, #fees) {
+  scroll-margin-top: 1rem;
+}
+
+.training-page .training-wide-reading {
+  margin: 0 auto;
+  max-width: 72rem;
+}
+
+.training-page .training-section-heading {
+  margin-bottom: 2rem;
+}
+
+.training-page .training-section-heading h2 {
+  margin-bottom: .75rem;
+}
+
+.training-page .training-section-heading > p:last-child {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.training-page .training-fit-grid,
+.training-page .training-outcome-grid,
+.training-page .training-syllabus-grid,
+.training-page .training-fee-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.training-page .training-fit-grid,
+.training-page .training-outcome-grid,
+.training-page .training-syllabus-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.training-page .training-info-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  padding: 1.5rem;
+}
+
+.training-page .training-info-card--fit {
+  border-top: 3px solid var(--learning-accent);
+}
+
+.training-page .training-info-card h3,
+.training-page .training-note h3 {
+  margin-bottom: .75rem;
+}
+
+.training-page .training-info-card ul,
+.training-page .training-syllabus-grid article ul {
+  list-style: disc;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.training-page .training-info-card li,
+.training-page .training-syllabus-grid article li {
+  line-height: 1.55;
+  margin-bottom: .45rem;
+}
+
+.training-page .training-note {
+  background: var(--learning-accent-soft);
+  border-left: 4px solid var(--learning-accent);
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.training-page .training-outcome-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.training-page .training-outcome-grid li {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: .65rem;
+  line-height: 1.6;
+  padding: 1.25rem 1.25rem 1.25rem 3rem;
+  position: relative;
+}
+
+.training-page .training-outcome-grid li::before {
+  color: var(--learning-accent-strong);
+  content: '\2713';
+  font-weight: 700;
+  left: 1.25rem;
+  position: absolute;
+}
+
+.training-page .training-outcome-note {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin: 1.25rem 0 0;
+}
+
+.training-page .training-syllabus-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.training-page .training-syllabus-grid article {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  height: 100%;
+  padding: 1.5rem;
+}
+
+.training-page .training-syllabus-grid article h3 {
+  font-size: 1.3rem;
+  margin-bottom: .65rem;
+}
+
+.training-page .training-syllabus-grid article > p:not(.training-module-number) {
+  color: var(--color-text-muted);
+}
+
+.training-page .training-module-number {
+  color: var(--learning-accent-strong);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  margin-bottom: .65rem;
+  text-transform: uppercase;
+}
+
+.training-page .training-project-callout {
+  align-items: center;
+  background: var(--learning-accent-strong);
+  border-radius: .75rem;
+  color: #fff;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  margin-top: 1rem;
+  padding: 1.5rem;
+}
+
+.training-page .training-project-callout :is(h3, p) {
+  color: inherit;
+  margin-bottom: 0;
+}
+
+.training-page .training-project-callout .learning-status-marker {
+  color: #ccfbf1;
+  margin-bottom: .35rem;
+}
+
+.training-page .training-facts--course {
+  display: grid;
+  gap: 0 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.training-page .training-facts--course div {
+  align-items: flex-start;
+}
+
+.training-page .training-facts--course dd {
+  max-width: 65%;
+}
+
+.training-page .training-fee-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 1.5rem;
+}
+
+.training-page .training-fee-grid div {
+  background: var(--learning-accent-soft);
+  border: 1px solid var(--learning-border);
+  border-radius: .65rem;
+  padding: 1.25rem;
+}
+
+.training-page .training-fee-grid dt {
+  color: var(--learning-accent-strong);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.training-page .training-fee-grid dd {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: .35rem 0 0;
+}
+
+.training-page .training-policy-copy {
+  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 0;
+}
+
+.software-signal-learning .learner-private-header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.software-signal-learning .learner-private-user {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .training-page .training-comparison-scroll-hint {
+    display: block;
+  }
+
+  .training-page .training-comparison .table-scroll {
+    margin-top: .5rem;
+  }
+
+  .training-page .training-comparison table {
+    min-width: 42rem;
+  }
+
+  .training-page .training-course-highlights,
+  .training-page .training-course-highlights li {
+    width: 100%;
+  }
+
+  .training-page .training-course-highlights li {
+    border-radius: .5rem;
+  }
+
+  .training-page .training-fit-grid,
+  .training-page .training-outcome-grid,
+  .training-page .training-syllabus-grid,
+  .training-page .training-fee-grid,
+  .training-page .training-project-callout,
+  .training-page .training-facts--course {
+    grid-template-columns: 1fr;
+  }
+
+  .training-page .training-facts--course dd {
+    max-width: 60%;
+  }
+
+  .software-signal-learning .header-inner,
+  .software-signal-learning .learner-session {
+    align-items: flex-start;
+  }
+
+  .software-signal-learning .learner-private-user {
+    flex-basis: 100%;
+    max-width: 100%;
+    text-align: right;
+  }
+
+  .software-signal-learning .learner-session {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+  }
+
+  .software-signal-learning .learner-session span {
+    max-width: 11rem;
+    overflow-wrap: anywhere;
+  }
+
+  .software-signal-learning .learning-actions,
+  .software-signal-learning .learning-actions .btn,
+  .software-signal-learning .learner-form-actions .btn {
+    width: 100%;
+  }
+}

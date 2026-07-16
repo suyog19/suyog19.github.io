@@ -584,6 +584,13 @@
   padding: 2.5rem;
 }
 
+.contact-learning-context {
+  background: var(--color-surface);
+  border-left: 3px solid var(--color-text);
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+}
+
 .contact-context-panel {
   padding-top: 1.5rem;
   border-top: 1px solid var(--color-border);
@@ -3497,6 +3504,86 @@
     max-height: none;
   }
 }
+
+/* Gate 1 application */
+.application-main {
+  padding: 4rem var(--container-px);
+}
+
+.application-shell {
+  max-width: 48rem;
+  padding: 2.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-bg);
+}
+
+.application-shell form {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.application-shell fieldset {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+}
+
+.application-shell legend {
+  padding: 0 .5rem;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.application-check {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .75rem;
+  align-items: start;
+  line-height: 1.55;
+}
+
+.application-check input {
+  margin-top: .3rem;
+}
+
+.application-check > span {
+  min-width: 0;
+}
+
+.application-disclosure {
+  padding: 1rem;
+  border-left: 3px solid #b91c1c;
+  background: var(--color-surface);
+}
+
+.application-result {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #bbf7d0;
+  border-radius: .75rem;
+  background: #f0fdf4;
+}
+
+.application-result .btn {
+  margin-top: 1rem;
+}
+
+@media (max-width: 600px) {
+  .application-main {
+    padding: 2rem 1rem;
+  }
+
+  .application-shell,
+  .application-shell fieldset {
+    padding: 1.25rem;
+  }
+}
 /* ============================================================
    Vendor Onboarding RAG Demo
    ============================================================ */
@@ -4562,6 +4649,13 @@
   color: var(--color-text);
   border-bottom-color: var(--color-text);
 }
+.admin-training-courses, .admin-training-cohorts { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.admin-training-card { padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-bg); }
+.admin-training-card .btn { margin: .75rem .5rem 0 0; }
+.admin-training-cohort-editor { margin: 2rem 0; padding: 1.5rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-surface); }
+.admin-cohort-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.admin-cohort-form .admin-form-actions { grid-column: 1 / -1; }
+@media (max-width: 700px) { .admin-cohort-form { grid-template-columns: 1fr; } }
 
 .admin-view-panel {
   min-width: 0;
@@ -4837,5 +4931,417 @@
 
   .admin-user-pill {
     max-width: min(14rem, 58vw);
+  }
+}
+.learner-page {
+  min-height: 100vh;
+  background: var(--color-surface);
+}
+
+.learner-page [hidden] {
+  display: none !important;
+}
+
+.training-hero .eyebrow,
+.learner-page .eyebrow,
+.admin-page .eyebrow {
+  opacity: 1;
+}
+
+.learner-auth-main {
+  min-height: calc(100vh - 76px);
+  display: grid;
+  place-items: center;
+  padding: 3rem var(--container-px);
+}
+
+.learner-auth-card {
+  width: min(100%, 32rem);
+  padding: 2.5rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  box-shadow: 0 16px 45px rgba(17, 24, 39, .08);
+}
+
+.learner-auth-card h1,
+.learner-shell h1 {
+  margin-bottom: 1rem;
+}
+
+.learner-auth-card > p:not(.eyebrow) {
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.learner-auth-card form {
+  display: grid;
+  gap: 1rem;
+}
+
+.learner-status,
+.learner-shell-status {
+  margin: 1rem 0;
+  padding: .875rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: .5rem;
+}
+
+.learner-status.is-error {
+  color: #991b1b;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.learner-status.is-success {
+  color: #166534;
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+}
+
+.learner-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+}
+
+.learner-text-button {
+  border: 0;
+  background: transparent;
+  color: #b91c1c;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: .75rem .25rem;
+}
+
+.learner-session {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: .875rem;
+}
+
+.learner-shell,
+.learner-shell-status {
+  margin-top: 4rem;
+}
+
+.learner-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1rem;
+}
+
+.learner-error-actions[hidden] {
+  display: none;
+}
+
+.learner-shell {
+  padding: 2.5rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+}
+
+.learner-current-action {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.learner-current-action .btn {
+  margin-top: 1rem;
+}
+
+.learner-application-list {
+  display: grid;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.learner-application-card {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  background: var(--color-surface);
+}
+
+.learner-application-card--waiting {
+  border-left: 4px solid #0f766e;
+  background: #f0fdfa;
+}
+
+.learner-application-progress {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .5rem;
+  margin: 1.25rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.learner-application-progress__step {
+  position: relative;
+  padding-top: .75rem;
+  color: var(--color-text-muted);
+  border-top: 3px solid var(--color-border);
+  font-size: .875rem;
+}
+
+.learner-application-progress__step--complete,
+.learner-application-progress__step--current {
+  color: var(--color-text);
+  border-color: #0f766e;
+}
+
+.learner-application-progress__step--current {
+  font-weight: 600;
+}
+
+.learner-offer-note {
+  margin-top: 1rem;
+}
+
+.learner-communication-warning {
+  margin-top: 1rem;
+  padding: .75rem;
+  color: #991b1b;
+  background: #fef2f2;
+  border-left: 3px solid #b91c1c;
+}
+
+.learner-profile {
+  margin-top: 2rem;
+}
+
+.learner-profile dl {
+  display: grid;
+  grid-template-columns: minmax(10rem, .5fr) 1fr;
+  gap: .75rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.learner-profile dt {
+  color: var(--color-text-muted);
+}
+
+.learner-profile dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.learner-support-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.learner-payment-main { padding-top: 4rem; padding-bottom: 6rem; }
+.learner-payment-panel { max-width: 760px; }
+.learner-payment-state,
+.learner-payment-details,
+.learner-payment-safety { margin-top: 1.5rem; }
+.learner-payment-state { padding: 1.5rem; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: .75rem; }
+.learner-payment-state h2 { margin-bottom: .5rem; }
+.learner-payment-details { display: grid; grid-template-columns: minmax(9rem, 1fr) 2fr; border-top: 1px solid var(--color-border); }
+.learner-payment-details dt,
+.learner-payment-details dd { padding: .85rem 0; border-bottom: 1px solid var(--color-border); }
+.learner-payment-details dt { color: var(--color-text-muted); }
+.learner-payment-details dd { margin: 0; font-weight: 500; }
+.learner-payment-action { margin-top: 2rem; }
+.learner-payment-acknowledgement { display: flex; gap: .65rem; align-items: flex-start; max-width: 44rem; margin-bottom: 1rem; }
+.learner-payment-acknowledgement input { margin-top: .25rem; flex: 0 0 auto; }
+.learner-payment-action [aria-disabled="true"] { opacity: .55; pointer-events: none; }
+.learner-payment-action .field-hint { margin-top: .75rem; max-width: 42rem; }
+.learner-payment-safety { color: var(--color-text-muted); max-width: 44rem; }
+.learner-change-form { display: grid; gap: 1rem; max-width: 44rem; margin-top: 2rem; }
+.learner-change-form fieldset { display: grid; gap: .65rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: .75rem; }
+.learner-change-form fieldset label { display: flex; gap: .6rem; align-items: flex-start; }
+.learner-change-form select,
+.learner-change-form textarea { width: 100%; padding: .8rem; border: 1px solid var(--color-border); border-radius: .4rem; background: var(--color-background); color: var(--color-text); }
+.learner-change-form textarea { min-height: 8rem; resize: vertical; }
+.admin-payment-detail { overflow-wrap: anywhere; }
+.admin-payment-evidence,
+.admin-payment-command { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--color-border); }
+.admin-payment-evidence pre { max-height: 18rem; overflow: auto; padding: .75rem; background: var(--color-surface); white-space: pre-wrap; }
+.admin-payment-command-form { display: grid; gap: .8rem; margin-top: .75rem; }
+.admin-payment-command-form textarea { min-height: 5rem; }
+
+@media (max-width: 640px) {
+  .learner-payment-main { padding-top: 2.5rem; }
+  .learner-payment-details { grid-template-columns: 1fr; }
+  .learner-payment-details dt { padding-bottom: .2rem; border-bottom: 0; }
+  .learner-payment-details dd { padding-top: 0; }
+}
+
+@media (max-width: 600px) {
+  .learner-auth-card {
+    padding: 1.5rem;
+  }
+
+  .learner-session span {
+    display: none;
+  }
+
+  .learner-form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .learner-profile dl {
+    grid-template-columns: 1fr;
+    gap: .25rem;
+  }
+
+  .learner-profile dd {
+    margin-bottom: .75rem;
+  }
+
+  .learner-application-progress {
+    grid-template-columns: 1fr;
+  }
+
+  .learner-application-progress__step {
+    padding: .2rem 0 .2rem .75rem;
+    border-top: 0;
+    border-left: 3px solid var(--color-border);
+  }
+
+  .learner-application-progress__step--complete,
+  .learner-application-progress__step--current {
+    border-color: #0f766e;
+  }
+}
+
+/* Gate 1 training experience */
+.training-hero {
+  padding: 7rem 0 5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.training-reading {
+  max-width: 52rem;
+}
+
+.training-hero h1,
+.training-course-header h1 {
+  max-width: 48rem;
+  margin-bottom: 1.25rem;
+  font-size: clamp(2.5rem, 7vw, 4.75rem);
+  line-height: 1.05;
+}
+
+.training-lead {
+  max-width: 46rem;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  line-height: 1.7;
+}
+
+.training-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 2rem;
+}
+
+.training-status {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: .65rem .9rem;
+  border: 1px solid var(--color-border);
+  border-radius: .4rem;
+  background: var(--color-surface);
+  font-weight: 600;
+}
+
+.training-section {
+  padding: var(--section-py) 0;
+}
+
+.training-section--surface {
+  background: var(--color-surface);
+}
+
+.training-course-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.training-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  background: var(--color-bg);
+}
+
+.training-card h3 {
+  margin-bottom: .75rem;
+  font-size: 1.75rem;
+}
+
+.training-card > p:not(.training-kicker) {
+  color: var(--color-text-muted);
+}
+
+.training-kicker {
+  margin-bottom: .75rem;
+  color: #b91c1c;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.training-facts {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.training-facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.training-facts dt {
+  color: var(--color-text-muted);
+}
+
+.training-facts dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.training-checklist {
+  margin: 1.5rem 0;
+  padding-left: 1.25rem;
+  list-style: disc;
+}
+
+.training-checklist li {
+  margin-bottom: .75rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 720px) {
+  .training-hero {
+    padding: 4.5rem 0 3.5rem;
+  }
+
+  .training-course-grid {
+    grid-template-columns: 1fr;
   }
 }

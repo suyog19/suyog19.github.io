@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Private Software Signal deposit status and payment action for authenticated learners.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Deposit status | Suyog Joshi</title>
+  <link rel="canonical" href="https://suyogjoshi.com/my-learning/payment/">
+  <meta property="og:title" content="Deposit status | Suyog Joshi">
+  <meta property="og:description" content="Private Software Signal deposit status and payment action for authenticated learners.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://suyogjoshi.com/my-learning/payment/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Deposit status | Suyog Joshi">
+  <meta name="twitter:description" content="Private Software Signal deposit status and payment action for authenticated learners.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/pages.css">
+  <link rel="stylesheet" href="../../css/learning.css">
+  <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PKL56GJ38H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PKL56GJ38H', { page_location: 'https://suyogjoshi.com/my-learning/payment/', page_path: '/my-learning/payment/' });
+  </script>
+</head>
+<body class="learner-page software-signal-learning">
+  <header class="site-header"><div class="container header-inner">
+    <a href="../../index.html" class="brand-lockup"><span class="brand-mark" aria-hidden="true">SJ</span><span class="brand-text">suyogjoshi.com</span></a>
+    <div class="learner-private-header"><span id="learner-page-user" class="learner-private-user" hidden></span><a class="btn btn-secondary" href="../">Back to My Learning</a><button id="learner-page-logout" class="btn btn-secondary" type="button">Log out</button></div>
+  </div></header>
+  <main class="container learner-payment-main">
+    <div id="payment-status" class="learner-shell-status" role="status" aria-live="polite">Restoring your secure session…</div>
+    <section id="payment-panel" class="learner-payment-panel" hidden aria-labelledby="payment-title">
+      <p class="learning-eyebrow">Software Signal Learning · Payment</p>
+      <h1 id="payment-title">Deposit status</h1>
+      <p>Review the deposit for your course and check its current confirmation status.</p>
+      <div id="payment-state" class="learner-payment-state learning-status-card" aria-live="polite"></div>
+      <div id="payment-action" class="learner-payment-action"></div>
+      <details class="learning-details"><summary>View payment details</summary><dl id="payment-details" class="learner-payment-details"></dl></details>
+      <p class="learner-payment-safety">A return from the payment page is not proof that payment completed. Wait for the confirmed status shown here before taking another action.</p>
+      <nav class="learner-support-links" aria-label="Payment support">
+        <a href="../../contact/?topic=learning-payment-review">Contact support</a>
+        <a href="../../training/policies/">Policies and privacy</a>
+        <a href="../../training/policies/#support-and-grievance-process">Grievance process</a>
+      </nav>
+    </section>
+    <div id="payment-error-actions" class="learner-error-actions" hidden>
+      <button id="payment-retry" class="btn btn-primary btn-learning" type="button">Check payment status</button>
+      <a class="btn btn-secondary" href="../../contact/?topic=learning-payment-review">Contact support</a>
+    </div>
+  </main>
+  <script src="../../js/training-release.js"></script>
+  <script src="../../js/learner-auth.js"></script>
+  <script src="../../js/learner-page-header.js"></script>
+  <script src="../../js/learner-payment.js"></script>
+</body>
+</html>

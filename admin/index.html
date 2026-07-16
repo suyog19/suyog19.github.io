@@ -34,7 +34,7 @@
 
   <header class="site-header admin-header">
     <div class="container header-inner">
-      <a href="../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+      <a href="../index.html" class="brand-lockup">
         <span class="brand-mark" aria-hidden="true">SJ</span>
         <span class="brand-text">suyogjoshi.com</span>
       </a>
@@ -111,6 +111,9 @@
           <div class="admin-tabs" role="tablist" aria-label="Admin views">
             <button class="admin-tab is-active" id="admin-messages-tab" type="button" role="tab" aria-selected="true" aria-controls="admin-messages-panel" data-admin-view="messages">Messages</button>
             <button class="admin-tab" id="admin-feedback-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-feedback-panel" data-admin-view="feedback">Feedback</button>
+            <button class="admin-tab" id="admin-training-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-training-panel" data-admin-view="training">Training</button>
+            <button class="admin-tab" id="admin-payments-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-payments-panel" data-admin-view="payments">Payments</button>
+            <button class="admin-tab" id="admin-gate3-tab" type="button" role="tab" aria-selected="false" aria-controls="admin-gate3-panel" data-admin-view="gate3">Gate 3</button>
           </div>
 
           <section class="admin-view-panel" id="admin-messages-panel" role="tabpanel" aria-labelledby="admin-messages-tab">
@@ -129,6 +132,16 @@
                 <p class="admin-empty">Select a message to view its details.</p>
               </article>
             </div>
+          </section>
+          <section class="admin-view-panel" id="admin-gate3-panel" role="tabpanel" aria-labelledby="admin-gate3-tab" hidden>
+            <div class="admin-view-toolbar"><div><h2>Gate 3 cohort decision</h2><p>Authoritative threshold, eligibility, schedule, commercial policy and explicit decision commands.</p></div><button type="button" class="btn btn-secondary" id="admin-refresh-gate3">Refresh</button></div>
+            <p class="admin-api-note">The backend derives eligibility, threshold, capacity and allowed commands for the current environment; no Gate 4 access or provider resource link is published.</p>
+            <div class="admin-split"><div class="admin-list-pane"><div id="admin-gate3-cohorts" class="admin-list" aria-live="polite"></div></div><article id="admin-gate3-detail" class="admin-detail-pane admin-payment-detail" aria-live="polite"><p class="admin-empty">Select a cohort to review.</p></article></div>
+          </section>
+          <section class="admin-view-panel" id="admin-payments-panel" role="tabpanel" aria-labelledby="admin-payments-tab" hidden>
+            <div class="admin-view-toolbar"><div><h2>Gate 2–3 payments and changes</h2><p>Deposits, remaining fees, credits, deadlines, captures, learner requests, refunds, reconciliation and communication evidence for the current environment.</p></div><button type="button" class="btn btn-secondary" id="admin-refresh-payments">Refresh</button></div>
+            <p class="admin-api-note">All amounts and states below are backend projections. The browser does not allocate money, reserve seats, calculate credit, or prove provider completion.</p>
+            <div class="admin-split"><div class="admin-list-pane"><div id="admin-payments-list" class="admin-list" aria-live="polite"></div></div><article id="admin-payment-detail" class="admin-detail-pane admin-payment-detail" aria-live="polite"><p class="admin-empty">Select a payment obligation to review.</p></article></div>
           </section>
 
           <section class="admin-view-panel" id="admin-feedback-panel" role="tabpanel" aria-labelledby="admin-feedback-tab" hidden>
@@ -178,6 +191,28 @@
               </article>
             </div>
           </section>
+
+          <section class="admin-view-panel" id="admin-training-panel" role="tabpanel" aria-labelledby="admin-training-tab" hidden>
+            <div class="admin-view-toolbar"><div><h2>Training</h2><p>Seeded course publication and Gate 1 cohort setup.</p></div><button type="button" class="btn btn-secondary" id="admin-refresh-training">Refresh</button></div>
+            <div id="admin-training-courses" class="admin-training-courses" aria-live="polite"></div>
+            <section class="admin-training-cohort-editor" aria-labelledby="admin-cohort-editor-title"><h3 id="admin-cohort-editor-title">Create or update cohort</h3>
+              <form id="admin-cohort-form" class="admin-cohort-form" novalidate>
+                <input type="hidden" id="admin-cohort-id"><input type="hidden" id="admin-cohort-version">
+                <div class="form-field"><label for="admin-cohort-course">Course</label><select id="admin-cohort-course" required></select></div>
+                <div class="form-field"><label for="admin-cohort-label">Cohort label/code</label><input id="admin-cohort-label" maxlength="120" required></div>
+                <div class="form-field"><label for="admin-cohort-timezone">Timezone</label><input id="admin-cohort-timezone" value="Asia/Kolkata" required></div>
+                <div class="form-field"><label for="admin-cohort-capacity">Maximum capacity</label><input id="admin-cohort-capacity" type="number" min="1" required></div>
+                <div class="form-field"><label for="admin-cohort-minimum">Minimum cohort size</label><input id="admin-cohort-minimum" type="number" min="1" required></div>
+                <div class="form-field"><label for="admin-cohort-start">Tentative start date</label><input id="admin-cohort-start" type="date"></div>
+                <div class="form-field"><label for="admin-cohort-end">Tentative end date</label><input id="admin-cohort-end" type="date"></div>
+                <div class="form-field"><label for="admin-registration-open">Registration opens on</label><input id="admin-registration-open" type="date" required></div>
+                <div class="form-field"><label for="admin-registration-close">Registration closes on</label><input id="admin-registration-close" type="date" required></div>
+                <div class="admin-form-actions"><button class="btn btn-primary" type="submit">Save cohort</button><button class="btn btn-secondary" id="admin-cohort-cancel" type="button">Clear</button></div>
+              </form>
+            </section>
+            <div id="admin-training-cohorts" class="admin-training-cohorts" aria-live="polite"></div>
+            <section class="admin-training-applications" aria-labelledby="admin-training-applications-title"><div class="admin-view-toolbar"><div><h3 id="admin-training-applications-title">Applications</h3><p>Current actionable applications and communication status.</p></div><button type="button" class="btn btn-secondary" id="admin-refresh-applications">Refresh applications</button></div><form id="admin-application-filters" class="admin-filter-form"><label>Status <select name="status"><option value="">All current</option><option>NEW</option><option>UNDER_REVIEW</option><option>ACCEPTED</option><option>WAITLISTED</option><option>RECOMMENDED</option><option>DECLINED</option><option>WITHDRAWN</option></select></label><label>Course <select name="courseId" id="admin-application-course-filter"><option value="">All courses</option></select></label><label>Cohort <select name="cohortId" id="admin-application-cohort-filter"><option value="">All cohorts</option></select></label><button class="btn btn-secondary" type="submit">Apply filters</button></form><div class="admin-split"><div class="admin-list-pane"><div id="admin-application-list" class="admin-list" aria-live="polite"></div></div><article id="admin-application-detail" class="admin-detail-pane" aria-live="polite"><p class="admin-empty">Select an application to review.</p></article></div></section>
+          </section>
         </section>
       </div>
     </section>
@@ -191,6 +226,9 @@
     </div>
   </footer>
 
+  <script src="../js/admin-training.js"></script>
+  <script src="../js/admin-payments.js"></script>
+  <script src="../js/admin-gate3.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>

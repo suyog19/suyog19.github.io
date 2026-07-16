@@ -1,0 +1,137 @@
+(function () {
+  'use strict';
+  const auth = window.sjLearnerAuth;
+  const destination = auth.safeDestination(new URLSearchParams(window.location.search).get('continue'));
+  const emailForm = document.getElementById('learner-email-form');
+  const otpForm = document.getElementById('learner-otp-form');
+  const email = document.getElementById('learner-email');
+  const otp = document.getElementById('learner-otp');
+  const status = document.getElementById('learner-auth-status');
+  const title = document.getElementById('learner-auth-title');
+  const intro = document.getElementById('learner-auth-intro');
+  const resend = document.getElementById('learner-resend');
+  const changeEmail = document.getElementById('learner-change-email');
+  let emailId = '';
+  let pending = false;
+  let registrationAttempted = false;
+
+  function message(text, tone) {
+    status.textContent = text || '';
+    status.className = 'learner-status' + (tone ? ' is-' + tone : '');
+    status.hidden = !text;
+  }
+
+  function busy(value) {
+    pending = value;
+    Array.from(document.querySelectorAll('.learner-auth-card button')).forEach((button) => { button.disabled = value; });
+  }
+
+  function friendly(error) {
+    if (error.status === 401 && error.body && ['OTP_EXPIRED', 'OTP_SUPERSEDED'].includes(error.body.error)) return 'This code is no longer valid. Send a new code to continue.';
+    if (error.status === 401) return 'That code could not be verified. Check the code or request a new one.';
+    if (error.status === 403) return 'This learner account cannot be used right now. Contact support for help.';
+    if (!error.status) return 'We could not reach the service. Check your connection and try again.';
+    if (error.status === 429) return 'Too many attempts. Please wait before trying again.';
+    return 'We could not complete that request. Please try again.';
+  }
+
+  function maskEmail(value) {
+    const parts = String(value || '').split('@');
+    if (parts.length !== 2) return 'your email address';
+    const local = parts[0];
+    return (local.length <= 2 ? local[0] || '*' : local.slice(0, 2)) + '***@' + parts[1];
+  }
+
+  function showEmailStep() {
+    title.textContent = 'Continue with email';
+    intro.textContent = 'We will send a one-time code. New and returning learners use the same secure step.';
+  }
+
+  function showCodeStep() {
+    title.textContent = 'Enter the code we sent';
+    intro.textContent = 'We sent a code to ' + maskEmail(emailId) + '. The code is time-limited; request a new one if it is no longer accepted.';
+  }
+
+  async function sendCode() {
+    if (pending) return;
+    busy(true);
+    message('', '');
+    try {
+      if (!registrationAttempted) {
+        try {
+          await auth.request('/auth/register', {
+            method: 'POST', body: JSON.stringify({ emailId }),
+          });
+        } catch (_) {
+          // Registration and OTP request are deliberately indistinguishable.
+          // Always continue to the generic OTP endpoint so account state cannot
+          // be inferred from client request count, timing, or status handling.
+        }
+        registrationAttempted = true;
+      }
+      await auth.request('/auth/otp/request', { method: 'POST', body: JSON.stringify({ emailId }) });
+      emailForm.hidden = true;
+      otpForm.hidden = false;
+      showCodeStep();
+      otp.value = '';
+      otp.focus();
+      message('Enter the code we sent. The code is time-limited; request a new one if it is no longer accepted.', 'success');
+    } catch (error) { message(friendly(error), 'error'); }
+    finally { busy(false); }
+  }
+
+  emailForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    emailId = email.value.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailId)) {
+      message('Enter a valid email address.', 'error');
+      email.focus();
+      return;
+    }
+    await sendCode();
+  });
+
+  otpForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const code = otp.value.trim();
+    if (!/^\d{6}$/.test(code)) {
+      message('Enter the 6 digit code from your email.', 'error');
+      otp.focus();
+      return;
+    }
+    busy(true);
+    try {
+      const data = await auth.request('/auth/otp/verify', {
+        method: 'POST', body: JSON.stringify({ emailId, otp: code }),
+      });
+      auth.saveSession(data.accessToken, data.user);
+      window.location.assign(destination);
+    } catch (error) {
+      otp.value = '';
+      if (error.status === 403) title.textContent = 'This learner account cannot be used right now';
+      message(friendly(error), 'error');
+      otp.focus();
+    } finally { busy(false); }
+  });
+
+  resend.addEventListener('click', sendCode);
+  changeEmail.addEventListener('click', () => {
+    otpForm.hidden = true;
+    emailForm.hidden = false;
+    otp.value = '';
+    registrationAttempted = false;
+    message('', '');
+    showEmailStep();
+    showEmailStep();
+    email.focus();
+  });
+
+  (async function initialise() {
+    try {
+      if (await auth.restore()) window.location.replace(destination);
+    } catch (error) {
+      if (error.status && error.status !== 401 && error.status !== 403) message(friendly(error), 'error');
+    }
+    email.focus();
+  }());
+}());

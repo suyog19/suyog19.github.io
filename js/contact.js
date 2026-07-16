@@ -4,12 +4,46 @@
 
   if (!form || !statusEl) return;
 
-  const API_BASE_URL =
-    (window.location.hostname === 'dev.suyogjoshi.com' ||
-     window.location.hostname === 'localhost' ||
-     window.location.hostname === '127.0.0.1')
-      ? 'https://api-dev.suyogjoshi.com'
-      : 'https://api.suyogjoshi.com';
+  const LEARNING_CONTEXTS = Object.freeze({
+    'learning-course-selection': {
+      note: 'Course selection question: explain your current Python experience and what you want to learn. Do not include passwords or private account information.',
+      prompt: 'I would like help choosing the right Software Signal course. My current Python experience and learning goal are: ',
+    },
+    'learning-application': {
+      note: 'Application help: describe the step that is blocked. Do not include a one-time code, access token or private application reference.',
+      prompt: 'I need help with my Software Signal application. The step that is blocked is: ',
+    },
+    'learning-payment-review': {
+      note: 'Payment review: do not pay again while review is pending. Describe what the page currently says; do not include card, bank, UPI PIN or full payment-reference details.',
+      prompt: 'My Software Signal payment status needs review. The current learner-facing status says: ',
+    },
+    'learning-course-access': {
+      note: 'Course access: your enrolment status is not changed by this message. Tell us which course and what access detail you expected; do not paste private meeting, file or payment links.',
+      prompt: 'My Software Signal enrolment is active and I need help with course access. I expected to see: ',
+    },
+  });
+
+  function applyLearningContext(search) {
+    const topic = new URLSearchParams(search || '').get('topic');
+    const context = LEARNING_CONTEXTS[topic];
+    if (!context) return false;
+    const box = document.getElementById('learning-contact-context');
+    const message = document.getElementById('message');
+    box.textContent = context.note;
+    box.hidden = false;
+    if (!message.value) message.value = context.prompt;
+    document.getElementById('message-hint').textContent = 'Add only the context needed to help. Remove anything sensitive before sending.';
+    return true;
+  }
+
+  function apiBaseUrl(hostname) {
+    if (hostname === 'dev.suyogjoshi.com' || hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1' || hostname === '[::1]') {
+      return 'https://api-dev.suyogjoshi.com';
+    }
+    if (hostname === 'suyogjoshi.com' || hostname === 'www.suyogjoshi.com') return 'https://api.suyogjoshi.com';
+    return '';
+  }
+  const API_BASE_URL = apiBaseUrl(window.location.hostname);
 
   function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -88,6 +122,12 @@
 
     if (!validate()) return;
 
+    if (!API_BASE_URL) {
+      statusEl.textContent = 'This form is unavailable on this host. Please use suyogjoshi.com or email contact@suyogjoshi.com.';
+      statusEl.classList.add('is-error');
+      return;
+    }
+
     const submitBtn = form.querySelector('[type="submit"]');
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
@@ -136,4 +176,6 @@
       clearError(field.id);
     });
   });
+  applyLearningContext(window.location.search);
+  window.sjContact = { apiBaseUrl, applyLearningContext, isValidEmail };
 }());
