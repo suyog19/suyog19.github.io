@@ -284,6 +284,24 @@
   </url>
 
   <url>
+    <loc>https://suyogjoshi.com/training/practical-machine-learning-foundations/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/training/generative-ai-application-development/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/training/engineering-reliable-ai-systems/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://suyogjoshi.com/training/policies/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

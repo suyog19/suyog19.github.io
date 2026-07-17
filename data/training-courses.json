@@ -1,37 +1,11 @@
 {
-  "schemaVersion": "1.0.0",
-  "disclosureVersion": "1.0.0",
-  "provider": {
-    "name": "Suyog Joshi",
-    "brand": "Software Signal",
-    "location": "Pune, Maharashtra, India",
-    "contact": "contact@suyogjoshi.com"
-  },
+  "schemaVersion": "2.0.0",
+  "provider": { "name": "Suyog Joshi", "brand": "Software Signal Learning", "location": "Pune, Maharashtra, India", "contact": "contact@suyogjoshi.com" },
   "courses": [
-    {
-      "courseId": "crs_python_foundations",
-      "slug": "python-foundations-ai-data",
-      "title": "Python Foundations for AI and Data",
-      "summary": "Build practical Python foundations for AI and data work.",
-      "feeAmountPaise": 400000,
-      "depositAmountPaise": 100000,
-      "currency": "INR",
-      "minimumCohortSize": 10,
-      "certificateAvailable": true,
-      "scheduleStatus": "TBD"
-    },
-    {
-      "courseId": "crs_applied_python",
-      "slug": "applied-python-ai-ml",
-      "title": "Applied Python for AI and Machine Learning",
-      "summary": "Apply Python to practical AI and machine-learning workflows.",
-      "feeAmountPaise": 800000,
-      "depositAmountPaise": 200000,
-      "currency": "INR",
-      "minimumCohortSize": 5,
-      "certificateAvailable": true,
-      "scheduleStatus": "TBD"
-    }
+    { "courseId": "crs_python_foundations", "stage": 1, "slug": "python-foundations-ai-data", "title": "Python Foundations for Data Science", "shortCapability": "Build, debug, validate, transform, and summarise structured data using a small Python program.", "learnerFit": "New to programming, nearly new, or rebuilding weak Python fundamentals.", "lifecycleStatus": "launched", "cohortAvailability": "notify-me", "detailPath": "/training/python-foundations-ai-data/", "primaryActionLabel": "View course details", "feeAmountPaise": 400000, "depositAmountPaise": 100000, "currency": "INR" },
+    { "courseId": "crs_applied_python", "stage": 2, "slug": "applied-python-ai-ml", "title": "Applied Data Analysis with Python", "shortCapability": "Clean, explore, visualise, and explain an unfamiliar tabular dataset using reproducible workflows.", "learnerFit": "Comfortable with variables, conditions, loops, collections, functions, files, and basic debugging.", "lifecycleStatus": "launched", "cohortAvailability": "notify-me", "detailPath": "/training/applied-python-ai-ml/", "primaryActionLabel": "View course details", "feeAmountPaise": 800000, "depositAmountPaise": 200000, "currency": "INR" },
+    { "courseId": "crs_ml_foundations", "stage": 3, "slug": "practical-machine-learning-foundations", "title": "Practical Machine Learning Foundations", "shortCapability": "Build, evaluate, and critique a predictive model through honest baselines and error analysis.", "learnerFit": "Able to independently clean, explore, and visualise tabular datasets.", "lifecycleStatus": "pipeline", "cohortAvailability": "register-interest", "detailPath": "/training/practical-machine-learning-foundations/", "primaryActionLabel": "Preview course", "interestKey": "practical-machine-learning-foundations" },
+    { "courseId": "crs_genai_apps", "stage": 4, "slug": "generative-ai-application-development", "title": "Generative AI Application Development", "shortCapability": "Build grounded, structured, testable applications around language models, retrieval, and bounded tools.", "learnerFit": "Comfortable writing Python applications and working with APIs, JSON, error handling, testing, and Git.", "lifecycleStatus": "pipeline", "cohortAvailability": "register-interest", "detailPath": "/training/generative-ai-application-development/", "primaryActionLabel": "Preview course", "interestKey": "generative-ai-application-development" },
+    { "courseId": "crs_reliable_ai", "stage": 5, "slug": "engineering-reliable-ai-systems", "title": "Engineering Reliable AI Systems", "shortCapability": "Engineer an AI workflow with operational controls for security, observability, maintenance, and governance.", "learnerFit": "Already built an AI or ML application, with strong software-engineering or platform foundations.", "lifecycleStatus": "pipeline", "cohortAvailability": "register-interest", "detailPath": "/training/engineering-reliable-ai-systems/", "primaryActionLabel": "Preview course", "interestKey": "engineering-reliable-ai-systems" }
   ]
 }
-
