@@ -117,7 +117,7 @@ test('renderer shows only explicit offers, safe recommendations, and failed deli
       communication: { status: 'FAILED' },
       decision: {
         recommendedCourse: {
-          title: 'Applied Python', href: '/training/applied-python-ai-ml/',
+          title: 'Applied Python', href: '/training/applied-data-analysis-with-python/',
         },
       },
     }],
@@ -127,7 +127,7 @@ test('renderer shows only explicit offers, safe recommendations, and failed deli
   assert.doesNotMatch(text, /cohort offer is available/);
   assert.match(text, /View recommended course/);
   assert.match(text, /application status shown above is unchanged/);
-  assert.ok(findByHref(card, '/training/applied-python-ai-ml/'));
+  assert.ok(findByHref(card, '/training/applied-data-analysis-with-python/'));
 });
 
 test('renderer shows an offer only for the backend OFFERED state', () => {

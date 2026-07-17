@@ -13,9 +13,13 @@ function response(body, ok = true, status = ok ? 200 : 500) {
 function harness(hostname, replies) {
   const status = { textContent: '' };
   const action = { hidden: true };
+  const closedAction = { hidden: false };
   const root = {
-    dataset: { courseId: 'crs_python_foundations', courseSlug: 'python-foundations-ai-data' },
-    querySelector(selector) { return selector.includes('status') ? status : action; },
+    dataset: { courseId: 'crs_python_foundations', courseSlug: 'python-foundations-for-data-science' },
+    querySelector(selector) {
+      if (selector.includes('status')) return status;
+      return selector.includes('closed-action') ? closedAction : action;
+    },
   };
   const calls = [];
   const context = {
@@ -26,7 +30,7 @@ function harness(hostname, replies) {
   };
   vm.runInNewContext(fs.readFileSync('js/training-release.js', 'utf8'), context);
   vm.runInNewContext(script, context);
-  return { action, calls, controller: context.window.sjTrainingAvailability, status };
+  return { action, calls, closedAction, controller: context.window.sjTrainingAvailability, status };
 }
 
 test('published course with an open cohort exposes the dev application action', async () => {
@@ -36,6 +40,7 @@ test('published course with an open cohort exposes the dev application action', 
   ]);
   await page.controller.initialise();
   assert.equal(page.action.hidden, false);
+  assert.equal(page.closedAction.hidden, true);
   assert.equal(page.status.textContent, 'Applications open for review');
   assert.equal(page.calls.length, 2);
 });
@@ -49,6 +54,7 @@ test('unpublished, closed, and failed responses remain unavailable', async () =>
     const page = harness('dev.suyogjoshi.com', replies);
     await page.controller.initialise();
     assert.equal(page.action.hidden, true);
+    assert.equal(page.closedAction.hidden, false);
     assert.notEqual(page.status.textContent, 'Applications open for review');
   }
 });

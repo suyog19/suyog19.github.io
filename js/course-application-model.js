@@ -1,8 +1,8 @@
 (function () {
   'use strict';
   const COURSES = {
-    crs_python_foundations: { slug: 'python-foundations-ai-data', title: 'Python Foundations for AI and Data' },
-    crs_applied_python: { slug: 'applied-python-ai-ml', title: 'Applied Python for AI and Machine Learning' },
+    crs_python_foundations: { slug: 'python-foundations-for-data-science', title: 'Python Foundations for Data Science' },
+    crs_applied_python: { slug: 'applied-data-analysis-with-python', title: 'Applied Data Analysis with Python' },
   };
   const ACKNOWLEDGEMENTS = [
     { documentId: 'software-signal-terms-privacy', version: '1.0.0' },

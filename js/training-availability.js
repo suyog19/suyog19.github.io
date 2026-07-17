@@ -6,6 +6,7 @@
 
   const status = root.querySelector('[data-course-availability-status]');
   const action = root.querySelector('[data-course-availability-action]');
+  const closedAction = root.querySelector('[data-course-availability-closed-action]');
   const courseId = root.dataset.courseId || '';
   const courseSlug = root.dataset.courseSlug || '';
 
@@ -23,6 +24,7 @@
   function render(open, message) {
     status.textContent = message;
     action.hidden = !open;
+    if (closedAction) closedAction.hidden = open;
   }
 
   function availabilityPresentation(items, courseId) {
