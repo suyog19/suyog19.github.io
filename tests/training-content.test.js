@@ -91,6 +91,22 @@ test('Python Foundations detail UX exposes anchored decision sections', () => {
   assert.match(html, /data-course-availability-action hidden/);
 });
 
+test('Python Foundations publishes issue 265 learner and commercial decision details', () => {
+  const html = fs.readFileSync('training/python-foundations-ai-data/index.html', 'utf8');
+  const landing = fs.readFileSync('training/index.html', 'utf8');
+  for (const value of ['₹4,000', '₹1,000', '₹3,000']) assert.match(landing, new RegExp(value));
+  for (const value of ['4,000', '1,000', '3,000']) assert.match(html, new RegExp(`(?:₹|&#8377;)${value}`));
+  assert.doesNotMatch(html + landing, /₹(?:40|10|30)(?!0)/);
+  for (const phrase of [
+    'This is not an AI course', 'What you will be able to build', 'Expense analyser',
+    'Data-quality checker', 'Command-line tracker', 'Learn with Suyog Joshi',
+    'more than 20 years', 'What makes this different from free tutorials',
+    'Get notified when applications open', 'Frequently asked questions',
+  ]) assert.match(html, new RegExp(phrase));
+  assert.match(html, /"price":"4000"/);
+  assert.match(html, /data-course-availability-closed-action/);
+});
+
 test('Applied Python publishes a concrete, bounded applied syllabus', () => {
   const html = fs.readFileSync('training/applied-python-ai-ml/index.html', 'utf8');
   const modules = html.match(/data-applied-syllabus-module/g) || [];

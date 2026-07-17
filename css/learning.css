@@ -236,7 +236,7 @@
   color: var(--learning-accent-strong);
 }
 
-.training-page :is(#overview, #outcomes, #syllabus, #course-facts, #fees) {
+.training-page :is(#overview, #projects, #experience, #instructor, #outcomes, #syllabus, #course-facts, #fees, #faq) {
   scroll-margin-top: 1rem;
 }
 
@@ -261,6 +261,8 @@
 
 .training-page .training-fit-grid,
 .training-page .training-outcome-grid,
+.training-page .training-project-grid,
+.training-page .training-difference-grid,
 .training-page .training-syllabus-grid,
 .training-page .training-fee-grid {
   display: grid;
@@ -269,8 +271,58 @@
 
 .training-page .training-fit-grid,
 .training-page .training-outcome-grid,
+.training-page .training-project-grid,
+.training-page .training-difference-grid,
 .training-page .training-syllabus-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.training-page .training-project-grid,
+.training-page .training-difference-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.training-page .training-project-grid li,
+.training-page .training-difference-grid li,
+.training-page .training-instructor {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  line-height: 1.6;
+  padding: 1.5rem;
+}
+
+.training-page .training-project-grid strong,
+.training-page .training-difference-grid strong {
+  color: var(--learning-accent-strong);
+  display: block;
+  margin-bottom: .35rem;
+}
+
+.training-page .training-instructor h2 {
+  margin-bottom: .75rem;
+}
+
+.training-page .training-faq {
+  border-top: 1px solid var(--color-border);
+}
+
+.training-page .training-faq details {
+  border-bottom: 1px solid var(--color-border);
+  padding: 1rem 0;
+}
+
+.training-page .training-faq summary {
+  color: var(--color-text);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.training-page .training-faq details p {
+  color: var(--color-text-muted);
+  margin: .75rem 0 0;
 }
 
 .training-page .training-info-card {
@@ -478,6 +530,8 @@
 
   .training-page .training-fit-grid,
   .training-page .training-outcome-grid,
+  .training-page .training-project-grid,
+  .training-page .training-difference-grid,
   .training-page .training-syllabus-grid,
   .training-page .training-fee-grid,
   .training-page .training-project-callout,
