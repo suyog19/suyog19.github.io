@@ -1,8 +1,8 @@
 (function () {
   'use strict';
   const courses = {
-    1: ['Python Foundations for Data Science', 'python-foundations-ai-data/', 'No prior programming is required.'],
-    2: ['Applied Data Analysis with Python', 'applied-python-ai-ml/', 'You should already be able to write and debug small Python programs.'],
+    1: ['Python Foundations for Data Science', 'python-foundations-for-data-science/', 'No prior programming is required.'],
+    2: ['Applied Data Analysis with Python', 'applied-data-analysis-with-python/', 'You should already be able to write and debug small Python programs.'],
     3: ['Practical Machine Learning Foundations', 'practical-machine-learning-foundations/', 'Independent tabular data analysis is the expected foundation.'],
     4: ['Generative AI Application Development', 'generative-ai-application-development/', 'Practical Python application, API, JSON, testing, and Git skills are expected.'],
     5: ['Engineering Reliable AI Systems', 'engineering-reliable-ai-systems/', 'Prior AI/ML application experience and strong engineering foundations are expected.'],

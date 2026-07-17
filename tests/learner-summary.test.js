@@ -52,7 +52,7 @@ test('support and course links allow only bounded internal destinations', () => 
     view.safeSupportHref('/training/policies/?next=evil', '/contact/'),
     '/contact/'
   );
-  assert.equal(view.safeCourseHref('/training/python-foundations-ai-data/'), '/training/python-foundations-ai-data/');
+  assert.equal(view.safeCourseHref('/training/python-foundations-for-data-science/'), '/training/python-foundations-for-data-science/');
   assert.equal(view.safeCourseHref('/training/../admin/'), null);
   assert.equal(view.safeCourseHref('https://evil.example/training/course/'), null);
 });
