@@ -15,7 +15,7 @@ function harness(hostname, replies) {
   const action = { hidden: true };
   const closedAction = { hidden: false };
   const root = {
-    dataset: { courseId: 'crs_python_foundations', courseSlug: 'python-foundations-ai-data' },
+    dataset: { courseId: 'crs_python_foundations', courseSlug: 'python-foundations-for-data-science' },
     querySelector(selector) {
       if (selector.includes('status')) return status;
       return selector.includes('closed-action') ? closedAction : action;

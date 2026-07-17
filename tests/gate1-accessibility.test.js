@@ -4,8 +4,8 @@ const fs = require('node:fs');
 
 const entryPoints = [
   'training/index.html',
-  'training/python-foundations-ai-data/index.html',
-  'training/applied-python-ai-ml/index.html',
+  'training/python-foundations-for-data-science/index.html',
+  'training/applied-data-analysis-with-python/index.html',
   'learn/index.html',
   'my-learning/index.html',
   'apply/index.html',

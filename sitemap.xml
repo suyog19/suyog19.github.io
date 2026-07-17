@@ -272,13 +272,13 @@
   </url>
 
   <url>
-    <loc>https://suyogjoshi.com/training/python-foundations-ai-data/</loc>
+    <loc>https://suyogjoshi.com/training/python-foundations-for-data-science/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://suyogjoshi.com/training/applied-python-ai-ml/</loc>
+    <loc>https://suyogjoshi.com/training/applied-data-analysis-with-python/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
