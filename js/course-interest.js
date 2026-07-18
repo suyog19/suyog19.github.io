@@ -1,133 +1,208 @@
 (function () {
-  'use strict';
-
-  const COURSES = {
-    crs_ml_foundations: {
-      title: 'Practical Machine Learning Foundations', stage: 3,
-      slug: 'practical-machine-learning-foundations',
-      topics: ['Problem framing and baselines', 'Model families', 'Evaluation and thresholds', 'Leakage and reproducibility', 'Interpretation and error analysis']
-    },
-    crs_genai_apps: {
-      title: 'Generative AI Application Development', stage: 4,
-      slug: 'generative-ai-application-development',
-      topics: ['Model APIs and structured outputs', 'Embeddings and retrieval', 'Grounding and citations', 'Bounded tools and workflows', 'Evaluation, security and reliability']
-    },
-    crs_reliable_ai: {
-      title: 'Engineering Reliable AI Systems', stage: 5,
-      slug: 'engineering-reliable-ai-systems',
-      topics: ['Architecture and traceability', 'Evaluation and release gates', 'Security and human oversight', 'Observability, cost and rollout', 'Incidents, recovery and governance']
-    }
-  };
-  const CONSENT_VERSION = 'course-interest-v1-2026-07-17';
-  const form = document.querySelector('[data-interest-form]');
+  "use strict";
+  const form = document.querySelector("[data-interest-form]");
   if (!form) return;
   const params = new URLSearchParams(location.search);
-  const course = COURSES[params.get('courseId')];
-  const selector = document.querySelector('[data-course-selection]');
-  const details = document.querySelector('[data-selected-course]');
-  const fields = document.querySelector('[data-interest-fields]');
-  const summary = document.querySelector('[data-error-summary]');
-  const success = document.querySelector('[data-interest-success]');
+  const devHost = ["dev.suyogjoshi.com", "localhost", "127.0.0.1", "feature-epic-586-course-inte.suyogjoshi-dev.pages.dev"].includes(location.hostname);
+  const apiBase = devHost ? "https://api-dev.suyogjoshi.com" : ["suyogjoshi.com", "www.suyogjoshi.com"].includes(location.hostname) ? "https://api.suyogjoshi.com" : "";
+  const allowedSource = ["TRAINING_JOURNEY", "COURSE_PAGE", "DIRECT"];
+  const allowedCta = [
+    "CARD",
+    "HERO",
+    "ENROLMENT_PANEL",
+    "FINAL",
+    "MOBILE",
+    "DIRECT",
+  ];
+  const selector = document.querySelector("[data-course-selection]");
+  const details = document.querySelector("[data-selected-course]");
+  const fields = document.querySelector("[data-interest-fields]");
+  const pipeline = form.querySelector("[data-pipeline-fields]");
+  const topics = form.querySelector("[data-topic-options]");
+  const consentText = form.querySelector("[data-consent-statement]");
+  const summary = form.querySelector("[data-error-summary]");
+  const success = document.querySelector("[data-interest-success]");
+  const returnCourse = document.querySelector("[data-return-course]");
   const submit = form.querySelector('button[type="submit"]');
-  const apiBase = ['dev.suyogjoshi.com', 'localhost', '127.0.0.1'].includes(location.hostname)
-    ? 'https://api-dev.suyogjoshi.com' : 'https://api.suyogjoshi.com';
+  let selected = null;
   let submitting = false;
-  const field = name => form.elements.namedItem(name);
-
-  const emit = (name, extra) => {
-    if (typeof window.gtag === 'function') window.gtag('event', name, Object.assign({
-      course_id: params.get('courseId') || 'invalid', course_stage: course && course.stage,
-      course_slug: course && course.slug, pipeline_state: 'pipeline-interest-open',
-      viewport_category: innerWidth < 600 ? 'mobile' : innerWidth < 1024 ? 'tablet' : 'desktop'
-    }, extra || {}));
-  };
-
-  const selectCourse = (id) => {
-    const next = new URL(location.href); next.searchParams.set('courseId', id); location.assign(next);
-  };
-  Object.entries(COURSES).forEach(([id, item]) => {
-    const option = document.createElement('option'); option.value = id; option.textContent = `Stage ${item.stage} — ${item.title}`;
-    selector.append(option);
-  });
-  selector.addEventListener('change', () => selector.value && selectCourse(selector.value));
-
-  if (!course) {
-    details.innerHTML = '<h1>Register interest in a pipeline course</h1><p>Select a supported course to continue. No information can be submitted until a valid course is selected.</p>';
-    fields.hidden = true; selector.closest('.form-group').hidden = false; selector.focus();
-    return;
+  const value = (name) => form.elements.namedItem(name);
+  const closed = (candidate, allowed) =>
+    allowed.includes(candidate) ? candidate : "DIRECT";
+  function fail(message) {
+    selected = null;
+    fields.hidden = true;
+    submit.disabled = true;
+    details.textContent = "";
+    const h = document.createElement("h1");
+    h.textContent = "Course interest unavailable";
+    const p = document.createElement("p");
+    p.textContent = message;
+    const retry = document.createElement("button");
+    retry.type = "button"; retry.className = "btn btn-secondary"; retry.textContent = "Retry"; retry.addEventListener("click", load);
+    const journey = document.createElement("a");
+    journey.className = "btn btn-secondary"; journey.href = "../"; journey.textContent = "Return to training journey";
+    details.append(h, p, retry, journey);
   }
-
-  selector.value = params.get('courseId');
-  details.innerHTML = `<p class="learning-eyebrow">Software Signal Learning · Stage ${course.stage} · In pipeline</p><h1>Register interest</h1><p class="course-detail-lead">${course.title}</p><p>Registering interest is not an application, enrolment, waitlist position, or seat reservation. It creates no payment obligation or admission preference.</p>`;
-  field('courseId').value = params.get('courseId');
-  field('courseTitle').value = course.title;
-  field('courseStage').value = String(course.stage);
-  field('sourcePageUrl').value = document.referrer || `/training/${course.slug}/`;
-  field('consentVersion').value = CONSENT_VERSION;
-  const topicBox = form.querySelector('[data-topic-options]');
-  course.topics.forEach((topic, index) => {
-    const label = document.createElement('label');
-    label.innerHTML = `<input type="checkbox" name="topicInterests" value="${topic}"> <span>${topic}</span>`;
-    topicBox.append(label);
-    if (index === 0) label.querySelector('input').setAttribute('data-first-topic', '');
-  });
-  emit('pipeline_interest_form_view');
-
-  const clearErrors = () => {
-    summary.hidden = true; summary.innerHTML = '';
-    form.querySelectorAll('[aria-invalid="true"]').forEach(el => el.removeAttribute('aria-invalid'));
-    form.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; el.hidden = true; });
-  };
-  const addError = (field, message, errors) => {
-    const input = form.elements[field]; if (!input) return;
-    input.setAttribute('aria-invalid', 'true');
-    const error = document.getElementById(`${field}-error`); error.textContent = message; error.hidden = false;
-    errors.push({ input, message });
-  };
-  const validate = () => {
-    clearErrors(); const errors = [];
-    if (!field('name').value.trim()) addError('name', 'Enter your name.', errors);
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field('email').value.trim())) addError('email', 'Enter a valid email address.', errors);
-    if (field('background').value.trim().length < 10) addError('background', 'Describe your current role or learning background in at least 10 characters.', errors);
-    if (field('capability').value.trim().length < 20) addError('capability', 'Describe your relevant current capability in at least 20 characters.', errors);
-    if (field('intendedOutcome').value.trim().length < 20) addError('intendedOutcome', 'Describe what you hope to do in at least 20 characters.', errors);
-    if (!field('consent').checked) addError('consent', 'Course-specific consent is required to record your interest.', errors);
-    if (errors.length) {
-      summary.innerHTML = `<strong>Please correct ${errors.length} ${errors.length === 1 ? 'error' : 'errors'}.</strong><ul>${errors.map(e => `<li>${e.message}</li>`).join('')}</ul>`;
-      summary.hidden = false; summary.focus();
+  function render(course) {
+    const previousContract = selected && [selected.primaryAction, selected.consentVersion, selected.consentStatement].join("|");
+    const checkedTopics = new Set(Array.from(form.querySelectorAll('[name="topicInterests"]:checked')).map((input) => input.value));
+    selected = course;
+    details.textContent = "";
+    const eyebrow = document.createElement("p");
+    eyebrow.className = "learning-eyebrow";
+    eyebrow.textContent = `Software Signal Learning · Stage ${course.stage}`;
+    const h = document.createElement("h1");
+    h.textContent =
+      course.primaryAction === "GET_NOTIFIED"
+        ? "Get notified"
+        : "Register interest";
+    const title = document.createElement("p");
+    title.className = "course-detail-lead";
+    title.textContent = course.publicTitle;
+    details.append(eyebrow, h, title);
+    const validItem = window.sjCourseActions && window.sjCourseActions.validItem;
+    if (!validItem || !validItem(course) || !["GET_NOTIFIED", "REGISTER_INTEREST"].includes(course.primaryAction)) {
+      fail(
+        course.primaryAction === "APPLY"
+          ? "Applications are open. Continue through the course application journey."
+          : "Interest capture is not currently available.",
+      );
+      return;
     }
-    return errors.length === 0;
-  };
-
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault(); if (submitting || !validate()) return;
-    submitting = true; submit.disabled = true; submit.textContent = 'Recording interest…';
-    const selectedTopics = Array.from(form.querySelectorAll('[name="topicInterests"]:checked')).map(el => el.value);
-    const campaign = {}; ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(key => { if (params.has(key)) campaign[key] = params.get(key); });
-    const body = {
-      courseId: field('courseId').value, courseTitle: field('courseTitle').value, courseStage: Number(field('courseStage').value),
-      name: field('name').value.trim(), email: field('email').value.trim(), background: field('background').value.trim(),
-      capability: field('capability').value.trim(), intendedOutcome: field('intendedOutcome').value.trim(),
-      preferredTimeframe: field('preferredTimeframe').value || null, topicInterests: selectedTopics,
-      instructorQuestion: field('instructorQuestion').value.trim() || null, consent: true,
-      consentVersion: field('consentVersion').value, sourcePageUrl: field('sourcePageUrl').value, campaign,
-      website: field('website').value
-    };
+    fields.hidden = false;
+    submit.disabled = false;
+    pipeline.hidden = course.primaryAction !== "REGISTER_INTEREST";
+    pipeline.querySelectorAll("[required]").forEach((el) => {
+      el.required = !pipeline.hidden;
+    });
+    value("courseId").value = course.courseId;
+    value("consentVersion").value = course.consentVersion;
+    consentText.textContent = course.consentStatement;
+    const currentContract = [course.primaryAction, course.consentVersion, course.consentStatement].join("|");
+    if (previousContract && previousContract !== currentContract) value("consent").checked = false;
+    if (returnCourse && course.slug) returnCourse.href = `../${encodeURIComponent(course.slug)}/`;
+    submit.textContent =
+      course.primaryAction === "GET_NOTIFIED"
+        ? "Notify me when applications open"
+        : "Record my interest";
+    topics.textContent = "";
+    (course.topicOptions || []).forEach((topic) => {
+      const label = document.createElement("label");
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "topicInterests";
+      input.value = topic;
+      input.checked = checkedTopics.has(topic);
+      const span = document.createElement("span");
+      span.textContent = topic;
+      label.append(input, " ", span);
+      topics.append(label);
+    });
+  }
+  async function load() {
+    fields.hidden = true;
+    submit.disabled = true;
+    if (!apiBase) { fail("Course actions are unavailable on this host."); return; }
     try {
-      const response = await fetch(`${apiBase}/course-interests`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) throw Object.assign(new Error('submission'), { response, payload });
-      form.hidden = true; success.hidden = false;
-      success.querySelector('[data-return-course]').href = `../${course.slug}/`;
-      success.focus(); emit('pipeline_interest_submit_success');
-    } catch (error) {
-      const duplicate = error.response && error.response.status === 409;
-      summary.innerHTML = duplicate
-        ? '<strong>Interest already recorded.</strong><p>This email already has active interest for this course. No duplicate record was created.</p>'
-        : '<strong>We could not record your interest.</strong><p>Your entries are still here. Please try again, or return later if the service remains unavailable.</p>';
-      summary.hidden = false; summary.focus(); emit('pipeline_interest_submit_error', { error_type: duplicate ? 'duplicate' : 'service' });
+      const response = await fetch(`${apiBase}/training/course-actions`, {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("actions");
+      const body = await response.json();
+      const items = Array.isArray(body.items) ? body.items : [];
+      const validItem = window.sjCourseActions && window.sjCourseActions.validItem;
+      if (!validItem || items.some((item) => !validItem(item))) throw new Error("invalid actions");
+      selector.textContent = "";
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = "Select a course";
+      selector.append(placeholder);
+      items.forEach((course) => {
+        const option = document.createElement("option");
+        option.value = course.courseId;
+        option.textContent = `Stage ${course.stage} — ${course.publicTitle}`;
+        selector.append(option);
+      });
+      const course = items.find(
+        (item) => item.courseId === params.get("courseId"),
+      );
+      if (!course) {
+        fail("Select a supported course to continue.");
+        return;
+      }
+      selector.value = course.courseId;
+      render(course);
+    } catch (_) {
+      fail(
+        "We could not load the current course action. Retry later or return to the training journey.",
+      );
+    }
+  }
+  selector.addEventListener("change", () => {
+    if (!selector.value) return;
+    const next = new URL(location.href);
+    next.searchParams.set("courseId", selector.value);
+    location.assign(next);
+  });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!selected || submitting || !form.reportValidity()) return;
+    submitting = true;
+    submit.disabled = true;
+    summary.hidden = true;
+    const campaign = {};
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(
+      (key) => {
+        if (params.has(key)) campaign[key] = params.get(key).slice(0, 100);
+      },
+    );
+    const body = {
+      courseId: selected.courseId,
+      name: value("name").value.trim(),
+      email: value("email").value.trim(),
+      consent: true,
+      consentVersion: selected.consentVersion,
+      sourceSurface: closed(params.get("sourceSurface"), allowedSource),
+      ctaLocation: closed(params.get("ctaLocation"), allowedCta),
+      campaign,
+      website: value("website").value,
+    };
+    if (selected.primaryAction === "REGISTER_INTEREST")
+      Object.assign(body, {
+        background: value("background").value.trim(),
+        capability: value("capability").value.trim(),
+        intendedOutcome: value("intendedOutcome").value.trim(),
+        preferredTimeframe: value("preferredTimeframe").value || null,
+        topicInterests: Array.from(
+          form.querySelectorAll('[name="topicInterests"]:checked'),
+        ).map((el) => el.value),
+        instructorQuestion: value("instructorQuestion").value.trim() || null,
+      });
+    try {
+      const response = await fetch(`${apiBase}/course-interests`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!response.ok) {
+        if ([409, 422].includes(response.status)) await load();
+        throw new Error("submit");
+      }
+      form.hidden = true;
+      success.hidden = false;
+      success.focus();
+    } catch (_) {
+      summary.textContent =
+        "We could not record this request. Your entries are still here; review the current course action and try again.";
+      summary.hidden = false;
+      summary.focus();
     } finally {
-      submitting = false; submit.disabled = false; submit.textContent = 'Record my interest';
+      submitting = false;
+      submit.disabled = !selected;
     }
   });
-}());
+  window.sjCourseInterest = { closed };
+  load();
+})();
