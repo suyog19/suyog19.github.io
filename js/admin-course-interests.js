@@ -72,9 +72,15 @@
           : true,
       );
       if (!appendPage) clear(list);
+      nextCursor = page.nextCursor || "";
       if (!items.length) {
-        if (!appendPage) list.append(text("p", "No course interests to show.", "admin-empty"));
-        return;
+        list.append(
+          text(
+            "p",
+            nextCursor ? "No matching interests on this page." : "No course interests to show.",
+            "admin-empty",
+          ),
+        );
       }
       items.forEach((item) => {
         const button = text(
@@ -86,7 +92,6 @@
         button.addEventListener("click", () => show(item.interestId));
         list.append(button);
       });
-      nextCursor = page.nextCursor || "";
       if (nextCursor) {
         const more = text("button", "Load more interests", "btn btn-secondary");
         more.type = "button";
