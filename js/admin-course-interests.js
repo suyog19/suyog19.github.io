@@ -1,0 +1,216 @@
+(function () {
+  "use strict";
+  const list = document.getElementById("admin-course-interest-list");
+  if (!list) return;
+  const detail = document.getElementById("admin-course-interest-detail");
+  const filters = document.getElementById("admin-course-interest-filters");
+  const sendForm = document.getElementById("admin-course-interest-send");
+  const eligibilityResult = sendForm.querySelector("[data-eligibility-result]");
+  const sendButton = sendForm.querySelector('[type="submit"]');
+  const base = ["dev.suyogjoshi.com", "localhost", "127.0.0.1"].includes(
+    location.hostname,
+  )
+    ? "https://api-dev.suyogjoshi.com"
+    : "https://api.suyogjoshi.com";
+  function token() {
+    return sessionStorage.getItem("sj_admin_access_token") || "";
+  }
+  async function request(path, options) {
+    const headers = Object.assign(
+      { Accept: "application/json", Authorization: `Bearer ${token()}` },
+      (options && options.headers) || {},
+    );
+    const response = await fetch(
+      base + path,
+      Object.assign({}, options || {}, { headers }),
+    );
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const error = new Error(body.message || "Request failed");
+      error.status = response.status;
+      throw error;
+    }
+    return body;
+  }
+  function clear(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+  function text(tag, value, className) {
+    const node = document.createElement(tag);
+    node.textContent = value == null ? "Not available" : String(value);
+    if (className) node.className = className;
+    return node;
+  }
+  async function load() {
+    clear(list);
+    list.append(text("p", "Loading interests…", "admin-empty"));
+    const query = new URLSearchParams(new FormData(filters));
+    try {
+      const body = await request("/admin/training/course-interests?" + query);
+      clear(list);
+      if (!body.items.length) {
+        list.append(text("p", "No course interests to show.", "admin-empty"));
+        return;
+      }
+      body.items.forEach((item) => {
+        const button = text(
+          "button",
+          `${item.courseTitleSnapshot} · ${item.derivedIntent} · ${item.status}`,
+          "admin-list-item",
+        );
+        button.type = "button";
+        button.addEventListener("click", () => show(item.interestId));
+        list.append(button);
+      });
+    } catch (_) {
+      clear(list);
+      list.append(text("p", "Unable to load course interests.", "admin-empty"));
+    }
+  }
+  async function show(id) {
+    try {
+      const body = await request(
+        "/admin/training/course-interests/" + encodeURIComponent(id),
+      );
+      const item = body.interest;
+      clear(detail);
+      detail.append(
+        text("h4", item.courseTitleSnapshot),
+        text("p", `${item.derivedIntent} · ${item.status}`),
+      );
+      const dl = document.createElement("dl");
+      Object.entries(item)
+        .filter(
+          ([key]) =>
+            ![
+              "interestId",
+              "courseTitleSnapshot",
+              "derivedIntent",
+              "status",
+            ].includes(key),
+        )
+        .forEach(([key, value]) => {
+          dl.append(
+            text("dt", key),
+            text(
+              "dd",
+              typeof value === "object" ? JSON.stringify(value) : value,
+            ),
+          );
+        });
+      detail.append(dl);
+      if (item.status !== "WITHDRAWN") {
+        const button = text("button", "Withdraw record", "btn btn-secondary");
+        button.type = "button";
+        button.addEventListener("click", async () => {
+          const reason = prompt("Reason for withdrawal");
+          if (!reason) return;
+          await request(
+            `/admin/training/course-interests/${encodeURIComponent(id)}/withdraw`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Idempotency-Key": crypto.randomUUID(),
+              },
+              body: JSON.stringify({
+                expectedVersion: Number(item.version),
+                confirmation: true,
+                reason,
+              }),
+            },
+          );
+          await load();
+          clear(detail);
+        });
+        detail.append(button);
+      }
+    } catch (_) {
+      clear(detail);
+      detail.append(text("p", "Unable to load this record.", "admin-empty"));
+    }
+  }
+  async function loadOptions() {
+    try {
+      const courses = await request("/admin/training/courses");
+      const courseSelect = sendForm.elements.courseId;
+      const cohortSelect = sendForm.elements.cohortId;
+      for (const item of courses.items || []) {
+        courseSelect.add(new Option(item.title, item.courseId));
+        const cohorts = await request(
+          "/admin/training/cohorts?courseId=" +
+            encodeURIComponent(item.courseId),
+        );
+        (cohorts.items || []).forEach((cohort) => {
+          const option = new Option(
+            `${item.title} · ${cohort.label}`,
+            cohort.cohortId,
+          );
+          option.dataset.courseId = item.courseId;
+          cohortSelect.add(option);
+        });
+      }
+    } catch (_) {
+      eligibilityResult.textContent = "Course options unavailable.";
+    }
+  }
+  async function check() {
+    const courseId = sendForm.elements.courseId.value;
+    const cohortId = sendForm.elements.cohortId.value;
+    try {
+      const result = await request(
+        `/admin/training/course-interests/applications-open-notifications/eligibility?courseId=${encodeURIComponent(courseId)}&cohortId=${encodeURIComponent(cohortId)}`,
+      );
+      eligibilityResult.textContent = result.allowed
+        ? `${result.eligibleCount} eligible; ${result.alreadyFulfilledCount} already fulfilled.`
+        : `Not allowed: ${result.reasonCode}`;
+      sendButton.disabled = !result.allowed;
+    } catch (_) {
+      eligibilityResult.textContent = "Eligibility unavailable.";
+      sendButton.disabled = true;
+    }
+  }
+  filters.addEventListener("submit", (event) => {
+    event.preventDefault();
+    load();
+  });
+  document
+    .getElementById("admin-refresh-course-interests")
+    .addEventListener("click", load);
+  sendForm
+    .querySelector("[data-check-eligibility]")
+    .addEventListener("click", check);
+  sendForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (
+      sendButton.disabled ||
+      !confirm(
+        "Send the fixed applications-open message to all eligible requesters?",
+      )
+    )
+      return;
+    const body = {
+      courseId: sendForm.elements.courseId.value,
+      cohortId: sendForm.elements.cohortId.value,
+      reason: sendForm.elements.reason.value,
+      confirmation: true,
+    };
+    try {
+      const result = await request(
+        "/admin/training/course-interests/applications-open-notifications",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        },
+      );
+      eligibilityResult.textContent = `${result.createdCount} notifications created; ${result.skippedCount} skipped.`;
+      sendButton.disabled = true;
+      await load();
+    } catch (_) {
+      eligibilityResult.textContent = "The fixed send was not created.";
+    }
+  });
+  load();
+  loadOptions();
+})();
