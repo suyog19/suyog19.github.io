@@ -7,15 +7,15 @@
   const sendForm = document.getElementById("admin-course-interest-send");
   const eligibilityResult = sendForm.querySelector("[data-eligibility-result]");
   const sendButton = sendForm.querySelector('[type="submit"]');
-  const base = ["dev.suyogjoshi.com", "localhost", "127.0.0.1"].includes(
-    location.hostname,
-  )
+  const base = ["dev.suyogjoshi.com", "localhost", "127.0.0.1"].includes(location.hostname) || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(location.hostname || "")
     ? "https://api-dev.suyogjoshi.com"
-    : "https://api.suyogjoshi.com";
+    : ["suyogjoshi.com", "www.suyogjoshi.com"].includes(location.hostname) ? "https://api.suyogjoshi.com" : "";
+  let sending = false;
   function token() {
     return sessionStorage.getItem("sj_admin_access_token") || "";
   }
   async function request(path, options) {
+    if (!base || !token()) throw new Error("Authentication required");
     const headers = Object.assign(
       { Accept: "application/json", Authorization: `Bearer ${token()}` },
       (options && options.headers) || {},
@@ -183,12 +183,15 @@
   sendForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (
+      sending ||
       sendButton.disabled ||
       !confirm(
         "Send the fixed applications-open message to all eligible requesters?",
       )
     )
       return;
+    sending = true;
+    sendButton.disabled = true;
     const body = {
       courseId: sendForm.elements.courseId.value,
       cohortId: sendForm.elements.cohortId.value,
@@ -200,7 +203,7 @@
         "/admin/training/course-interests/applications-open-notifications",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "Idempotency-Key": crypto.randomUUID() },
           body: JSON.stringify(body),
         },
       );
@@ -209,8 +212,12 @@
       await load();
     } catch (_) {
       eligibilityResult.textContent = "The fixed send was not created.";
+    } finally {
+      sending = false;
     }
   });
-  load();
-  loadOptions();
+  const shell = document.getElementById("admin-shell");
+  const initialiseAuthenticated = () => { if (token() && !shell.hidden) { load(); loadOptions(); } };
+  new MutationObserver(initialiseAuthenticated).observe(shell, { attributes: true, attributeFilter: ["hidden"] });
+  initialiseAuthenticated();
 })();

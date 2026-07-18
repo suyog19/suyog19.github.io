@@ -3,11 +3,8 @@
   const form = document.querySelector("[data-interest-form]");
   if (!form) return;
   const params = new URLSearchParams(location.search);
-  const apiBase = ["dev.suyogjoshi.com", "localhost", "127.0.0.1"].includes(
-    location.hostname,
-  )
-    ? "https://api-dev.suyogjoshi.com"
-    : "https://api.suyogjoshi.com";
+  const devHost = ["dev.suyogjoshi.com", "localhost", "127.0.0.1"].includes(location.hostname) || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(location.hostname || "");
+  const apiBase = devHost ? "https://api-dev.suyogjoshi.com" : ["suyogjoshi.com", "www.suyogjoshi.com"].includes(location.hostname) ? "https://api.suyogjoshi.com" : "";
   const allowedSource = ["TRAINING_JOURNEY", "COURSE_PAGE", "DIRECT"];
   const allowedCta = [
     "CARD",
@@ -40,7 +37,11 @@
     h.textContent = "Course interest unavailable";
     const p = document.createElement("p");
     p.textContent = message;
-    details.append(h, p);
+    const retry = document.createElement("button");
+    retry.type = "button"; retry.className = "btn btn-secondary"; retry.textContent = "Retry"; retry.addEventListener("click", load);
+    const journey = document.createElement("a");
+    journey.className = "btn btn-secondary"; journey.href = "../"; journey.textContent = "Return to training journey";
+    details.append(h, p, retry, journey);
   }
   function render(course) {
     selected = course;
@@ -98,6 +99,7 @@
   async function load() {
     fields.hidden = true;
     submit.disabled = true;
+    if (!apiBase) { fail("Course actions are unavailable on this host."); return; }
     try {
       const response = await fetch(`${apiBase}/training/course-actions`, {
         headers: { Accept: "application/json" },
