@@ -11,6 +11,7 @@
     ? "https://api-dev.suyogjoshi.com"
     : ["suyogjoshi.com", "www.suyogjoshi.com"].includes(location.hostname) ? "https://api.suyogjoshi.com" : "";
   let sending = false;
+  let nextCursor = "";
   function token() {
     return sessionStorage.getItem("sj_admin_access_token") || "";
   }
@@ -31,7 +32,11 @@
       throw new Error("Authentication changed");
     }
     if (!response.ok) {
-      if (response.status === 401 || response.status === 403) { clearPrivate(); sessionStorage.removeItem("sj_admin_access_token"); }
+      if (response.status === 401 || response.status === 403) {
+        clearPrivate();
+        if (window.sjAdminClearSession) window.sjAdminClearSession("Your admin session expired. Sign in again.");
+        else sessionStorage.removeItem("sj_admin_access_token");
+      }
       const error = new Error(body.message || "Request failed");
       error.status = response.status;
       throw error;
@@ -48,24 +53,21 @@
     if (className) node.className = className;
     return node;
   }
-  async function load() {
-    clear(list);
-    list.append(text("p", "Loading interests…", "admin-empty"));
+  async function load(appendPage) {
+    if (!appendPage) {
+      nextCursor = "";
+      clear(list);
+      list.append(text("p", "Loading interests…", "admin-empty"));
+    }
     const query = new URLSearchParams(new FormData(filters));
     try {
-      const items = [];
-      let cursor = "";
-      do {
-        const pageQuery = new URLSearchParams(query);
-        pageQuery.set("limit", "100");
-        if (cursor) pageQuery.set("cursor", cursor);
-        const page = await request("/admin/training/course-interests?" + pageQuery);
-        items.push(...(page.items || []));
-        cursor = page.nextCursor || "";
-      } while (cursor);
-      clear(list);
+      query.set("limit", "25");
+      if (nextCursor) query.set("cursor", nextCursor);
+      const page = await request("/admin/training/course-interests?" + query);
+      const items = page.items || [];
+      if (!appendPage) clear(list);
       if (!items.length) {
-        list.append(text("p", "No course interests to show.", "admin-empty"));
+        if (!appendPage) list.append(text("p", "No course interests to show.", "admin-empty"));
         return;
       }
       items.forEach((item) => {
@@ -78,6 +80,13 @@
         button.addEventListener("click", () => show(item.interestId));
         list.append(button);
       });
+      nextCursor = page.nextCursor || "";
+      if (nextCursor) {
+        const more = text("button", "Load more interests", "btn btn-secondary");
+        more.type = "button";
+        more.addEventListener("click", () => { more.remove(); load(true); });
+        list.append(more);
+      }
     } catch (_) {
       clear(list);
       list.append(text("p", "Unable to load course interests.", "admin-empty"));
@@ -120,7 +129,7 @@
         button.type = "button";
         button.addEventListener("click", async () => {
           const reason = prompt("Reason for withdrawal");
-          if (!reason) return;
+          if (!reason || !confirm("Withdraw this course-interest record?")) return;
           await request(
             `/admin/training/course-interests/${encodeURIComponent(id)}/withdraw`,
             {
