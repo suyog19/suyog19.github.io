@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  const devHost = host => host === 'localhost' || host === '127.0.0.1' || host === 'dev.suyogjoshi.com' || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(host || '');
+  const devHost = host => host === 'localhost' || host === '127.0.0.1' || host === 'dev.suyogjoshi.com' || host === 'feature-epic-586-course-inte.suyogjoshi-dev.pages.dev';
   const prodHost = host => ['suyogjoshi.com', 'www.suyogjoshi.com'].includes(host);
   const base = devHost(location.hostname) ? 'https://api-dev.suyogjoshi.com' : prodHost(location.hostname) ? 'https://api.suyogjoshi.com' : '';
   function interestUrl(item, source, locationName) { return `/training/register-interest/?courseId=${encodeURIComponent(item.courseId)}&sourceSurface=${source}&ctaLocation=${locationName}`; }

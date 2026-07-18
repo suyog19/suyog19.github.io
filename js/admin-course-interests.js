@@ -7,7 +7,7 @@
   const sendForm = document.getElementById("admin-course-interest-send");
   const eligibilityResult = sendForm.querySelector("[data-eligibility-result]");
   const sendButton = sendForm.querySelector('[type="submit"]');
-  const base = ["dev.suyogjoshi.com", "localhost", "127.0.0.1"].includes(location.hostname) || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(location.hostname || "")
+  const base = ["dev.suyogjoshi.com", "localhost", "127.0.0.1", "feature-epic-586-course-inte.suyogjoshi-dev.pages.dev"].includes(location.hostname)
     ? "https://api-dev.suyogjoshi.com"
     : ["suyogjoshi.com", "www.suyogjoshi.com"].includes(location.hostname) ? "https://api.suyogjoshi.com" : "";
   let sending = false;
@@ -15,9 +15,10 @@
     return sessionStorage.getItem("sj_admin_access_token") || "";
   }
   async function request(path, options) {
-    if (!base || !token()) throw new Error("Authentication required");
+    const authToken = token();
+    if (!base || !authToken) throw new Error("Authentication required");
     const headers = Object.assign(
-      { Accept: "application/json", Authorization: `Bearer ${token()}` },
+      { Accept: "application/json", Authorization: `Bearer ${authToken}` },
       (options && options.headers) || {},
     );
     const response = await fetch(
@@ -25,6 +26,10 @@
       Object.assign({}, options || {}, { headers }),
     );
     const body = await response.json().catch(() => ({}));
+    if (token() !== authToken || shell.hidden) {
+      clearPrivate();
+      throw new Error("Authentication changed");
+    }
     if (!response.ok) {
       if (response.status === 401 || response.status === 403) { clearPrivate(); sessionStorage.removeItem("sj_admin_access_token"); }
       const error = new Error(body.message || "Request failed");

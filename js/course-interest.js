@@ -3,7 +3,7 @@
   const form = document.querySelector("[data-interest-form]");
   if (!form) return;
   const params = new URLSearchParams(location.search);
-  const devHost = ["dev.suyogjoshi.com", "localhost", "127.0.0.1"].includes(location.hostname) || /^[a-z0-9-]+\.suyogjoshi-dev\.pages\.dev$/.test(location.hostname || "");
+  const devHost = ["dev.suyogjoshi.com", "localhost", "127.0.0.1", "feature-epic-586-course-inte.suyogjoshi-dev.pages.dev"].includes(location.hostname);
   const apiBase = devHost ? "https://api-dev.suyogjoshi.com" : ["suyogjoshi.com", "www.suyogjoshi.com"].includes(location.hostname) ? "https://api.suyogjoshi.com" : "";
   const allowedSource = ["TRAINING_JOURNEY", "COURSE_PAGE", "DIRECT"];
   const allowedCta = [
