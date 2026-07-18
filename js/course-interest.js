@@ -22,6 +22,7 @@
   const consentText = form.querySelector("[data-consent-statement]");
   const summary = form.querySelector("[data-error-summary]");
   const success = document.querySelector("[data-interest-success]");
+  const returnCourse = document.querySelector("[data-return-course]");
   const submit = form.querySelector('button[type="submit"]');
   let selected = null;
   let submitting = false;
@@ -44,6 +45,8 @@
     details.append(h, p, retry, journey);
   }
   function render(course) {
+    const previousContract = selected && [selected.primaryAction, selected.consentVersion, selected.consentStatement].join("|");
+    const checkedTopics = new Set(Array.from(form.querySelectorAll('[name="topicInterests"]:checked')).map((input) => input.value));
     selected = course;
     details.textContent = "";
     const eyebrow = document.createElement("p");
@@ -58,11 +61,8 @@
     title.className = "course-detail-lead";
     title.textContent = course.publicTitle;
     details.append(eyebrow, h, title);
-    if (
-      !["GET_NOTIFIED", "REGISTER_INTEREST"].includes(course.primaryAction) ||
-      !course.consentStatement ||
-      !course.consentVersion
-    ) {
+    const validItem = window.sjCourseActions && window.sjCourseActions.validItem;
+    if (!validItem || !validItem(course) || !["GET_NOTIFIED", "REGISTER_INTEREST"].includes(course.primaryAction)) {
       fail(
         course.primaryAction === "APPLY"
           ? "Applications are open. Continue through the course application journey."
@@ -79,6 +79,9 @@
     value("courseId").value = course.courseId;
     value("consentVersion").value = course.consentVersion;
     consentText.textContent = course.consentStatement;
+    const currentContract = [course.primaryAction, course.consentVersion, course.consentStatement].join("|");
+    if (previousContract && previousContract !== currentContract) value("consent").checked = false;
+    if (returnCourse && course.slug) returnCourse.href = `../${encodeURIComponent(course.slug)}/`;
     submit.textContent =
       course.primaryAction === "GET_NOTIFIED"
         ? "Notify me when applications open"
@@ -90,6 +93,7 @@
       input.type = "checkbox";
       input.name = "topicInterests";
       input.value = topic;
+      input.checked = checkedTopics.has(topic);
       const span = document.createElement("span");
       span.textContent = topic;
       label.append(input, " ", span);
@@ -108,6 +112,8 @@
       if (!response.ok) throw new Error("actions");
       const body = await response.json();
       const items = Array.isArray(body.items) ? body.items : [];
+      const validItem = window.sjCourseActions && window.sjCourseActions.validItem;
+      if (!validItem || items.some((item) => !validItem(item))) throw new Error("invalid actions");
       selector.textContent = "";
       const placeholder = document.createElement("option");
       placeholder.value = "";

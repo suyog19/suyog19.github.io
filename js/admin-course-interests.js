@@ -60,11 +60,17 @@
       list.append(text("p", "Loading interests…", "admin-empty"));
     }
     const query = new URLSearchParams(new FormData(filters));
+    const deliveryState = query.get("deliveryState");
+    query.delete("deliveryState");
     try {
       query.set("limit", "25");
       if (nextCursor) query.set("cursor", nextCursor);
       const page = await request("/admin/training/course-interests?" + query);
-      const items = page.items || [];
+      const items = (page.items || []).filter((item) =>
+        deliveryState === "ATTENTION"
+          ? ["FAILED_RETRYABLE", "FAILED_FINAL", "SUPPRESSED", "SENDING"].includes(item.notificationStatus)
+          : true,
+      );
       if (!appendPage) clear(list);
       if (!items.length) {
         if (!appendPage) list.append(text("p", "No course interests to show.", "admin-empty"));
@@ -197,6 +203,8 @@
       cohortSelect.replaceChildren();
       for (const item of courses.items || []) {
         courseSelect.add(new Option(item.title, item.courseId));
+        const filterSelect = filters.querySelector("[data-course-interest-course-filter]");
+        if (filterSelect) filterSelect.add(new Option(item.title, item.courseId));
         const cohorts = await request(
           "/admin/training/cohorts?courseId=" +
             encodeURIComponent(item.courseId),
