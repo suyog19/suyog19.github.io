@@ -255,6 +255,7 @@
     renderFeedback();
     if (message) setStatus(message, 'warn');
   }
+  window.sjAdminClearSession = clearSession;
 
   function friendlyError(error) {
     const body = error.body || {};
