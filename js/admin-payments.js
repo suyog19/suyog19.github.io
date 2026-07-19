@@ -3,7 +3,7 @@
   let productionMode = false;
   const ID = /^[A-Za-z0-9_-]{1,160}$/;
   function text(tag, value, className) { const node = document.createElement(tag); if (className) node.className = className; node.textContent = value || ''; return node; }
-  function money(value, currency) { return Number.isSafeInteger(value) && value >= 0 && /^[A-Z]{3}$/.test(currency || '') ? value + ' minor units ' + currency : 'Not available'; }
+  function money(value, currency) { return window.sjAdminUi.money(value, currency); }
   function safeId(value) { return ID.test(value || '') ? value : null; }
   function iso(value) { const date = new Date(value); return value && !Number.isNaN(date.getTime()) ? date.toISOString() : null; }
   function field(label, name, options) {
@@ -26,8 +26,9 @@
     const section = text('section', '', 'admin-payment-command'); section.appendChild(text('h4', title));
     const form = document.createElement('form'); form.className = 'admin-payment-command-form';
     fields.forEach((item) => form.appendChild(field(item.label, item.name, item)));
-    const confirm = field(productionMode ? 'I confirm this production command and reviewed current versions' : 'I confirm this test-mode command and reviewed current versions', 'confirmation', { type: 'checkbox' }); form.appendChild(confirm);
-    const button = text('button', 'Submit command', 'btn btn-secondary'); button.type = 'submit'; form.appendChild(button);
+    form.appendChild(text('p', 'Review the details above. This action updates the selected payment record.', 'admin-list-meta'));
+    const confirm = field('I understand the consequence and want to continue', 'confirmation', { type: 'checkbox' }); form.appendChild(confirm);
+    const button = text('button', title.replace(/^(Create and send initial |Record approved |Record |Attempt backend-controlled |Resend original approved )/i, '').replace(/^./, (letter) => letter.toUpperCase()), 'btn btn-secondary'); button.type = 'submit'; form.appendChild(button);
     form.addEventListener('submit', async (event) => { event.preventDefault(); button.disabled = true; try { await onSubmit(new FormData(form)); } catch (_) { /* controller rendered safe recovery */ } finally { button.disabled = false; } });
     section.appendChild(form); return section;
   }
@@ -42,17 +43,17 @@
     async function command(path, scope, body) {
       try {
         await config.request(path, { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': config.idempotencyKey(scope, body) } });
-        config.setStatus('Command accepted. Refreshing authoritative state...', 'success'); await loadDetail(selected);
+        config.setStatus('Action completed. Current payment information has been refreshed.', 'success'); await loadDetail(selected);
       } catch (error) {
-        config.setStatus('Command outcome was not accepted as complete. Refreshing authoritative evidence before any retry. ' + config.friendlyError(error), 'error');
+        config.setStatus('The action could not be completed. Current information has been refreshed. ' + config.friendlyError(error), 'error');
         await loadDetail(selected);
         throw error;
       }
     }
     function addPair(dl, label, value) { dl.appendChild(text('dt', label)); dl.appendChild(text('dd', value === null || value === undefined || value === '' ? 'Not available' : String(value))); }
     function renderList(items) {
-      list.replaceChildren(); if (!items.length) { list.appendChild(text('p', 'No payment obligations found.', 'admin-empty')); return; }
-      items.forEach((item) => { const button = text('button', (item.purpose || 'PAYMENT') + ' · ' + (item.status || 'Unknown') + ' · ' + money(item.amountDue, item.currency), 'admin-list-item'); button.type = 'button'; button.dataset.paymentObligationId = item.paymentObligationId; button.appendChild(text('span', item.enrolmentId || 'No enrolment', 'admin-list-meta')); list.appendChild(button); });
+      list.replaceChildren(); if (!items.length) { list.appendChild(text('p', 'No payment records need attention. New payment obligations and learner requests will appear here.', 'admin-empty')); return; }
+      items.forEach((item) => { const button = text('button', window.sjAdminUi.label(item.purpose || 'PAYMENT') + ' · ' + window.sjAdminUi.label(item.status || 'Unknown') + ' · ' + money(item.amountDue, item.currency), 'admin-list-item'); button.type = 'button'; button.dataset.paymentObligationId = item.paymentObligationId; button.appendChild(text('span', item.enrolmentId || 'No enrolment', 'admin-list-meta')); list.appendChild(button); });
     }
     async function load(force) {
       if (!config.sessionActive() || loading || (loaded && !force)) return; loading = true;
@@ -66,7 +67,7 @@
       const dl = document.createElement('dl'); dl.className = 'admin-detail-list';
       [['Purpose', obligation.purpose], ['Enrolment', obligation.enrolmentId], ['Place/activation status', enrolment.status], ['Obligation version', obligation.version], ['Chargeable', money(obligation.chargeableAmount, obligation.currency)], ['Total course fee', money(obligation.totalCourseFee, obligation.currency)], ['Applied deposit', money(obligation.appliedDepositNetPaid, obligation.currency)], ['Captured', money(obligation.capturedAmount, obligation.currency)], ['Allocated capture', money(obligation.allocatedCapturedAmount, obligation.currency)], ['Unallocated capture', money(obligation.unallocatedCapturedAmount, obligation.currency)], ['Refunded', money(obligation.refundedAmount, obligation.currency)], ['Net paid', money(obligation.netPaid, obligation.currency)], ['Credit/waiver', money(obligation.creditAmount, obligation.currency)], ['Amount due', money(obligation.amountDue, obligation.currency)], ['Refundable', money(obligation.refundableAmount, obligation.currency)], ['Balance deadline', obligation.balanceDeadline], ['Grace until', obligation.graceUntil], ['Current extension', obligation.currentExtensionUntil], ['Deposit treatment', obligation.depositDispositionOutcome || obligation.depositDispositionRule], ['Confirmation status', obligation.confirmationStatus], ['Provider status', reconciliation.providerOperationalStatus], ['Settlement', reconciliation.settlementStatus], ['Snapshot', snapshot.commercialSnapshotId + ' v' + snapshot.version], ['Course/cohort', (snapshot.courseTitleSnapshot || '') + ' · ' + (snapshot.cohortLabelSnapshot || '')], ['Request deadline', snapshot.requestDeadline], ['Policy/rules', [obligation.policyVersion, obligation.extensionRulesVersion, obligation.creditWaiverRulesVersion, obligation.nonPaymentClosurePolicyVersion, snapshot.cancellationPolicyVersion, snapshot.refundPolicyVersion, snapshot.transferPolicyVersion].filter(Boolean).join(' · ')]].forEach(([label, value]) => addPair(dl, label, value)); detail.appendChild(dl);
       const collections = [['Payment requests', data.requests], ['Balance adjustment history', data.balanceAdjustments], ['Verified capture evidence', data.captures], ['Learner change requests', data.learnerChanges], ['Organiser decisions', data.learnerChangeDecisions], ['Provider refunds', data.refunds], ['Reconciliation history', reconciliation.items], ['Communication attempts', communications.items]];
-      collections.forEach(([title, items]) => { const section = text('section', '', 'admin-payment-evidence'); section.appendChild(text('h4', title)); (Array.isArray(items) && items.length ? items : [null]).forEach((item) => section.appendChild(text('pre', item ? JSON.stringify(item, null, 2) : 'None recorded'))); detail.appendChild(section); });
+      collections.forEach(([title, items]) => { const section = text('section', '', 'admin-payment-evidence'); section.appendChild(text('h4', title)); section.appendChild(window.sjAdminUi.technicalDetails(Array.isArray(items) ? items : [], title + ' technical details')); detail.appendChild(section); });
       renderCommands(data, communications, cohorts);
     }
     function common(form) { return { confirmation: form.get('confirmation') === 'on', reason: String(form.get('reason') || '').trim(), evidenceReference: String(form.get('evidenceReference') || '').trim() }; }
@@ -109,7 +110,7 @@
       (communications.items || []).filter((item) => item.canResend === true).forEach((item) => detail.appendChild(commandForm('Resend original approved communication', baseFields, (form) => command('/admin/training/enrolments/' + encodeURIComponent(obligation.enrolmentId) + '/communications/resend', 'communication:' + item.logicalKey, { logicalKey: item.logicalKey, mode: 'ORIGINAL_RENDER', ...common(form) }))));
     }
     async function loadDetail(id) {
-      if (!safeId(id) || !config.sessionActive()) return; selected = id; detail.replaceChildren(text('p', 'Loading authoritative payment and enrolment evidence...', 'admin-empty'));
+      if (!safeId(id) || !config.sessionActive()) return; selected = id; detail.replaceChildren(text('p', 'Loading payment information...', 'admin-empty'));
       try { const data = await config.request('/admin/training/payments/' + encodeURIComponent(id), { method: 'GET' }); const enrolmentId = data.obligation && safeId(data.obligation.enrolmentId); const courseId = data.obligation && safeId(data.obligation.courseId); const results = await Promise.all([config.request('/admin/training/payments/' + encodeURIComponent(id) + '/reconciliation', { method: 'GET' }), enrolmentId ? config.request('/admin/training/enrolments/' + encodeURIComponent(enrolmentId) + '/communications?limit=50', { method: 'GET' }) : Promise.resolve({ items: [] }), courseId ? config.request('/admin/training/cohorts?courseId=' + encodeURIComponent(courseId) + '&limit=100', { method: 'GET' }) : Promise.resolve({ items: [] })]); renderDetail(data, results[0], results[1], Array.isArray(results[2].items) ? results[2].items : []); config.setStatus('', ''); }
       catch (error) { detail.replaceChildren(text('p', 'Payment evidence is temporarily unavailable.', 'admin-empty')); fail(error); }
     }
