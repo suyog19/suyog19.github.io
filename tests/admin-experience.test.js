@@ -57,3 +57,13 @@ test('new presentation CSS is scoped to the admin page root', () => {
     for (const part of cleaned.split(',')) assert.match(part.trim(), /^\.admin-page\b/, part);
   }
 });
+
+test('admin login layout stays single-column and only the SJ mark gets badge styling', () => {
+  const html = read('admin/index.html');
+  const css = read('css/pages.css');
+  assert.match(html, /class="admin-brand-mark" aria-hidden="true">SJ<\/span>/);
+  assert.match(html, /class="brand-text">suyogjoshi\.com<\/span>/);
+  assert.match(css, /\.admin-page \.admin-login-panel \{ display: block;/);
+  assert.match(css, /\.admin-page \.admin-brand-mark \{/);
+  assert.doesNotMatch(css.slice(css.indexOf('/* Administration workspace'), css.indexOf('/* End issue 293')), /\.admin-page \.admin-brand span \{/);
+});

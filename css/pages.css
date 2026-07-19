@@ -5175,10 +5175,15 @@
 .admin-page { min-height: 100vh; background: #f5f7fa; }
 .admin-page .admin-topbar { min-height: 4rem; padding: .75rem clamp(1rem, 3vw, 2rem); display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid var(--color-border); background: var(--color-bg); position: sticky; top: 0; z-index: 20; }
 .admin-page .admin-brand { display: inline-flex; align-items: center; gap: .65rem; color: var(--color-text); font-weight: 600; text-decoration: none; }
-.admin-page .admin-brand span { display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .5rem; color: #fff; background: #111827; font-size: .75rem; }
+.admin-page .admin-brand-mark { display: grid; place-items: center; flex: 0 0 2rem; width: 2rem; height: 2rem; border-radius: .5rem; color: #fff; background: #111827; font-size: .75rem; }
+.admin-page .admin-brand .brand-text { width: auto; height: auto; color: inherit; background: transparent; font-size: inherit; }
 .admin-page .admin-environment, .admin-page .admin-user-pill { padding: .35rem .6rem; border-radius: 999px; background: var(--color-surface); color: var(--color-text-muted); font-size: .78rem; }
 .admin-page .admin-main { max-width: 1440px; margin: 0 auto; padding: 1.25rem; }
-.admin-page .admin-login-panel { max-width: 36rem; margin: 8vh auto; padding: 2rem; border: 1px solid var(--color-border); border-radius: 1rem; background: #fff; box-shadow: 0 16px 40px rgba(15,23,42,.06); }
+.admin-page .admin-login-panel { display: block; width: min(100%, 32rem); max-width: 32rem; margin: 8vh auto; padding: 2rem; border: 1px solid var(--color-border); border-radius: 1rem; background: #fff; box-shadow: 0 16px 40px rgba(15,23,42,.06); }
+.admin-page .admin-login-panel .admin-panel-copy { margin-bottom: 1.5rem; }
+.admin-page .admin-login-panel .admin-panel-copy h1 { max-width: none; margin: 0 0 .75rem; font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1.12; }
+.admin-page .admin-login-panel .admin-panel-copy p:last-child { max-width: 40ch; margin-bottom: 0; }
+.admin-page .admin-login-panel .admin-login-form { display: grid; gap: 1rem; }
 .admin-page .admin-shell { display: grid; grid-template-columns: 15.5rem minmax(0, 1fr); gap: 1.5rem; align-items: start; }
 .admin-page .admin-navigation { position: sticky; top: 5.25rem; padding: .75rem; border: 1px solid var(--color-border); border-radius: .85rem; background: #fff; }
 .admin-page .admin-nav-group { display: grid; gap: .2rem; margin-bottom: 1rem; }
