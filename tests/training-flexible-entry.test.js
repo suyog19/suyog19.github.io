@@ -92,7 +92,8 @@ test("pathway removes public stage numbering while keeping five visible course c
 test("course cards separate specific eligibility from availability and keep detail links", () => {
   assert.equal((html.match(/class="journey-eligibility"/g) || []).length, 5);
   assert.equal((html.match(/class="journey-statuses"/g) || []).length, 5);
-  assert.equal((html.match(/>View course<\/a/g) || []).length, 5);
+  assert.equal((html.match(/>View course<\/a/g) || []).length, 2);
+  assert.equal((html.match(/>Preview course<\/a/g) || []).length, 3);
   assert.match(html, /No prior Python experience required/);
   assert.match(html, /Requires basic Python/);
   assert.match(html, /Requires Python and data-analysis fundamentals/);
@@ -117,7 +118,6 @@ test("recommendations are visually explicit, responsive, reduced-motion safe, an
     "training_readiness_selected",
     "training_recommended_course_shown",
     "training_recommended_course_viewed",
-    "training_enrolment_click",
     "training_pathway_course_viewed",
   ])
     assert.match(script, new RegExp(eventName));

@@ -86,6 +86,8 @@
     courseNodes.forEach((node) => {
       const recommended = node.dataset.courseNode === course.id;
       node.classList.toggle("is-recommended", recommended);
+      const cta = node.querySelector(".journey-course-cta");
+      if (cta) cta.classList.toggle("journey-course-cta--recommended", recommended);
       const label = node.querySelector(".journey-recommendation");
       if (label) label.hidden = !recommended;
     });
@@ -102,9 +104,7 @@
       "</p>" +
       '<a class="btn btn-primary btn-learning" data-recommended-course-link href="' +
       course.detailPath +
-      '">View course</a>';
-    result.focus();
-
+      '">View recommended course</a>';
     event("training_readiness_selected", {
       readiness_id: readinessId,
       recommended_course_id: course.id,
@@ -160,16 +160,18 @@
       const actionName = {
         details: "training_pathway_course_viewed",
         preview: "training_pathway_course_viewed",
-        interest: "training_register_interest_click",
-        notify: "training_notify_me_click",
-        enrol: "training_enrolment_click",
       }[courseAction.dataset.courseAction];
       if (actionName) {
+        const card = courseAction.closest("[data-course-node]");
         event(actionName, {
           course_id: courseAction.dataset.courseId,
           course_position: courseAction.dataset.coursePosition,
           course_lifecycle_status: courseAction.dataset.courseLifecycle,
-          cohort_availability: courseAction.dataset.cohortAvailability,
+          cta_label:
+            courseAction.dataset.courseAction === "preview"
+              ? "preview_course"
+              : "view_course",
+          recommended: Boolean(card && card.classList.contains("is-recommended")),
         });
       }
     }

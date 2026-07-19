@@ -86,13 +86,19 @@ test("pipeline catalog is transition-ready and prohibits offers", () => {
   }
 });
 
-test("journey uses the dedicated course-specific interest route", () => {
+test("journey sends pipeline learners to course-specific preview pages", () => {
   const html = read("training/index.html");
-  for (const course of courses)
+  for (const course of courses) {
     assert.match(
       html,
-      new RegExp(`register-interest/\\?courseId=${course.id}`),
+      new RegExp(`href="${course.slug}/"`),
     );
+    const cards = html.match(/<article\s+class="journey-card"[\s\S]*?<\/article>/g) || [];
+    const card = cards.find((candidate) => candidate.includes(course.id));
+    assert.ok(card);
+    assert.match(card, />Preview course<\/a/);
+    assert.doesNotMatch(card, /register-interest\//);
+  }
   assert.doesNotMatch(
     html,
     /contact\/\?topic=interest-(practical|generative|engineering)/,
