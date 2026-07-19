@@ -11,8 +11,8 @@ const tools = context.window.sjAdminGate3;
 
 function form(values) { return { get: (name) => values[name] == null ? null : values[name] }; }
 
-test('Gate 3 uses a separate accessible noindex admin tab and preserves existing areas', () => {
-  for (const label of ['Messages', 'Feedback', 'Training', 'Payments', 'Gate 3']) assert.match(page, new RegExp('>' + label + '<'));
+test('Cohort decisions uses a separate accessible noindex admin section and preserves existing areas', () => {
+  for (const label of ['Contact messages', 'Feedback', 'Courses &amp; cohorts', 'Payments &amp; learner requests', 'Cohort decisions']) assert.match(page, new RegExp('>' + label + '<'));
   assert.match(page, /id="admin-gate3-tab"[^>]*role="tab"[^>]*aria-controls="admin-gate3-panel"/);
   assert.match(page, /id="admin-gate3-panel"[^>]*role="tabpanel"[^>]*aria-labelledby="admin-gate3-tab"/);
   assert.match(page, /noindex, nofollow/);
@@ -64,12 +64,12 @@ test('production confirmation uses only production approval and contract identif
   assert.equal(JSON.stringify(payload).includes('development'), false);
 });
 
-test('Gate 3 identifiers and source avoid unsafe rendering or Gate 4 links', () => {
+test('cohort decision identifiers and source avoid unsafe rendering or learner-resource links', () => {
   assert.equal(tools.safeId('coh_one-2'), 'coh_one-2');
   assert.equal(tools.safeId('../admin'), null);
   assert.doesNotMatch(script, /innerHTML|Teams|OneDrive|GitHub learner|VIEW_COURSE_RESOURCES/);
   assert.match(script, /textContent/);
-  assert.match(page, /no Gate 4 access or provider resource link is published/);
+  assert.doesNotMatch(page, /Gate 4|provider resource link/);
 });
 
 test('authorization failure clears private state and only stale commands reload authority', () => {
