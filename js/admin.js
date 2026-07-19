@@ -15,7 +15,7 @@
     token: sessionStorage.getItem(TOKEN_KEY) || '',
     user: readSessionUser(),
     emailId: '',
-    activeView: 'messages',
+    activeView: 'overview',
     messages: [],
     feedback: [],
     trainingCourses: [],
@@ -52,10 +52,13 @@
     tabs: Array.from(document.querySelectorAll('[data-admin-view]')),
     messagesPanel: document.getElementById('admin-messages-panel'),
     feedbackPanel: document.getElementById('admin-feedback-panel'),
-    trainingPanel: document.getElementById('admin-training-panel'),
+    overviewPanel: document.getElementById('admin-overview-panel'),
+    coursesPanel: document.getElementById('admin-courses-panel'),
+    applicationsPanel: document.getElementById('admin-applications-panel'),
+    interestsPanel: document.getElementById('admin-interests-panel'),
     paymentsPanel: document.getElementById('admin-payments-panel'),
     gate3Panel: document.getElementById('admin-gate3-panel'),
-    refreshTraining: document.getElementById('admin-refresh-training'),
+    refreshTraining: document.getElementById('admin-refresh-current'),
     trainingCourses: document.getElementById('admin-training-courses'),
     trainingCohorts: document.getElementById('admin-training-cohorts'),
     cohortForm: document.getElementById('admin-cohort-form'),
@@ -71,6 +74,8 @@
     registrationOpen: document.getElementById('admin-registration-open'),
     registrationClose: document.getElementById('admin-registration-close'),
     cohortCancel: document.getElementById('admin-cohort-cancel'),
+    cohortTitle: document.getElementById('admin-cohort-editor-title'),
+    cohortSubmit: document.getElementById('admin-cohort-submit'),
     refreshApplications: document.getElementById('admin-refresh-applications'),
     applicationList: document.getElementById('admin-application-list'),
     applicationDetail: document.getElementById('admin-application-detail'),
@@ -222,6 +227,7 @@
     els.sessionActions.hidden = false;
     const email = state.user && state.user.emailId ? state.user.emailId : 'Admin session';
     els.userPill.textContent = email;
+    switchView(viewFromHash());
   }
 
   function clearSession(message) {
@@ -266,7 +272,7 @@
     if (error.status === 403) return 'This account is authenticated but does not have admin access.';
     if (error.status === 404) return 'That record was not found.';
     if (error.status === 409 || error.status === 412) return 'This record changed in another action. Current data has been reloaded; review it before trying again.';
-    return body.message || 'Something went wrong. Please retry.';
+    return body.message || 'We could not connect to the service. Check your connection and try again.';
   }
 
   function handleRequestError(error, target) {
@@ -464,6 +470,21 @@
     container.appendChild(textEl('p', 'admin-empty', message));
   }
 
+  function renderOverview() {
+    const root = document.getElementById('admin-overview');
+    if (!root) return;
+    const cards = [
+      ['Applications awaiting review', state.trainingApplications.filter((item) => ['NEW', 'UNDER_REVIEW'].includes(item.status)).length, 'applications'],
+      ['Cohorts approaching a decision', state.trainingCohorts.filter((item) => ['OPEN', 'CLOSED'].includes(item.lifecycle)).length, 'cohort-decisions'],
+      ['Recent contact messages', state.messages.length, 'messages'],
+      ['Recent feedback', state.feedback.length, 'feedback'],
+    ];
+    root.replaceChildren();
+    cards.forEach(([label, value, view]) => { const button = buttonEl('admin-overview-card', '', { adminView: view }); button.append(textEl('strong', '', String(value)), textEl('span', '', label)); root.appendChild(button); });
+    const payments = buttonEl('admin-overview-card', '', { adminView: 'payments' }); payments.append(textEl('strong', '', 'Review'), textEl('span', '', 'Payment records needing attention')); root.appendChild(payments);
+    const notifications = buttonEl('admin-overview-card', '', { adminView: 'interest-requests' }); notifications.append(textEl('strong', '', 'Review'), textEl('span', '', 'Failed or suppressed notifications')); root.appendChild(notifications);
+  }
+
   function renderMessages() {
     clearNode(els.messagesList);
     if (!state.messages.length) {
@@ -484,6 +505,7 @@
       item.appendChild(metaRow([message.status, message.source, message.type]));
       els.messagesList.appendChild(item);
     });
+    renderOverview();
   }
 
   function renderMessageDetail(message) {
@@ -512,6 +534,7 @@
   function renderFeedback() {
     renderFeedbackSummary();
     renderFeedbackList();
+    renderOverview();
     const selected = state.feedback.find((item) => item.feedbackId === state.selectedFeedbackId) || null;
     renderFeedbackDetail(selected);
   }
@@ -648,6 +671,8 @@
   }
 
   function switchView(view) {
+    const valid = ['overview', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
+    if (!valid.includes(view)) view = 'overview';
     state.activeView = view;
     els.tabs.forEach((tab) => {
       const active = tab.dataset.adminView === view;
@@ -657,16 +682,30 @@
     });
     els.messagesPanel.hidden = view !== 'messages';
     els.feedbackPanel.hidden = view !== 'feedback';
-    els.trainingPanel.hidden = view !== 'training';
+    els.overviewPanel.hidden = view !== 'overview';
+    els.coursesPanel.hidden = view !== 'courses';
+    els.applicationsPanel.hidden = view !== 'applications';
+    els.interestsPanel.hidden = view !== 'interest-requests';
     els.paymentsPanel.hidden = view !== 'payments';
-    els.gate3Panel.hidden = view !== 'gate3';
+    els.gate3Panel.hidden = view !== 'cohort-decisions';
+    const copy = {
+      overview: ['Overview', 'A snapshot of work that may need your attention.'], courses: ['Courses & cohorts', 'Publish courses and manage cohort schedules and application windows.'],
+      applications: ['Applications', 'Review learner applications, record decisions, and send cohort offers.'], payments: ['Payments & learner requests', 'Review payment status, learner requests, refunds, and reconciliation.'],
+      'cohort-decisions': ['Cohort decisions', 'Review enrolment readiness and decide whether to confirm, postpone, or cancel a cohort.'], 'interest-requests': ['Interest requests', 'Review people who asked to be notified about upcoming courses or application openings.'],
+      messages: ['Contact messages', 'Read and respond to recent enquiries.'], feedback: ['Feedback', 'Review feedback submitted across articles, systems, pages, and modules.']
+    };
+    document.getElementById('admin-section-title').textContent = copy[view][0];
+    document.getElementById('admin-section-description').textContent = copy[view][1];
+    if (location.hash !== '#' + view) history.pushState(null, '', '#' + view);
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
     }
-    if (view === 'training' && !state.trainingCourses.length) loadTraining();
+    if ((view === 'overview' || view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
-    if (view === 'gate3' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
+    if (view === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
   }
+
+  function viewFromHash() { return (location.hash || '#overview').slice(1); }
 
   async function loadTraining() {
     const sessionToken = state.token;
@@ -756,6 +795,7 @@
       row.appendChild(metaRow([application.status, 'Version ' + application.version]));
       els.applicationList.appendChild(row);
     });
+    renderOverview();
   }
 
   async function loadApplicationDetail(applicationId) {
@@ -858,7 +898,8 @@
     section.appendChild(textEl('h4', '', 'Review actions'));
     const actions = document.createElement('div'); actions.className = 'admin-form-actions';
     const available = application.status === 'NEW' ? ['start-review', 'waitlist', 'recommend', 'decline', 'withdraw'] : application.status === 'UNDER_REVIEW' ? ['waitlist', 'recommend', 'decline', 'withdraw'] : [];
-    available.forEach((command) => actions.appendChild(buttonEl('btn btn-secondary', command.replace('-', ' '), { applicationCommand: command })));
+    const actionLabels = { 'start-review': 'Begin review', waitlist: 'Add to waitlist', recommend: 'Recommend another course', decline: 'Decline application', withdraw: 'Mark as withdrawn' };
+    available.forEach((command) => actions.appendChild(buttonEl('btn btn-secondary', actionLabels[command], { applicationCommand: command })));
     if (['NEW', 'UNDER_REVIEW'].includes(application.status)) {
       appendOfferControls(actions, application, true);
     }
@@ -882,7 +923,7 @@
       option.textContent = cohort.label + ' (' + cohort.capacityRemaining + ' remaining)';
       select.appendChild(option);
     });
-    actions.appendChild(select);
+    const cohortLabel = document.createElement('label'); cohortLabel.className = 'form-field'; cohortLabel.appendChild(textEl('span', '', 'Offer cohort')); cohortLabel.appendChild(select); actions.appendChild(cohortLabel);
     const offer = buttonEl(
       'btn btn-primary', acceptFirst ? 'Accept and send offer' : 'Send offer',
       { applicationOffer: acceptFirst ? 'accept' : 'offer' }
@@ -908,22 +949,12 @@
   async function applicationCommand(command) {
     const application = state.selectedApplication;
     if (!application || state.trainingMutationPending) return;
-    let reason = null; let recommendedCourseId = null;
-    if (['recommend', 'decline', 'withdraw'].includes(command)) {
-      reason = window.prompt('Reason (required, maximum 500 characters):');
-      if (!reason || !reason.trim()) return;
-      if (reason.trim().length > 500) return setStatus('Reason must be at most 500 characters.', 'warn');
-    }
-    if (command === 'recommend') {
-      recommendedCourseId = window.prompt('Published recommended course ID:');
-      if (!recommendedCourseId || !recommendedCourseId.trim()) return;
-      const recommended = state.trainingCourses.find((course) => (
-        course.courseId === recommendedCourseId.trim()
-        && course.publicationStatus === 'PUBLISHED'
-      ));
-      if (!recommended) return setStatus('Choose the ID of a published Gate 1 course.', 'warn');
-    }
-    if (!window.confirm('Confirm ' + command.replace('-', ' ') + ' for this application?')) return;
+    const actionLabels = { 'start-review': 'Begin review', waitlist: 'Add to waitlist', recommend: 'Recommend another course', decline: 'Decline application', withdraw: 'Mark as withdrawn' };
+    const fields = ['recommend', 'decline', 'withdraw'].includes(command) ? [{ name: 'reason', label: 'Reason', type: 'textarea', maxLength: 500 }] : [];
+    if (command === 'recommend') fields.push({ name: 'recommendedCourseId', label: 'Recommended course', type: 'select', options: state.trainingCourses.filter((course) => course.publicationStatus === 'PUBLISHED' && course.courseId !== application.courseId).map((course) => [course.courseId, course.title]) });
+    const values = await window.sjAdminUi.dialog({ title: actionLabels[command] + '?', description: 'This updates the learner application and records the decision.', fields, confirmLabel: actionLabels[command] });
+    if (!values) return;
+    const reason = values.reason || null; const recommendedCourseId = values.recommendedCourseId || null;
     const body = { expectedVersion: Number(application.version) };
     if (reason) body.reason = reason.trim(); if (recommendedCourseId) body.recommendedCourseId = recommendedCourseId.trim();
     const scope = 'application-' + command + ':' + application.applicationId;
@@ -945,7 +976,8 @@
     const cohort = select && state.trainingCohorts.find((item) => item.cohortId === select.value);
     if (!application || !cohort) return setStatus('Choose an open cohort before sending an offer.', 'warn');
     const acceptFirst = application.status === 'NEW' || application.status === 'UNDER_REVIEW';
-    if (!window.confirm((acceptFirst ? 'Accept this application, then reserve' : 'Reserve') + ' a seat in ' + cohort.label + ' and send this offer?')) return;
+    const confirmed = await window.sjAdminUi.dialog({ title: 'Send cohort offer?', description: (acceptFirst ? 'The application will be accepted, a seat reserved, and an offer sent for ' : 'A seat will be reserved and an offer sent for ') + cohort.label + '.', confirmLabel: acceptFirst ? 'Accept and reserve seat' : 'Send cohort offer' });
+    if (!confirmed) return;
     let activeScope = '';
     let acceptCompleted = false;
     setApplicationMutationBusy(true);
@@ -988,10 +1020,9 @@
   async function resendCommunication(logicalKey) {
     if (state.trainingMutationPending) return;
     if (!logicalKey) return setStatus('Communication identifier is unavailable.', 'warn');
-    const reason = window.prompt('Reason for resend (required, maximum 500 characters):'); if (!reason || !reason.trim()) return;
-    if (reason.trim().length > 500) return setStatus('Reason must be at most 500 characters.', 'warn');
-    if (!window.confirm('Queue one controlled resend attempt?')) return;
-    const body = { logicalKey, reason: reason.trim() };
+    const values = await window.sjAdminUi.dialog({ title: 'Resend communication?', description: 'One controlled resend attempt will be queued.', fields: [{ name: 'reason', label: 'Reason for resend', type: 'textarea', maxLength: 500 }], confirmLabel: 'Resend communication' });
+    if (!values) return;
+    const body = { logicalKey, reason: values.reason.trim() };
     const scope = 'communication-resend:' + state.selectedApplicationId + ':' + logicalKey;
     setApplicationMutationBusy(true);
     try {
@@ -1023,9 +1054,10 @@
     state.trainingCourses.forEach((course) => {
       const card = textEl('article', 'admin-training-card', '');
       card.appendChild(textEl('h3', '', course.title));
-      card.appendChild(textEl('p', '', course.publicationStatus + ' · Version ' + course.version));
+      card.appendChild(textEl('p', 'admin-status-label', window.sjAdminUi.label(course.publicationStatus)));
+      card.appendChild(textEl('p', 'admin-list-meta', state.trainingCohorts.filter((item) => item.courseId === course.courseId).length + ' cohorts'));
       const action = course.publicationStatus === 'PUBLISHED' ? 'unpublish' : 'publish';
-      card.appendChild(buttonEl('btn btn-secondary', action === 'publish' ? 'Publish' : 'Unpublish', {
+      card.appendChild(buttonEl('btn btn-secondary', action === 'publish' ? 'Publish course' : 'Remove from public site', {
         trainingCourseId: course.courseId, trainingCourseAction: action, trainingCourseVersion: String(course.version),
       }));
       els.trainingCourses.appendChild(card);
@@ -1036,10 +1068,10 @@
     state.trainingCohorts.forEach((cohort) => {
       const card = textEl('article', 'admin-training-card', '');
       card.appendChild(textEl('h3', '', cohort.label));
-      card.appendChild(textEl('p', '', cohort.lifecycle + ' · Availability ' + (cohort.availability || 'CLOSED') + ' · Remaining ' + (cohort.capacityRemaining == null ? cohort.capacity : cohort.capacityRemaining) + ' of ' + cohort.capacity + ' · Minimum ' + cohort.minimumSize));
+      card.appendChild(detailGrid([['Course', courseTitle(cohort.courseId)], ['Registration status', window.sjAdminUi.label(cohort.availability || cohort.lifecycle)], ['Seats', (cohort.capacityRemaining == null ? cohort.capacity : cohort.capacityRemaining) + ' remaining of ' + cohort.capacity], ['Expected dates', window.sjAdminUi.date(cohort.tentativeStartAt) + ' – ' + window.sjAdminUi.date(cohort.tentativeEndAt)], ['Current lifecycle', window.sjAdminUi.label(cohort.lifecycle)]]));
       card.appendChild(buttonEl('btn btn-secondary', 'Edit', { trainingCohortEdit: cohort.cohortId }));
-      if (cohort.lifecycle === 'DRAFT') card.appendChild(buttonEl('btn btn-secondary', 'Open registration', { trainingCohortCommand: 'open', trainingCohortId: cohort.cohortId, trainingCohortCourse: cohort.courseId, trainingCohortVersion: String(cohort.version) }));
-      if (cohort.lifecycle === 'OPEN') card.appendChild(buttonEl('btn btn-secondary', 'Close registration', { trainingCohortCommand: 'close', trainingCohortId: cohort.cohortId, trainingCohortCourse: cohort.courseId, trainingCohortVersion: String(cohort.version) }));
+      if (cohort.lifecycle === 'DRAFT') card.appendChild(buttonEl('btn btn-secondary', 'Open applications', { trainingCohortCommand: 'open', trainingCohortId: cohort.cohortId, trainingCohortCourse: cohort.courseId, trainingCohortVersion: String(cohort.version) }));
+      if (cohort.lifecycle === 'OPEN') card.appendChild(buttonEl('btn btn-secondary', 'Close applications', { trainingCohortCommand: 'close', trainingCohortId: cohort.cohortId, trainingCohortCourse: cohort.courseId, trainingCohortVersion: String(cohort.version) }));
       els.trainingCohorts.appendChild(card);
     });
     const selectedCourse = els.applicationCourseFilter.value;
@@ -1113,14 +1145,17 @@
     els.cohortCapacity.value = cohort.capacity; els.cohortMinimum.value = cohort.minimumSize;
     els.cohortStart.value = trainingTools.isoToDateInput(cohort.tentativeStartAt); els.cohortEnd.value = trainingTools.isoToDateInput(cohort.tentativeEndAt);
     els.registrationOpen.value = trainingTools.isoToDateInput(cohort.registrationOpensAt); els.registrationClose.value = trainingTools.isoToDateInput(cohort.registrationClosesAt);
+    els.cohortTitle.textContent = 'Edit cohort — ' + cohort.label;
+    els.cohortSubmit.textContent = 'Save changes'; els.cohortCancel.textContent = 'Cancel editing';
     els.cohortLabel.focus();
   }
 
-  function clearCohortForm() { els.cohortForm.reset(); els.cohortId.value = ''; els.cohortVersion.value = ''; els.cohortCourse.disabled = false; els.cohortTimezone.value = 'Asia/Kolkata'; }
+  function clearCohortForm() { els.cohortForm.reset(); els.cohortId.value = ''; els.cohortVersion.value = ''; els.cohortCourse.disabled = false; els.cohortTimezone.value = 'Asia/Kolkata'; if (els.cohortTitle) els.cohortTitle.textContent = 'Create cohort'; if (els.cohortSubmit) els.cohortSubmit.textContent = 'Create cohort'; if (els.cohortCancel) els.cohortCancel.textContent = 'Reset form'; }
 
   async function courseCommand(button) {
     const action = button.dataset.trainingCourseAction;
-    if (!window.confirm((action === 'publish' ? 'Publish' : 'Unpublish') + ' this seeded course?')) return;
+    const confirmed = await window.sjAdminUi.dialog({ title: action === 'publish' ? 'Publish course?' : 'Remove course from public site?', description: action === 'publish' ? 'Learners will be able to find this course on the public site.' : 'The course will no longer be listed publicly.', confirmLabel: action === 'publish' ? 'Publish course' : 'Remove from public site' });
+    if (!confirmed) return;
     const body = { expectedVersion: Number(button.dataset.trainingCourseVersion) };
     const scope = 'course-' + action + ':' + button.dataset.trainingCourseId;
     try {
@@ -1139,7 +1174,8 @@
 
   async function cohortCommand(button) {
     const action = button.dataset.trainingCohortCommand;
-    if (!window.confirm((action === 'open' ? 'Open' : 'Close') + ' registration for this cohort?')) return;
+    const confirmed = await window.sjAdminUi.dialog({ title: action === 'open' ? 'Open applications?' : 'Close applications?', description: action === 'open' ? 'Learners will be able to apply to this cohort.' : 'New applications will no longer be accepted for this cohort.', confirmLabel: action === 'open' ? 'Open applications' : 'Close applications' });
+    if (!confirmed) return;
     const body = { courseId: button.dataset.trainingCohortCourse, expectedVersion: Number(button.dataset.trainingCohortVersion), reason: 'Manual admin ' + action };
     const scope = 'cohort-' + action + ':' + button.dataset.trainingCohortId;
     const requestOptions = {
@@ -1174,7 +1210,14 @@
     els.logout.addEventListener('click', logout);
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
-    els.refreshTraining.addEventListener('click', loadTraining);
+    els.refreshTraining.addEventListener('click', () => {
+      if (['overview', 'courses', 'applications'].includes(state.activeView)) loadTraining();
+      else if (state.activeView === 'messages') loadMessages();
+      else if (state.activeView === 'feedback') loadFeedback();
+      else if (state.activeView === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load(true);
+      else if (state.activeView === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load(true);
+      else if (state.activeView === 'interest-requests') window.dispatchEvent(new CustomEvent('admin:authenticated'));
+    });
     els.refreshApplications.addEventListener('click', loadApplications);
     els.applicationFilters.addEventListener('submit', (event) => { event.preventDefault(); state.selectedApplicationId = ''; loadApplications(); });
     els.cohortForm.addEventListener('submit', saveCohort);
@@ -1194,6 +1237,10 @@
         els.tabs[next].focus();
       });
     });
+    window.addEventListener('popstate', () => switchView(viewFromHash()));
+    window.addEventListener('hashchange', () => switchView(viewFromHash()));
+    const navToggle = document.getElementById('admin-nav-toggle');
+    navToggle.addEventListener('click', () => { const open = navToggle.getAttribute('aria-expanded') !== 'true'; navToggle.setAttribute('aria-expanded', String(open)); document.getElementById('admin-navigation').classList.toggle('is-open', open); });
     document.addEventListener('click', (event) => {
       const tab = event.target.closest('[data-admin-view]');
       if (tab) {
@@ -1230,7 +1277,8 @@
 
   function init() {
     if (!els.loginPanel || !els.shell) return;
-    els.apiNote.textContent = 'API: ' + state.apiBase;
+    els.apiNote.textContent = 'Service endpoint: ' + state.apiBase;
+    document.getElementById('admin-environment').textContent = state.apiBase === 'https://api.suyogjoshi.com' ? 'Production' : 'Development';
     bindEvents();
     window.sjAdminPaymentsController = window.sjAdminPayments.create({
       environment: state.apiBase === 'https://api.suyogjoshi.com' ? 'production' : 'development',

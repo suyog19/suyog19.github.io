@@ -77,7 +77,7 @@
         list.append(
           text(
             "p",
-            nextCursor ? "No matching interests on this page." : "No course interests to show.",
+            nextCursor ? "No matching requests on this page." : "No interest requests yet. New requests will appear here when people ask to hear about a course.",
             "admin-empty",
           ),
         );
@@ -85,7 +85,7 @@
       items.forEach((item) => {
         const button = text(
           "button",
-          `${item.courseTitleSnapshot} · ${item.derivedIntent} · ${item.status}${item.notificationStatus ? ` · ${item.notificationStatus}` : ""}`,
+          `${item.courseTitleSnapshot} · ${window.sjAdminUi.label(item.derivedIntent)} · ${window.sjAdminUi.label(item.status)}${item.notificationStatus ? ` · ${window.sjAdminUi.label(item.notificationStatus)}` : ""}`,
           "admin-list-item",
         );
         button.type = "button";
@@ -112,7 +112,7 @@
       clear(detail);
       detail.append(
         text("h4", item.courseTitleSnapshot),
-        text("p", `${item.derivedIntent} · ${item.status}`),
+        text("p", `${window.sjAdminUi.label(item.derivedIntent)} · ${window.sjAdminUi.label(item.status)}`),
       );
       const dl = document.createElement("dl");
       Object.entries(item)
@@ -127,7 +127,7 @@
         )
         .forEach(([key, value]) => {
           dl.append(
-            text("dt", key),
+            text("dt", window.sjAdminUi.humanField(key)),
             text(
               "dd",
               typeof value === "object" ? JSON.stringify(value) : value,
@@ -136,11 +136,11 @@
         });
       detail.append(dl);
       if (item.status !== "WITHDRAWN") {
-        const button = text("button", "Withdraw record", "btn btn-secondary");
+        const button = text("button", "Withdraw request", "btn btn-secondary");
         button.type = "button";
         button.addEventListener("click", async () => {
-          const reason = prompt("Reason for withdrawal");
-          if (!reason || !confirm("Withdraw this course-interest record?")) return;
+          const values = await window.sjAdminUi.dialog({ title: "Withdraw interest request?", description: "This person will no longer receive notifications for this request.", fields: [{ name: "reason", label: "Reason", type: "textarea", maxLength: 500 }], confirmLabel: "Withdraw request" });
+          if (!values) return;
           await request(
             `/admin/training/course-interests/${encodeURIComponent(id)}/withdraw`,
             {
@@ -152,7 +152,7 @@
               body: JSON.stringify({
                 expectedVersion: Number(item.version),
                 confirmation: true,
-                reason,
+                reason: values.reason,
               }),
             },
           );
@@ -162,8 +162,8 @@
         detail.append(button);
       }
       async function recover(operation, label) {
-        const reason = prompt(`Reason to ${label.toLowerCase()}`);
-        if (!reason || !confirm(`${label} using canonical delivery evidence?`)) return;
+        const values = await window.sjAdminUi.dialog({ title: label + "?", description: "This action uses the existing notification record and delivery evidence.", fields: [{ name: "reason", label: "Reason for this action", type: "textarea", maxLength: 500 }], confirmLabel: label });
+        if (!values) return;
         await request(
           `/admin/training/course-interests/${encodeURIComponent(id)}/notifications/${operation}`,
           {
@@ -175,7 +175,7 @@
             body: JSON.stringify({
               logicalKey: item.notificationLogicalKey,
               confirmation: true,
-              reason,
+              reason: values.reason,
             }),
           },
         );
@@ -183,15 +183,15 @@
         await load();
       }
       if (item.notificationCanResend) {
-        const resend = text("button", "Safely resend original notification", "btn btn-secondary");
+        const resend = text("button", "Resend notification", "btn btn-secondary");
         resend.type = "button";
         resend.addEventListener("click", () => recover("resend", "Resend notification"));
         detail.append(resend);
       }
       if (item.notificationCanReconcile) {
-        const reconcile = text("button", "Repair fulfilment projection", "btn btn-secondary");
+        const reconcile = text("button", "Reconcile notification status", "btn btn-secondary");
         reconcile.type = "button";
-        reconcile.addEventListener("click", () => recover("reconcile", "Repair projection"));
+        reconcile.addEventListener("click", () => recover("reconcile", "Reconcile notification status"));
         detail.append(reconcile);
       }
     } catch (_) {
@@ -235,9 +235,10 @@
         `/admin/training/course-interests/applications-open-notifications/eligibility?courseId=${encodeURIComponent(courseId)}&cohortId=${encodeURIComponent(cohortId)}`,
       );
       eligibilityResult.textContent = result.allowed
-        ? `${result.eligibleCount} eligible; ${result.alreadyFulfilledCount} already fulfilled.`
-        : `Not allowed: ${result.reasonCode}`;
+        ? `${result.eligibleCount} people are eligible. ${result.alreadyFulfilledCount} have already been notified.`
+        : `This audience cannot be notified: ${window.sjAdminUi.label(result.reasonCode)}`;
       sendButton.disabled = !result.allowed;
+      if (result.allowed) sendButton.textContent = `Notify ${result.eligibleCount} learners`;
     } catch (_) {
       eligibilityResult.textContent = "Eligibility unavailable.";
       sendButton.disabled = true;
@@ -258,9 +259,7 @@
     if (
       sending ||
       sendButton.disabled ||
-      !confirm(
-        "Send the fixed applications-open message to all eligible requesters?",
-      )
+      !(await window.sjAdminUi.dialog({ title: "Notify interested learners?", description: eligibilityResult.textContent, confirmLabel: sendButton.textContent }))
     )
       return;
     sending = true;
@@ -284,7 +283,7 @@
       sendButton.disabled = true;
       await load();
     } catch (_) {
-      eligibilityResult.textContent = "The fixed send was not created.";
+      eligibilityResult.textContent = "Notifications could not be created. Review the audience and try again.";
     } finally {
       sending = false;
     }
