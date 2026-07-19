@@ -18,6 +18,7 @@
     if (profile) {
       document.querySelectorAll('[data-starting-profile]').forEach((button) => button.setAttribute('aria-pressed', String(button === profile)));
       const stage = profile.dataset.stage; const course = courses[stage]; const result = document.querySelector('[data-starting-result]');
+      document.querySelectorAll('.journey-grid > li').forEach((item, index) => item.classList.toggle('is-recommended', index + 1 === Number(stage)));
       result.innerHTML = '<p class="learning-status-marker">Recommended starting point: Stage ' + stage + '</p><h3>' + course[0] + '</h3><p>' + course[2] + '</p><a class="btn btn-primary btn-learning" href="' + course[1] + '">Open course ' + (Number(stage) > 2 ? 'preview' : 'details') + '</a>';
       result.focus(); event('training_starting_point_selected', { starting_profile: profile.dataset.startingProfile, course_stage: Number(stage) });
     }
