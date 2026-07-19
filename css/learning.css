@@ -571,6 +571,10 @@
 .training-journey-page #journey .journey-actions a { text-align: center; }
 .training-journey-page #journey .journey-actions [data-course-action="notify"], .training-journey-page #journey .journey-actions [data-course-action="interest"] { background: transparent; border: 0; color: var(--learning-accent-strong); font-weight: 700; order: initial; }
 .training-journey-page #journey .journey-actions [data-course-action="details"], .training-journey-page #journey .journey-actions [data-course-action="preview"] { order: initial; width: 100%; }
+.training-journey-page #journey .journey-actions .journey-course-cta { align-items: center; background: transparent; border: 1px solid var(--learning-accent-strong); color: var(--learning-accent-strong); display: inline-flex; justify-content: center; min-height: 2.75rem; padding: .7rem 1rem; text-decoration: none; }
+.training-journey-page #journey .journey-grid > li.is-recommended .journey-card { border-width: 1px; outline: 2px solid var(--learning-accent-strong); outline-offset: -2px; }
+.training-journey-page #journey .journey-actions .journey-course-cta.journey-course-cta--recommended { background-color: var(--learning-accent-strong); color: #fff; }
+.training-journey-page #journey .journey-course-cta:focus-visible { outline: 3px solid var(--learning-accent); outline-offset: 3px; }
 .training-journey-page #journey .journey-card p { font-size: .88rem; line-height: 1.55; }
 .learning-model-grid, .specialisation-grid { display: grid; gap: 1rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .learning-model-grid article, .specialisation-grid article { background: var(--color-bg); border: 1px solid var(--color-border); padding: 1.35rem; }
