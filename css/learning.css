@@ -540,6 +540,38 @@
 .starting-assessment .btn { justify-self: start; }
 .starting-result { background: var(--learning-accent-soft); border-left: 4px solid var(--learning-accent); margin-top: 1.5rem; padding: 1.5rem; }
 .starting-result h3 { margin-bottom: .5rem; }
+
+/* Eligibility-based pathway (Training landing page only) */
+.training-journey-page .journey-flexible-entry { border-left: 4px solid var(--learning-accent); display: block; line-height: 1.6; }
+.training-journey-page .journey-flexible-entry strong { display: block; }
+.training-journey-page .visually-hidden { clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
+.training-journey-page .readiness-selector fieldset { border: 0; margin: 0; padding: 0; }
+.training-journey-page .readiness-options { display: grid; gap: .75rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.training-journey-page .readiness-option { cursor: pointer; display: block; min-width: 0; position: relative; }
+.training-journey-page .readiness-option input { height: 1px; opacity: 0; position: absolute; width: 1px; }
+.training-journey-page .readiness-option > span { background: var(--color-bg); border: 1px solid var(--color-border); display: block; height: 100%; line-height: 1.4; padding: 1rem; }
+.training-journey-page .readiness-option :is(strong, small) { display: block; }
+.training-journey-page .readiness-option small { color: var(--color-text-muted); font-size: .78rem; margin-top: .45rem; }
+.training-journey-page .readiness-option input:checked + span { border: 3px solid var(--learning-accent-strong); padding: calc(1rem - 2px); }
+.training-journey-page .readiness-option input:checked + span::before { color: var(--learning-accent-strong); content: '\2713 Selected'; display: block; font-size: .7rem; font-weight: 700; letter-spacing: .03em; margin-bottom: .45rem; text-transform: uppercase; }
+.training-journey-page .readiness-option input:focus-visible + span { outline: 3px solid var(--learning-accent); outline-offset: 3px; }
+.training-journey-page .starting-result { background: var(--color-bg); max-width: 52rem; }
+.training-journey-page #journey .journey-grid { gap: 1rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.training-journey-page #journey .journey-grid > li { display: flex; position: relative; }
+.training-journey-page #journey .journey-grid > li:not(:last-child)::after { color: var(--learning-accent-strong); content: '\2192'; font-size: 1.3rem; font-weight: 700; position: absolute; right: -.82rem; top: 2.1rem; z-index: 2; }
+.training-journey-page #journey .journey-card { flex: 1; padding: 1.25rem; transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.training-journey-page #journey .journey-grid > li.is-recommended .journey-card { border: 3px solid var(--learning-accent-strong); box-shadow: 0 .8rem 2rem rgba(15,118,110,.12); transform: translateY(-.25rem); }
+.training-journey-page #journey .journey-card:focus-visible { outline: 3px solid var(--learning-accent); outline-offset: 4px; }
+.training-journey-page #journey .journey-recommendation { color: var(--learning-accent-strong); font-size: .7rem; font-weight: 700; letter-spacing: .04em; margin-bottom: .65rem; text-transform: uppercase; }
+.training-journey-page #journey .journey-card h3 { font-size: 1.25rem; margin: .35rem 0 .75rem; order: initial; }
+.training-journey-page #journey .journey-eligibility { border-top: 2px solid var(--learning-accent); color: var(--learning-accent-strong); font-weight: 700; margin: 0; padding-top: .65rem; }
+.training-journey-page #journey .journey-capability, .training-journey-page #journey .journey-card > p:not(.journey-capability), .training-journey-page #journey .journey-statuses, .training-journey-page #journey .journey-actions { order: initial; }
+.training-journey-page #journey .journey-statuses { margin-top: .25rem; }
+.training-journey-page #journey .journey-actions { align-items: stretch; flex-direction: column; margin-top: auto; }
+.training-journey-page #journey .journey-actions a { text-align: center; }
+.training-journey-page #journey .journey-actions [data-course-action="notify"], .training-journey-page #journey .journey-actions [data-course-action="interest"] { background: transparent; border: 0; color: var(--learning-accent-strong); font-weight: 700; order: initial; }
+.training-journey-page #journey .journey-actions [data-course-action="details"], .training-journey-page #journey .journey-actions [data-course-action="preview"] { order: initial; width: 100%; }
+.training-journey-page #journey .journey-card p { font-size: .88rem; line-height: 1.55; }
 .learning-model-grid, .specialisation-grid { display: grid; gap: 1rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .learning-model-grid article, .specialisation-grid article { background: var(--color-bg); border: 1px solid var(--color-border); padding: 1.35rem; }
 .specialisation-grid ul { list-style: disc; margin: 0; padding-left: 1.2rem; }
@@ -571,6 +603,8 @@
 
 @media (max-width: 1000px) {
   .learning-model-grid, .specialisation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .training-journey-page .readiness-options, .training-journey-page #journey .journey-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .training-journey-page #journey .journey-grid > li::after { display: none; }
 }
 
 @media (max-width: 600px) {
@@ -581,9 +615,13 @@
   .journey-flexible-entry { align-items: flex-start; flex-direction: column; }
   .starting-assessment fieldset { padding: 1rem; }
   .starting-assessment .btn { width: 100%; }
+  .training-journey-page .readiness-options { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 700px) {
+  .training-journey-page #journey .journey-grid { grid-template-columns: 1fr; }
+  .training-journey-page #journey .journey-grid > li:not(:last-child)::after { display: block; left: 1.25rem; right: auto; top: calc(100% - .15rem); transform: rotate(90deg); }
+  .training-journey-page #journey .journey-grid > li.is-recommended .journey-card { transform: none; }
   #journey .journey-map.is-enhanced .journey-stations { grid-template-columns: 1fr; }
   #journey .journey-map.is-enhanced .journey-stations::before { bottom: 1.25rem; height: auto; left: 1.25rem; right: auto; top: 1.25rem; width: 2px; }
   #journey .journey-map.is-enhanced .journey-station { align-items: center; flex-direction: row; gap: .8rem; min-height: 3.75rem; padding: .3rem 0; text-align: left; }
@@ -594,6 +632,10 @@
   #journey .journey-map.is-enhanced .journey-card { padding: 1.15rem; }
   #journey .journey-actions { align-items: stretch; flex-direction: column; }
   #journey .journey-actions [data-course-action="notify"], #journey .journey-actions [data-course-action="interest"] { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .training-journey-page #journey .journey-card { transition: none; }
 }
 
 /* Shared launched-course detail system */
