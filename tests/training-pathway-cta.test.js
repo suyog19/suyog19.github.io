@@ -39,7 +39,7 @@ test('pathway CTA routes, labels, and accessible names match lifecycle context',
 test('shared action controller never initialises or mutates pathway cards', () => {
   assert.doesNotMatch(actionsScript, /querySelectorAll\('\.journey-card'\)/);
   assert.doesNotMatch(actionsScript, /TRAINING_JOURNEY/);
-  assert.match(actionsScript, /View course and apply/);
+  assert.match(actionsScript, /link\.textContent = 'Apply'/);
   assert.match(actionsScript, /const page = document\.querySelector\('\[data-course-detail\]'\)/);
   assert.match(actionsScript, /detailActionLinks\(\)\.forEach\(link => updateLink/);
   assert.match(actionsScript, /if \(!item\) \{ failClosed\(\); return; \}/);
