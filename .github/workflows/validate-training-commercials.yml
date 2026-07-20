@@ -11,6 +11,7 @@ on:
       - "my-learning/**/*.html"
       - "privacy/**/*.html"
       - "js/course-application*.js"
+      - js/admin-gate3.js
       - "js/learner-*.js"
       - "tests/**/*.test.js"
       - .github/workflows/validate-training-commercials.yml
@@ -24,6 +25,7 @@ on:
       - "my-learning/**/*.html"
       - "privacy/**/*.html"
       - "js/course-application*.js"
+      - js/admin-gate3.js
       - "js/learner-*.js"
       - "tests/**/*.test.js"
       - .github/workflows/validate-training-commercials.yml

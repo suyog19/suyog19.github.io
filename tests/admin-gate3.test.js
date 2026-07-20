@@ -5,6 +5,7 @@ const vm = require('node:vm');
 
 const script = fs.readFileSync('js/admin-gate3.js', 'utf8');
 const page = fs.readFileSync('admin/index.html', 'utf8');
+const commercialWorkflow = fs.readFileSync('.github/workflows/validate-training-commercials.yml', 'utf8');
 const context = { window: {}, Date, Number, Set };
 vm.runInNewContext(script, context);
 const tools = context.window.sjAdminGate3;
@@ -27,6 +28,11 @@ test('Cohort decisions uses a separate accessible noindex admin section and pres
   assert.match(page, /id="admin-gate3-panel"[^>]*role="tabpanel"[^>]*aria-labelledby="admin-gate3-tab"/);
   assert.match(page, /noindex, nofollow/);
   assert.match(page, /admin-gate3\.js/);
+});
+
+test('Gate 3 contract changes trigger commercial validation for pull requests and pushes', () => {
+  assert.equal((commercialWorkflow.match(/- js\/admin-gate3\.js/g) || []).length, 2);
+  assert.match(commercialWorkflow, /node --test tests\/\*\.test\.js/);
 });
 
 test('decision commands are enabled only by exact backend allowlist', () => {
