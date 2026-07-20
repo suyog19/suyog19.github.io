@@ -33,8 +33,30 @@ for course in courses:
         errors.append(f"{label}: production currency must be INR")
     if course.get("taxTreatment") != "Inclusive of applicable taxes":
         errors.append(f"{label}: tax treatment must say Inclusive of applicable taxes")
-    if course.get("cohortAvailability") in {"apply", "payment-open"} and not course.get("startDate"):
+    if course.get("cohortAvailability") == "payment-open" and not course.get("startDate"):
         errors.append(f"{label}: applications/payment cannot open without a published start date")
+
+catalog_by_id = {course.get("courseId"): course for course in courses}
+python_catalog = catalog_by_id.get("crs_python_foundations", {})
+python_launch_state = {
+    "cohortAvailability": "apply",
+    "primaryActionLabel": "Apply",
+    "primaryActionDestination": "/apply/?courseId=crs_python_foundations",
+}
+for field, expected in python_launch_state.items():
+    if python_catalog.get(field) != expected:
+        errors.append(f"Python Foundations public catalog {field} must be {expected!r}, found {python_catalog.get(field)!r}")
+for field in ("cohortAvailability", "primaryActionLabel", "primaryActionDestination"):
+    if "notify" in str(python_catalog.get(field, "")).lower():
+        errors.append(f"Python Foundations public catalog contains stale closed-launch state in {field}")
+python_catalog_text = json.dumps(python_catalog, sort_keys=True).lower()
+for phrase in ("applications are not open", "applications and payment are not open", "no-payment stage", "payment is closed"):
+    if phrase in python_catalog_text:
+        errors.append(f"Python Foundations public catalog contains stale launch wording: {phrase}")
+
+applied_catalog = catalog_by_id.get("crs_applied_python", {})
+if applied_catalog.get("cohortAvailability") != "notify-me" or applied_catalog.get("primaryActionLabel") != "Get notified when applications open":
+    errors.append("Applied Data Analysis public catalog must remain notify-only until its applications are approved open")
 
 policy_files = [
     ROOT / "training" / "policies" / "index.html",
@@ -110,6 +132,15 @@ for required in (
 for forbidden in ("Get notified when applications open", "Applications not open"):
     if forbidden in python_page:
         errors.append(f"launched Python course page contains stale action wording: {forbidden}")
+
+journey_page = (ROOT / "training" / "index.html").read_text(encoding="utf-8")
+python_card = journey_page.split('id="course-python-foundations"', 1)[-1].split('id="course-data-analysis"', 1)[0]
+for required in ("Applications open", 'data-cohort-availability="apply"'):
+    if required not in python_card:
+        errors.append(f"Python Foundations journey card is missing open-launch state: {required}")
+for forbidden in ("Launching soon", 'data-cohort-availability="notify-me"'):
+    if forbidden in python_card:
+        errors.append(f"Python Foundations journey card contains stale closed-launch state: {forbidden}")
 
 policy_ids = (
     "software-signal-terms@1.1.0",
