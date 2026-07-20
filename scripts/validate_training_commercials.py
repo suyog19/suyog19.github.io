@@ -46,13 +46,19 @@ policy_files = [
     ROOT / "privacy" / "index.html",
 ]
 journey_files = [
+    ROOT / "training" / "index.html",
     ROOT / "apply" / "index.html",
     ROOT / "my-learning" / "index.html",
     ROOT / "my-learning" / "payment" / "index.html",
     ROOT / "my-learning" / "balance" / "index.html",
     ROOT / "my-learning" / "change" / "index.html",
 ]
-published_text = "\n".join(path.read_text(encoding="utf-8") for path in policy_files + journey_files)
+course_detail_files = sorted(
+    path for path in (ROOT / "training").glob("*/index.html")
+    if "data-course-detail" in path.read_text(encoding="utf-8")
+)
+published_files = policy_files + journey_files + course_detail_files
+published_text = "\n".join(path.read_text(encoding="utf-8") for path in published_files)
 
 temporary_price_patterns = (
     r"(?<![\d,])(?:INR|₹)\s*40(?![\d,])",
@@ -74,6 +80,36 @@ stale_wording = (
 for phrase in stale_wording:
     if phrase in published_text.lower():
         errors.append(f"published content contains stale no-payment wording: {phrase}")
+
+launched_pages = {
+    "crs_python_foundations": ROOT / "training" / "python-foundations-for-data-science" / "index.html",
+    "crs_applied_python": ROOT / "training" / "applied-data-analysis-with-python" / "index.html",
+}
+stale_launch_phrases = (
+    "will be finalised before applications open",
+    "will be published before applications open",
+    "not promised until the policy is published",
+)
+for course_id, path in launched_pages.items():
+    page = path.read_text(encoding="utf-8")
+    for phrase in stale_launch_phrases:
+        if phrase in page.lower():
+            errors.append(f"{path.relative_to(ROOT)} contains stale pre-launch wording: {phrase}")
+    if 'href="../policies/"' not in page:
+        errors.append(f"{path.relative_to(ROOT)} must link the current training policies")
+
+python_page = launched_pages["crs_python_foundations"].read_text(encoding="utf-8")
+for required in (
+    'data-cohort-availability="apply"',
+    'href="../../apply/?courseId=crs_python_foundations"',
+    "Applications open for review",
+    "Payment confirmations are not tax invoices",
+):
+    if required not in python_page:
+        errors.append(f"launched Python course page is missing current production wording: {required}")
+for forbidden in ("Get notified when applications open", "Applications not open"):
+    if forbidden in python_page:
+        errors.append(f"launched Python course page contains stale action wording: {forbidden}")
 
 policy_ids = (
     "software-signal-terms@1.1.0",
@@ -99,6 +135,17 @@ application_model = (ROOT / "js" / "course-application-model.js").read_text(enco
 for mechanism_id in ("software-signal-terms-privacy", "software-signal-recorded-delivery"):
     if f"documentId: '{mechanism_id}', version: '1.1.0'" not in application_model:
         errors.append(f"application acknowledgement mechanism is not aligned: {mechanism_id}@1.1.0")
+
+privacy_page = (ROOT / "privacy" / "index.html").read_text(encoding="utf-8")
+for required in (
+    "retention baseline is 365 days",
+    "retained for at least 365 days",
+    "policy maximum is 90 days",
+    "currently administered manually",
+    "not an automatic or immediate deletion guarantee",
+):
+    if required not in privacy_page:
+        errors.append(f"privacy notice is missing accurate retention qualification: {required}")
 
 refund_page = (ROOT / "training" / "policies" / "cancellation-refunds" / "index.html").read_text(encoding="utf-8")
 if len(re.findall(r'<th scope="row">[1-7]\.', refund_page)) != 7:
