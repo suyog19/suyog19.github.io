@@ -60,7 +60,7 @@ function summary(overrides = {}) {
     learner: null,
     support: {
       supportUrl: '/contact/',
-      privacyUrl: '/training/policies/',
+      privacyUrl: '/privacy/',
       grievanceUrl: '/training/policies/#support-and-grievance-process',
     },
     ...overrides,
@@ -85,7 +85,7 @@ test('renderer preserves empty-profile semantics and support fallbacks', () => {
   shell.renderSummary(summary({ support: { privacyUrl: 'https://evil.example/' } }));
   assert.equal(elements['learner-profile-empty'].hidden, false);
   assert.equal(elements['learner-profile-details'].children.length, 0);
-  assert.equal(elements['learner-privacy-link'].href, '/training/policies/');
+  assert.equal(elements['learner-privacy-link'].href, '/privacy/');
   assert.equal(elements['learner-applications'].children.length, 0);
 });
 
