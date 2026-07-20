@@ -260,6 +260,13 @@
   </url>
 
   <url>
+    <loc>https://suyogjoshi.com/privacy/</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
     <loc>https://suyogjoshi.com/research/ai-teaching-workflows/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -315,7 +322,6 @@
   </url>
   <url><loc>https://suyogjoshi.com/training/policies/terms/</loc><lastmod>2026-07-20</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
   <url><loc>https://suyogjoshi.com/training/policies/cancellation-refunds/</loc><lastmod>2026-07-20</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://suyogjoshi.com/training/policies/privacy/</loc><lastmod>2026-07-20</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
   <url><loc>https://suyogjoshi.com/training/policies/conduct-recording/</loc><lastmod>2026-07-20</lastmod><changefreq>yearly</changefreq><priority>0.7</priority></url>
 
   <url>
