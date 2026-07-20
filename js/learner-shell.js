@@ -207,7 +207,7 @@
     if (applications.length) applications.forEach((application) => applicationList.appendChild(renderJourney(application)));
     const support = summary.support || {};
     supportLink.href = view.safeSupportHref(support.supportUrl, '/contact/');
-    privacyLink.href = view.safeSupportHref(support.privacyUrl, '/training/policies/');
+    privacyLink.href = view.safeSupportHref(support.privacyUrl, '/privacy/');
     grievanceLink.href = view.safeSupportHref(support.grievanceUrl, '/training/policies/#support-and-grievance-process');
     renderProfile(summary.learner);
   }
