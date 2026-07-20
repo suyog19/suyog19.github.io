@@ -5,9 +5,20 @@ const vm = require('node:vm');
 
 const script = fs.readFileSync('js/admin-gate3.js', 'utf8');
 const page = fs.readFileSync('admin/index.html', 'utf8');
+const commercialWorkflow = fs.readFileSync('.github/workflows/validate-training-commercials.yml', 'utf8');
 const context = { window: {}, Date, Number, Set };
 vm.runInNewContext(script, context);
 const tools = context.window.sjAdminGate3;
+const productionPolicyVersions = [
+  'software-signal-terms@1.1.0',
+  'software-signal-privacy@1.1.0',
+  'software-signal-cancellation-refund@1.1.0',
+  'software-signal-course-delivery@1.1.0',
+  'software-signal-recording-consent@1.1.0',
+  'software-signal-conduct-confidentiality@1.1.0',
+  'software-signal-support-grievance@1.1.0',
+  'software-signal-transfer@1.1.0',
+];
 
 function form(values) { return { get: (name) => values[name] == null ? null : values[name] }; }
 
@@ -17,6 +28,11 @@ test('Cohort decisions uses a separate accessible noindex admin section and pres
   assert.match(page, /id="admin-gate3-panel"[^>]*role="tabpanel"[^>]*aria-labelledby="admin-gate3-tab"/);
   assert.match(page, /noindex, nofollow/);
   assert.match(page, /admin-gate3\.js/);
+});
+
+test('Gate 3 contract changes trigger commercial validation for pull requests and pushes', () => {
+  assert.equal((commercialWorkflow.match(/- js\/admin-gate3\.js/g) || []).length, 2);
+  assert.match(commercialWorkflow, /node --test tests\/\*\.test\.js/);
 });
 
 test('decision commands are enabled only by exact backend allowlist', () => {
@@ -42,6 +58,8 @@ test('confirmation payload uses exact versions and approved bounded policy enums
   assert.equal(payload.policy.approvalStatus, 'APPROVED_FOR_DEVELOPMENT');
   assert.equal(payload.policy.depositDispositionRule, 'ACTION_NEEDED');
   assert.deepEqual(Array.from(payload.policy.commercialDocumentVersions), []);
+  assert.equal(payload.policy.balanceDeadline, '2099-01-20T18:29:59.000Z');
+  assert.equal(payload.policy.graceUntil, '2099-01-25T18:29:59.000Z');
   assert.equal('amountDue' in payload, false);
   assert.equal('eligibleCount' in payload, false);
 });
@@ -61,7 +79,23 @@ test('production confirmation uses only production approval and contract identif
   assert.equal(payload.policy.approvalStatus, 'APPROVED_FOR_PRODUCTION');
   assert.equal(payload.policy.policyVersion, 'PROD-G3-BALANCE-v1');
   assert.equal(payload.finalSchedule.scheduleVersion, 'PROD-G3-SCHEDULE-v1');
+  assert.deepEqual(Array.from(payload.policy.commercialDocumentVersions), productionPolicyVersions);
+  assert.equal(new Set(payload.policy.commercialDocumentVersions).size, 8);
+  assert.equal('balanceDeadline' in payload.policy, false);
+  assert.equal('graceUntil' in payload.policy, false);
   assert.equal(JSON.stringify(payload).includes('development'), false);
+});
+
+test('production commercial policy set rejects empty, missing, reordered, duplicate, or extra identifiers', () => {
+  const actual = Array.from(tools.contract('production').commercialDocumentVersions);
+  assert.deepEqual(actual, productionPolicyVersions);
+  assert.equal(tools.validProductionCommercialDocumentVersions(actual), true);
+  for (const invalid of [[], actual.slice(0, 7), actual.slice().reverse(), [...actual, 'extra@1.0.0'], [...actual.slice(0, 7), actual[0]]]) {
+    assert.equal(tools.validProductionCommercialDocumentVersions(invalid), false);
+  }
+  assert.match(script, /server records the authoritative confirmation time/);
+  assert.match(script, /sets the balance deadline seven days later/);
+  assert.match(script, /applies zero grace/);
 });
 
 test('cohort decision identifiers and source avoid unsafe rendering or learner-resource links', () => {
