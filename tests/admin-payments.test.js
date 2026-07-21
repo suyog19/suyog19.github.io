@@ -98,3 +98,33 @@ test('refund modes emit only backend-projected exact full or bounded partial amo
   assert.match(script, /modeConfig\.editable \? Number\(form\.get\('amountMinorUnits'\)\) : modeConfig\.amountMinorUnits/);
   assert.match(script, /readOnly: true/);
 });
+
+test('application and deposit resends remain bound to their separate authoritative endpoints', () => {
+  const admin = fs.readFileSync('js/admin.js', 'utf8');
+  assert.match(admin, /applications\/' \+ encodeURIComponent\(state\.selectedApplicationId\) \+ '\/communications\/resend'/);
+  assert.match(script, /enrolments\/' \+ encodeURIComponent\(obligation\.enrolmentId\) \+ '\/communications\/resend'/);
+  assert.doesNotMatch(admin, /applications\/[\s\S]{0,100}DEPOSIT_REQUEST/);
+  assert.doesNotMatch(script, /applications\/' \+ encodeURIComponent/);
+});
+
+test('payment resend identity, eligibility, and application handoff stay authoritative', () => {
+  const admin = fs.readFileSync('js/admin.js', 'utf8');
+  assert.match(script, /filter\(\(item\) => window\.sjAdminTraining\.resendAllowed\(item\)\)/);
+  assert.match(script, /communicationPresentation\(item/);
+  assert.match(script, /openForEnrolment/);
+  assert.match(script, /if \(loading\) return loadPromise/);
+  assert.match(script, /item\.enrolmentId === id && item\.purpose === 'DEPOSIT'/);
+  assert.match(admin, /state\.selectedEnrolment && state\.selectedEnrolment\.enrolmentId/);
+  assert.match(admin, /Open deposit communication/);
+  assert.match(admin, /sjAdminPaymentsController\.openForEnrolment/);
+  assert.doesNotMatch(admin, /paymentUrl|providerPaymentReference/);
+});
+
+test('resend confirmation exposes purpose, subject, payment-link truth, and immutable warning', () => {
+  const admin = fs.readFileSync('js/admin.js', 'utf8');
+  for (const phrase of ['Expected subject:', 'Payment link:', 'immutable original content will be resent and cannot be edited']) {
+    assert.match(admin + script, new RegExp(phrase));
+  }
+  assert.match(admin, /presentation\.actionLabel/);
+  assert.match(script, /presentation\.actionLabel/);
+});

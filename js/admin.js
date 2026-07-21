@@ -930,14 +930,24 @@
 
   function renderCommunications() {
     const section = textEl('section', 'admin-detail-section', ''); section.appendChild(textEl('h4', '', 'Communications'));
+    const title = courseTitle(state.selectedApplication && state.selectedApplication.courseId);
     if (!state.applicationCommunications.length) section.appendChild(textEl('p', 'admin-empty', 'No communication records yet.'));
     state.applicationCommunications.forEach((item) => {
+      const presentation = trainingTools.communicationPresentation(item, title);
       const row = textEl('article', 'admin-training-card', '');
-      row.appendChild(textEl('strong', '', (item.family || 'Communication') + ' — ' + (item.variant || '')));
-      row.appendChild(textEl('p', '', (item.status || 'UNKNOWN') + ' · Updated ' + formatDate(item.updatedAt)));
-      if (trainingTools.resendAllowed(item)) row.appendChild(buttonEl('btn btn-secondary', 'Resend', { communicationResend: item.sk || item.logicalKey || '' }));
+      row.appendChild(textEl('strong', '', presentation.purpose));
+      row.appendChild(textEl('p', '', 'Expected subject: ' + presentation.expectedSubject));
+      row.appendChild(textEl('p', 'admin-list-meta', 'Payment link: ' + (presentation.includesPaymentLink ? 'Included when currently authorised' : 'Not included') + ' · ' + (item.status || 'UNKNOWN') + ' · Updated ' + formatDate(item.updatedAt)));
+      const diagnostic = document.createElement('details'); diagnostic.className = 'admin-technical-details'; diagnostic.appendChild(textEl('summary', '', 'Technical message type')); diagnostic.appendChild(textEl('p', '', presentation.diagnostic)); row.appendChild(diagnostic);
+      if (trainingTools.resendAllowed(item)) row.appendChild(buttonEl('btn btn-secondary', presentation.actionLabel, { communicationResend: item.sk || item.logicalKey || '' }));
       section.appendChild(row);
     });
+    if (state.selectedEnrolment && state.selectedEnrolment.enrolmentId) {
+      const guidance = textEl('div', 'admin-payment-handoff', '');
+      guidance.appendChild(textEl('p', '', 'Need to resend a current deposit payment link? Open the enrolment payment record so current eligibility can be revalidated.'));
+      guidance.appendChild(buttonEl('btn btn-secondary', 'Open deposit communication', { paymentEnrolment: state.selectedEnrolment.enrolmentId }));
+      section.appendChild(guidance);
+    }
     els.applicationDetail.appendChild(section);
   }
 
@@ -1015,7 +1025,11 @@
   async function resendCommunication(logicalKey) {
     if (state.trainingMutationPending) return;
     if (!logicalKey) return setStatus('Communication identifier is unavailable.', 'warn');
-    const values = await window.sjAdminUi.dialog({ title: 'Resend communication?', description: 'One controlled resend attempt will be queued.', fields: [{ name: 'reason', label: 'Reason for resend', type: 'textarea', maxLength: 500 }], confirmLabel: 'Resend communication' });
+    const communication = state.applicationCommunications.find((item) => (item.sk || item.logicalKey) === logicalKey);
+    if (!communication || !trainingTools.resendAllowed(communication)) return setStatus('This communication is no longer eligible for resend. Refresh the application.', 'warn');
+    const presentation = trainingTools.communicationPresentation(communication, courseTitle(state.selectedApplication && state.selectedApplication.courseId));
+    const description = presentation.purpose + '. Expected subject: “' + presentation.expectedSubject + '”. Payment link: ' + (presentation.includesPaymentLink ? 'included when currently authorised' : 'not included') + '. The immutable original content will be resent and cannot be edited.';
+    const values = await window.sjAdminUi.dialog({ title: presentation.actionLabel + '?', description, fields: [{ name: 'reason', label: 'Reason for resend', type: 'textarea', maxLength: 500 }], confirmLabel: presentation.actionLabel });
     if (!values) return;
     const body = { logicalKey, reason: values.reason.trim() };
     const scope = 'communication-resend:' + state.selectedApplicationId + ':' + logicalKey;
@@ -1265,6 +1279,8 @@
       if (applicationAction) { applicationCommand(applicationAction.dataset.applicationCommand); return; }
       const offer = event.target.closest('[data-application-offer]');
       if (offer) { offerApplication(); return; }
+      const payment = event.target.closest('[data-payment-enrolment]');
+      if (payment && window.sjAdminPaymentsController) { switchView('payments'); window.sjAdminPaymentsController.openForEnrolment(payment.dataset.paymentEnrolment); return; }
       const resend = event.target.closest('[data-communication-resend]');
       if (resend) resendCommunication(resend.dataset.communicationResend);
     });

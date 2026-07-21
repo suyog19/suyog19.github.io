@@ -103,6 +103,21 @@
     );
   }
 
+  function communicationPresentation(communication, courseTitle) {
+    const family = communication && communication.family || '';
+    const variant = communication && communication.variant || '';
+    const course = courseTitle || 'your course';
+    const presentations = {
+      'APPLICATION_RECEIVED:INITIAL': ['Application received', 'Resend application receipt', 'We received your Software Signal Learning application', false],
+      'APPLICATION_DECISION:ACCEPTED': ['Application accepted', 'Resend application acceptance', 'Your Software Signal Learning application was accepted', false],
+      'COURSE_OFFER:INITIAL': ['Course offer created', 'Resend course offer', 'Your course offer for ' + course, false],
+      'DEPOSIT_REQUEST:INITIAL': ['Deposit payment action', 'Resend current deposit payment link', 'Complete your deposit for ' + course, true],
+      'BALANCE_REQUEST:INITIAL': ['Remaining-fee payment action', 'Resend current remaining-fee payment link', 'Complete your remaining fee for ' + course, true],
+    };
+    const value = presentations[family + ':' + variant] || ['Approved learner communication', 'Resend selected communication', 'Original approved message', false];
+    return Object.freeze({ purpose: value[0], actionLabel: value[1], expectedSubject: value[2], includesPaymentLink: value[3], diagnostic: [family, variant].filter(Boolean).join(' / ') || 'Type unavailable' });
+  }
+
   function detailValue(value) {
     if (value === null || value === undefined || value === '') return 'Not available';
     if (typeof value === 'object') return JSON.stringify(value);
@@ -136,6 +151,7 @@
 
   window.sjAdminTraining = {
     createIdempotencyTracker,
+    communicationPresentation,
     dateToIso,
     detailValue,
     isoToDateInput,
