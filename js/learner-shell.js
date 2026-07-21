@@ -84,16 +84,32 @@
     const change = view.gate2ChangeHref(application);
     return change ? { href: change, label: 'Request a change' } : null;
   }
+  function renderStages(application, code) {
+    const positions = { OFFERED: 1, ACCEPTED: 1, DEPOSIT_DUE: 2, PAYMENT_CONFIRMING: 2, RESERVED: 3, COHORT_POSTPONED: 3, BALANCE_DUE: 4, BALANCE_OVERDUE_IN_GRACE: 4, BALANCE_EXTENDED: 4, BALANCE_CONFIRMING: 4, ACTIVATION_PENDING: 5, ACTIVE: view.courseHubHref(application) ? 6 : 5 };
+    const current = positions[code];
+    if (current === undefined) return null;
+    const progress = element('ol', 'learner-application-progress', '');
+    progress.setAttribute('aria-label', 'Learning journey stages');
+    ['Application', 'Decision', 'Deposit', 'Cohort', 'Remaining fee', 'Enrolled', 'Course access'].forEach((label, index) => {
+      const state = index < current ? 'complete' : index === current ? 'current' : 'pending';
+      const item = element('li', 'learner-application-progress__step learner-application-progress__step--' + state, label);
+      item.setAttribute('aria-label', label + ': ' + (state === 'pending' ? 'future, not yet confirmed' : state));
+      if (state === 'current') item.setAttribute('aria-current', 'step');
+      progress.appendChild(item);
+    });
+    return progress;
+  }
   function renderJourney(application) {
     const card = element('article', 'learner-application-card', '');
     const title = application.course && application.course.title || 'Course';
     const action = application.action || {};
-    const presentation = view.statusPresentation(action.code || application.journeyStatus || (application.offer && application.offer.status));
+    const presentation = view.resolvePresentation(application);
     card.setAttribute('aria-label', title + ' learning journey');
     if (action.code === 'APPLICATION_RECEIVED' || action.code === 'UNDER_REVIEW') card.className += ' learner-application-card--waiting';
-    card.appendChild(element('p', 'learning-status-marker', title));
-    card.appendChild(element('h2', '', supported(application) ? presentation.heading : 'View your current learning status'));
-    card.appendChild(element('p', '', supported(application) ? presentation.explanation : 'The latest authorised status is available. Return to My Learning or contact support if the next step is unclear.'));
+    card.setAttribute('data-journey-group', presentation.primaryAction ? 'attention' : ['DECLINED', 'WITHDRAWN', 'REFUNDED', 'CLOSED_NON_PAYMENT', 'COHORT_CANCELLED'].includes(presentation.journeyStage) ? 'past' : 'progress');
+    card.appendChild(element('p', 'learning-status-marker', title + ' · ' + presentation.marker));
+    card.appendChild(element('h2', '', presentation.heading));
+    card.appendChild(element('p', '', presentation.explanation));
     if (action.code === 'APPLICATION_RECEIVED' || action.code === 'UNDER_REVIEW') {
       const progress = element('ol', 'learner-application-progress', '');
       progress.setAttribute('aria-label', 'Application progress');
@@ -106,50 +122,54 @@
         progress.appendChild(item);
       });
       card.appendChild(progress);
-    }
+    } else { const stages = renderStages(application, presentation.journeyStage); if (stages) card.appendChild(stages); }
     const date = importantDate(application);
     if (date) card.appendChild(element('p', 'learning-deadline', date));
 
-    const details = disclosure('Application details');
-    addDetail(details.list, 'Application reference', application.reference);
-    addDetail(details.list, 'Submitted', dateTime(application.submittedAt));
-    addDetail(details.list, 'Last updated', dateTime(application.updatedAt));
+    const applicationDetails = disclosure('Application');
+    const paymentDetails = disclosure('Payments');
+    const cohortDetails = disclosure('Cohort and enrolment');
+    const requestDetails = disclosure('Requests and refunds');
+    addDetail(applicationDetails.list, 'Application reference', application.reference);
+    addDetail(applicationDetails.list, 'Submitted', dateTime(application.submittedAt));
+    addDetail(applicationDetails.list, 'Last updated', dateTime(application.updatedAt));
     const gate2 = application.gate2;
     if (gate2) {
       const enrolment = gate2.enrolment || {};
-      addDetail(details.list, 'Place status', view.gate2StatusLabel('enrolment', enrolment.status));
+      addDetail(cohortDetails.list, 'Place status', view.gate2StatusLabel('enrolment', enrolment.status));
       if (gate2.learnerChange) {
         const decision = gate2.learnerChange.decision ? ' · ' + view.gate2StatusLabel('decision', gate2.learnerChange.decision) : '';
-        addDetail(details.list, 'Request outcome', view.gate2StatusLabel('request', gate2.learnerChange.status) + decision);
+        addDetail(requestDetails.list, 'Organiser decision', view.gate2StatusLabel('request', gate2.learnerChange.status) + decision);
       }
-      if (gate2.refund) addDetail(details.list, 'Refund status', view.gate2StatusLabel('refund', gate2.refund.status));
+      if (gate2.refund) addDetail(requestDetails.list, 'Refund execution', view.gate2StatusLabel('refund', gate2.refund.status));
       if (gate2.communication && gate2.communication.status === 'FAILED') card.appendChild(element('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your payment, place, request and refund status shown above is unchanged.'));
     }
     const gate3 = application.gate3;
     if (gate3) {
-      addDetail(details.list, 'Cohort status', view.gate3StatusLabel('decision', gate3.cohortDecision));
-      if (gate3.schedule) addDetail(details.list, 'Final schedule', dateTime(gate3.schedule.startsAt) + ' to ' + dateTime(gate3.schedule.endsAt) + ' · ' + (gate3.schedule.timezone || 'Timezone not available'));
-      addDetail(details.list, 'Remaining fee', view.gate3StatusLabel('balance', gate3.balanceStatus));
-      addDetail(details.list, 'Amount due', money(gate3.amountDue, gate3.currency));
-      addDetail(details.list, 'Approved credit or waiver', money(gate3.creditAmount, gate3.currency));
-      addDetail(details.list, 'Original payment deadline', dateTime(gate3.balanceDeadline));
-      addDetail(details.list, 'Grace ends', dateTime(gate3.graceUntil));
-      addDetail(details.list, 'Approved extension ends', dateTime(gate3.extensionUntil));
-      addDetail(details.list, 'Seat status', gate3.seatReleased === true ? 'Released' : gate3.seatReserved === true ? 'Reserved' : null);
-      addDetail(details.list, 'Enrolment activation', view.gate3StatusLabel('activation', gate3.activationStatus));
-      addDetail(details.list, 'Joining details', view.gate3StatusLabel('joining', gate3.joiningEligibility));
-      if (gate3.depositDispositionOutcome) addDetail(details.list, 'Deposit treatment', view.gate3StatusLabel('disposition', gate3.depositDispositionOutcome));
+      addDetail(cohortDetails.list, 'Cohort status', view.gate3StatusLabel('decision', gate3.cohortDecision));
+      if (gate3.schedule) addDetail(cohortDetails.list, 'Final schedule', dateTime(gate3.schedule.startsAt) + ' to ' + dateTime(gate3.schedule.endsAt) + ' · ' + (gate3.schedule.timezone || 'Timezone not available'));
+      addDetail(paymentDetails.list, 'Remaining fee', view.gate3StatusLabel('balance', gate3.balanceStatus));
+      addDetail(paymentDetails.list, 'Amount due', money(gate3.amountDue, gate3.currency));
+      addDetail(paymentDetails.list, 'Approved credit or waiver', money(gate3.creditAmount, gate3.currency));
+      addDetail(paymentDetails.list, 'Original payment deadline', dateTime(gate3.balanceDeadline));
+      addDetail(paymentDetails.list, 'Grace ends', dateTime(gate3.graceUntil));
+      addDetail(paymentDetails.list, 'Approved extension ends', dateTime(gate3.extensionUntil));
+      addDetail(cohortDetails.list, 'Seat status', gate3.seatReleased === true ? 'Released' : gate3.seatReserved === true ? 'Reserved' : null);
+      addDetail(cohortDetails.list, 'Enrolment activation', view.gate3StatusLabel('activation', gate3.activationStatus));
+      addDetail(cohortDetails.list, 'Course area', gate3.activationStatus === 'ACTIVE' ? (view.courseHubHref(application) ? 'Ready' : 'We will email you when it is available') : null);
+      if (gate3.depositDispositionOutcome) addDetail(paymentDetails.list, 'Deposit treatment', view.gate3StatusLabel('disposition', gate3.depositDispositionOutcome));
       if (gate3.balanceStatus === 'OVERDUE_IN_GRACE') card.appendChild(element('p', 'field-hint', 'The remaining fee is overdue, but your seat is still reserved during the current grace period.'));
       if (gate3.balanceStatus === 'CONFIRMING') card.appendChild(element('p', 'field-hint', 'Payment confirmation is in progress. Do not pay again.'));
       if (gate3.balanceStatus === 'CLOSED_NON_PAYMENT') card.appendChild(element('p', 'field-hint', 'The seat has been released. A normal payment cannot reactivate this enrolment automatically.'));
       if (gate3.balanceStatus === 'ACTION_NEEDED') card.appendChild(element('p', 'field-hint', 'A payment needs organiser review and does not activate the enrolment automatically. Do not pay again.'));
       if (gate3.communication && gate3.communication.status === 'FAILED') card.appendChild(element('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your payment, cohort, seat and enrolment status shown above is unchanged.'));
     }
-    if (details.list.children.length) card.appendChild(details.details);
-    const next = journeyHref(application);
+    [applicationDetails, paymentDetails, cohortDetails, requestDetails].forEach((group) => { if (group.list.children.length) card.appendChild(group.details); });
+    const next = presentation.primaryAction || journeyHref(application);
     if (next) {
       const link = element('a', 'btn btn-secondary learner-journey-link', next.label);
       link.href = next.href;
+      link.setAttribute('aria-label', next.label + ' for ' + title);
       card.appendChild(link);
       if (next.correction) card.appendChild(element('p', 'field-hint', 'Corrections are optional. Opening the form does not change your current application unless you submit an update.'));
     }
@@ -159,8 +179,16 @@
   function renderCurrent(summary, applications) {
     currentAction.replaceChildren();
     const reportedAction = summary.currentAction || {};
-    currentAction.hidden = applications.length === 1;
-    if (applications.length === 1) return;
+    currentAction.hidden = false;
+    if (applications.length === 1) {
+      const resolved = view.resolvePresentation(applications[0]);
+      currentAction.appendChild(element('p', 'learning-status-marker', resolved.marker));
+      const heading = element('h2', '', resolved.heading); heading.tabIndex = -1; currentAction.appendChild(heading);
+      currentAction.appendChild(element('p', '', resolved.explanation));
+      const date = importantDate(applications[0]); if (date) currentAction.appendChild(element('p', 'learning-deadline', date));
+      if (resolved.primaryAction) { const link = element('a', 'btn btn-primary btn-learning', resolved.primaryAction.label); link.href = resolved.primaryAction.href; currentAction.appendChild(link); }
+      return;
+    }
     const action = !summary.learner && applications.length === 0 && reportedAction.code === 'COMPLETE_PROFILE'
       ? { code: 'APPLY', href: '/training/' }
       : reportedAction;
@@ -204,7 +232,14 @@
     const applications = Array.isArray(summary.applications) ? summary.applications : [];
     renderCurrent(summary, applications);
     applicationList.replaceChildren();
-    if (applications.length) applications.forEach((application) => applicationList.appendChild(renderJourney(application)));
+    if (applications.length > 1) {
+      const cards = applications.map(renderJourney);
+      [['attention', 'Needs your attention'], ['progress', 'In progress'], ['past', 'Past applications and courses']].forEach(([group, label]) => {
+        const matching = cards.filter((card) => card.attributes['data-journey-group'] === group);
+        if (!matching.length) return;
+        const section = element('section', 'learner-journey-group', ''); section.appendChild(element('h2', '', label)); matching.forEach((card) => section.appendChild(card)); applicationList.appendChild(section);
+      });
+    } else if (applications.length) applicationList.appendChild(renderJourney(applications[0]));
     const support = summary.support || {};
     supportLink.href = view.safeSupportHref(support.supportUrl, '/contact/');
     privacyLink.href = view.safeSupportHref(support.privacyUrl, '/privacy/');

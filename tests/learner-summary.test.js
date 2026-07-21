@@ -166,3 +166,32 @@ test('acknowledgements render only complete approved records', () => {
     'Terms and privacy version 1.0.0, Recorded class delivery version 1.0.0'
   );
 });
+
+test('authoritative later-stage facts suppress contradictory and obsolete actions', () => {
+  const reserved = view.resolvePresentation({
+    action: { code: 'OFFERED' }, offer: { status: 'OFFERED', enrolmentId: 'enr_one' },
+    gate2: { enrolment: { status: 'RESERVED' } },
+  });
+  assert.equal(reserved.journeyStage, 'RESERVED');
+  assert.equal(reserved.primaryAction, null);
+  assert.doesNotMatch(reserved.explanation, /not reserved/i);
+
+  const confirming = view.resolvePresentation({
+    offer: { enrolmentId: 'enr_one' }, gate3: { balanceStatus: 'CONFIRMING', action: { code: 'PAY_BALANCE' } },
+  });
+  assert.equal(confirming.journeyStage, 'BALANCE_CONFIRMING');
+  assert.equal(confirming.primaryAction, null);
+
+  const zeroDue = view.resolvePresentation({
+    offer: { enrolmentId: 'enr_one' }, gate3: { balanceStatus: 'DUE', amountDue: 0, action: { code: 'PAY_BALANCE' } },
+  });
+  assert.equal(zeroDue.primaryAction, null);
+});
+
+test('course-area action requires active enrolment and explicit bounded eligibility', () => {
+  const ready = view.resolvePresentation({ gate3: { activationStatus: 'ACTIVE', courseHub: { eligible: true, href: '/my-learning/course_one/' } } });
+  assert.equal(ready.heading, 'Your course area is ready');
+  assert.deepEqual({ ...ready.primaryAction }, { label: 'Open your course area', href: '/my-learning/course_one/' });
+  const revoked = view.resolvePresentation({ gate3: { activationStatus: 'ACTIVE', courseHub: { eligible: false, href: '/my-learning/course_one/' } } });
+  assert.equal(revoked.primaryAction, null);
+});

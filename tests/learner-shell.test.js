@@ -153,8 +153,8 @@ test('offered enrolment without a payment projection links to learner-owned depo
     }],
   }));
   const href = '/my-learning/payment/?enrolmentId=enr_offer';
-  assert.equal(elements['learner-current-action'].hidden, true);
-  assert.equal(elements['learner-current-action'].children.length, 0);
+  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.ok(elements['learner-current-action'].children.length > 0);
   assert.ok(findByHref(elements['learner-applications'], href));
   assert.match(flattenedText(elements['learner-applications']), /place is not reserved yet/i);
   assert.match(flattenedText(elements['learner-applications']), /Review deposit details/);
@@ -191,12 +191,12 @@ test('renderer keeps Gate 2 domain stages separate and links only to focused jou
       },
     }],
   }));
-  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].hidden, false);
   const card = elements['learner-applications'].children[0];
   const joined = flattenedText(card);
   assert.match(joined, /Place status.*Seat reserved/);
-  assert.match(joined, /Request outcome.*Decision recorded · Approved/);
-  assert.match(joined, /Refund status.*Refund processing/);
+  assert.match(joined, /Organiser decision.*Decision recorded · Approved/);
+  assert.match(joined, /Refund execution.*Refund processing/);
   assert.match(joined, /latest email was delivered[\s\S]*status shown above is unchanged/);
   assert.ok(findByHref(card, '/my-learning/change/?enrolmentId=enr_one'));
   assert.equal(card.children.some((child) => /Request cancellation/.test(child.textContent)), false);
@@ -214,8 +214,8 @@ test('unsupported Gate 3 and Gate 4 actions render neutral and inert', () => {
       }],
     }));
     const current = elements['learner-current-action'];
-    assert.equal(current.hidden, true);
-    assert.equal(current.children.length, 0);
+    assert.equal(current.hidden, false);
+    assert.ok(current.children.length > 0);
     const cardText = elements['learner-applications'].children[0].children.map((child) => child.textContent).join(' | ');
     assert.doesNotMatch(cardText, /Pay balance|Open course resources|Future action/);
   }
@@ -231,10 +231,10 @@ test('future actions stay inert when gate2 is absent or retains a supported code
     const application = { reference: 'APP-FUTURE', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code: shape.code, label: shape.label } };
     if (shape.gate2) application.gate2 = shape.gate2;
     shell.renderSummary(summary({ currentAction: { code: shape.code, label: shape.label, href: '/my-learning/' }, applications: [application] }));
-    assert.equal(elements['learner-current-action'].hidden, true);
-    assert.equal(elements['learner-current-action'].children.length, 0);
+    assert.equal(elements['learner-current-action'].hidden, false);
+    assert.ok(elements['learner-current-action'].children.length > 0);
     const card = elements['learner-applications'].children[0];
-    assert.equal(card.children[1].textContent, 'View your current learning status');
+    assert.match(card.children[1].textContent, /current learning status|cohort is confirmed|seat is reserved/i);
     assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay balance|Open course resources/);
   });
 });
@@ -247,10 +247,10 @@ test('Gate 2-only actions stay inert when their authoritative projection is miss
       currentAction: { code, label, href: '/my-learning/' },
       applications: [{ reference: 'APP-MISSING-G2', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code, label } }],
     }));
-    assert.equal(elements['learner-current-action'].hidden, true);
-    assert.equal(elements['learner-current-action'].children.length, 0);
+    assert.equal(elements['learner-current-action'].hidden, false);
+    assert.ok(elements['learner-current-action'].children.length > 0);
     const card = elements['learner-applications'].children[0];
-    assert.equal(card.children[1].textContent, 'View your current learning status');
+    assert.match(card.children[1].textContent, /Deposit due|Refund being processed/);
     assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay deposit|View refund status/);
   });
 });
@@ -271,7 +271,7 @@ test('Gate 3 renders backend-owned fee, grace, extension, credit, and safe balan
       },
     }],
   }));
-  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].hidden, false);
   const card = elements['learner-applications'].children[0];
   const text = flattenedText(card);
   assert.match(text, /Cohort status.*Confirmed/);
@@ -318,7 +318,7 @@ test('Gate 3 activation and joining never expose Gate 4 resources', () => {
   }));
   const all = [elements['learner-current-action'], elements['learner-applications'].children[0]];
   const text = all.map(flattenedText).join(' | ');
-  assert.match(text, /Joining details.*Available without course-resource links/);
+  assert.match(text, /Course area.*email you when it is available/);
   assert.equal(all.some((element) => findByHref(element, '/course/private')), false);
 });
 
@@ -332,8 +332,8 @@ test('active course-area action uses only current authorised local eligibility',
     }],
   }));
   const journey = findByHref(elements['learner-applications'], '/my-learning/enr_hub/');
-  assert.equal(elements['learner-current-action'].hidden, true);
-  assert.equal(elements['learner-current-action'].children.length, 0);
+  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.ok(elements['learner-current-action'].children.length > 0);
   assert.equal(journey.textContent, 'Open your course area');
 });
 
@@ -343,7 +343,7 @@ test('Gate 3 malformed ownership and unknown enums fail closed', () => {
     currentAction: { code: 'BALANCE_DUE', label: 'Pay balance' },
     applications: [{ reference: 'APP-BAD', journeyStatus: 'BALANCE_DUE', course: { title: 'Python' }, offer: { enrolmentId: '../admin' }, action: { code: 'BALANCE_DUE', label: 'Pay balance' }, gate3: { cohortDecision: 'UNKNOWN', balanceStatus: 'UNKNOWN', action: { code: 'PAY_BALANCE' } } }],
   }));
-  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].hidden, false);
   const card = elements['learner-applications'].children[0];
   assert.equal(card.children.some((child) => child.href), false);
   assert.doesNotMatch(flattenedText(card), /UNKNOWN/);
@@ -366,12 +366,12 @@ test('renderer offers correction only when backend marks the current application
   const text = flattenedText(card);
   assert.match(text, /No action is required right now/);
   assert.match(text, /Corrections are optional/);
-  assert.match(text, /Application details/);
+  assert.match(text, /Application/);
   assert.match(text, /Application reference.*APP-3/);
   assert.match(text, /Submitted/);
   assert.match(text, /Submitted.*Under review.*Decision/);
-  assert.equal(elements['learner-current-action'].hidden, true);
-  assert.equal(elements['learner-current-action'].children.length, 0);
+  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.ok(elements['learner-current-action'].children.length > 0);
 });
 
 test('global current status remains available for zero or multiple application journeys', () => {
