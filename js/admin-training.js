@@ -65,6 +65,17 @@
     };
   }
 
+  function opaqueIdempotencyKey(cryptoApi, timestamp, randomValue) {
+    const value = cryptoApi && typeof cryptoApi.randomUUID === 'function'
+      ? cryptoApi.randomUUID()
+      : String(timestamp === undefined ? Date.now() : timestamp) + '-' + String(randomValue === undefined ? Math.random() : randomValue).replace(/^0\./, '');
+    return 'web-' + value;
+  }
+
+  function idempotencyHeaders(tracker, scope, payload) {
+    return { 'Idempotency-Key': tracker.key(scope, payload) };
+  }
+
   function nextTabIndex(current, key, count) {
     if (key === 'Home') return 0;
     if (key === 'End') return count - 1;
@@ -128,7 +139,9 @@
     dateToIso,
     detailValue,
     isoToDateInput,
+    idempotencyHeaders,
     nextTabIndex,
+    opaqueIdempotencyKey,
     offerableCohort,
     requestStillCurrent,
     requestWithTransportRetry,
