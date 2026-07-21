@@ -61,6 +61,46 @@ test('idempotency key is stable for an ambiguous retry and rotates on payload ch
   assert.equal(tracker.key('create', { label: 'B' }), 'create-4');
 });
 
+test('shared admin idempotency keys are opaque, bounded, and backend-valid for long scopes', () => {
+  let generated = 0;
+  const tracker = tools.createIdempotencyTracker(() => tools.opaqueIdempotencyKey({
+    randomUUID: () => `00000000-0000-4000-8000-${String(++generated).padStart(12, '0')}`,
+  }));
+  const scope = 'communication-resend:' + 'a'.repeat(36) + ':' + 'logical-key-'.repeat(7);
+  const first = tracker.key(scope, { reason: 'Approved resend' });
+  assert.ok(first.length > 0 && first.length <= 128);
+  assert.match(first, /^[A-Za-z0-9._:-]+$/);
+  assert.doesNotMatch(first, /communication|logical|Approved|a{20}/);
+  assert.equal(tracker.key(scope, { reason: 'Approved resend' }), first);
+  const changed = tracker.key(scope, { reason: 'Different reason' });
+  assert.notEqual(changed, first);
+  tracker.clear(scope);
+  assert.notEqual(tracker.key(scope, { reason: 'Different reason' }), changed);
+});
+
+test('opaque key fallback remains bounded and valid without randomUUID', () => {
+  const key = tools.opaqueIdempotencyKey(null, 1784639000000, 0.123456789);
+  assert.equal(key, 'web-1784639000000-123456789');
+  assert.ok(key.length <= 128);
+  assert.match(key, /^[A-Za-z0-9._:-]+$/);
+});
+
+test('application resend header uses the bounded shared key contract', () => {
+  const tracker = tools.createIdempotencyTracker(() => tools.opaqueIdempotencyKey({
+    randomUUID: () => '12345678-1234-4123-8123-123456789abc',
+  }));
+  const headers = tools.idempotencyHeaders(
+    tracker,
+    'communication-resend:' + 'app_'.padEnd(121, 'x') + ':' + 'logical-key-'.repeat(12),
+    { communicationKey: 'APPLICATION_RECEIVED:very-long-logical-key', reason: 'Confirmed by administrator' },
+  );
+  assert.deepEqual({ ...headers }, { 'Idempotency-Key': 'web-12345678-1234-4123-8123-123456789abc' });
+  assert.ok(headers['Idempotency-Key'].length <= 128);
+  assert.match(headers['Idempotency-Key'], /^[A-Za-z0-9._:-]+$/);
+  const admin = fs.readFileSync('js/admin.js', 'utf8');
+  assert.match(admin, /communications\/resend[\s\S]*headers: trainingTools\.idempotencyHeaders\(operationKeys, scope, body\)/);
+});
+
 test('tab keyboard navigation wraps and supports home/end', () => {
   assert.equal(tools.nextTabIndex(2, 'ArrowRight', 3), 0);
   assert.equal(tools.nextTabIndex(0, 'ArrowLeft', 3), 2);

@@ -3,12 +3,7 @@
   const USER_KEY = 'sj_admin_user';
   const LIMIT = 50;
   const trainingTools = window.sjAdminTraining;
-  const operationKeys = trainingTools.createIdempotencyTracker((prefix) => {
-    const value = window.crypto && window.crypto.randomUUID
-      ? window.crypto.randomUUID()
-      : Date.now() + '-' + Math.random().toString(16).slice(2);
-    return prefix + '-' + value;
-  });
+  const operationKeys = trainingTools.createIdempotencyTracker(() => trainingTools.opaqueIdempotencyKey(window.crypto));
 
   const state = {
     apiBase: apiBaseUrl(),
@@ -1026,7 +1021,7 @@
     const scope = 'communication-resend:' + state.selectedApplicationId + ':' + logicalKey;
     setApplicationMutationBusy(true);
     try {
-      await apiRequest('/admin/training/applications/' + encodeURIComponent(state.selectedApplicationId) + '/communications/resend', { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': operationKeys.key(scope, body) } });
+      await apiRequest('/admin/training/applications/' + encodeURIComponent(state.selectedApplicationId) + '/communications/resend', { method: 'POST', body: JSON.stringify(body), headers: trainingTools.idempotencyHeaders(operationKeys, scope, body) });
       operationKeys.clear(scope);
       await loadApplicationDetail(state.selectedApplicationId); setStatus('Resend queued.', 'success');
     } catch (error) {
