@@ -71,6 +71,58 @@
     };
   }
 
+  function presentationCode(application) {
+    if (!application || typeof application !== 'object') return null;
+    const gate3 = application.gate3;
+    const gate2 = application.gate2;
+    if (gate3) {
+      if (gate3.activationStatus === 'ACTIVE') return 'ACTIVE';
+      if (gate3.activationStatus === 'ELIGIBLE' || gate3.balanceStatus === 'SATISFIED') return 'ACTIVATION_PENDING';
+      if (gate3.balanceStatus === 'CONFIRMING') return 'BALANCE_CONFIRMING';
+      if (gate3.balanceStatus === 'ACTION_NEEDED') return 'BALANCE_ACTION_NEEDED';
+      if (gate3.balanceStatus === 'CLOSED_NON_PAYMENT') return 'CLOSED_NON_PAYMENT';
+      if (gate3.balanceStatus === 'EXTENDED') return 'BALANCE_EXTENDED';
+      if (gate3.balanceStatus === 'OVERDUE_IN_GRACE') return 'BALANCE_OVERDUE_IN_GRACE';
+      if (gate3.balanceStatus === 'DUE' && gate3.amountDue !== 0) return 'BALANCE_DUE';
+      if (gate3.cohortDecision === 'CANCELLED') return 'COHORT_CANCELLED';
+      if (gate3.cohortDecision === 'POSTPONED') return 'COHORT_POSTPONED';
+      if (gate3.cohortDecision === 'CONFIRMED') return 'RESERVED';
+    }
+    if (gate2) {
+      if (gate2.refund && gate2.refund.status === 'COMPLETED') return 'REFUNDED';
+      if (gate2.refund) return 'REFUND_PROCESSING';
+      if (gate2.learnerChange) return 'CANCELLATION_REQUESTED';
+      if (gate2.action && isGate2ActionCode(gate2.action.code)) return gate2.action.code;
+      if (gate2.enrolment && gate2.enrolment.status === 'RESERVED') return 'RESERVED';
+    }
+    if (application.offer && application.offer.status === 'OFFERED') return 'OFFERED';
+    const code = application.action && application.action.code || application.journeyStatus;
+    return isV1ActionCode(code) ? code : null;
+  }
+
+  function resolvePresentation(application) {
+    const code = presentationCode(application);
+    const copy = statusPresentation(code);
+    if (code === 'ACTIVE' && courseHubHref(application)) {
+      copy.heading = 'Your course area is ready';
+      copy.explanation = 'Your enrolment is active. Open the course area for the latest schedule, joining information and learning materials.';
+    }
+    let href = courseHubHref(application) || gate3Href(application) || gate2Href(application) || offerPaymentHref(application);
+    if (['PAYMENT_CONFIRMING', 'BALANCE_CONFIRMING', 'ACTIVATION_PENDING', 'ACTIVE', 'RESERVED'].includes(code) && !courseHubHref(application)) href = null;
+    if (code === 'BALANCE_DUE' && application.gate3 && application.gate3.amountDue === 0) href = null;
+    return Object.freeze({
+      journeyStage: code || 'UNKNOWN',
+      marker: href ? 'Needs your attention' : 'You are on track',
+      heading: copy.heading,
+      explanation: copy.explanation,
+      primaryAction: href && (copy.actionLabel || courseHubHref(application)) ? Object.freeze({ label: courseHubHref(application) ? 'Open your course area' : copy.actionLabel, href }) : null,
+      secondaryNotice: application.communication && application.communication.status === 'FAILED'
+        || application.gate2 && application.gate2.communication && application.gate2.communication.status === 'FAILED'
+        || application.gate3 && application.gate3.communication && application.gate3.communication.status === 'FAILED'
+        ? 'We could not confirm that the latest email was delivered. Your learning status shown here is unchanged.' : null,
+    });
+  }
+
   function safeActionHref(value) {
     return typeof value === 'string' && ACTION_PATHS.has(value)
       ? value
@@ -220,6 +272,8 @@
     safeCourseHref,
     safeActionHref,
     safeSupportHref,
+    presentationCode,
+    resolvePresentation,
     statusPresentation,
   };
 }());

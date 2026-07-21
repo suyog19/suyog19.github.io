@@ -15,5 +15,5 @@
       const page = document.querySelector('[data-course-detail]'); if (page) { const item = byId.get(page.dataset.courseId); if (!item) { failClosed(); return; } detailActionLinks().forEach(link => updateLink(link, item, 'COURSE_PAGE', (link.dataset.ctaLocation || (link.closest('[data-mobile-course-cta]') ? 'MOBILE' : 'ENROLMENT_PANEL')).toUpperCase())); }
     } catch (_) { failClosed(); }
   }
-  window.sjCourseActions = { initialise, interestUrl, validItem }; initialise();
+  window.sjCourseActions = { initialise, interestUrl, validItem }; window.sjCourseActionsReady = initialise();
 }());

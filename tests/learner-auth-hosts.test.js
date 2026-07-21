@@ -32,3 +32,11 @@ test('unknown learner host fails before fetch', async () => {
   await assert.rejects(client.request('/me', { method: 'GET' }), /UNTRUSTED_HOST/);
   assert.equal(calls, 0);
 });
+
+test('protected return destinations are exact, bounded, and preserve safe task identifiers', () => {
+  const client = auth('suyogjoshi.com');
+  assert.equal(client.safeDestination('/my-learning/balance/?enrolmentId=enr_one'), '/my-learning/balance/?enrolmentId=enr_one');
+  assert.equal(client.safeDestination('/my-learning/course_one/'), '/my-learning/course_one/');
+  assert.equal(client.safeDestination('/my-learning/../admin/'), '/my-learning/');
+  assert.equal(client.safeDestination('https://evil.example/my-learning/'), '/my-learning/');
+});
