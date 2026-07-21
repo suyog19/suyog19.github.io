@@ -6,12 +6,29 @@ on:
     paths:
       - data/training-courses.json
       - scripts/validate_training_commercials.py
+      - "training/**/*.html"
+      - "apply/**/*.html"
+      - "my-learning/**/*.html"
+      - "privacy/**/*.html"
+      - "js/course-application*.js"
+      - js/admin-gate3.js
+      - "js/learner-*.js"
+      - "tests/**/*.test.js"
       - .github/workflows/validate-training-commercials.yml
   push:
     branches: [dev, main]
     paths:
       - data/training-courses.json
       - scripts/validate_training_commercials.py
+      - "training/**/*.html"
+      - "apply/**/*.html"
+      - "my-learning/**/*.html"
+      - "privacy/**/*.html"
+      - "js/course-application*.js"
+      - js/admin-gate3.js
+      - "js/learner-*.js"
+      - "tests/**/*.test.js"
+      - .github/workflows/validate-training-commercials.yml
 
 permissions:
   contents: read
@@ -24,4 +41,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - run: python scripts/validate_training_commercials.py
+      - run: node --test tests/*.test.js

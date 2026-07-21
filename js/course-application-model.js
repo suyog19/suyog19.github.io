@@ -5,8 +5,8 @@
     crs_applied_python: { slug: 'applied-data-analysis-with-python', title: 'Applied Data Analysis with Python' },
   };
   const ACKNOWLEDGEMENTS = [
-    { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
-    { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+    { documentId: 'software-signal-terms-privacy', version: '1.1.0' },
+    { documentId: 'software-signal-recorded-delivery', version: '1.1.0' },
   ];
 
   function course(value) { return Object.hasOwn(COURSES, value) ? { courseId: value, ...COURSES[value] } : null; }

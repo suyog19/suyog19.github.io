@@ -101,8 +101,8 @@ test('submission payload is the exact approved contract', () => {
     courseId: 'crs_python_foundations',
     answers: { programmingExperience: 'Python basics', learningGoal: 'Build safely', weeklyAvailability: 'Five hours' },
     acknowledgements: [
-      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
-      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+      { documentId: 'software-signal-terms-privacy', version: '1.1.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.1.0' },
     ],
   });
   assert.equal(Object.hasOwn(payload, 'phone'), false);
@@ -189,8 +189,8 @@ test('eligible correction is prefilled and submits the exact immutable replaceme
     calls.push({ path, options });
     if (path === '/training/courses/python-foundations-for-data-science') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
     if (path === '/learners/me') return { learner: { adultEligibilityConfirmed: true, acknowledgements: [
-      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
-      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+      { documentId: 'software-signal-terms-privacy', version: '1.1.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.1.0' },
     ] } };
     if (path.startsWith('/me/applications/current')) return { application: source };
     if (path === '/me/applications/app_source') return { application: source };
@@ -210,8 +210,8 @@ test('eligible correction is prefilled and submits the exact immutable replaceme
     courseId: 'crs_python_foundations', expectedVersion: 4,
     answers: { programmingExperience: 'Old experience', learningGoal: 'Old goal', weeklyAvailability: 'Old availability' },
     acknowledgements: [
-      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
-      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+      { documentId: 'software-signal-terms-privacy', version: '1.1.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.1.0' },
     ],
   });
   assert.equal(elements['application-result-title'].textContent, 'Updated application received');
@@ -246,8 +246,8 @@ test('uncertain replacement retry reuses its key and resolves without duplicatio
   const { elements, page } = pageHarness('?courseId=crs_python_foundations&applicationId=app_source', async (path, options) => {
     if (path === '/training/courses/python-foundations-for-data-science') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
     if (path === '/learners/me') return { learner: { adultEligibilityConfirmed: true, acknowledgements: [
-      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
-      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+      { documentId: 'software-signal-terms-privacy', version: '1.1.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.1.0' },
     ] } };
     if (path.startsWith('/me/applications/current')) {
       currentReads += 1;
@@ -281,8 +281,8 @@ test('uncertain replacement does not mistake the unchanged source for success', 
   const { elements, page } = pageHarness('?courseId=crs_python_foundations&applicationId=app_source', async (path) => {
     if (path === '/training/courses/python-foundations-for-data-science') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
     if (path === '/learners/me') return { learner: { adultEligibilityConfirmed: true, acknowledgements: [
-      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
-      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+      { documentId: 'software-signal-terms-privacy', version: '1.1.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.1.0' },
     ] } };
     if (path.startsWith('/me/applications/current')) return { application: source };
     if (path === '/me/applications/app_source') return { application: source };
@@ -306,8 +306,8 @@ test('lost profile-bootstrap response reconciles before application submission',
     if (path === '/training/courses/python-foundations-for-data-science') return { course: { courseId: 'crs_python_foundations', title: 'Python Foundations' } };
     if (path === '/learners/me' && !profileExists) { const error = new Error('missing'); error.status = 404; throw error; }
     if (path === '/learners/me') return { learner: { fullName: 'Learner', timezone: 'Asia/Kolkata', adultEligibilityConfirmed: true, acknowledgements: [
-      { documentId: 'software-signal-terms-privacy', version: '1.0.0' },
-      { documentId: 'software-signal-recorded-delivery', version: '1.0.0' },
+      { documentId: 'software-signal-terms-privacy', version: '1.1.0' },
+      { documentId: 'software-signal-recorded-delivery', version: '1.1.0' },
     ] } };
     if (path.startsWith('/me/applications/current')) return { application: null };
     if (path === '/learners/me/bootstrap') {

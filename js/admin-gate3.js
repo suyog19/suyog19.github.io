@@ -2,6 +2,17 @@
   'use strict';
   const ID = /^[A-Za-z0-9_-]{1,160}$/;
   const COMMANDS = new Set(['CONFIRM', 'POSTPONE', 'CANCEL']);
+  const PRODUCTION_COMMERCIAL_DOCUMENT_VERSIONS = Object.freeze([
+    'software-signal-terms@1.1.0',
+    'software-signal-privacy@1.1.0',
+    'software-signal-cancellation-refund@1.1.0',
+    'software-signal-course-delivery@1.1.0',
+    'software-signal-recording-consent@1.1.0',
+    'software-signal-conduct-confidentiality@1.1.0',
+    'software-signal-support-grievance@1.1.0',
+    'software-signal-transfer@1.1.0',
+  ]);
+  function validProductionCommercialDocumentVersions(value) { return Array.isArray(value) && value.length === PRODUCTION_COMMERCIAL_DOCUMENT_VERSIONS.length && value.every((item, index) => item === PRODUCTION_COMMERCIAL_DOCUMENT_VERSIONS[index]); }
   function safeId(value) { return ID.test(value || '') ? value : null; }
   function text(tag, value, className) { const node = document.createElement(tag); if (className) node.className = className; node.textContent = value == null ? '' : String(value); return node; }
   function pair(dl, label, value) { dl.appendChild(text('dt', label)); dl.appendChild(text('dd', value == null || value === '' ? 'Not available' : value)); }
@@ -20,11 +31,13 @@
       policyId: 'PROD-G3-POLICY-v1', policyVersion: 'PROD-G3-BALANCE-v1',
       extensionRulesVersion: 'PROD-G3-EXTENSION-v1', creditWaiverRulesVersion: 'PROD-G3-CREDIT-WAIVER-v1',
       depositDispositionPolicyVersion: 'PROD-G3-DEPOSIT-DISPOSITION-v1', nonPaymentClosurePolicyVersion: 'PROD-G3-NON-PAYMENT-v1',
+      commercialDocumentVersions: PRODUCTION_COMMERCIAL_DOCUMENT_VERSIONS,
     } : {
       approvalStatus: 'APPROVED_FOR_DEVELOPMENT', scheduleVersion: 'development-v1',
       policyId: 'development-policy', policyVersion: 'development-v1',
       extensionRulesVersion: 'development-v1', creditWaiverRulesVersion: 'development-v1',
       depositDispositionPolicyVersion: 'development-v1', nonPaymentClosurePolicyVersion: 'development-v1',
+      commercialDocumentVersions: Object.freeze([]),
     };
   }
   function common(form, summary) {
@@ -37,14 +50,17 @@
     return body;
   }
   function confirmationPayload(form, summary, environment = 'development') {
+    const defaults = contract(environment); const production = environment === 'production';
+    const policy = {
+      policyId: production ? defaults.policyId : String(form.get('policyId') || '').trim(), policyVersion: production ? defaults.policyVersion : String(form.get('policyVersion') || '').trim(), approvalStatus: defaults.approvalStatus,
+      extensionRulesVersion: production ? defaults.extensionRulesVersion : String(form.get('extensionRulesVersion') || '').trim(), creditWaiverRulesVersion: production ? defaults.creditWaiverRulesVersion : String(form.get('creditWaiverRulesVersion') || '').trim(),
+      depositApplicationRule: form.get('depositApplicationRule'), depositDispositionRule: form.get('depositDispositionRule'), depositDispositionPolicyVersion: production ? defaults.depositDispositionPolicyVersion : String(form.get('depositDispositionPolicyVersion') || '').trim(), nonPaymentClosurePolicyVersion: production ? defaults.nonPaymentClosurePolicyVersion : String(form.get('nonPaymentClosurePolicyVersion') || '').trim(), commercialDocumentVersions: Array.from(defaults.commercialDocumentVersions),
+    };
+    if (!production) { policy.balanceDeadline = iso(form.get('balanceDeadline')); policy.graceUntil = iso(form.get('graceUntil')); }
     return {
       ...common(form, summary),
-      finalSchedule: { timezone: String(form.get('timezone') || '').trim(), startsAt: iso(form.get('startsAt')), endsAt: iso(form.get('endsAt')), scheduleVersion: String(form.get('scheduleVersion') || '').trim() },
-      policy: {
-        policyId: String(form.get('policyId') || '').trim(), policyVersion: String(form.get('policyVersion') || '').trim(), approvalStatus: contract(environment).approvalStatus,
-        balanceDeadline: iso(form.get('balanceDeadline')), graceUntil: iso(form.get('graceUntil')), extensionRulesVersion: String(form.get('extensionRulesVersion') || '').trim(), creditWaiverRulesVersion: String(form.get('creditWaiverRulesVersion') || '').trim(),
-        depositApplicationRule: form.get('depositApplicationRule'), depositDispositionRule: form.get('depositDispositionRule'), depositDispositionPolicyVersion: String(form.get('depositDispositionPolicyVersion') || '').trim(), nonPaymentClosurePolicyVersion: String(form.get('nonPaymentClosurePolicyVersion') || '').trim(), commercialDocumentVersions: [],
-      },
+      finalSchedule: { timezone: String(form.get('timezone') || '').trim(), startsAt: iso(form.get('startsAt')), endsAt: iso(form.get('endsAt')), scheduleVersion: production ? defaults.scheduleVersion : String(form.get('scheduleVersion') || '').trim() },
+      policy,
     };
   }
   function create(config) {
@@ -52,8 +68,8 @@
     const list = document.getElementById('admin-gate3-cohorts'); const detail = document.getElementById('admin-gate3-detail'); const refresh = document.getElementById('admin-refresh-gate3');
     let loaded = false; let loading = false; let selected = ''; let records = []; let generation = 0;
     function fail(error) { if (error.status === 401 || error.status === 403) return config.clearSession('Your admin session is no longer authorized. Sign in again.'); config.setStatus(config.friendlyError(error), 'error'); }
-    function commandForm(title, command, summary, fields, payload) {
-      const section = text('section', '', 'admin-payment-command'); section.appendChild(text('h4', title)); const form = document.createElement('form'); form.className = 'admin-payment-command-form';
+    function commandForm(title, command, summary, fields, payload, help) {
+      const section = text('section', '', 'admin-payment-command'); section.appendChild(text('h4', title)); if (help) section.appendChild(text('p', help, 'form-help')); const form = document.createElement('form'); form.className = 'admin-payment-command-form';
       fields.forEach((item) => form.appendChild(field(item.label, item.name, item))); form.appendChild(field('I understand the consequence and want to continue', 'confirmation', { type: 'checkbox' })); const button = text('button', window.sjAdminUi.label(command), 'btn btn-secondary'); button.type = 'submit'; form.appendChild(button);
       form.addEventListener('submit', async (event) => { event.preventDefault(); if (!allowed(summary, command)) return; button.disabled = true; const body = payload(new FormData(form), summary); const action = { CONFIRM: 'confirm', POSTPONE: 'postpone', CANCEL: 'cancel' }[command]; try { await config.request('/admin/training/cohorts/' + encodeURIComponent(summary.cohortId) + '/' + action, { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': config.idempotencyKey('decision:' + summary.cohortId + ':' + command, body) } }); config.setStatus(window.sjAdminUi.label(command) + ' completed.', 'success'); await load(true); } catch (error) { if (shouldReloadAfterCommand(error)) await load(true); fail(error); } finally { button.disabled = false; } });
       section.appendChild(form); return section;
@@ -67,9 +83,9 @@
       const base = [{ label: 'Operational reason', name: 'reason', multiline: true }, { label: 'Evidence reference', name: 'evidenceReference' }]; const revision = Number(summary.decisionSequence) > 0 ? [{ label: 'Revision reason', name: 'revisionReason', multiline: true }] : [];
       if (allowed(summary, 'CONFIRM')) detail.appendChild(commandForm('Confirm cohort and open balance obligations', 'CONFIRM', summary, [
         { label: 'Final schedule timezone', name: 'timezone', value: record.cohort.timezone || 'Asia/Kolkata' }, { label: 'Final start', name: 'startsAt', type: 'datetime-local' }, { label: 'Final end', name: 'endsAt', type: 'datetime-local' }, { label: 'Schedule version', name: 'scheduleVersion', value: defaults.scheduleVersion },
-        { label: 'Balance deadline', name: 'balanceDeadline', type: 'datetime-local' }, { label: 'Grace ends', name: 'graceUntil', type: 'datetime-local' }, { label: 'Policy id', name: 'policyId', value: defaults.policyId }, { label: 'Policy version', name: 'policyVersion', value: defaults.policyVersion }, { label: 'Extension rules version', name: 'extensionRulesVersion', value: defaults.extensionRulesVersion }, { label: 'Credit/waiver rules version', name: 'creditWaiverRulesVersion', value: defaults.creditWaiverRulesVersion },
-        { label: 'Deposit application', name: 'depositApplicationRule', values: [['APPLY_NET_PAID_TO_COURSE_FEE', 'Apply verified net deposit to fee'], ['EXCLUDE_FROM_COURSE_FEE', 'Exclude deposit from fee']] }, { label: 'Non-payment deposit treatment', name: 'depositDispositionRule', values: [['ACTION_NEEDED', 'Organiser review required'], ['RETAIN', 'Retain'], ['REFUND', 'Refund intent'], ['TRANSFER', 'Transfer intent']] }, { label: 'Deposit treatment policy version', name: 'depositDispositionPolicyVersion', value: defaults.depositDispositionPolicyVersion }, { label: 'Non-payment closure policy version', name: 'nonPaymentClosurePolicyVersion', value: defaults.nonPaymentClosurePolicyVersion }, ...revision, ...base,
-      ], (form, current) => confirmationPayload(form, current, environment)));
+        ...(environment === 'production' ? [] : [{ label: 'Balance deadline', name: 'balanceDeadline', type: 'datetime-local' }, { label: 'Grace ends', name: 'graceUntil', type: 'datetime-local' }, { label: 'Policy id', name: 'policyId', value: defaults.policyId }, { label: 'Policy version', name: 'policyVersion', value: defaults.policyVersion }, { label: 'Extension rules version', name: 'extensionRulesVersion', value: defaults.extensionRulesVersion }, { label: 'Credit/waiver rules version', name: 'creditWaiverRulesVersion', value: defaults.creditWaiverRulesVersion }]),
+        { label: 'Deposit application', name: 'depositApplicationRule', values: [['APPLY_NET_PAID_TO_COURSE_FEE', 'Apply verified net deposit to fee'], ['EXCLUDE_FROM_COURSE_FEE', 'Exclude deposit from fee']] }, { label: 'Non-payment deposit treatment', name: 'depositDispositionRule', values: [['ACTION_NEEDED', 'Organiser review required'], ['RETAIN', 'Retain'], ['REFUND', 'Refund intent'], ['TRANSFER', 'Transfer intent']] }, ...(environment === 'production' ? [] : [{ label: 'Deposit treatment policy version', name: 'depositDispositionPolicyVersion', value: defaults.depositDispositionPolicyVersion }, { label: 'Non-payment closure policy version', name: 'nonPaymentClosurePolicyVersion', value: defaults.nonPaymentClosurePolicyVersion }]), ...revision, ...base,
+      ], (form, current) => confirmationPayload(form, current, environment), environment === 'production' ? 'The server records the authoritative confirmation time, sets the balance deadline seven days later, and applies zero grace. Production policy versions are fixed to the approved set.' : 'Development confirmation uses the entered balance deadline, grace end, and development policy versions.'));
       const decisionFields = [{ label: 'Revised decision date (optional)', name: 'revisedDecisionAt', type: 'datetime-local', optional: true }, ...revision, ...base];
       if (allowed(summary, 'POSTPONE')) detail.appendChild(commandForm('Postpone or revise decision date', 'POSTPONE', summary, decisionFields, common));
       if (allowed(summary, 'CANCEL')) detail.appendChild(commandForm('Cancel cohort decision', 'CANCEL', summary, decisionFields, common));
@@ -78,5 +94,5 @@
     list.addEventListener('click', (event) => { const button = event.target.closest('[data-gate3-cohort-id]'); if (!button || !safeId(button.dataset.gate3CohortId)) return; selected = button.dataset.gate3CohortId; renderDetail(records.find((item) => item.cohort.cohortId === selected)); }); refresh.addEventListener('click', () => { loaded = false; load(true); });
     return { load, clear() { generation += 1; loaded = false; selected = ''; records = []; list.replaceChildren(); detail.replaceChildren(text('p', 'Select a cohort to review.', 'admin-empty')); } };
   }
-  window.sjAdminGate3 = { allowed, confirmationPayload, contract, create, safeId, shouldReloadAfterCommand };
+  window.sjAdminGate3 = { allowed, confirmationPayload, contract, create, safeId, shouldReloadAfterCommand, validProductionCommercialDocumentVersions };
 }());
