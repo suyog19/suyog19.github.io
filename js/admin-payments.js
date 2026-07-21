@@ -22,8 +22,9 @@
     if (mode === 'PARTIAL_EXCEPTION') return { amountMinorUnits: null, editable: true };
     return null;
   }
-  function commandForm(title, fields, onSubmit) {
+  function commandForm(title, fields, onSubmit, description) {
     const section = text('section', '', 'admin-payment-command'); section.appendChild(text('h4', title));
+    if (description) section.appendChild(text('p', description, 'admin-list-meta'));
     const form = document.createElement('form'); form.className = 'admin-payment-command-form';
     fields.forEach((item) => form.appendChild(field(item.label, item.name, item)));
     form.appendChild(text('p', 'Review the details above. This action updates the selected payment record.', 'admin-list-meta'));
@@ -35,7 +36,7 @@
   function create(config) {
     productionMode = config.environment === 'production'; const scope = productionMode ? '' : 'test ';
     const list = document.getElementById('admin-payments-list'); const detail = document.getElementById('admin-payment-detail'); const refresh = document.getElementById('admin-refresh-payments');
-    let loaded = false; let selected = ''; let loading = false;
+    let loaded = false; let selected = ''; let loading = false; let loadPromise = null; let paymentItems = [];
     function fail(error) {
       if (error.status === 401 || error.status === 403) { config.clearSession('Your admin session is no longer authorized. Sign in again.'); return; }
       config.setStatus(config.friendlyError(error), 'error');
@@ -56,9 +57,14 @@
       items.forEach((item) => { const button = text('button', window.sjAdminUi.label(item.purpose || 'PAYMENT') + ' · ' + window.sjAdminUi.label(item.status || 'Unknown') + ' · ' + money(item.amountDue, item.currency), 'admin-list-item'); button.type = 'button'; button.dataset.paymentObligationId = item.paymentObligationId; button.appendChild(text('span', item.enrolmentId || 'No enrolment', 'admin-list-meta')); list.appendChild(button); });
     }
     async function load(force) {
-      if (!config.sessionActive() || loading || (loaded && !force)) return; loading = true;
-      try { const data = await config.request('/admin/training/payments?limit=50', { method: 'GET' }); renderList(Array.isArray(data.items) ? data.items : []); loaded = true; config.setStatus('', ''); }
-      catch (error) { fail(error); } finally { loading = false; }
+      if (!config.sessionActive() || (loaded && !force)) return;
+      if (loading) return loadPromise;
+      loading = true;
+      loadPromise = (async () => {
+        try { const data = await config.request('/admin/training/payments?limit=50', { method: 'GET' }); paymentItems = Array.isArray(data.items) ? data.items : []; renderList(paymentItems); loaded = true; config.setStatus('', ''); }
+        catch (error) { fail(error); } finally { loading = false; loadPromise = null; }
+      })();
+      return loadPromise;
     }
     function renderDetail(data, reconciliation, communications, cohorts) {
       detail.replaceChildren(); const obligation = data.obligation || {}; const snapshot = data.commercialSnapshot || {}; const enrolment = data.enrolment || {};
@@ -107,7 +113,11 @@
       detail.appendChild(commandForm('Record provider operational status', [{ label: 'Provider status', name: 'providerStatus', values: ['DELAYED_SETTLEMENT', 'DISPUTE', 'CHARGEBACK', 'ACCOUNT_RESTRICTED', 'UNKNOWN', 'CLEARED'].map((value) => [value, value.replaceAll('_', ' ')]) }, ...baseFields], (form) => command('/admin/training/payments/' + encodeURIComponent(obligation.paymentObligationId) + '/reconcile', 'provider-status:' + obligation.paymentObligationId, { command: 'RECORD_PROVIDER_STATUS', providerStatus: form.get('providerStatus'), expectedObligationVersion: Number(obligation.version), ...common(form) })));
       const allocatable = captures.filter((item) => item.allocationCommandAvailable === true);
       if (allocatable.length) detail.appendChild(commandForm('Attempt backend-controlled verified capture allocation', [{ label: 'Verified capture reference', name: 'providerPaymentReference', values: allocatable.map((item) => [item.providerPaymentReference, item.providerPaymentReference + ' · ' + money(item.amountMinorUnits, item.currency)]) }, ...baseFields], (form) => command('/admin/training/payments/' + encodeURIComponent(obligation.paymentObligationId) + '/reconcile', 'allocate:' + obligation.paymentObligationId, { command: 'ALLOCATE_VERIFIED_CAPTURE', providerPaymentReference: form.get('providerPaymentReference'), expectedObligationVersion: Number(obligation.version), ...common(form) })));
-      (communications.items || []).filter((item) => item.canResend === true).forEach((item) => detail.appendChild(commandForm('Resend original approved communication', baseFields, (form) => command('/admin/training/enrolments/' + encodeURIComponent(obligation.enrolmentId) + '/communications/resend', 'communication:' + item.logicalKey, { logicalKey: item.logicalKey, mode: 'ORIGINAL_RENDER', ...common(form) }))));
+      (communications.items || []).filter((item) => window.sjAdminTraining.resendAllowed(item)).forEach((item) => {
+        const presentation = window.sjAdminTraining.communicationPresentation(item, data.commercialSnapshot && data.commercialSnapshot.courseTitleSnapshot);
+        const description = 'Expected subject: “' + presentation.expectedSubject + '”. Payment link: ' + (presentation.includesPaymentLink ? 'included when currently authorised' : 'not included') + '. The immutable original content will be resent and cannot be edited.';
+        detail.appendChild(commandForm(presentation.actionLabel, baseFields, (form) => command('/admin/training/enrolments/' + encodeURIComponent(obligation.enrolmentId) + '/communications/resend', 'communication:' + item.logicalKey, { logicalKey: item.logicalKey, mode: 'ORIGINAL_RENDER', ...common(form) }), description));
+      });
     }
     async function loadDetail(id) {
       if (!safeId(id) || !config.sessionActive()) return; selected = id; detail.replaceChildren(text('p', 'Loading payment information...', 'admin-empty'));
@@ -116,7 +126,14 @@
     }
     list.addEventListener('click', (event) => { const button = event.target.closest('[data-payment-obligation-id]'); if (button) loadDetail(button.dataset.paymentObligationId); });
     refresh.addEventListener('click', () => { loaded = false; load(true); if (selected) loadDetail(selected); });
-    return { clear() { loaded = false; selected = ''; list.replaceChildren(); detail.replaceChildren(text('p', 'Select a payment obligation to review.', 'admin-empty')); }, load };
+    async function openForEnrolment(enrolmentId) {
+      const id = safeId(enrolmentId); if (!id) return;
+      await load();
+      const obligation = paymentItems.find((item) => item.enrolmentId === id && item.purpose === 'DEPOSIT') || paymentItems.find((item) => item.enrolmentId === id);
+      if (!obligation || !safeId(obligation.paymentObligationId)) { config.setStatus('No current payment communication is available for this enrolment.', 'warn'); return; }
+      await loadDetail(obligation.paymentObligationId);
+    }
+    return { clear() { loaded = false; selected = ''; loading = false; loadPromise = null; paymentItems = []; list.replaceChildren(); detail.replaceChildren(text('p', 'Select a payment obligation to review.', 'admin-empty')); }, load, openForEnrolment };
   }
   window.sjAdminPayments = { create, money, safeId, refundModeConfig, iso };
 }());

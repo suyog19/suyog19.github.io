@@ -120,6 +120,27 @@ test('offers and resends fail closed on capacity and uncertain delivery', () => 
   assert.equal(tools.resendAllowed({ canResend: true, status: 'SENT', sk: 'key:RESEND:attempt' }), false);
 });
 
+test('communication families map to distinct business purpose, action, subject, and payment truth', () => {
+  const accepted = tools.communicationPresentation({ family: 'APPLICATION_DECISION', variant: 'ACCEPTED' }, 'Python Foundations');
+  assert.deepEqual({ ...accepted }, {
+    purpose: 'Application accepted', actionLabel: 'Resend application acceptance',
+    expectedSubject: 'Your Software Signal Learning application was accepted', includesPaymentLink: false,
+    diagnostic: 'APPLICATION_DECISION / ACCEPTED',
+  });
+  const deposit = tools.communicationPresentation({ family: 'DEPOSIT_REQUEST', variant: 'INITIAL' }, 'Python Foundations');
+  assert.equal(deposit.purpose, 'Deposit payment action');
+  assert.equal(deposit.actionLabel, 'Resend current deposit payment link');
+  assert.equal(deposit.expectedSubject, 'Complete your deposit for Python Foundations');
+  assert.equal(deposit.includesPaymentLink, true);
+  assert.notEqual(accepted.actionLabel, deposit.actionLabel);
+});
+
+test('payment communication remains ineligible when backend canResend is false', () => {
+  const payment = { family: 'DEPOSIT_REQUEST', variant: 'INITIAL', logicalKey: 'deposit_one', canResend: false };
+  assert.equal(tools.communicationPresentation(payment, 'Python').includesPaymentLink, true);
+  assert.equal(tools.resendAllowed(payment), false);
+});
+
 test('detail and request guards preserve structured and session truth', () => {
   assert.equal(tools.detailValue({ reason: 'Reviewed', nested: { score: 2 } }), '{"reason":"Reviewed","nested":{"score":2}}');
   const expected = { applicationId: 'app-1', sessionToken: 'token-1', sequence: 4 };
