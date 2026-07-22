@@ -42,3 +42,40 @@ test('issue 339 exposes accessible loading, empty, pagination, and refresh state
   assert.match(page, /id="admin-learners-more"[^>]*hidden/);
   assert.match(page, /id="admin-refresh-learners"/);
 });
+
+test('issue 340 loads one backend-authoritative Learner 360 projection', () => {
+  assert.match(page, /id="admin-learner-workspace" aria-live="polite"/);
+  assert.match(script, /\/admin\/training\/learners\/['"]? \+ encodeURIComponent\(learnerId\)/);
+  assert.match(script, /const detail = payload && payload\.learner/);
+  assert.doesNotMatch(script, /\/admin\/training\/(?:applications|payments|operations\/cohorts)[?'"/]/);
+  assert.doesNotMatch(script, /timeline\.(?:sort|reverse)\(/);
+});
+
+test('issue 340 keeps payment, enrolment, cohort, and communication truth distinct', () => {
+  for (const heading of ['Current journey', 'Payments and enrolment', 'Communication and delivery', 'Learner requests and refunds', 'Operational timeline']) {
+    assert.match(script, new RegExp(heading));
+  }
+  for (const field of ['Deposit status', 'Remaining-fee status', 'Place status', 'Activation', 'Deposit communication', 'Cohort communication']) {
+    assert.match(script, new RegExp(field));
+  }
+  assert.match(script, /technicalDetails\(\{ journeys: detail\.journeys \|\| \[\], currentJourney: journey \}/);
+});
+
+test('issue 340 shows only allow-listed projected actions and plain-language blockers', () => {
+  assert.match(script, /const ACTION_DESTINATIONS = \{/);
+  assert.match(script, /actions\.filter\(\(action\) => action && ACTION_DESTINATIONS\[action\.code\]/);
+  assert.match(script, /typeof blocker\.message === 'string'/);
+  assert.match(script, /No administrative action is currently authorised/);
+  assert.match(script, /admin:cohort-selected/);
+  assert.match(script, /fromLearnerId: selectedId/);
+  assert.match(script, /if \(selectedId\) await loadWorkspace\(selectedId\)/);
+  assert.doesNotMatch(script, /data\.actions\s*=|detail\.actions\.push|journeyStatus\s*===.*data-learner-action/);
+});
+
+test('issue 340 uses accessible responsive summary and timeline patterns', () => {
+  const css = fs.readFileSync('css/pages.css', 'utf8');
+  assert.match(css, /\.admin-page \.admin-learner-split/);
+  assert.match(css, /@media \(max-width: 800px\)[\s\S]*\.admin-page \.admin-learner-split \{ grid-template-columns: 1fr; \}/);
+  assert.match(script, /workspace\.setAttribute\('aria-busy', 'true'\)/);
+  assert.match(script, /const timeline = node\('ol', '', 'admin-timeline'\)/);
+});
