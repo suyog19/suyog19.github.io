@@ -135,12 +135,26 @@ for forbidden in ("Get notified when applications open", "Applications not open"
 
 journey_page = (ROOT / "training" / "index.html").read_text(encoding="utf-8")
 python_card = journey_page.split('id="course-python-foundations"', 1)[-1].split('id="course-data-analysis"', 1)[0]
-for required in ("Applications open", 'data-cohort-availability="apply"'):
+for required in (
+    'data-course-id="crs_python_foundations"',
+    "data-course-status",
+    "Checking availability",
+    'data-course-action="transactional"',
+):
     if required not in python_card:
-        errors.append(f"Python Foundations journey card is missing open-launch state: {required}")
-for forbidden in ("Launching soon", 'data-cohort-availability="notify-me"'):
+        errors.append(f"Python Foundations journey card is missing backend-owned availability wiring: {required}")
+for forbidden in (
+    "Applications open",
+    "Launching soon",
+    'data-cohort-availability="apply"',
+    'data-cohort-availability="notify-me"',
+):
     if forbidden in python_card:
-        errors.append(f"Python Foundations journey card contains stale closed-launch state: {forbidden}")
+        errors.append(f"Python Foundations journey card contains static availability authority: {forbidden}")
+course_actions = (ROOT / "js" / "course-actions.js").read_text(encoding="utf-8")
+for required in ("/training/course-actions", "updateJourneyCard", "Availability unavailable"):
+    if required not in course_actions:
+        errors.append(f"journey availability controller is missing backend-owned behavior: {required}")
 
 policy_ids = (
     "software-signal-terms@1.1.0",
