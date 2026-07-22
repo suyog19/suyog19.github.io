@@ -263,12 +263,17 @@
     list.addEventListener('click', (event) => {
       const card = event.target.closest('[data-learner-id]');
       if (!card || !ID.test(card.dataset.learnerId || '')) return;
-      selectedId = card.dataset.learnerId;
+      select(card.dataset.learnerId);
+    });
+
+    function select(learnerId) {
+      if (!ID.test(learnerId || '')) return;
+      selectedId = learnerId;
       render();
       config.setStatus('Learner selected. Opening their workspace…', '');
       window.dispatchEvent(new CustomEvent('admin:learner-selected', { detail: { learnerId: selectedId } }));
       loadWorkspace(selectedId);
-    });
+    }
 
     workspace.addEventListener('click', (event) => {
       const action = event.target.closest('[data-learner-action]');
@@ -285,7 +290,7 @@
       }
     });
 
-    return { load, loadWorkspace, clear: () => { requestSequence += 1; detailSequence += 1; items = []; nextCursor = ''; selectedId = ''; currentDetail = null; render(); workspace.replaceChildren(node('p', 'Select a learner to see their current position, history, and available next actions.', 'admin-empty')); }, selected: () => selectedId };
+    return { load, select, loadWorkspace, clear: () => { requestSequence += 1; detailSequence += 1; items = []; nextCursor = ''; selectedId = ''; currentDetail = null; render(); workspace.replaceChildren(node('p', 'Select a learner to see their current position, history, and available next actions.', 'admin-empty')); }, selected: () => selectedId };
   }
 
   window.sjAdminLearners = { create };
