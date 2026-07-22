@@ -222,6 +222,15 @@
       loadWorkspace(cohortId);
     }
 
+    function search(value) {
+      query.value = String(value || '').trim().slice(0, 160);
+      decision.value = '';
+      attention.value = '';
+      selectedId = '';
+      rosterFilter = 'ALL'; rosterCursor = ''; rosterItems = [];
+      load();
+    }
+
     form.addEventListener('submit', (event) => { event.preventDefault(); selectedId = ''; load(); });
     form.addEventListener('reset', () => { clearTimeout(timer); setTimeout(() => { selectedId = ''; load(); }, 0); });
     query.addEventListener('input', () => { clearTimeout(timer); if (query.value.trim().length === 1) return; timer = setTimeout(() => load(), 350); });
@@ -241,7 +250,7 @@
       if (decisionButton && ID.test(decisionButton.dataset.cohortDecision || '') && window.sjAdminGate3Controller && window.sjAdminGate3Controller.openForCohort) window.sjAdminGate3Controller.openForCohort(decisionButton.dataset.cohortDecision);
     });
 
-    return { load, select, loadWorkspace, clear: () => { sequence += 1; detailSequence += 1; items = []; nextCursor = ''; selectedId = ''; rosterCursor = ''; rosterItems = []; render(); workspace.replaceChildren(node('p', 'Select a cohort to review its health, roster, and exceptions.', 'admin-empty')); } };
+    return { load, search, select, loadWorkspace, clear: () => { sequence += 1; detailSequence += 1; items = []; nextCursor = ''; selectedId = ''; rosterCursor = ''; rosterItems = []; render(); workspace.replaceChildren(node('p', 'Select a cohort to review its health, roster, and exceptions.', 'admin-empty')); } };
   }
 
   window.sjAdminCohorts = { create };

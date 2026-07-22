@@ -25,6 +25,17 @@ test('issue 344 strengthens contextual focus, mobile navigation, and table seman
   assert.match(communications, /node\('caption', 'Communication eligibility preview'\)/);
 });
 
+test('issue 344 provides persistent private learner and cohort search from the shell', () => {
+  assert.match(page, /id="admin-global-search" role="search" autocomplete="off"/);
+  assert.match(page, /id="admin-global-search-query"[^>]*maxlength="160"/);
+  assert.match(shell, /sjAdminLearnersController\.search\(query\)/);
+  assert.match(shell, /sjAdminCohortsController\.search\(query\)/);
+  assert.match(shell, /els\.globalSearch\.reset\(\)/);
+  assert.doesNotMatch(shell.slice(shell.indexOf("els.globalSearch.addEventListener('submit'"), shell.indexOf('els.refreshMessages')), /location|history|gtag/);
+  assert.match(fs.readFileSync('js/admin-learners.js', 'utf8'), /function search\(value\)/);
+  assert.match(fs.readFileSync('js/admin-cohorts.js', 'utf8'), /function search\(value\)/);
+});
+
 test('issue 344 stale communication confirmation fails closed and successful sends refresh context', () => {
   assert.match(communications, /COMMUNICATION_PREVIEW_STALE/);
   assert.match(communications, /preview = null; setFormEnabled\(false\)/);
