@@ -10,7 +10,7 @@
     token: sessionStorage.getItem(TOKEN_KEY) || '',
     user: readSessionUser(),
     emailId: '',
-    activeView: 'overview',
+    activeView: 'today',
     messages: [],
     feedback: [],
     trainingCourses: [],
@@ -48,12 +48,17 @@
     messagesPanel: document.getElementById('admin-messages-panel'),
     feedbackPanel: document.getElementById('admin-feedback-panel'),
     overviewPanel: document.getElementById('admin-overview-panel'),
+    learnersPanel: document.getElementById('admin-learners-panel'),
+    cohortsWorkspacePanel: document.getElementById('admin-cohorts-workspace-panel'),
     coursesPanel: document.getElementById('admin-courses-panel'),
     applicationsPanel: document.getElementById('admin-applications-panel'),
     interestsPanel: document.getElementById('admin-interests-panel'),
     paymentsPanel: document.getElementById('admin-payments-panel'),
     gate3Panel: document.getElementById('admin-gate3-panel'),
     refreshTraining: document.getElementById('admin-refresh-current'),
+    globalSearch: document.getElementById('admin-global-search'),
+    globalSearchType: document.getElementById('admin-global-search-type'),
+    globalSearchQuery: document.getElementById('admin-global-search-query'),
     trainingCourses: document.getElementById('admin-training-courses'),
     trainingCohorts: document.getElementById('admin-training-cohorts'),
     cohortForm: document.getElementById('admin-cohort-form'),
@@ -227,6 +232,10 @@
 
   function clearSession(message) {
     writeSession('', null);
+    if (window.sjAdminLearnersController) window.sjAdminLearnersController.clear();
+    if (window.sjAdminCohortsController) window.sjAdminCohortsController.clear();
+    if (window.sjAdminTodayController) window.sjAdminTodayController.clear();
+    if (window.sjAdminCommunicationsController) window.sjAdminCommunicationsController.clear();
     state.messages = [];
     state.feedback = [];
     state.feedbackSummary = null;
@@ -251,6 +260,7 @@
     renderEmptyDetail(els.applicationDetail, 'Select an application to review.');
     els.applicationFilters.reset();
     clearCohortForm();
+    els.globalSearch.reset();
     showLogin();
     renderMessages();
     renderFeedback();
@@ -466,6 +476,7 @@
   }
 
   function renderOverview() {
+    if (window.sjAdminTodayController) return;
     const root = document.getElementById('admin-overview');
     if (!root) return;
     const cards = [
@@ -666,8 +677,9 @@
   }
 
   function switchView(view) {
-    const valid = ['overview', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
-    if (!valid.includes(view)) view = 'overview';
+    if (view === 'overview') view = 'today';
+    const valid = ['today', 'learners', 'cohorts', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
+    if (!valid.includes(view)) view = 'today';
     state.activeView = view;
     els.tabs.forEach((tab) => {
       const active = tab.dataset.adminView === view;
@@ -677,14 +689,16 @@
     });
     els.messagesPanel.hidden = view !== 'messages';
     els.feedbackPanel.hidden = view !== 'feedback';
-    els.overviewPanel.hidden = view !== 'overview';
+    els.overviewPanel.hidden = view !== 'today';
+    els.learnersPanel.hidden = view !== 'learners';
+    els.cohortsWorkspacePanel.hidden = view !== 'cohorts';
     els.coursesPanel.hidden = view !== 'courses';
     els.applicationsPanel.hidden = view !== 'applications';
     els.interestsPanel.hidden = view !== 'interest-requests';
     els.paymentsPanel.hidden = view !== 'payments';
     els.gate3Panel.hidden = view !== 'cohort-decisions';
     const copy = {
-      overview: ['Overview', 'A snapshot of work that may need your attention.'], courses: ['Courses & cohorts', 'Publish courses and manage cohort schedules and application windows.'],
+      today: ['Today', 'Start with work that needs attention now.'], learners: ['Learners', 'Find a learner, understand their journey, and continue the right task.'], cohorts: ['Cohorts', 'Review cohort health, enrolment, payments, and follow-up work.'], courses: ['Course setup', 'Publish courses and manage cohort schedules and application windows.'],
       applications: ['Applications', 'Review learner applications, record decisions, and send cohort offers.'], payments: ['Payments & learner requests', 'Review payment status, learner requests, refunds, and reconciliation.'],
       'cohort-decisions': ['Cohort decisions', 'Review enrolment readiness and decide whether to confirm, postpone, or cancel a cohort.'], 'interest-requests': ['Interest requests', 'Review people who asked to be notified about upcoming courses or application openings.'],
       messages: ['Contact messages', 'Read and respond to recent enquiries.'], feedback: ['Feedback', 'Review feedback submitted across articles, systems, pages, and modules.']
@@ -695,12 +709,15 @@
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
     }
-    if ((view === 'overview' || view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
+    if (view === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.load();
+    if (view === 'cohorts' && window.sjAdminCohortsController) window.sjAdminCohortsController.load();
+    if (view === 'today' && window.sjAdminTodayController) window.sjAdminTodayController.load();
+    if ((view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
     if (view === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
   }
 
-  function viewFromHash() { return (location.hash || '#overview').slice(1); }
+  function viewFromHash() { return (location.hash || '#today').slice(1); }
 
   async function loadTraining() {
     const sessionToken = state.token;
@@ -1217,12 +1234,26 @@
     els.email.addEventListener('input', () => setFieldError(els.email, els.emailError, ''));
     els.otp.addEventListener('input', () => setFieldError(els.otp, els.otpError, ''));
     els.logout.addEventListener('click', logout);
+    els.globalSearch.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const view = els.globalSearchType.value === 'cohorts' ? 'cohorts' : 'learners';
+      const query = els.globalSearchQuery.value.trim();
+      switchView(view);
+      if (view === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.search(query);
+      if (view === 'cohorts' && window.sjAdminCohortsController) window.sjAdminCohortsController.search(query);
+      document.getElementById('admin-navigation').classList.remove('is-open');
+      document.getElementById('admin-nav-toggle').setAttribute('aria-expanded', 'false');
+      document.getElementById('admin-section-title').focus();
+    });
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
     els.refreshTraining.addEventListener('click', () => {
-      if (['overview', 'courses', 'applications'].includes(state.activeView)) loadTraining();
+      if (['courses', 'applications'].includes(state.activeView)) loadTraining();
+      else if (state.activeView === 'today' && window.sjAdminTodayController) window.sjAdminTodayController.load();
       else if (state.activeView === 'messages') loadMessages();
       else if (state.activeView === 'feedback') loadFeedback();
+      else if (state.activeView === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.load();
+      else if (state.activeView === 'cohorts' && window.sjAdminCohortsController) window.sjAdminCohortsController.load();
       else if (state.activeView === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load(true);
       else if (state.activeView === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load(true);
       else if (state.activeView === 'interest-requests') window.dispatchEvent(new CustomEvent('admin:authenticated'));
@@ -1254,6 +1285,11 @@
       const tab = event.target.closest('[data-admin-view]');
       if (tab) {
         switchView(tab.dataset.adminView);
+        const navigation = document.getElementById('admin-navigation');
+        const navToggle = document.getElementById('admin-nav-toggle');
+        navigation.classList.remove('is-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        if (!tab.classList.contains('admin-tab')) document.getElementById('admin-section-title').focus();
         return;
       }
       const message = event.target.closest('[data-message-id]');
@@ -1307,6 +1343,40 @@
       setStatus,
       friendlyError,
       sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminLearnersController = window.sjAdminLearners.create({
+      request: apiRequest,
+      setStatus,
+      friendlyError,
+      sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminCohortsController = window.sjAdminCohorts.create({
+      request: apiRequest,
+      setStatus,
+      friendlyError,
+      sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminTodayController = window.sjAdminToday.create({
+      request: apiRequest,
+      setStatus,
+      friendlyError,
+      sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminCommunicationsController = window.sjAdminCommunications.create({
+      request: apiRequest,
+      setStatus,
+      friendlyError,
+      idempotencyKey: (scope, body) => operationKeys.key(scope, body),
+      clearIdempotency: (scope) => operationKeys.clear(scope),
+      refreshContext: () => Promise.allSettled([
+        window.sjAdminLearnersController.load(),
+        window.sjAdminCohortsController.load(),
+        window.sjAdminTodayController.load(),
+      ]),
       clearSession: (message) => clearSession(message),
     });
     validateStoredSession();
