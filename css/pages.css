@@ -5261,6 +5261,13 @@
 .admin-page .admin-dialog form { padding: 1.5rem; }
 .admin-page .admin-dialog [data-dialog-fields] { display: grid; gap: 1rem; margin: 1rem 0; }
 .admin-page .admin-dialog-error { color: #b91c1c; }
+.admin-page .admin-communication-dialog { width: min(72rem, calc(100% - 2rem)); max-height: calc(100vh - 2rem); }
+.admin-page .admin-communication-dialog form { max-height: calc(100vh - 2rem); overflow: auto; }
+.admin-page #admin-communication-preview { display: grid; gap: 1rem; margin: 1rem 0; }
+.admin-page .admin-confirmation { display: flex; gap: .6rem; align-items: flex-start; margin: 1rem 0; }
+.admin-page .admin-confirmation input { flex: 0 0 auto; margin-top: .2rem; }
+.admin-page .admin-next-action .btn { margin: .25rem .4rem .25rem 0; }
+.admin-page .admin-next-action h4 { margin: 1rem 0 .4rem; }
 .admin-page .admin-status-label { font-weight: 600; }
 .admin-page .admin-overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; }
 .admin-page .admin-overview-card { display: grid; gap: .35rem; min-height: 8rem; padding: 1.1rem; border: 1px solid var(--color-border); border-radius: .7rem; background: #fff; color: var(--color-text); text-align: left; cursor: pointer; }

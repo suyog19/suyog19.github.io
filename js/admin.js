@@ -232,6 +232,7 @@
     if (window.sjAdminLearnersController) window.sjAdminLearnersController.clear();
     if (window.sjAdminCohortsController) window.sjAdminCohortsController.clear();
     if (window.sjAdminTodayController) window.sjAdminTodayController.clear();
+    if (window.sjAdminCommunicationsController) window.sjAdminCommunicationsController.clear();
     state.messages = [];
     state.feedback = [];
     state.feedbackSummary = null;
@@ -1343,6 +1344,14 @@
       setStatus,
       friendlyError,
       sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminCommunicationsController = window.sjAdminCommunications.create({
+      request: apiRequest,
+      setStatus,
+      friendlyError,
+      idempotencyKey: (scope, body) => operationKeys.key(scope, body),
+      clearIdempotency: (scope) => operationKeys.clear(scope),
       clearSession: (message) => clearSession(message),
     });
     validateStoredSession();
