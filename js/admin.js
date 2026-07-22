@@ -31,6 +31,9 @@
   function buildCourseDetailsStructure() {
     const legacyCourses = document.getElementById('admin-training-courses');
     if (!legacyCourses || document.getElementById('admin-course-directory')) return;
+    const coursesPanel = document.getElementById('admin-courses-panel');
+    const cohortEditor = document.querySelector('.admin-training-cohort-editor');
+    const legacyCohorts = document.getElementById('admin-training-cohorts');
     const meta = document.createElement('div');
     meta.id = 'admin-courses-meta';
     meta.className = 'admin-directory-meta';
@@ -48,6 +51,15 @@
     workspace.appendChild(textEl('p', 'admin-empty', 'Select a course to review its details.'));
     split.append(directory, workspace);
     legacyCourses.before(meta, split);
+
+    const setupPanel = document.createElement('section');
+    setupPanel.id = 'admin-course-setup-panel';
+    setupPanel.className = 'admin-view-panel';
+    setupPanel.setAttribute('role', 'tabpanel');
+    setupPanel.setAttribute('aria-labelledby', 'admin-course-setup-tab');
+    setupPanel.hidden = true;
+    setupPanel.append(legacyCourses, cohortEditor, legacyCohorts);
+    coursesPanel.after(setupPanel);
   }
 
   buildCourseDetailsStructure();
@@ -76,6 +88,7 @@
     learnersPanel: document.getElementById('admin-learners-panel'),
     cohortsWorkspacePanel: document.getElementById('admin-cohorts-workspace-panel'),
     coursesPanel: document.getElementById('admin-courses-panel'),
+    courseSetupPanel: document.getElementById('admin-course-setup-panel'),
     coursesMeta: document.getElementById('admin-courses-meta'),
     courseDirectory: document.getElementById('admin-course-directory'),
     courseWorkspace: document.getElementById('admin-course-workspace'),
@@ -706,7 +719,7 @@
 
   function switchView(view) {
     if (view === 'overview') view = 'today';
-    const valid = ['today', 'learners', 'cohorts', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
+    const valid = ['today', 'learners', 'cohorts', 'courses', 'course-setup', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
     if (!valid.includes(view)) view = 'today';
     state.activeView = view;
     els.tabs.forEach((tab) => {
@@ -721,18 +734,20 @@
     els.learnersPanel.hidden = view !== 'learners';
     els.cohortsWorkspacePanel.hidden = view !== 'cohorts';
     els.coursesPanel.hidden = view !== 'courses';
+    els.courseSetupPanel.hidden = view !== 'course-setup';
     els.applicationsPanel.hidden = view !== 'applications';
     els.interestsPanel.hidden = view !== 'interest-requests';
     els.paymentsPanel.hidden = view !== 'payments';
     els.gate3Panel.hidden = view !== 'cohort-decisions';
     const copy = {
-      today: ['Today', 'Start with work that needs attention now.'], learners: ['Learners', 'Find a learner, understand their journey, and continue the right task.'], cohorts: ['Cohorts', 'Review cohort health, enrolment, payments, and follow-up work.'], courses: ['Course setup', 'Publish courses and manage cohort schedules and application windows.'],
+      today: ['Today', 'Start with work that needs attention now.'], learners: ['Learners', 'Find a learner, understand their journey, and continue the right task.'], cohorts: ['Cohorts', 'Review cohort health, enrolment, payments, and follow-up work.'], courses: ['Courses', 'Review course information and control whether each course is publicly available.'], 'course-setup': ['Course & cohort setup', 'Manage seeded course publication and cohort schedules while this workflow is migrated.'],
       applications: ['Applications', 'Review learner applications, record decisions, and send cohort offers.'], payments: ['Payments & learner requests', 'Review payment status, learner requests, refunds, and reconciliation.'],
       'cohort-decisions': ['Cohort decisions', 'Review enrolment readiness and decide whether to confirm, postpone, or cancel a cohort.'], 'interest-requests': ['Interest requests', 'Review people who asked to be notified about upcoming courses or application openings.'],
       messages: ['Contact messages', 'Read and respond to recent enquiries.'], feedback: ['Feedback', 'Review feedback submitted across articles, systems, pages, and modules.']
     };
     document.getElementById('admin-section-title').textContent = copy[view][0];
     document.getElementById('admin-section-description').textContent = copy[view][1];
+    els.globalSearch.hidden = view === 'courses' || view === 'course-setup';
     if (location.hash !== '#' + view) history.pushState(null, '', '#' + view);
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
@@ -740,7 +755,7 @@
     if (view === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.load();
     if (view === 'cohorts' && window.sjAdminCohortsController) window.sjAdminCohortsController.load();
     if (view === 'today' && window.sjAdminTodayController) window.sjAdminTodayController.load();
-    if ((view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
+    if ((view === 'courses' || view === 'course-setup' || view === 'applications') && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
     if (view === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
   }
@@ -1111,6 +1126,15 @@
     }
     const status = window.sjAdminUi.label(course.publicationStatus);
     els.courseWorkspace.appendChild(detailHeader(course.title, course.courseId, status));
+    const action = course.publicationStatus === 'PUBLISHED' ? 'unpublish' : 'publish';
+    const actions = document.createElement('div');
+    actions.className = 'admin-course-actions';
+    actions.appendChild(buttonEl('btn btn-secondary', action === 'publish' ? 'Publish course' : 'Remove from public site', {
+      trainingCourseId: course.courseId,
+      trainingCourseAction: action,
+      trainingCourseVersion: String(course.version),
+    }));
+    els.courseWorkspace.appendChild(actions);
     els.courseWorkspace.appendChild(textEl('p', 'admin-detail-body', course.summary || 'No course summary is available.'));
     els.courseWorkspace.appendChild(detailSection('Course identity', {
       'Public path': course.slug ? '/training/' + course.slug + '/' : 'Not available',
@@ -1131,19 +1155,17 @@
         Contact: course.provider.contact,
       }));
     }
-    els.courseWorkspace.appendChild(detailSection('Record details', {
-      'Disclosure version': course.disclosureVersion,
-      'Seed version': course.seedVersion,
-      'Record version': course.version,
-      Created: window.sjAdminUi.date(course.createdAt),
-      Updated: window.sjAdminUi.date(course.updatedAt),
-    }));
-    const action = course.publicationStatus === 'PUBLISHED' ? 'unpublish' : 'publish';
-    els.courseWorkspace.appendChild(buttonEl('btn btn-secondary', action === 'publish' ? 'Publish course' : 'Remove from public site', {
-      trainingCourseId: course.courseId,
-      trainingCourseAction: action,
-      trainingCourseVersion: String(course.version),
-    }));
+    const technical = document.createElement('details');
+    technical.className = 'admin-technical-details admin-course-record';
+    technical.appendChild(textEl('summary', '', 'Technical record details'));
+    technical.appendChild(detailGrid([
+      ['Disclosure version', course.disclosureVersion],
+      ['Seed version', course.seedVersion],
+      ['Record version', course.version],
+      ['Created', window.sjAdminUi.date(course.createdAt)],
+      ['Updated', window.sjAdminUi.date(course.updatedAt)],
+    ]));
+    els.courseWorkspace.appendChild(technical);
   }
 
   function renderCourseDirectory() {
@@ -1344,7 +1366,7 @@
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
     els.refreshTraining.addEventListener('click', () => {
-      if (['courses', 'applications'].includes(state.activeView)) loadTraining();
+      if (['courses', 'course-setup', 'applications'].includes(state.activeView)) loadTraining();
       else if (state.activeView === 'today' && window.sjAdminTodayController) window.sjAdminTodayController.load();
       else if (state.activeView === 'messages') loadMessages();
       else if (state.activeView === 'feedback') loadFeedback();
