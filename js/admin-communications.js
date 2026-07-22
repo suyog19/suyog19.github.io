@@ -56,6 +56,7 @@
         previewRoot.appendChild(node('p', 'This audience preview is incomplete and cannot be executed. Narrow the cohort or contact support.', 'admin-exception-banner'));
       }
       const wrap = node('div', '', 'admin-table-scroll'); const table = node('table', '', 'admin-roster');
+      table.appendChild(node('caption', 'Communication eligibility preview'));
       const head = document.createElement('thead'); const row = document.createElement('tr'); ['Recipient', 'Eligibility', 'Platform decision', 'Canonical message', 'Reason'].forEach((value) => row.appendChild(node('th', value))); head.appendChild(row);
       const body = document.createElement('tbody'); (Array.isArray(data.items) ? data.items : []).forEach((item) => body.appendChild(itemRow(item))); table.append(head, body); wrap.appendChild(table); previewRoot.appendChild(wrap);
       if (data.exclusionReasons && Object.keys(data.exclusionReasons).length) previewRoot.appendChild(window.sjAdminUi.technicalDetails(data.exclusionReasons, 'Exclusion counts and reasons'));
@@ -66,6 +67,7 @@
 
     async function open(intent, enrolmentId, cohortId) {
       if (!INTENTS.has(intent) || (!safeId(enrolmentId) && !safeId(cohortId))) return;
+      if (dialog.open) dialog.close();
       generation += 1; const current = generation;
       request = { intent, ...(safeId(enrolmentId) ? { enrolmentId } : { cohortId, limit: 1000 }) };
       preview = null; form.reset(); close.textContent = 'Cancel'; execute.textContent = 'Confirm and send'; setError(''); setFormEnabled(false);
@@ -99,11 +101,16 @@
       execute.disabled = true; execute.setAttribute('aria-busy', 'true'); execute.textContent = 'Sending…';
       try {
         const data = await config.request('/admin/training/communication-intents/execute', { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': config.idempotencyKey('communication-intent', body) } });
-        renderOutcome(data); config.clearIdempotency('communication-intent'); config.setStatus('Communication request completed. Review the per-recipient outcome.', 'success');
+        renderOutcome(data); config.clearIdempotency('communication-intent');
+        config.setStatus('Communication request completed. Refreshing authoritative learner, cohort, and Today views.', 'success');
+        if (config.refreshContext) config.refreshContext();
       } catch (failure) {
         const code = (failure.body || {}).code;
         const message = code === 'COMMUNICATION_PREVIEW_STALE' ? 'The preview is stale because operational state changed. Close this window and preview the action again.' : config.friendlyError(failure);
-        setError(message); if (failure.status && failure.status < 500) config.clearIdempotency('communication-intent'); execute.disabled = false; execute.textContent = 'Confirm and send';
+        setError(message); if (failure.status && failure.status < 500) config.clearIdempotency('communication-intent');
+        if (code === 'COMMUNICATION_PREVIEW_STALE' || failure.status === 409 || failure.status === 412) { preview = null; setFormEnabled(false); }
+        else execute.disabled = false;
+        execute.textContent = 'Confirm and send';
       } finally { execute.removeAttribute('aria-busy'); }
     });
     confirmation.addEventListener('change', () => { execute.disabled = !confirmation.checked || !preview || !preview.previewToken || Boolean(preview.nextCursor); });
