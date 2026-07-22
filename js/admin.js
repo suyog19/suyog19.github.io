@@ -10,7 +10,7 @@
     token: sessionStorage.getItem(TOKEN_KEY) || '',
     user: readSessionUser(),
     emailId: '',
-    activeView: 'overview',
+    activeView: 'today',
     messages: [],
     feedback: [],
     trainingCourses: [],
@@ -48,6 +48,8 @@
     messagesPanel: document.getElementById('admin-messages-panel'),
     feedbackPanel: document.getElementById('admin-feedback-panel'),
     overviewPanel: document.getElementById('admin-overview-panel'),
+    learnersPanel: document.getElementById('admin-learners-panel'),
+    cohortsWorkspacePanel: document.getElementById('admin-cohorts-workspace-panel'),
     coursesPanel: document.getElementById('admin-courses-panel'),
     applicationsPanel: document.getElementById('admin-applications-panel'),
     interestsPanel: document.getElementById('admin-interests-panel'),
@@ -666,8 +668,9 @@
   }
 
   function switchView(view) {
-    const valid = ['overview', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
-    if (!valid.includes(view)) view = 'overview';
+    if (view === 'overview') view = 'today';
+    const valid = ['today', 'learners', 'cohorts', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
+    if (!valid.includes(view)) view = 'today';
     state.activeView = view;
     els.tabs.forEach((tab) => {
       const active = tab.dataset.adminView === view;
@@ -677,14 +680,16 @@
     });
     els.messagesPanel.hidden = view !== 'messages';
     els.feedbackPanel.hidden = view !== 'feedback';
-    els.overviewPanel.hidden = view !== 'overview';
+    els.overviewPanel.hidden = view !== 'today';
+    els.learnersPanel.hidden = view !== 'learners';
+    els.cohortsWorkspacePanel.hidden = view !== 'cohorts';
     els.coursesPanel.hidden = view !== 'courses';
     els.applicationsPanel.hidden = view !== 'applications';
     els.interestsPanel.hidden = view !== 'interest-requests';
     els.paymentsPanel.hidden = view !== 'payments';
     els.gate3Panel.hidden = view !== 'cohort-decisions';
     const copy = {
-      overview: ['Overview', 'A snapshot of work that may need your attention.'], courses: ['Courses & cohorts', 'Publish courses and manage cohort schedules and application windows.'],
+      today: ['Today', 'Start with work that needs attention now.'], learners: ['Learners', 'Find a learner, understand their journey, and continue the right task.'], cohorts: ['Cohorts', 'Review cohort health, enrolment, payments, and follow-up work.'], courses: ['Course setup', 'Publish courses and manage cohort schedules and application windows.'],
       applications: ['Applications', 'Review learner applications, record decisions, and send cohort offers.'], payments: ['Payments & learner requests', 'Review payment status, learner requests, refunds, and reconciliation.'],
       'cohort-decisions': ['Cohort decisions', 'Review enrolment readiness and decide whether to confirm, postpone, or cancel a cohort.'], 'interest-requests': ['Interest requests', 'Review people who asked to be notified about upcoming courses or application openings.'],
       messages: ['Contact messages', 'Read and respond to recent enquiries.'], feedback: ['Feedback', 'Review feedback submitted across articles, systems, pages, and modules.']
@@ -695,12 +700,12 @@
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
     }
-    if ((view === 'overview' || view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
+    if ((view === 'today' || view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
     if (view === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
   }
 
-  function viewFromHash() { return (location.hash || '#overview').slice(1); }
+  function viewFromHash() { return (location.hash || '#today').slice(1); }
 
   async function loadTraining() {
     const sessionToken = state.token;
@@ -1220,7 +1225,7 @@
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
     els.refreshTraining.addEventListener('click', () => {
-      if (['overview', 'courses', 'applications'].includes(state.activeView)) loadTraining();
+      if (['today', 'courses', 'applications'].includes(state.activeView)) loadTraining();
       else if (state.activeView === 'messages') loadMessages();
       else if (state.activeView === 'feedback') loadFeedback();
       else if (state.activeView === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load(true);

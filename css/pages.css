@@ -5190,13 +5190,26 @@
 .admin-page .admin-navigation { position: sticky; top: 5.25rem; padding: .75rem; border: 1px solid var(--color-border); border-radius: .85rem; background: #fff; }
 .admin-page .admin-nav-group { display: grid; gap: .2rem; margin-bottom: 1rem; }
 .admin-page .admin-nav-group > span { padding: .45rem .65rem; color: var(--color-text-muted); font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.admin-page .admin-nav-group--legacy { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--color-border); }
+.admin-page .admin-nav-group--legacy > p { margin: 0 .65rem .45rem; color: var(--color-text-muted); font-size: .72rem; line-height: 1.45; }
 .admin-page .admin-tab { width: 100%; padding: .6rem .7rem; border: 0; border-radius: .5rem; background: transparent; color: #374151; text-align: left; cursor: pointer; }
 .admin-page .admin-tab:hover { background: #f3f4f6; }
 .admin-page .admin-tab.is-active { background: #111827; color: #fff; font-weight: 600; }
+.admin-page .admin-tab:focus-visible, .admin-page .admin-nav-toggle:focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 .admin-page .admin-section-header { display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; padding: .25rem 0 1.25rem; border-bottom: 1px solid var(--color-border); }
 .admin-page .admin-section-header h1 { margin: 0 0 .3rem; font-size: clamp(1.65rem, 3vw, 2.25rem); }
 .admin-page .admin-section-header p { margin: 0; color: var(--color-text-muted); }
 .admin-page .admin-view-panel { padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .85rem; background: #fff; }
+.admin-page .admin-workspace-intro { max-width: 46rem; }
+.admin-page .admin-workspace-intro h2 { margin: .2rem 0 .6rem; }
+.admin-page .admin-next-action, .admin-page .admin-exception-banner { margin-top: 1.25rem; padding: 1rem; border-left: .25rem solid #2563eb; border-radius: .4rem; background: #eff6ff; }
+.admin-page .admin-next-action p, .admin-page .admin-exception-banner p { margin: .35rem 0 0; }
+.admin-page .admin-exception-banner { border-left-color: #b91c1c; background: #fef2f2; }
+.admin-page .admin-status-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: .75rem; }
+.admin-page .admin-status-summary > * { padding: .9rem; border: 1px solid var(--color-border); border-radius: .55rem; }
+.admin-page .admin-timeline { display: grid; gap: .75rem; padding-left: 1.25rem; border-left: 2px solid var(--color-border); }
+.admin-page .admin-roster { width: 100%; border-collapse: collapse; }
+.admin-page .admin-roster th, .admin-page .admin-roster td { padding: .75rem; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
 .admin-page .admin-nav-toggle { display: none; }
 .admin-page .admin-cohort-form fieldset { min-width: 0; margin: 0 0 1rem; padding: 1rem; border: 1px solid var(--color-border); border-radius: .65rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1rem; }
 .admin-page .admin-cohort-form legend { padding: 0 .4rem; font-weight: 600; }
