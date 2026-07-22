@@ -229,6 +229,7 @@
 
   function clearSession(message) {
     writeSession('', null);
+    if (window.sjAdminLearnersController) window.sjAdminLearnersController.clear();
     state.messages = [];
     state.feedback = [];
     state.feedbackSummary = null;
@@ -700,6 +701,7 @@
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
     }
+    if (view === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.load();
     if ((view === 'today' || view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
     if (view === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
@@ -1228,6 +1230,7 @@
       if (['today', 'courses', 'applications'].includes(state.activeView)) loadTraining();
       else if (state.activeView === 'messages') loadMessages();
       else if (state.activeView === 'feedback') loadFeedback();
+      else if (state.activeView === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.load();
       else if (state.activeView === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load(true);
       else if (state.activeView === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load(true);
       else if (state.activeView === 'interest-requests') window.dispatchEvent(new CustomEvent('admin:authenticated'));
@@ -1309,6 +1312,13 @@
       environment: state.apiBase === 'https://api.suyogjoshi.com' ? 'production' : 'development',
       request: apiRequest,
       idempotencyKey: (scope, body) => operationKeys.key('gate3-' + scope, body),
+      setStatus,
+      friendlyError,
+      sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminLearnersController = window.sjAdminLearners.create({
+      request: apiRequest,
       setStatus,
       friendlyError,
       sessionActive: () => Boolean(state.token),
