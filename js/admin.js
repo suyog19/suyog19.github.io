@@ -14,6 +14,7 @@
     messages: [],
     feedback: [],
     trainingCourses: [],
+    selectedCourseId: '',
     trainingCohorts: [],
     trainingApplications: [],
     selectedApplicationId: '',
@@ -26,6 +27,30 @@
     selectedMessageId: '',
     selectedFeedbackId: '',
   };
+
+  function buildCourseDetailsStructure() {
+    const legacyCourses = document.getElementById('admin-training-courses');
+    if (!legacyCourses || document.getElementById('admin-course-directory')) return;
+    const meta = document.createElement('div');
+    meta.id = 'admin-courses-meta';
+    meta.className = 'admin-directory-meta';
+    meta.setAttribute('aria-live', 'polite');
+    const split = document.createElement('div');
+    split.className = 'admin-course-split';
+    const directory = document.createElement('div');
+    directory.id = 'admin-course-directory';
+    directory.className = 'admin-list admin-course-directory';
+    directory.setAttribute('aria-live', 'polite');
+    const workspace = document.createElement('article');
+    workspace.id = 'admin-course-workspace';
+    workspace.className = 'admin-course-workspace';
+    workspace.setAttribute('aria-live', 'polite');
+    workspace.appendChild(textEl('p', 'admin-empty', 'Select a course to review its details.'));
+    split.append(directory, workspace);
+    legacyCourses.before(meta, split);
+  }
+
+  buildCourseDetailsStructure();
 
   const els = {
     apiNote: document.getElementById('admin-api-note'),
@@ -51,6 +76,9 @@
     learnersPanel: document.getElementById('admin-learners-panel'),
     cohortsWorkspacePanel: document.getElementById('admin-cohorts-workspace-panel'),
     coursesPanel: document.getElementById('admin-courses-panel'),
+    coursesMeta: document.getElementById('admin-courses-meta'),
+    courseDirectory: document.getElementById('admin-course-directory'),
+    courseWorkspace: document.getElementById('admin-course-workspace'),
     applicationsPanel: document.getElementById('admin-applications-panel'),
     interestsPanel: document.getElementById('admin-interests-panel'),
     paymentsPanel: document.getElementById('admin-payments-panel'),
@@ -1074,7 +1102,75 @@
     });
   }
 
+  function renderCourseDetails() {
+    clearNode(els.courseWorkspace);
+    const course = state.trainingCourses.find((item) => item.courseId === state.selectedCourseId);
+    if (!course) {
+      els.courseWorkspace.appendChild(textEl('p', 'admin-empty', 'Select a course to review its details.'));
+      return;
+    }
+    const status = window.sjAdminUi.label(course.publicationStatus);
+    els.courseWorkspace.appendChild(detailHeader(course.title, course.courseId, status));
+    els.courseWorkspace.appendChild(textEl('p', 'admin-detail-body', course.summary || 'No course summary is available.'));
+    els.courseWorkspace.appendChild(detailSection('Course identity', {
+      'Public path': course.slug ? '/training/' + course.slug + '/' : 'Not available',
+      'Schedule status': window.sjAdminUi.label(course.scheduleStatus),
+      'Certificate available': window.sjAdminUi.label(course.certificateAvailable),
+    }));
+    els.courseWorkspace.appendChild(detailSection('Commercial details', {
+      'Course fee': window.sjAdminUi.money(course.feeAmountPaise, course.currency),
+      'Deposit': window.sjAdminUi.money(course.depositAmountPaise, course.currency),
+      'Remaining fee': Number.isSafeInteger(course.feeAmountPaise) && Number.isSafeInteger(course.depositAmountPaise)
+        ? window.sjAdminUi.money(course.feeAmountPaise - course.depositAmountPaise, course.currency) : 'Not available',
+      'Minimum cohort size': course.minimumCohortSize,
+    }));
+    if (course.provider) {
+      els.courseWorkspace.appendChild(detailSection('Provider', {
+        Name: course.provider.name,
+        Location: course.provider.location,
+        Contact: course.provider.contact,
+      }));
+    }
+    els.courseWorkspace.appendChild(detailSection('Record details', {
+      'Disclosure version': course.disclosureVersion,
+      'Seed version': course.seedVersion,
+      'Record version': course.version,
+      Created: window.sjAdminUi.date(course.createdAt),
+      Updated: window.sjAdminUi.date(course.updatedAt),
+    }));
+    const action = course.publicationStatus === 'PUBLISHED' ? 'unpublish' : 'publish';
+    els.courseWorkspace.appendChild(buttonEl('btn btn-secondary', action === 'publish' ? 'Publish course' : 'Remove from public site', {
+      trainingCourseId: course.courseId,
+      trainingCourseAction: action,
+      trainingCourseVersion: String(course.version),
+    }));
+  }
+
+  function renderCourseDirectory() {
+    clearNode(els.courseDirectory);
+    els.coursesMeta.textContent = state.trainingCourses.length + (state.trainingCourses.length === 1 ? ' course' : ' courses');
+    if (!state.trainingCourses.length) {
+      els.courseDirectory.appendChild(textEl('p', 'admin-empty', 'No courses are available.'));
+      renderCourseDetails();
+      return;
+    }
+    if (!state.trainingCourses.some((item) => item.courseId === state.selectedCourseId)) {
+      state.selectedCourseId = state.trainingCourses[0].courseId;
+    }
+    state.trainingCourses.forEach((course) => {
+      const button = buttonEl('admin-list-item admin-course-card', course.title, { courseDetailId: course.courseId });
+      button.setAttribute('aria-current', String(course.courseId === state.selectedCourseId));
+      button.appendChild(metaRow([
+        window.sjAdminUi.label(course.publicationStatus),
+        state.trainingCohorts.filter((item) => item.courseId === course.courseId).length + ' cohorts',
+      ]));
+      els.courseDirectory.appendChild(button);
+    });
+    renderCourseDetails();
+  }
+
   function renderTraining() {
+    renderCourseDirectory();
     clearNode(els.trainingCourses);
     clearNode(els.cohortCourse);
     state.trainingCourses.forEach((course) => {
@@ -1305,6 +1401,12 @@
       }
       const courseAction = event.target.closest('[data-training-course-action]');
       if (courseAction) { courseCommand(courseAction); return; }
+      const courseDetail = event.target.closest('[data-course-detail-id]');
+      if (courseDetail) {
+        state.selectedCourseId = courseDetail.dataset.courseDetailId;
+        renderCourseDirectory();
+        return;
+      }
       const cohortAction = event.target.closest('[data-training-cohort-command]');
       if (cohortAction) { cohortCommand(cohortAction); return; }
       const cohortEdit = event.target.closest('[data-training-cohort-edit]');

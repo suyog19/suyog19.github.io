@@ -12,7 +12,7 @@ const tools = context.window.sjAdminPayments;
 test('payments uses a separate accessible section without replacing existing views', () => {
   assert.match(page, />Contact messages</);
   assert.match(page, />Feedback</);
-  assert.match(page, />Courses &amp; cohorts</);
+  assert.match(page, />Courses</);
   assert.match(page, /id="admin-payments-tab"[\s\S]*role="tab"/);
   assert.match(page, /id="admin-payments-panel"[\s\S]*role="tabpanel"/);
   assert.match(page, /noindex, nofollow/);

@@ -23,7 +23,7 @@ const productionPolicyVersions = [
 function form(values) { return { get: (name) => values[name] == null ? null : values[name] }; }
 
 test('Cohort decisions uses a separate accessible noindex admin section and preserves existing areas', () => {
-  for (const label of ['Contact messages', 'Feedback', 'Courses &amp; cohorts', 'Payments &amp; learner requests', 'Cohort decisions']) assert.match(page, new RegExp('>' + label + '<'));
+  for (const label of ['Contact messages', 'Feedback', 'Courses', 'Payments &amp; learner requests', 'Cohort decisions']) assert.match(page, new RegExp('>' + label + '<'));
   assert.match(page, /id="admin-gate3-tab"[^>]*role="tab"[^>]*aria-controls="admin-gate3-panel"/);
   assert.match(page, /id="admin-gate3-panel"[^>]*role="tabpanel"[^>]*aria-labelledby="admin-gate3-tab"/);
   assert.match(page, /noindex, nofollow/);
