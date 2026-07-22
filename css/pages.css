@@ -5210,6 +5210,7 @@
 .admin-page .admin-timeline { display: grid; gap: .75rem; padding-left: 1.25rem; border-left: 2px solid var(--color-border); }
 .admin-page .admin-roster { width: 100%; border-collapse: collapse; }
 .admin-page .admin-roster th, .admin-page .admin-roster td { padding: .75rem; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
+.admin-page .admin-roster caption { padding: .65rem 0; font-weight: 600; text-align: left; }
 .admin-page .admin-directory-search { display: grid; grid-template-columns: minmax(14rem, 2fr) minmax(11rem, 1fr) auto; gap: 1rem; align-items: end; margin-bottom: 1rem; }
 .admin-page .admin-directory-search .admin-form-actions { margin: 0; align-self: end; }
 .admin-page #admin-cohort-search { grid-template-columns: minmax(13rem, 1.5fr) minmax(9rem, .7fr) minmax(9rem, .7fr) auto; }
@@ -5297,6 +5298,16 @@
   .admin-page .admin-learner-split { grid-template-columns: 1fr; }
   .admin-page .admin-cohort-split { grid-template-columns: 1fr; }
   .admin-page .admin-cohort-breakdowns { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .admin-page .admin-main { padding: .75rem; }
+  .admin-page .admin-topbar { align-items: flex-start; }
+  .admin-page .admin-brand { min-width: 0; overflow-wrap: anywhere; }
+  .admin-page .brand-text { display: none; }
+  .admin-page .admin-view-panel, .admin-page .admin-learner-workspace, .admin-page .admin-cohort-workspace { padding: .85rem; }
+  .admin-page .admin-status-summary { grid-template-columns: 1fr; }
+  .admin-page .admin-form-actions, .admin-page .admin-pagination { align-items: stretch; flex-direction: column; }
+  .admin-page .admin-form-actions .btn, .admin-page .admin-pagination .btn { width: 100%; }
 }
 /* End issue 293 administration workspace. */
 

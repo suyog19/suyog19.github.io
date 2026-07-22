@@ -147,6 +147,7 @@
         const select = document.createElement('select'); select.id = 'admin-cohort-roster-filter'; select.dataset.rosterFilter = '';
         ROSTER_FILTERS.forEach((value) => { const option = new Option(window.sjAdminUi.label(value), value); option.selected = value === rosterFilter; select.appendChild(option); }); label.appendChild(select); roster.appendChild(label);
         const tableWrap = node('div', '', 'admin-table-scroll'); const table = node('table', '', 'admin-roster');
+        table.appendChild(node('caption', 'Cohort learner roster'));
         const head = document.createElement('thead'); const headerRow = document.createElement('tr'); ['Learner', 'Enrolment', 'Payment', 'Communication', 'Next action'].forEach((value) => headerRow.appendChild(node('th', value))); head.appendChild(headerRow);
         const body = document.createElement('tbody'); body.id = 'admin-cohort-roster-body'; table.append(head, body); tableWrap.appendChild(table); roster.appendChild(tableWrap);
         const moreButton = node('button', 'Load more learners', 'btn btn-secondary'); moreButton.type = 'button'; moreButton.dataset.rosterMore = ''; roster.appendChild(moreButton);

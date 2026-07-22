@@ -1270,6 +1270,11 @@
       const tab = event.target.closest('[data-admin-view]');
       if (tab) {
         switchView(tab.dataset.adminView);
+        const navigation = document.getElementById('admin-navigation');
+        const navToggle = document.getElementById('admin-nav-toggle');
+        navigation.classList.remove('is-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        if (!tab.classList.contains('admin-tab')) document.getElementById('admin-section-title').focus();
         return;
       }
       const message = event.target.closest('[data-message-id]');
@@ -1352,6 +1357,11 @@
       friendlyError,
       idempotencyKey: (scope, body) => operationKeys.key(scope, body),
       clearIdempotency: (scope) => operationKeys.clear(scope),
+      refreshContext: () => Promise.allSettled([
+        window.sjAdminLearnersController.load(),
+        window.sjAdminCohortsController.load(),
+        window.sjAdminTodayController.load(),
+      ]),
       clearSession: (message) => clearSession(message),
     });
     validateStoredSession();
