@@ -5222,6 +5222,21 @@
 .admin-page .admin-cohort-card { display: grid; gap: .3rem; width: 100%; text-align: left; }
 .admin-page .admin-cohort-states { display: flex; align-items: center; gap: .5rem; font-weight: 600; }
 .admin-page .admin-attention-reason { color: #991b1b; }
+.admin-page .admin-cohort-split { display: grid; grid-template-columns: minmax(15rem, .7fr) minmax(0, 1.7fr); gap: 1rem; align-items: start; }
+.admin-page .admin-cohort-workspace { min-width: 0; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); }
+.admin-page .admin-cohort-header { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--color-border); }
+.admin-page .admin-cohort-header h2 { margin: .15rem 0 .35rem; }
+.admin-page .admin-cohort-breakdowns { margin-top: 1.25rem; }
+.admin-page .admin-cohort-breakdowns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.admin-page .admin-cohort-breakdowns > h3 { grid-column: 1 / -1; margin-bottom: 0; }
+.admin-page .admin-cohort-breakdown { padding: .8rem; border: 1px solid var(--color-border); border-radius: .55rem; background: #fff; }
+.admin-page .admin-cohort-breakdown h4 { margin: 0 0 .5rem; }
+.admin-page .admin-breakdown-list { margin: 0; }
+.admin-page .admin-breakdown-list .admin-summary-fact { display: flex; justify-content: space-between; gap: .75rem; }
+.admin-page .admin-breakdown-list dd { margin: 0; }
+.admin-page .admin-cohort-history, .admin-page .admin-cohort-roster-section { margin-top: 1.25rem; }
+.admin-page .admin-table-scroll { overflow-x: auto; }
+.admin-page .admin-roster td .admin-list-meta { display: block; margin-top: .25rem; }
 .admin-page .admin-pagination { display: flex; gap: .75rem; margin-top: 1rem; }
 .admin-page .admin-learner-split { display: grid; grid-template-columns: minmax(16rem, .8fr) minmax(0, 1.6fr); gap: 1rem; align-items: start; }
 .admin-page .admin-learner-workspace { min-width: 0; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); }
@@ -5264,6 +5279,8 @@
   .admin-page .admin-directory-search { grid-template-columns: 1fr; }
   .admin-page #admin-cohort-search { grid-template-columns: 1fr; }
   .admin-page .admin-learner-split { grid-template-columns: 1fr; }
+  .admin-page .admin-cohort-split { grid-template-columns: 1fr; }
+  .admin-page .admin-cohort-breakdowns { grid-template-columns: 1fr; }
 }
 /* End issue 293 administration workspace. */
 

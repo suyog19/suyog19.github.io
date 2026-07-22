@@ -42,3 +42,35 @@ test('issue 341 handles loading, empty, projection-limit, session, refresh, and 
   assert.match(shell, /sjAdminCohortsController\.load/);
   assert.match(shell, /sjAdminCohortsController\.clear/);
 });
+
+test('issue 342 loads one authoritative cohort workspace and paginated roster', () => {
+  assert.match(page, /id="admin-cohort-workspace" aria-live="polite"/);
+  assert.match(script, /\/admin\/training\/operations\/cohorts\/['"]? \+ encodeURIComponent\(cohortId\)/);
+  assert.match(script, /status: rosterFilter, limit: '25'/);
+  assert.match(script, /values\.set\('cursor', rosterCursor\)/);
+  for (const status of ['DEPOSIT_OUTSTANDING', 'RESERVED', 'DECISION_PENDING', 'BALANCE_DUE', 'BALANCE_OVERDUE', 'BALANCE_IN_GRACE', 'BALANCE_EXTENDED', 'ACTIVE', 'CANCELLED', 'TRANSFERRED', 'REFUNDED', 'CLOSED', 'COMMUNICATION_FAILED', 'ACTION_NEEDED']) assert.match(script, new RegExp(`'${status}'`));
+});
+
+test('issue 342 keeps roster enrolment, payment, and communication truth separate', () => {
+  for (const field of ['enrolmentStatus', 'depositStatus', 'balanceStatus', 'balanceDeadline', 'communicationStatus', 'identityStatus']) assert.match(script, new RegExp(field));
+  assert.match(script, /\['Learner', 'Enrolment', 'Payment', 'Communication', 'Next action'\]/);
+  assert.doesNotMatch(script, /actionNeeded\s*=|balanceStatus\s*=|depositStatus\s*=/);
+  assert.doesNotMatch(script, /\/admin\/training\/(?:learners|payments)\?/);
+});
+
+test('issue 342 links projected roster actions to Learner 360 and guarded cohort decisions', () => {
+  assert.match(script, /row\.nextAction\.code === 'OPEN_LEARNER'/);
+  assert.match(script, /sjAdminLearnersController\.select/);
+  assert.match(script, /detail\.nextAction\.code === 'REVIEW_COHORT_DECISION'/);
+  assert.match(script, /sjAdminGate3Controller\.openForCohort/);
+  assert.match(fs.readFileSync('js/admin-gate3.js', 'utf8'), /async function openForCohort\(cohortId\)/);
+});
+
+test('issue 342 renders backend decision history, breakdowns, evidence, and responsive layout', () => {
+  assert.match(script, /detail\.decisionHistory/);
+  for (const key of ['enrolment', 'deposit', 'balance', 'communication']) assert.ok(script.includes(`(detail.breakdowns || {}).${key}`));
+  assert.match(script, /counterReconciliationRequired: detail\.counterReconciliationRequired/);
+  const css = fs.readFileSync('css/pages.css', 'utf8');
+  assert.match(css, /\.admin-page \.admin-cohort-split/);
+  assert.match(css, /@media \(max-width: 800px\)[\s\S]*\.admin-page \.admin-cohort-split \{ grid-template-columns: 1fr; \}/);
+});
