@@ -137,12 +137,21 @@ or escalation.
 
 ### Contract ownership
 
-- Platform #623: learner search, list summary, Learner 360, timeline, and
-  projected actions/blockers.
-- Platform #624: operational cohort list, Cohort 360, roster, breakdowns, and
-  Today attention queue.
-- Platform #625: individual and cohort communication intent preview and
-  idempotent execution.
+- Platform #623: learner search and list summary at
+  `GET /admin/training/learners`, plus Learner 360, timeline, and projected
+  actions/blockers at `GET /admin/training/learners/{learnerId}`.
+- Platform #624: operational cohort list at
+  `GET /admin/training/operations/cohorts`, Cohort 360 and roster at
+  `GET /admin/training/operations/cohorts/{cohortId}`, and the attention queue
+  at `GET /admin/training/operations/today`.
+- Platform #625: individual and cohort communication intent preview at
+  `POST /admin/training/communication-intents/preview` and idempotent execution
+  at `POST /admin/training/communication-intents/execute`.
+
+Intent execution uses the complete preview returned by the backend. The UI
+must submit its `previewToken`, an admin `reason`, an `evidenceReference`, and
+an `Idempotency-Key`; it must never reconstruct recipients or eligibility in
+the browser.
 
 All responses must remain ADMIN-authorised, private/no-store, bounded,
 cursor-paginated where applicable, privacy-safe in logs, and explicit about
