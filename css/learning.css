@@ -508,7 +508,7 @@
 #journey .journey-card > p:not(.journey-capability) { order: 4; }
 #journey .journey-statuses { align-items: center; display: flex; flex-wrap: wrap; gap: .5rem; margin: .4rem 0 .9rem; order: 5; }
 #journey .journey-actions { align-items: flex-start; display: flex; flex-wrap: wrap; gap: .8rem 1rem; order: 6; padding-top: .8rem; }
-#journey .journey-actions [data-course-action="notify"], #journey .journey-actions [data-course-action="interest"] { background: var(--learning-accent-strong); border: 1px solid var(--learning-accent-strong); color: #fff; display: inline-flex; font-size: .82rem; font-weight: 600; justify-content: center; order: 1; padding: .7rem 1rem; text-decoration: none; }
+#journey .journey-actions [data-course-action="transactional"] { background: var(--learning-accent-strong); border: 1px solid var(--learning-accent-strong); color: #fff; display: inline-flex; font-size: .82rem; font-weight: 600; justify-content: center; order: 1; padding: .7rem 1rem; text-decoration: none; }
 #journey .journey-actions [data-course-action="details"], #journey .journey-actions [data-course-action="preview"] { background: transparent; border: 0; color: var(--learning-accent-strong); font-size: .82rem; order: 2; padding: .7rem 0; width: auto; }
 #journey .journey-map { margin-top: 3rem; }
 #journey .journey-map .journey-grid { margin-top: 2rem; }
@@ -528,6 +528,7 @@
 .status-chip { border: 1px solid currentColor; border-radius: 999px; display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .05em; padding: .3rem .55rem; text-transform: uppercase; }
 .status-chip--launched { background: var(--learning-accent-strong); color: #fff; }
 .status-chip--pipeline { color: #4b5563; }
+.status-chip--unavailable { color: #4b5563; }
 .status-chip--demand { border-style: dashed; color: #4b5563; }
 .cohort-status { color: var(--color-text-muted); font-size: .75rem; font-weight: 600; }
 #journey .journey-card p { font-size: .9rem; line-height: 1.6; }
@@ -569,7 +570,7 @@
 .training-journey-page #journey .journey-statuses { margin-top: .25rem; }
 .training-journey-page #journey .journey-actions { align-items: stretch; flex-direction: column; margin-top: auto; }
 .training-journey-page #journey .journey-actions a { text-align: center; }
-.training-journey-page #journey .journey-actions [data-course-action="notify"], .training-journey-page #journey .journey-actions [data-course-action="interest"] { background: transparent; border: 0; color: var(--learning-accent-strong); font-weight: 700; order: initial; }
+.training-journey-page #journey .journey-actions [data-course-action="transactional"] { background: transparent; border: 0; color: var(--learning-accent-strong); font-weight: 700; order: initial; }
 .training-journey-page #journey .journey-actions [data-course-action="details"], .training-journey-page #journey .journey-actions [data-course-action="preview"] { order: initial; width: 100%; }
 .training-journey-page #journey .journey-actions .journey-course-cta { align-items: center; background: transparent; border: 1px solid var(--learning-accent-strong); color: var(--learning-accent-strong); display: inline-flex; justify-content: center; min-height: 2.75rem; padding: .7rem 1rem; text-decoration: none; }
 .training-journey-page #journey .journey-grid > li.is-recommended .journey-card { border-width: 1px; outline: 2px solid var(--learning-accent-strong); outline-offset: -2px; }
@@ -635,7 +636,7 @@
   #journey .journey-map.is-enhanced .journey-grid { margin-top: 1.25rem; }
   #journey .journey-map.is-enhanced .journey-card { padding: 1.15rem; }
   #journey .journey-actions { align-items: stretch; flex-direction: column; }
-  #journey .journey-actions [data-course-action="notify"], #journey .journey-actions [data-course-action="interest"] { width: 100%; }
+  #journey .journey-actions [data-course-action="transactional"] { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

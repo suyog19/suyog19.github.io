@@ -10,11 +10,13 @@ const css = fs.readFileSync('css/learning.css', 'utf8');
 
 const cards = html.match(/<article\s+class="journey-card"[\s\S]*?<\/article>/g) || [];
 
-test('each pathway card has exactly one static course navigation CTA', () => {
+test('each pathway card keeps one static navigation CTA and one fail-closed transactional action', () => {
   assert.equal(cards.length, 5);
   for (const card of cards) {
-    assert.equal((card.match(/<a\s/g) || []).length, 1);
+    assert.equal((card.match(/<a(?:\s|>)/g) || []).length, 2);
     assert.equal((card.match(/class="[^"]*journey-course-cta[^"]*"/g) || []).length, 1);
+    assert.equal((card.match(/data-course-action="transactional"/g) || []).length, 1);
+    assert.match(card, /data-course-action="transactional"[^>]*hidden/);
     assert.doesNotMatch(card, /Notify me|Get notified|Register interest|Apply now|View course and apply/);
   }
   assert.equal((html.match(/>View course<\/a/g) || []).length, 2);
@@ -36,16 +38,18 @@ test('pathway CTA routes, labels, and accessible names match lifecycle context',
   });
 });
 
-test('shared action controller never initialises or mutates pathway cards', () => {
-  assert.doesNotMatch(actionsScript, /querySelectorAll\('\.journey-card'\)/);
-  assert.doesNotMatch(actionsScript, /TRAINING_JOURNEY/);
+test('shared action controller owns pathway status and transactional actions', () => {
+  assert.match(actionsScript, /\.journey-card\[data-course-id\]/);
+  assert.match(actionsScript, /TRAINING_JOURNEY/);
+  assert.match(actionsScript, /Applications not open/);
+  assert.match(actionsScript, /Availability unavailable/);
   assert.match(actionsScript, /link\.textContent = 'Apply'/);
   assert.match(actionsScript, /const page = document\.querySelector\('\[data-course-detail\]'\)/);
   assert.match(actionsScript, /detailActionLinks\(\)\.forEach\(link => updateLink/);
   assert.match(actionsScript, /if \(!item\) \{ failClosed\(\); return; \}/);
 });
 
-test('API failure leaves a static pathway link untouched while detail actions fail closed', () => {
+test('API failure keeps static navigation but closes pathway status and transactional actions', () => {
   const pathwayLink = {
     hidden: false,
     href: 'python-foundations-for-data-science/',
@@ -56,12 +60,27 @@ test('API failure leaves a static pathway link untouched while detail actions fa
     href: '/apply/?courseId=crs_python_foundations',
     removeAttribute(name) { if (name === 'href') this.href = null; },
   };
+  const status = { textContent: 'Checking availability', className: '' };
+  const transaction = {
+    hidden: false,
+    href: '/apply/?courseId=crs_python_foundations',
+    removeAttribute(name) { if (name === 'href') this.href = null; },
+  };
+  const card = {
+    dataset: { courseId: 'crs_python_foundations' },
+    querySelector(selector) {
+      if (selector === '[data-course-status]') return status;
+      if (selector === '[data-course-action="transactional"]') return transaction;
+      return null;
+    },
+  };
   const document = {
     querySelector(selector) {
       return selector === '[data-course-detail]' ? { dataset: { courseId: 'crs_python_foundations' } } : null;
     },
     querySelectorAll(selector) {
       if (selector.includes('[data-course-action="notify"]')) return [];
+      if (selector === '.journey-card[data-course-id]') return [card];
       if (selector.includes('.course-hero')) return [detailLink];
       return [];
     },
@@ -77,6 +96,9 @@ test('API failure leaves a static pathway link untouched while detail actions fa
   assert.equal(pathwayLink.hidden, false);
   assert.equal(detailLink.href, null);
   assert.equal(detailLink.hidden, true);
+  assert.equal(status.textContent, 'Availability unavailable');
+  assert.equal(transaction.href, null);
+  assert.equal(transaction.hidden, true);
 });
 
 test('recommendation changes only CTA treatment, never label or destination', () => {
