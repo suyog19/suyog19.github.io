@@ -5212,11 +5212,16 @@
 .admin-page .admin-roster th, .admin-page .admin-roster td { padding: .75rem; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
 .admin-page .admin-directory-search { display: grid; grid-template-columns: minmax(14rem, 2fr) minmax(11rem, 1fr) auto; gap: 1rem; align-items: end; margin-bottom: 1rem; }
 .admin-page .admin-directory-search .admin-form-actions { margin: 0; align-self: end; }
+.admin-page #admin-cohort-search { grid-template-columns: minmax(13rem, 1.5fr) minmax(9rem, .7fr) minmax(9rem, .7fr) auto; }
 .admin-page .admin-directory-meta { min-height: 1.5rem; margin-bottom: .5rem; color: var(--color-text-muted); font-size: .85rem; }
 .admin-page .admin-learner-directory { display: grid; gap: .65rem; }
 .admin-page .admin-learner-card { display: grid; gap: .25rem; width: 100%; text-align: left; }
 .admin-page .admin-learner-status { display: flex; gap: .5rem; align-items: center; }
 .admin-page .admin-attention-pill { padding: .15rem .45rem; border-radius: 999px; background: #fef2f2; color: #991b1b; font-size: .72rem; font-style: normal; font-weight: 600; }
+.admin-page .admin-cohort-directory { display: grid; gap: .65rem; }
+.admin-page .admin-cohort-card { display: grid; gap: .3rem; width: 100%; text-align: left; }
+.admin-page .admin-cohort-states { display: flex; align-items: center; gap: .5rem; font-weight: 600; }
+.admin-page .admin-attention-reason { color: #991b1b; }
 .admin-page .admin-pagination { display: flex; gap: .75rem; margin-top: 1rem; }
 .admin-page .admin-learner-split { display: grid; grid-template-columns: minmax(16rem, .8fr) minmax(0, 1.6fr); gap: 1rem; align-items: start; }
 .admin-page .admin-learner-workspace { min-width: 0; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); }
@@ -5257,6 +5262,7 @@
   .admin-page .admin-section-header { flex-direction: column; }
   .admin-page .admin-session-actions { flex-wrap: wrap; justify-content: flex-end; }
   .admin-page .admin-directory-search { grid-template-columns: 1fr; }
+  .admin-page #admin-cohort-search { grid-template-columns: 1fr; }
   .admin-page .admin-learner-split { grid-template-columns: 1fr; }
 }
 /* End issue 293 administration workspace. */
