@@ -130,6 +130,9 @@
         breakdowns.append(breakdown('Remaining fee', (detail.breakdowns || {}).balance));
         breakdowns.append(breakdown('Communication', (detail.breakdowns || {}).communication));
         workspace.appendChild(breakdowns);
+        const communications = node('section', '', 'admin-next-action'); communications.appendChild(node('h3', 'Contact eligible learners'));
+        [['SEND_DEPOSIT_PAYMENT_LINK', 'Send deposit payment links'], ['REMIND_REMAINING_FEE', 'Remind about remaining fees'], ['SEND_COHORT_UPDATE', 'Send cohort update']].forEach(([intent, label]) => { const button = node('button', label, 'btn btn-secondary'); button.type = 'button'; button.dataset.communicationIntent = intent; button.dataset.communicationCohort = detail.cohortId; communications.appendChild(button); });
+        communications.appendChild(node('p', 'Preview the complete audience and exclusions before confirming. Content and recipients are canonical and cannot be edited here.', 'admin-list-meta')); workspace.appendChild(communications);
         if (detail.nextAction && detail.nextAction.code === 'REVIEW_COHORT_DECISION') {
           const action = node('section', '', 'admin-next-action'); action.appendChild(node('h3', 'Available next action'));
           const button = node('button', safe(detail.nextAction.label, 'Review cohort decision'), 'btn btn-primary'); button.type = 'button'; button.dataset.cohortDecision = detail.cohortId; button.dataset.adminView = 'cohort-decisions'; action.appendChild(button); workspace.appendChild(action);

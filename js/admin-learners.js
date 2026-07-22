@@ -112,6 +112,14 @@
         button.dataset.adminView = ACTION_DESTINATIONS[action.code];
         section.appendChild(button);
       });
+      const enrolmentId = ((detail.currentJourney || {}).offer || {}).enrolmentId;
+      if (ID.test(enrolmentId || '')) {
+        section.appendChild(node('h4', 'Send an approved communication'));
+        [['SEND_DEPOSIT_PAYMENT_LINK', 'Send deposit payment link'], ['REMIND_REMAINING_FEE', 'Remind about remaining fee'], ['SEND_COHORT_UPDATE', 'Send cohort update']].forEach(([intent, label]) => {
+          const button = node('button', label, 'btn btn-secondary'); button.type = 'button'; button.dataset.communicationIntent = intent; button.dataset.communicationEnrolment = enrolmentId; section.appendChild(button);
+        });
+        section.appendChild(node('p', 'Eligibility, recipients, and whether to resend or replace are checked by the platform before confirmation.', 'admin-list-meta'));
+      }
       return section;
     }
 
