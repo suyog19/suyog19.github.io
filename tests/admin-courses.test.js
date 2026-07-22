@@ -21,7 +21,7 @@ test('course details reuse the existing admin course-list contract', () => {
 });
 
 test('course detail workspace presents operational, commercial, provider, and record fields', () => {
-  for (const label of ['Course identity', 'Commercial details', 'Provider', 'Record details']) {
+  for (const label of ['Course identity', 'Commercial details', 'Provider', 'Technical record details']) {
     assert.match(source, new RegExp(label));
   }
   for (const field of ['feeAmountPaise', 'depositAmountPaise', 'minimumCohortSize', 'publicationStatus', 'disclosureVersion', 'updatedAt']) {
@@ -35,4 +35,20 @@ test('course directory and detail workspace follow responsive admin split-view p
   assert.match(css, /@media \(max-width: 800px\)[\s\S]*\.admin-page \.admin-course-split \{ grid-template-columns: 1fr; \}/);
   assert.match(source, /setAttribute\('aria-current', String\(course\.courseId === state\.selectedCourseId\)\)/);
   assert.match(source, /setAttribute\('aria-live', 'polite'\)/);
+});
+
+test('issue 362 separates focused course review from legacy course and cohort setup', () => {
+  assert.match(page, /data-admin-view="course-setup"[^>]*id="admin-course-setup-tab"[^>]*aria-controls="admin-course-setup-panel"/);
+  assert.match(source, /setupPanel\.append\(legacyCourses, cohortEditor, legacyCohorts\)/);
+  assert.match(source, /courses: \['Courses', 'Review course information/);
+  assert.match(source, /'course-setup': \['Course & cohort setup'/);
+  assert.match(source, /els\.courseSetupPanel\.hidden = view !== 'course-setup'/);
+});
+
+test('issue 362 removes competing controls and de-emphasises technical metadata', () => {
+  assert.match(source, /els\.globalSearch\.hidden = view === 'courses' \|\| view === 'course-setup'/);
+  assert.match(source, /technical\.className = 'admin-technical-details admin-course-record'/);
+  assert.match(source, /Technical record details/);
+  assert.match(source, /admin-course-actions/);
+  assert.doesNotMatch(source, /detailSection\('Record details'/);
 });
