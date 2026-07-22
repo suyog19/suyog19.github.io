@@ -5226,6 +5226,12 @@
 .admin-page .admin-learner-status { display: flex; gap: .5rem; align-items: center; }
 .admin-page .admin-attention-pill { padding: .15rem .45rem; border-radius: 999px; background: #fef2f2; color: #991b1b; font-size: .72rem; font-style: normal; font-weight: 600; }
 .admin-page .admin-cohort-directory { display: grid; gap: .65rem; }
+.admin-page .admin-course-split { display: grid; grid-template-columns: minmax(15rem, .7fr) minmax(0, 1.7fr); gap: 1rem; align-items: start; margin-bottom: 2rem; }
+.admin-page .admin-course-directory { display: grid; gap: .65rem; }
+.admin-page .admin-course-card { display: grid; gap: .3rem; width: 100%; color: var(--color-text); font-weight: 600; text-align: left; cursor: pointer; }
+.admin-page .admin-course-card .admin-list-meta { font-weight: 400; }
+.admin-page .admin-course-workspace { min-width: 0; padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .7rem; background: var(--color-surface); }
+.admin-page .admin-course-workspace > .btn { margin-top: 1.25rem; }
 .admin-page .admin-cohort-card { display: grid; gap: .3rem; width: 100%; text-align: left; }
 .admin-page .admin-cohort-states { display: flex; align-items: center; gap: .5rem; font-weight: 600; }
 .admin-page .admin-attention-reason { color: #991b1b; }
@@ -5304,6 +5310,7 @@
   .admin-page #admin-cohort-search { grid-template-columns: 1fr; }
   .admin-page .admin-learner-split { grid-template-columns: 1fr; }
   .admin-page .admin-cohort-split { grid-template-columns: 1fr; }
+  .admin-page .admin-course-split { grid-template-columns: 1fr; }
   .admin-page .admin-cohort-breakdowns { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
@@ -5311,7 +5318,7 @@
   .admin-page .admin-topbar { align-items: flex-start; }
   .admin-page .admin-brand { min-width: 0; overflow-wrap: anywhere; }
   .admin-page .brand-text { display: none; }
-  .admin-page .admin-view-panel, .admin-page .admin-learner-workspace, .admin-page .admin-cohort-workspace { padding: .85rem; }
+  .admin-page .admin-view-panel, .admin-page .admin-learner-workspace, .admin-page .admin-cohort-workspace, .admin-page .admin-course-workspace { padding: .85rem; }
   .admin-page .admin-status-summary { grid-template-columns: 1fr; }
   .admin-page .admin-global-search select, .admin-page .admin-global-search input, .admin-page .admin-global-search .btn { width: 100%; flex-basis: 100%; }
   .admin-page .admin-form-actions, .admin-page .admin-pagination { align-items: stretch; flex-direction: column; }
