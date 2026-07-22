@@ -56,6 +56,9 @@
     paymentsPanel: document.getElementById('admin-payments-panel'),
     gate3Panel: document.getElementById('admin-gate3-panel'),
     refreshTraining: document.getElementById('admin-refresh-current'),
+    globalSearch: document.getElementById('admin-global-search'),
+    globalSearchType: document.getElementById('admin-global-search-type'),
+    globalSearchQuery: document.getElementById('admin-global-search-query'),
     trainingCourses: document.getElementById('admin-training-courses'),
     trainingCohorts: document.getElementById('admin-training-cohorts'),
     cohortForm: document.getElementById('admin-cohort-form'),
@@ -257,6 +260,7 @@
     renderEmptyDetail(els.applicationDetail, 'Select an application to review.');
     els.applicationFilters.reset();
     clearCohortForm();
+    els.globalSearch.reset();
     showLogin();
     renderMessages();
     renderFeedback();
@@ -1230,6 +1234,17 @@
     els.email.addEventListener('input', () => setFieldError(els.email, els.emailError, ''));
     els.otp.addEventListener('input', () => setFieldError(els.otp, els.otpError, ''));
     els.logout.addEventListener('click', logout);
+    els.globalSearch.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const view = els.globalSearchType.value === 'cohorts' ? 'cohorts' : 'learners';
+      const query = els.globalSearchQuery.value.trim();
+      switchView(view);
+      if (view === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.search(query);
+      if (view === 'cohorts' && window.sjAdminCohortsController) window.sjAdminCohortsController.search(query);
+      document.getElementById('admin-navigation').classList.remove('is-open');
+      document.getElementById('admin-nav-toggle').setAttribute('aria-expanded', 'false');
+      document.getElementById('admin-section-title').focus();
+    });
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
     els.refreshTraining.addEventListener('click', () => {

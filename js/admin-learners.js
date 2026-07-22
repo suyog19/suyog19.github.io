@@ -283,6 +283,14 @@
       loadWorkspace(selectedId);
     }
 
+    function search(value) {
+      query.value = String(value || '').trim().slice(0, 160);
+      status.value = '';
+      selectedId = '';
+      currentDetail = null;
+      load();
+    }
+
     workspace.addEventListener('click', (event) => {
       const action = event.target.closest('[data-learner-action]');
       if (!action) return;
@@ -298,7 +306,7 @@
       }
     });
 
-    return { load, select, loadWorkspace, clear: () => { requestSequence += 1; detailSequence += 1; items = []; nextCursor = ''; selectedId = ''; currentDetail = null; render(); workspace.replaceChildren(node('p', 'Select a learner to see their current position, history, and available next actions.', 'admin-empty')); }, selected: () => selectedId };
+    return { load, search, select, loadWorkspace, clear: () => { requestSequence += 1; detailSequence += 1; items = []; nextCursor = ''; selectedId = ''; currentDetail = null; render(); workspace.replaceChildren(node('p', 'Select a learner to see their current position, history, and available next actions.', 'admin-empty')); }, selected: () => selectedId };
   }
 
   window.sjAdminLearners = { create };

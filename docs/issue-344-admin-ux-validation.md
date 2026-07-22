@@ -12,6 +12,10 @@ operations remain in a clearly demoted **Legacy operations** group because they
 still contain guarded mutation workflows; no launch-critical command was
 removed or reimplemented.
 
+The authenticated shell also provides a persistent learner/cohort search. It
+passes the bounded value directly to the selected directory controller, clears
+conflicting filters, and never places the value in the page URL or analytics.
+
 The automated and source-level checks below pass. Authenticated live-browser
 and assistive-technology evidence could not be captured because the approved
 browser-control runtime was unavailable. That release-evidence limitation is
