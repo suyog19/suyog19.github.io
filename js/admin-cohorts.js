@@ -172,7 +172,8 @@
       const values = new URLSearchParams({ status: rosterFilter, limit: '25' });
       if (append && rosterCursor) values.set('cursor', rosterCursor);
       try {
-        const detail = await config.request('/admin/training/operations/cohorts/' + encodeURIComponent(cohortId) + '?' + values.toString(), { method: 'GET' });
+        const data = await config.request('/admin/training/operations/cohorts/' + encodeURIComponent(cohortId) + '?' + values.toString(), { method: 'GET' });
+        const detail = data && data.cohort;
         if (current !== detailSequence || cohortId !== selectedId) return;
         const rows = detail.roster && Array.isArray(detail.roster.items) ? detail.roster.items : [];
         rosterItems = append ? rosterItems.concat(rows) : rows;

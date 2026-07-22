@@ -48,6 +48,7 @@ test('issue 342 loads one authoritative cohort workspace and paginated roster', 
   assert.match(script, /\/admin\/training\/operations\/cohorts\/['"]? \+ encodeURIComponent\(cohortId\)/);
   assert.match(script, /status: rosterFilter, limit: '25'/);
   assert.match(script, /values\.set\('cursor', rosterCursor\)/);
+  assert.match(script, /const detail = data && data\.cohort/);
   for (const status of ['DEPOSIT_OUTSTANDING', 'RESERVED', 'DECISION_PENDING', 'BALANCE_DUE', 'BALANCE_OVERDUE', 'BALANCE_IN_GRACE', 'BALANCE_EXTENDED', 'ACTIVE', 'CANCELLED', 'TRANSFERRED', 'REFUNDED', 'CLOSED', 'COMMUNICATION_FAILED', 'ACTION_NEEDED']) assert.match(script, new RegExp(`'${status}'`));
 });
 
