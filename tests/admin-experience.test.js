@@ -6,16 +6,38 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 
-test('issue 293 admin shell exposes job-based hash navigation and compact session context', () => {
+test('issue 338 admin shell exposes task-oriented navigation and compact session context', () => {
   const html = read('admin/index.html');
-  for (const view of ['overview', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback']) {
+  for (const view of ['today', 'learners', 'cohorts', 'courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback']) {
     assert.match(html, new RegExp(`data-admin-view="${view}"`));
   }
-  assert.match(html, />Learning operations</);
+  assert.match(html, />Daily work</);
   assert.match(html, />Inbox</);
+  assert.match(html, />Legacy operations</);
+  assert.match(html, /temporary legacy area|Temporary access/i);
   assert.match(html, />Sign out</);
   assert.match(html, /id="admin-environment"/);
   assert.doesNotMatch(html, /Manual admin access|Messages and feedback|Read-only operational view/);
+});
+
+test('issue 338 keeps every existing operational destination reachable during migration', () => {
+  const html = read('admin/index.html');
+  const js = read('js/admin.js');
+  for (const destination of ['courses', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback']) {
+    assert.match(html, new RegExp(`data-admin-view="${destination}"`));
+    assert.match(js, new RegExp(`['"]${destination}['"]`));
+  }
+  assert.match(js, /location\.hash \|\| '#today'/);
+  assert.match(js, /view === 'overview'\) view = 'today'/);
+});
+
+test('issue 338 provides shared accessible workspace presentation patterns', () => {
+  const css = read('css/pages.css');
+  for (const pattern of ['admin-status-summary', 'admin-next-action', 'admin-exception-banner', 'admin-timeline', 'admin-roster', 'admin-technical-details']) {
+    assert.match(css, new RegExp(`\\.admin-page \\.${pattern}`));
+  }
+  assert.match(css, /\.admin-page \.admin-tab:focus-visible/);
+  assert.match(read('admin/index.html'), /id="admin-status" role="status" aria-live="polite"/);
 });
 
 test('admin actions use the shared dialog and avoid browser prompts and confirms', () => {
