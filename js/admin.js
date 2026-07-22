@@ -231,6 +231,7 @@
     writeSession('', null);
     if (window.sjAdminLearnersController) window.sjAdminLearnersController.clear();
     if (window.sjAdminCohortsController) window.sjAdminCohortsController.clear();
+    if (window.sjAdminTodayController) window.sjAdminTodayController.clear();
     state.messages = [];
     state.feedback = [];
     state.feedbackSummary = null;
@@ -470,6 +471,7 @@
   }
 
   function renderOverview() {
+    if (window.sjAdminTodayController) return;
     const root = document.getElementById('admin-overview');
     if (!root) return;
     const cards = [
@@ -704,7 +706,8 @@
     }
     if (view === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.load();
     if (view === 'cohorts' && window.sjAdminCohortsController) window.sjAdminCohortsController.load();
-    if ((view === 'today' || view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
+    if (view === 'today' && window.sjAdminTodayController) window.sjAdminTodayController.load();
+    if ((view === 'courses' || view === 'applications') && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
     if (view === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
   }
@@ -1229,7 +1232,8 @@
     els.refreshMessages.addEventListener('click', loadMessages);
     els.refreshFeedback.addEventListener('click', loadFeedback);
     els.refreshTraining.addEventListener('click', () => {
-      if (['today', 'courses', 'applications'].includes(state.activeView)) loadTraining();
+      if (['courses', 'applications'].includes(state.activeView)) loadTraining();
+      else if (state.activeView === 'today' && window.sjAdminTodayController) window.sjAdminTodayController.load();
       else if (state.activeView === 'messages') loadMessages();
       else if (state.activeView === 'feedback') loadFeedback();
       else if (state.activeView === 'learners' && window.sjAdminLearnersController) window.sjAdminLearnersController.load();
@@ -1328,6 +1332,13 @@
       clearSession: (message) => clearSession(message),
     });
     window.sjAdminCohortsController = window.sjAdminCohorts.create({
+      request: apiRequest,
+      setStatus,
+      friendlyError,
+      sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminTodayController = window.sjAdminToday.create({
       request: apiRequest,
       setStatus,
       friendlyError,

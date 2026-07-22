@@ -5267,6 +5267,15 @@
 .admin-page .admin-overview-card:hover { border-color: #9ca3af; box-shadow: 0 8px 24px rgba(15,23,42,.06); }
 .admin-page .admin-overview-card strong { font-family: var(--font-serif); font-size: 1.65rem; }
 .admin-page .admin-overview-card span { color: var(--color-text-muted); }
+.admin-page .admin-today-queue { display: grid; gap: 1.25rem; }
+.admin-page .admin-today-group { display: grid; gap: .75rem; }
+.admin-page .admin-today-group h3 { margin: 0; font-size: 1rem; }
+.admin-page .admin-today-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: .75rem; }
+.admin-page .admin-today-item { display: flex; flex-direction: column; align-items: flex-start; padding: 1rem; border: 1px solid var(--color-border); border-radius: .65rem; background: #fff; }
+.admin-page .admin-today-item h4 { margin: .1rem 0 .4rem; }
+.admin-page .admin-today-item p { margin: .25rem 0; }
+.admin-page .admin-today-item .btn { margin-top: auto; padding-top: .55rem; }
+.admin-page .admin-today-deadline { color: #991b1b; font-weight: 600; }
 .admin-page .admin-list-item.is-selected, .admin-page .admin-list-item[aria-current="true"] { border-color: #111827; box-shadow: inset 3px 0 #111827; background: #f8fafc; }
 .admin-page .admin-notify-form { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
 @media (max-width: 800px) {
