@@ -5514,3 +5514,133 @@
     grid-template-columns: 1fr;
   }
 }
+/* Runtime configuration workspace */
+.admin-page .admin-configuration-panel .admin-view-toolbar {
+  align-items: flex-start;
+}
+
+.admin-page .admin-configuration-panel .admin-view-toolbar p {
+  color: var(--color-text-muted);
+  margin: 0.35rem 0 0;
+  max-width: 66ch;
+}
+
+.admin-page .admin-configuration-alert {
+  background: #fff7ed;
+  border: 1px solid #c2410c;
+  border-radius: 0.6rem;
+  color: #9a3412;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+.admin-page .admin-configuration-group + .admin-configuration-group {
+  border-top: 1px solid var(--color-border);
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+.admin-page .admin-configuration-group > h3 {
+  font-family: var(--font-serif);
+  margin-bottom: 1rem;
+}
+
+.admin-page .admin-configuration-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-page .admin-configuration-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1.15rem;
+}
+
+.admin-page .admin-configuration-card > header {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.admin-page .admin-configuration-card h4 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.admin-page .admin-configuration-state {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+}
+
+.admin-page .admin-configuration-state.is-enabled {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.admin-page .admin-configuration-state.is-disabled {
+  background: #f8fafc;
+  color: #475569;
+}
+
+.admin-page .admin-configuration-impact {
+  border-left: 3px solid #b91c1c;
+  color: var(--color-text);
+  padding-left: 0.75rem;
+}
+
+.admin-page .admin-configuration-metadata {
+  margin: 1rem 0;
+}
+
+.admin-page .admin-configuration-history {
+  border-top: 1px solid var(--color-border);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+}
+
+.admin-page .admin-configuration-history summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.admin-page .admin-configuration-history ol {
+  display: grid;
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+}
+
+.admin-page .admin-configuration-history li {
+  border-left: 2px solid var(--color-border);
+  display: grid;
+  gap: 0.25rem;
+  padding-left: 0.75rem;
+}
+
+.admin-page .admin-configuration-history li span {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+}
+
+.admin-page .admin-configuration-history .btn {
+  justify-self: start;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 760px) {
+  .admin-page .admin-configuration-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-page .admin-configuration-panel .admin-view-toolbar {
+    align-items: stretch;
+  }
+}

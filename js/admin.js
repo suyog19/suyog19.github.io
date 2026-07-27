@@ -96,6 +96,7 @@
     interestsPanel: document.getElementById('admin-interests-panel'),
     paymentsPanel: document.getElementById('admin-payments-panel'),
     gate3Panel: document.getElementById('admin-gate3-panel'),
+    configurationPanel: document.getElementById('admin-configuration-panel'),
     refreshTraining: document.getElementById('admin-refresh-current'),
     globalSearch: document.getElementById('admin-global-search'),
     globalSearchType: document.getElementById('admin-global-search-type'),
@@ -294,6 +295,7 @@
     operationKeys.clearAll();
     if (window.sjAdminPaymentsController) window.sjAdminPaymentsController.clear();
     if (window.sjAdminGate3Controller) window.sjAdminGate3Controller.clear();
+    if (window.sjAdminRuntimeConfigController) window.sjAdminRuntimeConfigController.clear();
     clearNode(els.trainingCourses);
     clearNode(els.trainingCohorts);
     clearNode(els.cohortCourse);
@@ -719,7 +721,7 @@
 
   function switchView(view) {
     if (view === 'overview') view = 'today';
-    const valid = ['today', 'learners', 'cohorts', 'courses', 'course-setup', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback'];
+    const valid = ['today', 'learners', 'cohorts', 'courses', 'course-setup', 'applications', 'payments', 'cohort-decisions', 'interest-requests', 'messages', 'feedback', 'configuration'];
     if (!valid.includes(view)) view = 'today';
     state.activeView = view;
     els.tabs.forEach((tab) => {
@@ -739,15 +741,17 @@
     els.interestsPanel.hidden = view !== 'interest-requests';
     els.paymentsPanel.hidden = view !== 'payments';
     els.gate3Panel.hidden = view !== 'cohort-decisions';
+    els.configurationPanel.hidden = view !== 'configuration';
     const copy = {
       today: ['Today', 'Start with work that needs attention now.'], learners: ['Learners', 'Find a learner, understand their journey, and continue the right task.'], cohorts: ['Cohorts', 'Review cohort health, enrolment, payments, and follow-up work.'], courses: ['Courses', 'Review course information and control whether each course is publicly available.'], 'course-setup': ['Course & cohort setup', 'Manage seeded course publication and cohort schedules while this workflow is migrated.'],
       applications: ['Applications', 'Review learner applications, record decisions, and send cohort offers.'], payments: ['Payments & learner requests', 'Review payment status, learner requests, refunds, and reconciliation.'],
       'cohort-decisions': ['Cohort decisions', 'Review enrolment readiness and decide whether to confirm, postpone, or cancel a cohort.'], 'interest-requests': ['Interest requests', 'Review people who asked to be notified about upcoming courses or application openings.'],
-      messages: ['Contact messages', 'Read and respond to recent enquiries.'], feedback: ['Feedback', 'Review feedback submitted across articles, systems, pages, and modules.']
+      messages: ['Contact messages', 'Read and respond to recent enquiries.'], feedback: ['Feedback', 'Review feedback submitted across articles, systems, pages, and modules.'],
+      configuration: ['Configuration', 'Review and safely change durable runtime controls without deploying code.']
     };
     document.getElementById('admin-section-title').textContent = copy[view][0];
     document.getElementById('admin-section-description').textContent = copy[view][1];
-    els.globalSearch.hidden = view === 'courses' || view === 'course-setup';
+    els.globalSearch.hidden = view === 'courses' || view === 'course-setup' || view === 'configuration';
     if (location.hash !== '#' + view) history.pushState(null, '', '#' + view);
     if (view === 'feedback' && !state.feedback.length && !state.feedbackSummary) {
       loadFeedback();
@@ -758,6 +762,7 @@
     if ((view === 'courses' || view === 'course-setup' || view === 'applications') && !state.trainingCourses.length) loadTraining();
     if (view === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load();
     if (view === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load();
+    if (view === 'configuration' && window.sjAdminRuntimeConfigController) window.sjAdminRuntimeConfigController.load();
   }
 
   function viewFromHash() { return (location.hash || '#today').slice(1); }
@@ -1375,6 +1380,7 @@
       else if (state.activeView === 'payments' && window.sjAdminPaymentsController) window.sjAdminPaymentsController.load(true);
       else if (state.activeView === 'cohort-decisions' && window.sjAdminGate3Controller) window.sjAdminGate3Controller.load(true);
       else if (state.activeView === 'interest-requests') window.dispatchEvent(new CustomEvent('admin:authenticated'));
+      else if (state.activeView === 'configuration' && window.sjAdminRuntimeConfigController) window.sjAdminRuntimeConfigController.load(true);
     });
     els.refreshApplications.addEventListener('click', loadApplications);
     els.applicationFilters.addEventListener('submit', (event) => { event.preventDefault(); state.selectedApplicationId = ''; loadApplications(); });
@@ -1468,6 +1474,15 @@
       friendlyError,
       sessionActive: () => Boolean(state.token),
       clearSession: (message) => clearSession(message),
+    });
+    window.sjAdminRuntimeConfigController = window.sjAdminRuntimeConfig.create({
+      request: apiRequest,
+      setStatus,
+      friendlyError,
+      sessionActive: () => Boolean(state.token),
+      clearSession: (message) => clearSession(message),
+      dialog: window.sjAdminUi.dialog,
+      date: window.sjAdminUi.date,
     });
     window.sjAdminLearnersController = window.sjAdminLearners.create({
       request: apiRequest,
