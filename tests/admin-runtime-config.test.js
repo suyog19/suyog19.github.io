@@ -33,7 +33,7 @@ test('closed catalogue contains exactly the seven supported Boolean controls', (
   keys.forEach((key) => assert.ok(tools.definitionFor(key), key));
   assert.equal(tools.definitionFor('AWS_SECRET_ACCESS_KEY'), null);
   assert.equal(tools.definitionFor('arbitrary.environment.variable'), null);
-  assert.match(script, /incoming\.length !== Object\.keys\(definitions\)\.length/);
+  assert.match(script, /if \(!validCatalogue\(incoming\)\)/);
 });
 
 test('configuration envelopes fail closed on unknown types, stages, and versions', () => {
@@ -50,6 +50,147 @@ test('configuration envelopes fail closed on unknown types, stages, and versions
   assert.equal(tools.validConfiguration({ ...valid, version: 0 }), false);
   assert.equal(tools.validConfiguration({ ...valid, environment: 'staging' }), false);
   assert.equal(tools.validConfiguration({ ...valid, key: 'unknown' }), false);
+});
+
+test('closed catalogue rejects duplicate known keys and missing definitions', () => {
+  const keys = [
+    'training.applications.enabled',
+    'training.course_interest.capture_enabled',
+    'training.gate1.email_delivery_enabled',
+    'training.payments.enabled',
+    'training.gate2.email_delivery_enabled',
+    'training.gate3.cohort_enabled',
+    'training.gate3.email_delivery_enabled',
+  ];
+  const catalogue = keys.map((key) => ({
+    key,
+    value: false,
+    valueType: 'BOOLEAN',
+    version: 1,
+    environment: 'dev',
+  }));
+  assert.equal(tools.validCatalogue(catalogue), true);
+  assert.equal(tools.validCatalogue(catalogue.map((item) => ({ ...item, key: keys[0] }))), false);
+  assert.equal(tools.validCatalogue(catalogue.slice(1)), false);
+});
+
+test('ambiguous mutation reconciles authoritative state without unsafe retry', async () => {
+  const calls = [];
+  const request = async (path, options) => {
+    calls.push([path, options]);
+    if (calls.length === 1) {
+      const error = new Error('transport lost');
+      error.status = 0;
+      throw error;
+    }
+    return {
+      configuration: {
+        key: 'training.course_interest.capture_enabled',
+        value: true,
+        valueType: 'BOOLEAN',
+        version: 2,
+        environment: 'dev',
+      },
+    };
+  };
+  const result = await tools.mutateWithReconciliation({
+    request,
+    path: '/admin/training/runtime-configurations/training.course_interest.capture_enabled',
+    requestOptions: { method: 'PATCH', body: '{}' },
+    key: 'training.course_interest.capture_enabled',
+    expectedVersion: 1,
+    value: true,
+  });
+  assert.equal(result.outcome, 'effective');
+  assert.equal(calls.length, 2);
+  assert.equal(calls[1][1].method, 'GET');
+});
+
+test('ambiguous mutation fails safely when current state cannot confirm outcome', async () => {
+  let calls = 0;
+  const request = async () => {
+    calls += 1;
+    if (calls === 1) {
+      const error = new Error('transport lost');
+      error.status = 503;
+      throw error;
+    }
+    return {
+      configuration: {
+        key: 'training.course_interest.capture_enabled',
+        value: false,
+        valueType: 'BOOLEAN',
+        version: 1,
+        environment: 'dev',
+      },
+    };
+  };
+  await assert.rejects(
+    tools.mutateWithReconciliation({
+      request,
+      path: '/admin/training/runtime-configurations/training.course_interest.capture_enabled',
+      requestOptions: { method: 'PATCH', body: '{}' },
+      key: 'training.course_interest.capture_enabled',
+      expectedVersion: 1,
+      value: true,
+    }),
+    /outcome is uncertain/
+  );
+  assert.equal(calls, 2);
+});
+
+test('logout invalidates an in-flight catalogue load before private history reads', async () => {
+  function fakeElement() {
+    return {
+      children: [],
+      dataset: {},
+      hidden: false,
+      textContent: '',
+      appendChild(node) { this.children.push(node); return node; },
+      append(...nodes) { this.children.push(...nodes); },
+      replaceChildren(...nodes) { this.children = nodes; },
+      addEventListener() {},
+    };
+  }
+  const elements = new Map([
+    ['admin-configuration-catalogue', fakeElement()],
+    ['admin-configuration-alert', fakeElement()],
+    ['admin-refresh-configuration', fakeElement()],
+  ]);
+  const browserContext = {
+    window: {},
+    Number,
+    Set,
+    Map,
+    encodeURIComponent,
+    document: {
+      getElementById(id) { return elements.get(id); },
+      createElement() { return fakeElement(); },
+    },
+  };
+  vm.runInNewContext(script, browserContext);
+  let resolveCatalogue;
+  let sessionActive = true;
+  const requests = [];
+  const controller = browserContext.window.sjAdminRuntimeConfig.create({
+    request(path) {
+      requests.push(path);
+      return new Promise((resolve) => { resolveCatalogue = resolve; });
+    },
+    sessionActive: () => sessionActive,
+    clearSession() {},
+    setStatus() {},
+    friendlyError: (error) => error.message,
+    dialog: async () => null,
+    date: String,
+  });
+  const pending = controller.load();
+  sessionActive = false;
+  controller.clear();
+  resolveCatalogue({ items: [] });
+  await pending;
+  assert.equal(requests.length, 1);
+  assert.equal(elements.get('admin-configuration-catalogue').children[0].textContent, 'Open Configuration to load the effective runtime controls.');
 });
 
 test('writes validate first and use optimistic concurrency with a closed reason', () => {
@@ -69,7 +210,7 @@ test('production mutations show explicit before and after confirmation', () => {
   assert.match(script, /After:/);
   assert.match(script, /Confirm enable/);
   assert.match(script, /Confirm disable/);
-  assert.match(script, /if \(!confirmed\) return/);
+  assert.match(script, /if \(!confirmed\) \{/);
 });
 
 test('history is audit-only and restore creates a new witnessed change', () => {

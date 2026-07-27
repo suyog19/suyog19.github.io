@@ -87,8 +87,53 @@
     );
   }
 
+  function validCatalogue(items) {
+    if (!Array.isArray(items) || items.length !== Object.keys(definitions).length) return false;
+    const keys = items.map((item) => item && item.key);
+    return new Set(keys).size === Object.keys(definitions).length
+      && items.every(validConfiguration);
+  }
+
   function changeLabel(before, after) {
     return (before ? 'Enabled' : 'Disabled') + ' → ' + (after ? 'Enabled' : 'Disabled');
+  }
+
+  async function mutateWithReconciliation(options) {
+    try {
+      await options.request(options.path, options.requestOptions);
+      return { outcome: 'confirmed' };
+    } catch (error) {
+      const conflict = error.status === 409 || error.status === 412;
+      const ambiguous = !error.status || error.status >= 500;
+      if (!conflict && !ambiguous) throw error;
+      let current;
+      try {
+        const response = await options.request(
+          '/admin/training/runtime-configurations/' + encodeURIComponent(options.key),
+          { method: 'GET' }
+        );
+        current = response.configuration;
+      } catch (_) {
+        const uncertain = new Error('The outcome is uncertain. Refresh current configuration and audit history before taking another action.');
+        uncertain.status = 503;
+        throw uncertain;
+      }
+      if (
+        validConfiguration(current)
+        && current.version > options.expectedVersion
+        && current.value === options.value
+      ) {
+        return { outcome: 'effective', configuration: current };
+      }
+      if (conflict && validConfiguration(current)) {
+        const stale = new Error('Configuration changed in another session. Close this dialog and review the refreshed value before trying again.');
+        stale.status = 409;
+        throw stale;
+      }
+      const uncertain = new Error('The outcome is uncertain and the requested value is not confirmed. Close this dialog, refresh current configuration and audit history, and do not retry until reviewed.');
+      uncertain.status = 503;
+      throw uncertain;
+    }
   }
 
   function create(config) {
@@ -99,6 +144,7 @@
     let histories = new Map();
     let loaded = false;
     let loading = false;
+    let loadGeneration = 0;
 
     function setAlert(message) {
       alert.textContent = message || '';
@@ -211,13 +257,15 @@
 
     async function load(force) {
       if (!config.sessionActive() || loading || (loaded && !force)) return;
+      const requestGeneration = ++loadGeneration;
       loading = true;
       setAlert('');
       catalogue.replaceChildren(text('p', 'Loading effective runtime configuration…', 'admin-empty'));
       try {
         const response = await config.request('/admin/training/runtime-configurations', { method: 'GET' });
         const incoming = Array.isArray(response.items) ? response.items : [];
-        if (incoming.length !== Object.keys(definitions).length || !incoming.every(validConfiguration)) {
+        if (requestGeneration !== loadGeneration || !config.sessionActive()) return;
+        if (!validCatalogue(incoming)) {
           const error = new Error('The service returned an incomplete or invalid closed catalogue.');
           error.status = 422;
           throw error;
@@ -226,6 +274,7 @@
           '/admin/training/runtime-configurations/' + encodeURIComponent(item.key) + '/history?limit=100',
           { method: 'GET' }
         )));
+        if (requestGeneration !== loadGeneration || !config.sessionActive()) return;
         items = incoming;
         histories = new Map(incoming.map((item, index) => [
           item.key,
@@ -235,13 +284,14 @@
         render();
         config.setStatus('', '');
       } catch (error) {
+        if (requestGeneration !== loadGeneration || !config.sessionActive()) return;
         items = [];
         histories = new Map();
         loaded = false;
         render();
         fail(error, 'Runtime configuration could not be loaded.');
       } finally {
-        loading = false;
+        if (requestGeneration === loadGeneration) loading = false;
       }
     }
 
@@ -266,6 +316,8 @@
       setAlert('');
       try {
         await validateChange(item, proposedValue);
+        let refreshAfterDialog = false;
+        let reconciled = false;
         const confirmed = await config.dialog({
           title: (proposedValue ? 'Enable ' : 'Disable ') + definitionFor(key).name + '?',
           description: (item.environment === 'prod' ? 'Production change. ' : '')
@@ -275,16 +327,40 @@
           confirmLabel: proposedValue ? 'Confirm enable' : 'Confirm disable',
           fields: [{ type: 'select', name: 'reason', label: 'Change reason', options: reasons }],
           onConfirm: async (values) => {
-            await config.request('/admin/training/runtime-configurations/' + encodeURIComponent(key), {
-              method: 'PATCH',
-              body: JSON.stringify({ value: proposedValue, expectedVersion: item.version, reason: values.reason }),
-            });
+            try {
+              const result = await mutateWithReconciliation({
+                request: config.request,
+                path: '/admin/training/runtime-configurations/' + encodeURIComponent(key),
+                requestOptions: {
+                  method: 'PATCH',
+                  body: JSON.stringify({ value: proposedValue, expectedVersion: item.version, reason: values.reason }),
+                },
+                key,
+                expectedVersion: item.version,
+                value: proposedValue,
+              });
+              reconciled = result.outcome === 'effective';
+            } catch (error) {
+              refreshAfterDialog = true;
+              throw error;
+            }
           },
         });
-        if (!confirmed) return;
+        if (!confirmed) {
+          if (refreshAfterDialog) {
+            loaded = false;
+            await load(true);
+          }
+          return;
+        }
         loaded = false;
         await load(true);
-        config.setStatus(definitionFor(key).name + ' was updated and audited.', 'success');
+        config.setStatus(
+          reconciled
+            ? definitionFor(key).name + ' already reflects the requested value. Review audit history before further action.'
+            : definitionFor(key).name + ' was updated and audited.',
+          reconciled ? 'warn' : 'success'
+        );
       } catch (error) {
         await load(true);
         fail(error, 'Configuration was not changed.');
@@ -297,6 +373,8 @@
       setAlert('');
       try {
         await validateChange(item, restoredValue);
+        let refreshAfterDialog = false;
+        let reconciled = false;
         const confirmed = await config.dialog({
           title: 'Restore ' + definitionFor(key).name + '?',
           description: (item.environment === 'prod' ? 'Production restore. ' : '')
@@ -305,20 +383,44 @@
             + '. A new audited version will be created; history will not be rewritten.',
           confirmLabel: 'Confirm restore',
           onConfirm: async () => {
-            await config.request('/admin/training/runtime-configurations/' + encodeURIComponent(key) + '/restore', {
-              method: 'POST',
-              body: JSON.stringify({
-                historyVersion,
+            try {
+              const result = await mutateWithReconciliation({
+                request: config.request,
+                path: '/admin/training/runtime-configurations/' + encodeURIComponent(key) + '/restore',
+                requestOptions: {
+                  method: 'POST',
+                  body: JSON.stringify({
+                    historyVersion,
+                    expectedVersion: item.version,
+                    reason: 'RESTORE_PRIOR_VALUE',
+                  }),
+                },
+                key,
                 expectedVersion: item.version,
-                reason: 'RESTORE_PRIOR_VALUE',
-              }),
-            });
+                value: restoredValue,
+              });
+              reconciled = result.outcome === 'effective';
+            } catch (error) {
+              refreshAfterDialog = true;
+              throw error;
+            }
           },
         });
-        if (!confirmed) return;
+        if (!confirmed) {
+          if (refreshAfterDialog) {
+            loaded = false;
+            await load(true);
+          }
+          return;
+        }
         loaded = false;
         await load(true);
-        config.setStatus(definitionFor(key).name + ' was restored through a new audited change.', 'success');
+        config.setStatus(
+          reconciled
+            ? definitionFor(key).name + ' already reflects the requested restored value. Review audit history before further action.'
+            : definitionFor(key).name + ' was restored through a new audited change.',
+          reconciled ? 'warn' : 'success'
+        );
       } catch (error) {
         await load(true);
         fail(error, 'Configuration was not restored.');
@@ -344,6 +446,7 @@
 
     return {
       clear() {
+        loadGeneration += 1;
         items = [];
         histories = new Map();
         loaded = false;
@@ -359,6 +462,8 @@
     create,
     definitionFor,
     validConfiguration,
+    validCatalogue,
     changeLabel,
+    mutateWithReconciliation,
   };
 }());
