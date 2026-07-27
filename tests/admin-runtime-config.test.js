@@ -4,6 +4,7 @@ const test = require('node:test');
 const vm = require('node:vm');
 
 const script = fs.readFileSync('js/admin-runtime-config.js', 'utf8');
+const adminUi = fs.readFileSync('js/admin-ui.js', 'utf8');
 const admin = fs.readFileSync('js/admin.js', 'utf8');
 const page = fs.readFileSync('admin/index.html', 'utf8');
 const css = fs.readFileSync('css/pages.css', 'utf8');
@@ -72,6 +73,9 @@ test('closed catalogue rejects duplicate known keys and missing definitions', ()
   assert.equal(tools.validCatalogue(catalogue), true);
   assert.equal(tools.validCatalogue(catalogue.map((item) => ({ ...item, key: keys[0] }))), false);
   assert.equal(tools.validCatalogue(catalogue.slice(1)), false);
+  assert.equal(tools.validCatalogue(catalogue.map((item, index) => (
+    index === 0 ? { ...item, environment: 'prod' } : item
+  ))), false);
 });
 
 test('ambiguous mutation reconciles authoritative state without unsafe retry', async () => {
@@ -98,6 +102,7 @@ test('ambiguous mutation reconciles authoritative state without unsafe retry', a
     path: '/admin/training/runtime-configurations/training.course_interest.capture_enabled',
     requestOptions: { method: 'PATCH', body: '{}' },
     key: 'training.course_interest.capture_enabled',
+    environment: 'dev',
     expectedVersion: 1,
     value: true,
   });
@@ -131,12 +136,54 @@ test('ambiguous mutation fails safely when current state cannot confirm outcome'
       path: '/admin/training/runtime-configurations/training.course_interest.capture_enabled',
       requestOptions: { method: 'PATCH', body: '{}' },
       key: 'training.course_interest.capture_enabled',
+      environment: 'dev',
       expectedVersion: 1,
       value: true,
     }),
     /outcome is uncertain/
   );
   assert.equal(calls, 2);
+});
+
+test('ambiguous reconciliation binds the response to the requested key and environment', async () => {
+  for (const configuration of [
+    {
+      key: 'training.applications.enabled',
+      value: true,
+      valueType: 'BOOLEAN',
+      version: 2,
+      environment: 'dev',
+    },
+    {
+      key: 'training.course_interest.capture_enabled',
+      value: true,
+      valueType: 'BOOLEAN',
+      version: 2,
+      environment: 'prod',
+    },
+  ]) {
+    let calls = 0;
+    await assert.rejects(
+      tools.mutateWithReconciliation({
+        request: async () => {
+          calls += 1;
+          if (calls === 1) {
+            const error = new Error('transport lost');
+            error.status = 503;
+            throw error;
+          }
+          return { configuration };
+        },
+        path: '/admin/training/runtime-configurations/training.course_interest.capture_enabled',
+        requestOptions: { method: 'PATCH', body: '{}' },
+        key: 'training.course_interest.capture_enabled',
+        environment: 'dev',
+        expectedVersion: 1,
+        value: true,
+      }),
+      /outcome is uncertain/
+    );
+  }
 });
 
 test('logout invalidates an in-flight catalogue load before private history reads', async () => {
@@ -231,6 +278,8 @@ test('dependency, stale-version, authentication and retry states are actionable'
   assert.match(script, /Current values were reloaded/);
   assert.match(page, /id="admin-refresh-configuration"/);
   assert.match(page, /role="alert"/);
+  assert.match(script, /error\.dismissDialog = true;[\s\S]*config\.clearSession/);
+  assert.match(adminUi, /if \(reason\.dismissDialog\) \{[\s\S]*root\.close\(\);[\s\S]*finish\(null\)/);
 });
 
 test('responsive and accessible configuration presentation is scoped', () => {

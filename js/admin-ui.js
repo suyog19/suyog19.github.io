@@ -85,6 +85,11 @@
           if (options.onConfirm) await options.onConfirm(values);
           root.close(); finish(values);
         } catch (reason) {
+          if (reason.dismissDialog) {
+            root.close();
+            finish(null);
+            return;
+          }
           error.textContent = reason.message || 'The action could not be completed. Try again.'; error.hidden = false;
         } finally { submit.disabled = false; submit.removeAttribute('aria-busy'); }
       }

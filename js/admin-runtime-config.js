@@ -91,6 +91,7 @@
     if (!Array.isArray(items) || items.length !== Object.keys(definitions).length) return false;
     const keys = items.map((item) => item && item.key);
     return new Set(keys).size === Object.keys(definitions).length
+      && new Set(items.map((item) => item && item.environment)).size === 1
       && items.every(validConfiguration);
   }
 
@@ -120,6 +121,8 @@
       }
       if (
         validConfiguration(current)
+        && current.key === options.key
+        && current.environment === options.environment
         && current.version > options.expectedVersion
         && current.value === options.value
       ) {
@@ -336,11 +339,16 @@
                   body: JSON.stringify({ value: proposedValue, expectedVersion: item.version, reason: values.reason }),
                 },
                 key,
+                environment: item.environment,
                 expectedVersion: item.version,
                 value: proposedValue,
               });
               reconciled = result.outcome === 'effective';
             } catch (error) {
+              if (error.status === 401 || error.status === 403) {
+                error.dismissDialog = true;
+                config.clearSession('Your admin session is no longer authorized. Sign in again.');
+              }
               refreshAfterDialog = true;
               throw error;
             }
@@ -396,11 +404,16 @@
                   }),
                 },
                 key,
+                environment: item.environment,
                 expectedVersion: item.version,
                 value: restoredValue,
               });
               reconciled = result.outcome === 'effective';
             } catch (error) {
+              if (error.status === 401 || error.status === 403) {
+                error.dismissDialog = true;
+                config.clearSession('Your admin session is no longer authorized. Sign in again.');
+              }
               refreshAfterDialog = true;
               throw error;
             }
