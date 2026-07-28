@@ -21,10 +21,11 @@ test('configuration is a dedicated authenticated admin destination', () => {
   assert.match(admin, /sjAdminRuntimeConfigController\.clear\(\)/);
 });
 
-test('closed catalogue contains exactly the seven supported Boolean controls', () => {
+test('closed catalogue contains exactly the eight supported Boolean controls', () => {
   const keys = [
     'training.applications.enabled',
     'training.course_interest.capture_enabled',
+    'training.course_interest.email_delivery_enabled',
     'training.gate1.email_delivery_enabled',
     'training.payments.enabled',
     'training.gate2.email_delivery_enabled',
@@ -57,6 +58,7 @@ test('closed catalogue rejects duplicate known keys and missing definitions', ()
   const keys = [
     'training.applications.enabled',
     'training.course_interest.capture_enabled',
+    'training.course_interest.email_delivery_enabled',
     'training.gate1.email_delivery_enabled',
     'training.payments.enabled',
     'training.gate2.email_delivery_enabled',
@@ -76,6 +78,20 @@ test('closed catalogue rejects duplicate known keys and missing definitions', ()
   assert.equal(tools.validCatalogue(catalogue.map((item, index) => (
     index === 0 ? { ...item, environment: 'prod' } : item
   ))), false);
+});
+
+test('course-interest delivery is presented as an independent administrator control', () => {
+  const definition = tools.definitionFor('training.course_interest.email_delivery_enabled');
+  assert.equal(definition.name, 'Course Interest Notifications');
+  assert.match(definition.description, /notify interested learners when applications open/i);
+  assert.match(definition.impact, /prevents new course-interest emails/i);
+  assert.match(definition.impact, /without removing interest records/i);
+  assert.match(definition.dependency, /Requires Applications to be enabled/i);
+  assert.match(definition.dependency, /capture remains independent/i);
+  assert.doesNotMatch(
+    tools.definitionFor('training.gate1.email_delivery_enabled').description,
+    /course-interest/i
+  );
 });
 
 test('ambiguous mutation reconciles authoritative state without unsafe retry', async () => {
