@@ -16,12 +16,19 @@
       impact: 'Disabling removes public interest actions and rejects new submissions.',
       dependency: 'Independent of email delivery; capture can remain enabled while delivery is disabled.',
     },
+    'training.course_interest.email_delivery_enabled': {
+      group: 'Applications and interest',
+      name: 'Course Interest Notifications',
+      description: 'Allows administrators to notify interested learners when applications open for a course.',
+      impact: 'Disabling prevents new course-interest emails without removing interest records or replaying previously suppressed notifications.',
+      dependency: 'Requires Applications to be enabled. Interest capture remains independent.',
+    },
     'training.gate1.email_delivery_enabled': {
       group: 'Applications and interest',
       name: 'Gate 1 email delivery',
-      description: 'Allows approved Gate 1 and course-interest notifications to leave the platform.',
+      description: 'Allows approved application notifications to leave the platform.',
       impact: 'Disabling preserves records but suppresses outbound Gate 1 delivery.',
-      dependency: 'Requires applications or course-interest capture to be enabled.',
+      dependency: 'Requires Applications to be enabled.',
     },
     'training.payments.enabled': {
       group: 'Payments',
