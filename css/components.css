@@ -501,7 +501,7 @@
 /* ============================================================
    Responsive — navigation & footer
    ============================================================ */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .nav {
     display: none;
     position: absolute;
