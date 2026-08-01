@@ -17,6 +17,7 @@ SYSTEMS_ID = "https://suyogjoshi.com/systems/#collection"
 TRAINING_ID = "https://suyogjoshi.com/training/#collection"
 SERVICE_ID = "https://suyogjoshi.com/training/#service"
 BRAND_ID = "https://suyogjoshi.com/training/#brand"
+COURSE_LIST_ID = "https://suyogjoshi.com/training/#course-list"
 PUBLIC_PROFILES = {
     "https://www.linkedin.com/in/suyog-joshi",
     "https://medium.com/@suyog19",
@@ -110,8 +111,8 @@ def main() -> int:
     brand = node_by_id(training_nodes, BRAND_ID)
     if training is None or training.get("@type") != "CollectionPage":
         errors.append(f"training/index.html: missing CollectionPage {TRAINING_ID}")
-    elif reference_id(training.get("mainEntity")) != SERVICE_ID or reference_id(training.get("isPartOf")) != WEBSITE_ID:
-        errors.append("training/index.html: CollectionPage must connect the training Service and WebSite")
+    elif reference_id(training.get("mainEntity")) != COURSE_LIST_ID or reference_id(training.get("isPartOf")) != WEBSITE_ID:
+        errors.append("training/index.html: CollectionPage must connect the course catalogue and WebSite")
     if service is None or service.get("@type") != "Service":
         errors.append(f"training/index.html: missing training Service {SERVICE_ID}")
     elif reference_id(service.get("provider")) != PERSON_ID or reference_id(service.get("brand")) != BRAND_ID:
