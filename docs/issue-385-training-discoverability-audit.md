@@ -26,6 +26,7 @@ The canonical course routes are:
 - Every indexable Training page has a unique title, description, canonical URL, H1, Open Graph block, Twitter block, and useful static HTML.
 - Course titles and introductory copy accurately distinguish launched courses from in-pipeline courses. Pipeline metadata does not announce an unconfirmed schedule or fee.
 - Home, About, Writing, and Systems now provide contextual crawlable paths into Training. The global navigation remains an additional site-wide path.
+- Every course page links to selected Writing or Systems evidence that supports its teaching perspective without turning unrelated content into course advertising.
 - Registration, application, learner, payment, and admin surfaces remain outside the index and sitemap.
 
 Run `python scripts/validate_training_discoverability.py` to enforce these boundaries.
