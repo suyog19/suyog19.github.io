@@ -35,7 +35,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a href="../../index.html" class="brand-lockup" aria-label="suyogjoshi.com - Home">
+      <a href="../../" class="brand-lockup" aria-label="suyogjoshi.com - Home">
         <span class="brand-mark" aria-hidden="true">SJ</span>
         <span class="brand-text">suyogjoshi.com</span>
       </a>
@@ -120,7 +120,7 @@
 
               <p>A human developer can learn team conventions over time. They hear comments in planning. They pair with senior engineers. They remember why a shortcut caused problems last year. Even then, knowledge spreads unevenly.</p>
 
-              <p>An AI assistant works from the context available to it: the prompt, the surrounding code, the repository, configured instructions, tool behavior, and whatever files it can read. Some tools can use repository-level instruction files. GitHub documents ways to customize Copilot with repository-wide and path-specific instructions in <a href="https://docs.github.com/en/copilot/customizing-copilot/about-customizing-github-copilot-responses" target="_blank" rel="noopener noreferrer">custom instructions</a>. OpenAI has described how Codex can use instruction files such as <code>AGENTS.md</code> as part of the agent workflow in <a href="https://openai.com/index/unrolling-the-codex-agent-loop/" target="_blank" rel="noopener noreferrer">Unrolling the Codex agent loop</a>. Claude Code documents project memory through files such as <code>CLAUDE.md</code>, while also treating this kind of memory as guidance rather than guaranteed behavior in its <a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener noreferrer">memory documentation</a>.</p>
+              <p>An AI assistant works from the context available to it: the prompt, the surrounding code, the repository, configured instructions, tool behavior, and whatever files it can read. Some tools can use repository-level instruction files. GitHub documents ways to customize Copilot with repository-wide and path-specific instructions in <a href="https://docs.github.com/en/copilot/concepts/prompting/response-customization" target="_blank" rel="noopener noreferrer">custom instructions</a>. OpenAI has described how Codex can use instruction files such as <code>AGENTS.md</code> as part of the agent workflow in <a href="https://openai.com/index/unrolling-the-codex-agent-loop/" target="_blank" rel="noopener noreferrer">Unrolling the Codex agent loop</a>. Claude Code documents project memory through files such as <code>CLAUDE.md</code>, while also treating this kind of memory as guidance rather than guaranteed behavior in its <a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank" rel="noopener noreferrer">memory documentation</a>.</p>
 
               <p>That distinction matters.</p>
 
@@ -232,7 +232,7 @@
 
               <p>This matters with AI-assisted work because AI-generated code can contain flaws or miss local risk context, just as human-written code can. It should go through the same review, scanning, and validation path as any other change.</p>
 
-              <p>NIST’s <a href="https://www.nist.gov/itl/ai-risk-management-framework/generative-ai-profile" target="_blank" rel="noopener noreferrer">Generative AI Profile</a> emphasizes governance, documentation, human review, oversight, and risk management for generative AI systems. In software delivery, that does not have to mean heavyweight bureaucracy. It can mean clear ownership, traceable decisions, and risk-appropriate review.</p>
+              <p>NIST’s <a href="https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence" target="_blank" rel="noopener noreferrer">Generative AI Profile</a> emphasizes governance, documentation, human review, oversight, and risk management for generative AI systems. In software delivery, that does not have to mean heavyweight bureaucracy. It can mean clear ownership, traceable decisions, and risk-appropriate review.</p>
 
               <h2>Guidance and enforcement are different</h2>
 
@@ -276,7 +276,7 @@
 
               <p>For AI coding assistants, use repository instruction files where your tools support them. This might include <code>AGENTS.md</code>, <code>.github/copilot-instructions.md</code>, <code>CLAUDE.md</code>, or other tool-specific files. Put the most important local context up front: project structure, build and test commands, preferred libraries, generated files, testing expectations, error handling conventions, architecture boundaries, and security-sensitive areas. Treat these files as helpful context, not a contract.</p>
 
-              <p>Pull request templates are simple but useful. GitHub supports repository-level <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/creating-a-pull-request-template-for-your-repository" target="_blank" rel="noopener noreferrer">pull request templates</a>, and most platforms have similar mechanisms. A good template brings review expectations to the point of change by asking what changed, why it changed, how it was tested, what risks exist, whether rollback is needed, and whether docs or contracts changed. Templates are prompts. People and assistants can still fill them poorly. But they give reviewers a consistent starting point.</p>
+              <p>Pull request templates are simple but useful. GitHub supports repository-level <a href="https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository" target="_blank" rel="noopener noreferrer">pull request templates</a>, and most platforms have similar mechanisms. A good template brings review expectations to the point of change by asking what changed, why it changed, how it was tested, what risks exist, whether rollback is needed, and whether docs or contracts changed. Templates are prompts. People and assistants can still fill them poorly. But they give reviewers a consistent starting point.</p>
 
               <p>ADRs are useful when future contributors will need to understand why a decision was made. Good candidates include service boundaries, major technology choices, dependency direction, data ownership, integration patterns, and rejected alternatives. An ADR should not become a long design document unless the decision needs that depth. The value is in capturing context while it is still fresh.</p>
 
