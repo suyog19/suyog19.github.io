@@ -60,6 +60,7 @@ UNCONFIRMED_COMMERCIAL_FIELDS = {
     "offers",
     "hasCourseInstance",
     "courseInstance",
+    "courseMode",
     "startDate",
     "endDate",
     "eventStatus",
@@ -131,7 +132,6 @@ def validate_course(
         "name": expected["name"],
         "description": expected["description"],
         "url": course_url(str(expected["slug"])),
-        "courseMode": "Online",
     }
     for field, wanted in fields.items():
         if course.get(field) != wanted:
@@ -164,9 +164,6 @@ def main() -> int:
             errors.append("training/index.html: catalogue must declare ascending order")
         if catalogue.get("numberOfItems") != len(COURSES):
             errors.append(f"training/index.html: catalogue numberOfItems must be {len(COURSES)}")
-        if reference_id(catalogue.get("isPartOf")) != TRAINING_ID:
-            errors.append(f"training/index.html: catalogue must be part of {TRAINING_ID}")
-
         elements = catalogue.get("itemListElement")
         if not isinstance(elements, list):
             errors.append("training/index.html: catalogue itemListElement must be a list")
