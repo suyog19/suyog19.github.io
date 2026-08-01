@@ -42,6 +42,29 @@ LEGACY_ROUTES = (
 
 COURSE_ROUTES = INDEXABLE_ROUTES[1:6]
 
+COURSE_EVIDENCE_LINKS = {
+    "/training/python-foundations-for-data-science/": (
+        "../../writing/ai-ml-data-science-explained-simply/",
+        "../../systems/ai-native-learning-platform/",
+    ),
+    "/training/applied-data-analysis-with-python/": (
+        "../../writing/ai-ml-data-science-explained-simply/",
+        "../../systems/ai-native-learning-platform/",
+    ),
+    "/training/practical-machine-learning-foundations/": (
+        "../../writing/ai-ml-data-science-explained-simply/",
+        "../../writing/understanding-the-ai-ecosystem/",
+    ),
+    "/training/generative-ai-application-development/": (
+        "../../writing/how-modern-llm-systems-really-work/",
+        "../../systems/ai-workflow-lab/",
+    ),
+    "/training/engineering-reliable-ai-systems/": (
+        "../../writing/human-review-gates-ai-assisted-delivery/",
+        "../../systems/ai-dev-orchestrator/",
+    ),
+}
+
 
 class HeadParser(HTMLParser):
     def __init__(self) -> None:
@@ -150,6 +173,14 @@ def main() -> None:
         relative = route.removeprefix("/training/")
         if f'href="{relative}"' not in hub_html:
             errors.append(f"/training/: missing crawlable course link to {route}")
+
+    for route, expected_links in COURSE_EVIDENCE_LINKS.items():
+        html = file_for(route).read_text(encoding="utf-8")
+        if "Related reading and systems" not in html:
+            errors.append(f"{route}: missing related learning section")
+        for expected_link in expected_links:
+            if f'href="{expected_link}"' not in html:
+                errors.append(f"{route}: missing evidence link to {expected_link}")
 
     discovery_sources = {
         "/": "training/",
