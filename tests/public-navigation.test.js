@@ -43,6 +43,9 @@ test('every public page exposes Training exactly once in primary navigation', ()
     const primaryNav = html.match(/<nav\b[^>]*aria-label="Primary navigation"[^>]*>[\s\S]*?<\/nav>/);
     assert.ok(primaryNav, `${file} must include primary navigation`);
 
+    const labels = [...primaryNav[0].matchAll(/<a\b[^>]*>(Training|Writing|Systems|About|Contact)<\/a>/g)].map(match => match[1]);
+    assert.deepEqual(labels, ['Training', 'Writing', 'Systems', 'About', 'Contact'], `${file} must use the standard public navigation order`);
+
     const trainingLinks = [...primaryNav[0].matchAll(/<a\b([^>]*)>Training<\/a>/g)];
     assert.equal(trainingLinks.length, 1, `${file} must include exactly one Training link`);
 
@@ -73,7 +76,7 @@ test('private and compatibility routes stay outside the public navigation contra
   }
 });
 
-test('the six-item public menu switches to its mobile layout before it wraps', () => {
+test('the public menu switches to its mobile layout before it wraps', () => {
   const css = fs.readFileSync(path.join(repositoryRoot, 'css/components.css'), 'utf8');
   assert.match(
     css,

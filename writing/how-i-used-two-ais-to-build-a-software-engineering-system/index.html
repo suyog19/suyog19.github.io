@@ -67,9 +67,9 @@
       </a>
       <nav class="nav" id="nav" aria-label="Primary navigation">
         <ul class="nav-list">
+          <li><a href="../../training/" class="nav-link">Training</a></li>
           <li><a href="../../writing/" class="nav-link" aria-current="page">Writing</a></li>
           <li><a href="../../systems/" class="nav-link">Systems</a></li>
-          <li><a href="../../training/" class="nav-link">Training</a></li>
           <li><a href="../../about/" class="nav-link">About</a></li>
           <li><a href="../../contact/" class="nav-link">Contact</a></li>
         </ul>
@@ -112,7 +112,7 @@
               <p>I spent about three days building a fairly complex software system. I didn’t write a single line of code. Instead, I used two AI systems — ChatGPT and Claude Code — in a very deliberate way to design and build it end-to-end. Not as a demo. Not as a proof of concept. But as a working software engineering system. The goal was simple, but not easy:</p>
               <p><i>Build an AI-powered, human-in-the-loop software engineering workflow — where AI can plan, implement, test, review, and deliver code… under control.</i></p>
               <p>I call it the ‘AI Dev Orchestrator’. To understand it better, let’s first look at the goal it was trying to achieve.</p>
-              
+
               <h2>The Goal: From Requirement to Delivery</h2>
               <p>The goal was to build an AI assisted fully functional software engineering flow with human-in-the-loop by design.</p>
               <p>Basically you give a requirement in Jira and AI picks up from there to finally deliver the software addressing that requirement.</p>
@@ -306,7 +306,7 @@
                 <li>an admin dashboard to inspect runs, failures, and decisions</li>
                 <li>multi-stack support (Python, Maven, Gradle, React, with safe fallback for unknown repos)</li>
                 <li>post-merge validation to verify whether the deployed system actually works</li>
-              </ul> 
+              </ul>
               <p>One design choice here was intentional. Deployment failures are observed — not automatically rolled back. Because the goal was not to hide problems, but to surface them clearly. The system moved from being technically capable to operationally usable.</p>
               <h3>8) Make It Real (Phase 17)</h3>
               <p>Until this point, everything operated in controlled environments. Phase 17 changed that. The system was pointed at a real project. But before touching any code, it first built an understanding of the repository:</p>
@@ -317,7 +317,7 @@
                 <li>extracted coding conventions</li>
               </ul>
               <p>This was stored as project knowledge and used to guide all future decisions. AI stopped operating blindly — and started working with context.</p>
-              
+
               <h2>Why Iteration Worked Better Than Planning</h2>
               <p>If I had tried to design the entire system upfront, it would have looked very different. And it would have been wrong. Because the most important decisions didn’t come from design — they came from real execution gaps. For example:</p>
               <ul>
@@ -380,7 +380,7 @@
                 <li>and learn</li>
               </ul>
               <p>The guardrails were in place. Observability was strong. It was no longer a prototype. At that stage, adding more features would not have made it better. It would have made it more complex. So I stopped. Because the next set of lessons won’t come from designing more. They will come from using the system in the real world.</p>
-              
+
               <h2>Repository</h2>
               <p>I have made the project repository available here: <a href="https://github.com/suyog19/ai-dev-orchestrator" target="_blank" rel="noopener noreferrer">GitHub Repository</a></p>
               <p>This is not a polished product or framework yet — it’s a working artifact of this experiment, including the code, phase-wise evolution, and supporting documentation.</p>
@@ -501,11 +501,13 @@
       <div class="footer-top">
         <span class="footer-brand">suyogjoshi.com</span>
         <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="../../training/">Training</a>
           <a href="../../writing/">Writing</a>
           <a href="../../systems/">Systems</a>
           <a href="../../about/">About</a>
           <a href="../../contact/">Contact</a>
-        </nav>
+
+</nav>
       </div>
       <div class="footer-bottom">
         <div class="footer-social">
