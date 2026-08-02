@@ -44,6 +44,79 @@
 }
 
 /* ============================================================
+   Homepage Training Spotlight
+   ============================================================ */
+.training-spotlight {
+  padding-block: 6.25rem;
+  background: var(--color-surface);
+  border-block: 1px solid var(--color-border);
+}
+
+.training-spotlight-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+  margin-bottom: 3rem;
+}
+
+.training-spotlight-intro .section-title { margin-bottom: 0; }
+.training-spotlight-intro .section-subtitle { margin-bottom: 1.75rem; }
+
+.training-spotlight-actions,
+.home-course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.home-course-actions [hidden] { display: none !important; }
+
+.home-course-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--color-border);
+}
+
+.home-course-card {
+  padding: 2.25rem;
+  background: var(--color-bg);
+  border-right: 1px solid var(--color-border);
+}
+
+.home-course-card:last-child { border-right: 0; }
+
+.home-course-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.home-course-stage {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home-course-card h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+.home-course-card > p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+/* ============================================================
    Entry Points
    ============================================================ */
 .entry-points {
@@ -55,7 +128,7 @@
 
 .entry-point-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   border: 1px solid var(--color-border);
 }
 
@@ -440,21 +513,9 @@
 /* ============================================================
    Responsive — page sections
    ============================================================ */
-@media (max-width: 1050px) {
-  .entry-point-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .entry-point-card:nth-child(2n) {
-    border-right: none;
-  }
-
-  .entry-point-card:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--color-border);
-  }
-}
-
 @media (max-width: 900px) {
+  .training-spotlight-intro { grid-template-columns: 1fr; }
+
   .about-inner {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -465,6 +526,7 @@
   /* Reset per-section padding to unified mobile rhythm */
   .pillars,
   .entry-points,
+  .training-spotlight,
   .featured-series,
   .writing,
   .systems,
@@ -508,6 +570,15 @@
     border-bottom: none;
   }
 
+  .home-course-grid { grid-template-columns: 1fr; }
+
+  .home-course-card {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .home-course-card:last-child { border-bottom: 0; }
+
   /* Writing */
   .writing-grid {
     grid-template-columns: 1fr;
@@ -537,6 +608,12 @@
   .hero-ctas {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .training-spotlight-actions,
+  .home-course-actions {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
