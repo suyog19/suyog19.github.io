@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Suyog Joshi writes about AI systems, software architecture, engineering practice, and the design of intelligent software systems." />
+  <meta name="description" content="Live technical training, practical writing, and working software systems from Suyog Joshi, grounded in AI, architecture, and real-world engineering." />
   <title>Suyog Joshi | AI Systems, Software Architecture &amp; Real-World Engineering</title>
   <link rel="canonical" href="https://suyogjoshi.com/" />
   <meta property="og:title" content="Suyog Joshi | AI Systems, Software Architecture &amp; Real-World Engineering" />
-  <meta property="og:description" content="Suyog Joshi writes about AI systems, software architecture, engineering practice, and the design of intelligent software systems." />
+  <meta property="og:description" content="Live technical training, practical writing, and working software systems from Suyog Joshi, grounded in AI, architecture, and real-world engineering." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://suyogjoshi.com/" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Suyog Joshi | AI Systems, Software Architecture &amp; Real-World Engineering" />
-  <meta name="twitter:description" content="Suyog Joshi writes about AI systems, software architecture, engineering practice, and the design of intelligent software systems." />
+  <meta name="twitter:description" content="Live technical training, practical writing, and working software systems from Suyog Joshi, grounded in AI, architecture, and real-world engineering." />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -22,12 +22,12 @@
         "@id": "https://suyogjoshi.com/#website",
         "url": "https://suyogjoshi.com/",
         "name": "suyogjoshi.com",
-        "description": "Suyog Joshi writes about AI systems, software architecture, engineering practice, and the design of intelligent software systems.",
+        "description": "Live technical training, practical writing, and working software systems from Suyog Joshi, grounded in AI, architecture, and real-world engineering.",
         "publisher": { "@id": "https://suyogjoshi.com/#person" },
         "hasPart": [
+          { "@id": "https://suyogjoshi.com/training/#collection" },
           { "@id": "https://suyogjoshi.com/writing/#collection" },
-          { "@id": "https://suyogjoshi.com/systems/#collection" },
-          { "@id": "https://suyogjoshi.com/training/#collection" }
+          { "@id": "https://suyogjoshi.com/systems/#collection" }
         ]
       },
       {
@@ -52,9 +52,9 @@
           "Technical education"
         ],
         "subjectOf": [
+          { "@id": "https://suyogjoshi.com/training/#collection" },
           { "@id": "https://suyogjoshi.com/writing/#collection" },
-          { "@id": "https://suyogjoshi.com/systems/#collection" },
-          { "@id": "https://suyogjoshi.com/training/#collection" }
+          { "@id": "https://suyogjoshi.com/systems/#collection" }
         ]
       }
     ]
@@ -89,9 +89,9 @@
       </a>
       <nav class="nav" id="nav" aria-label="Primary navigation">
         <ul class="nav-list">
+          <li><a href="training/" class="nav-link">Training</a></li>
           <li><a href="writing/" class="nav-link">Writing</a></li>
           <li><a href="systems/" class="nav-link">Systems</a></li>
-          <li><a href="training/" class="nav-link">Training</a></li>
           <li><a href="about/" class="nav-link">About</a></li>
           <li><a href="contact/" class="nav-link">Contact</a></li>
         </ul>
@@ -117,15 +117,44 @@
         </h1>
         <div class="hero-subtext-wrap">
           <p class="hero-subtext">
-            20+ years in software engineering, enterprise systems, and banking technology — now focused on AI, learning, systems thinking, and practical intelligent software.
-          </p>
-          <p class="hero-subtext hero-subtext--sharp">
-            Most software is still built as if it were deterministic. I explore what changes when systems become intelligent.
+            Live, guided training in Python, data, machine learning, and AI systems — supported by practical writing, real engineering experience, and working software experiments.
           </p>
         </div>
         <div class="hero-ctas">
-          <a href="#start-here" class="btn btn-primary">Start here</a>
-          <a href="writing/series/ai-assisted-software-engineering/" class="btn btn-secondary">AI-assisted engineering series</a>
+          <a href="training/" class="btn btn-primary" data-home-event="home_training_click" data-cta-location="HERO">Explore training</a>
+          <a href="writing/" class="btn btn-secondary" data-home-event="home_writing_click" data-cta-location="HERO">Browse writing</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="training-spotlight" id="training-spotlight" data-home-impression="home_training_spotlight_view">
+      <div class="container">
+        <div class="training-spotlight-intro">
+          <div>
+            <p class="eyebrow">Software Signal Learning</p>
+            <h2 class="section-title">Build practical capability from Python foundations to reliable AI systems.</h2>
+          </div>
+          <div>
+            <p class="section-subtitle">Live, instructor-led online courses combining explanation, guided practice, review, and an applied project. Start at the stage that matches your current capability.</p>
+            <div class="training-spotlight-actions">
+              <a href="training/#starting-point" class="btn btn-primary" data-home-event="home_training_click" data-cta-location="STARTING_POINT">Find my starting point</a>
+              <a href="training/#journey" class="btn btn-secondary" data-home-event="home_training_click" data-cta-location="JOURNEY">Explore the learning pathway</a>
+            </div>
+          </div>
+        </div>
+        <div class="home-course-grid">
+          <article class="home-course-card" data-course-id="crs_python_foundations">
+            <div class="home-course-card-top"><span class="home-course-stage">Stage 1</span><span class="status-chip status-chip--unavailable" data-course-status aria-live="polite">Checking availability</span></div>
+            <h3>Python Foundations for Data Science</h3>
+            <p>No prior programming required. Learn live across 14 × 90-minute sessions and build a personal data analyser using core Python.</p>
+            <div class="home-course-actions"><a href="training/python-foundations-for-data-science/" class="article-link" data-home-event="home_training_course_detail_click" data-course-id="crs_python_foundations">Course details <span aria-hidden="true">&rarr;</span></a><a class="btn btn-primary" data-course-action="transactional" data-home-course-action data-course-id="crs_python_foundations" hidden></a></div>
+          </article>
+          <article class="home-course-card" data-course-id="crs_applied_python">
+            <div class="home-course-card-top"><span class="home-course-stage">Stage 2</span><span class="status-chip status-chip--unavailable" data-course-status aria-live="polite">Checking availability</span></div>
+            <h3>Applied Data Analysis with Python</h3>
+            <p>For learners with working Python foundations. Learn live across 14 × 90-minute sessions and complete a defensible investigation of a real dataset.</p>
+            <div class="home-course-actions"><a href="training/applied-data-analysis-with-python/" class="article-link" data-home-event="home_training_course_detail_click" data-course-id="crs_applied_python">Course details <span aria-hidden="true">&rarr;</span></a><a class="btn btn-primary" data-course-action="transactional" data-home-course-action data-course-id="crs_applied_python" hidden></a></div>
+          </article>
         </div>
       </div>
     </section>
@@ -137,80 +166,25 @@
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">Start Here</h2>
-          <p class="section-subtitle">Choose the path that matches what brought you here.</p>
+          <p class="section-subtitle">Choose how you want to learn, read, or explore.</p>
         </div>
 
         <div class="entry-point-grid">
-          <a href="writing/" class="entry-point-card">
+          <a href="training/" class="entry-point-card" data-home-event="home_offering_click" data-offering="TRAINING">
+            <span class="entry-point-kicker">Learn</span>
+            <h3 class="entry-point-title">Live, guided technical learning</h3>
+            <p class="entry-point-desc">Courses and a connected pathway across Python, data, machine learning, generative AI, and reliable AI systems.</p>
+          </a>
+          <a href="writing/" class="entry-point-card" data-home-event="home_offering_click" data-offering="WRITING">
             <span class="entry-point-kicker">Read</span>
-            <h3 class="entry-point-title">Structured articles and essays</h3>
-            <p class="entry-point-desc">Browse writing on AI foundations, engineering context, review, agents, and systems thinking.</p>
+            <h3 class="entry-point-title">Practical writing and structured guides</h3>
+            <p class="entry-point-desc">Essays and guides on AI foundations, software engineering, context, review, agents, architecture, and systems thinking.</p>
           </a>
-          <a href="training/" class="entry-point-card">
-            <span class="entry-point-kicker">Train</span>
-            <h3 class="entry-point-title">Software Signal Learning</h3>
-            <p class="entry-point-desc">Explore live, guided courses in Python, data analysis, machine learning, GenAI applications, and reliable AI systems.</p>
-          </a>
-          <a href="systems/" class="entry-point-card">
+          <a href="systems/" class="entry-point-card" data-home-event="home_offering_click" data-offering="SYSTEMS">
             <span class="entry-point-kicker">Explore</span>
             <h3 class="entry-point-title">Systems and experiments</h3>
             <p class="entry-point-desc">See practical software systems, AI workflow experiments, demos, and architecture explorations.</p>
           </a>
-          <a href="about/" class="entry-point-card">
-            <span class="entry-point-kicker">Know</span>
-            <h3 class="entry-point-title">Background and perspective</h3>
-            <p class="entry-point-desc">Learn about Suyog's engineering background, current focus, and the thread connecting this site.</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         Featured Series
-         ============================================================ -->
-    <section class="featured-series" id="featured-series">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">AI-Assisted Software Engineering</h2>
-          <p class="section-subtitle">The main structured reading path on the site, designed for engineers working with AI assistants.</p>
-        </div>
-
-        <div class="series-card-grid">
-          <article class="series-card featured-series-card">
-            <p class="series-card-kicker">Practical guide</p>
-            <h3 class="series-card-title">AI-Assisted Software Engineering</h3>
-            <p class="series-card-desc">A practical guide for software engineers learning how to work with AI assistants, structure context, review generated work, manage agents, and move from implementation toward orchestration.</p>
-            <p class="series-card-meta">9 articles &middot; Practical guide &middot; Start here</p>
-            <a href="writing/series/ai-assisted-software-engineering/" class="article-link">Start the series <span aria-hidden="true">&rarr;</span></a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         Pillars
-         ============================================================ -->
-    <section class="pillars" id="pillars">
-      <div class="container">
-        <div class="pillars-intro">
-          <h2 class="pillars-heading">This is not a portfolio.</h2>
-          <p class="pillars-body">
-            It is a working knowledge hub where I explore how intelligent software systems are understood, designed, built, explained, and improved.
-          </p>
-        </div>
-        <div class="pillars-grid">
-          <div class="pillar-card">
-            <h3 class="pillar-title">Learning</h3>
-            <p class="pillar-text">Clear explanations of AI, ML, software engineering, and programming concepts.</p>
-          </div>
-          <div class="pillar-card">
-            <h3 class="pillar-title">Systems</h3>
-            <p class="pillar-text">Experiments, architectures, builds, and lessons from real software systems.</p>
-          </div>
-          <div class="pillar-card">
-            <h3 class="pillar-title">Practice</h3>
-            <p class="pillar-text">Applying systems thinking to AI adoption, engineering strategy, technical education, and selective consulting conversations.</p>
-          </div>
         </div>
       </div>
     </section>
@@ -221,16 +195,16 @@
     <section class="writing" id="writing">
       <div class="container">
         <div class="section-header">
-          <h2 class="section-title">Current Focus</h2>
-          <p class="section-subtitle">Selected articles on AI agents, review, and engineering judgment. For the full taxonomy, start from the Writing page.</p>
+          <h2 class="section-title">Writing and Guides</h2>
+          <p class="section-subtitle">A structured engineering guide and selected articles that show how I think about AI-assisted software work.</p>
         </div>
 
         <div class="writing-grid">
           <article class="article-card article-card--featured">
-            <span class="article-tag">AI and Software Engineering</span>
-            <h3 class="article-title">Using Multiple AI Agents as a Software Engineering Team</h3>
-            <p class="article-summary">A practical model for separating AI agent responsibilities across architecture, coding, testing, review, security, documentation, and governance.</p>
-            <a href="writing/using-multiple-ai-agents-as-a-software-engineering-team/" class="article-link">Read article <span aria-hidden="true">→</span></a>
+            <span class="article-tag">Ordered practical guide · 9 articles</span>
+            <h3 class="article-title">AI-Assisted Software Engineering</h3>
+            <p class="article-summary">A practical path for engineers working with AI assistants across context, review, agents, constraints, and orchestration.</p>
+            <a href="writing/series/ai-assisted-software-engineering/" class="article-link" data-home-event="home_writing_series_click">Start the series <span aria-hidden="true">→</span></a>
           </article>
 
           <div class="article-cards-secondary">
@@ -266,7 +240,7 @@
         </div>
 
         <div class="systems-grid">
-          <a href="systems/ai-dev-orchestrator/" class="project-card">
+          <a href="systems/ai-dev-orchestrator/" class="project-card" data-home-event="home_system_click" data-system-id="ai-dev-orchestrator">
             <h3 class="project-title">AI Dev Orchestrator</h3>
             <p class="project-desc">Exploring how AI agents can collaborate across the SDLC — from requirements and planning to code, review loops, and deployment.</p>
             <div class="project-meta">
@@ -278,7 +252,7 @@
             </div>
           </a>
 
-          <a href="systems/survey-poll-serverless/" class="project-card">
+          <a href="systems/survey-poll-serverless/" class="project-card" data-home-event="home_system_click" data-system-id="survey-poll-serverless">
             <h3 class="project-title">Survey/Poll Serverless PoC</h3>
             <p class="project-desc">A focused AWS serverless experiment to test API design, Lambda execution, DynamoDB persistence, and deployment discipline.</p>
             <div class="project-meta">
@@ -290,7 +264,7 @@
             </div>
           </a>
 
-          <a href="systems/ai-native-learning-platform/" class="project-card">
+          <a href="systems/ai-native-learning-platform/" class="project-card" data-home-event="home_system_click" data-system-id="ai-native-learning-platform">
             <h3 class="project-title">AI-native Learning Platform</h3>
             <p class="project-desc">Early exploration of how structured content, retrieval, and AI assistance can support deeper technical learning.</p>
             <div class="project-meta">
@@ -320,9 +294,9 @@
           </div>
           <div class="about-body">
             <p>I am a software engineer with 20+ years of experience building enterprise-grade systems, especially in banking and payments technology.</p>
-            <p>My current focus is on AI, software architecture, learning, and the design of intelligent software systems.</p>
+            <p>My current focus is on AI systems, technical learning, and practical intelligent software.</p>
             <p class="about-belief">I believe AI is not just a feature. It is becoming a layer beneath software systems.</p>
-            <p>This site is where I bring those threads together through writing, systems, teaching, and ongoing exploration.</p>
+            <p>This working knowledge hub brings those threads together through Training, Writing, and Systems: understanding, building, and teaching intelligent software.</p>
             <a href="about/" class="btn btn-secondary">Read more about me</a>
           </div>
         </div>
@@ -358,12 +332,13 @@
       <div class="footer-top">
         <span class="footer-brand">suyogjoshi.com</span>
         <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="training/">Training</a>
           <a href="writing/">Writing</a>
           <a href="systems/">Systems</a>
           <a href="about/">About</a>
-          <a href="privacy/">Privacy</a>
           <a href="contact/">Contact</a>
-        </nav>
+          <a href="privacy/">Privacy</a>
+</nav>
       </div>
       <div class="footer-bottom">
         <div class="footer-social">
@@ -377,5 +352,7 @@
   </footer>
 
   <script src="js/script.js"></script>
+  <script src="js/course-actions.js"></script>
+  <script src="js/homepage.js"></script>
 </body>
 </html>
