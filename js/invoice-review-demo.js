@@ -179,9 +179,12 @@
     return `
       <figure class="invoice-demo-scan-preview">
         <img
-          src="../../../public/images/demos/invoice-review/handwritten-vendor-bill.png"
+          src="../../../public/images/demos/invoice-review/handwritten-vendor-bill.webp"
           alt="Synthetic scanned vendor cash bill from Shree Demo Enterprises used to demonstrate OCR fallback."
+          width="1086"
+          height="1448"
           loading="lazy"
+          decoding="async"
         >
         <figcaption>Synthetic demo image. No real vendor, customer, tax, or payment data is used.</figcaption>
       </figure>
