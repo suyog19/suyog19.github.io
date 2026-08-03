@@ -1,0 +1,36 @@
+name: Validate custom 404
+
+on:
+  pull_request:
+    branches: [dev, main]
+    paths:
+      - 404.html
+      - _redirects
+      - sitemap.xml
+      - "*.xml"
+      - css/pages.css
+      - scripts/validate_custom_404.py
+      - .github/workflows/validate-custom-404.yml
+  push:
+    branches: [dev, main]
+    paths:
+      - 404.html
+      - _redirects
+      - sitemap.xml
+      - "*.xml"
+      - css/pages.css
+      - scripts/validate_custom_404.py
+      - .github/workflows/validate-custom-404.yml
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/validate_custom_404.py
