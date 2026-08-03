@@ -106,7 +106,7 @@
         <div class="container">
           <div class="article-reading-col">
             <div class="article-body">
-              <img src="cover2.png" alt="How Modern LLM Systems Really Work? The complete LLM pipeline from data filtering and pretraining to instruction tuning, inference runtime, and retrieval" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <img src="cover2.webp" alt="How Modern LLM Systems Really Work? The complete LLM pipeline from data filtering and pretraining to instruction tuning, inference runtime, and retrieval" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;" width="1672" height="941" loading="eager" decoding="async" fetchpriority="high">
               <p>You type a prompt into ChatGPT. A few seconds later, it responds with working code, architecture suggestions, debugging help, or maybe even a surprisingly decent explanation of distributed systems.</p>
               <p>From the outside, it feels conversational. Almost intelligent. But underneath that simple chat box sits one of the most complex software systems ever built. Not just a model. A stack. Training pipelines. Massive GPU clusters. Transformer architectures. Alignment systems. Inference runtimes. Retrieval systems. Tool orchestration. Safety layers. Streaming infrastructure.</p>
               <p>And when you press Enter, all of those layers wake up together. This article is an attempt to build a practical mental model of how modern Large Language Model (LLM) systems actually work as engineered systems.</p>
@@ -116,7 +116,7 @@
               <p><strong>1. The Base Model:</strong> the pretrained neural network that predicts the next token.</p>
               <p><strong>2. The Runtime System:</strong> everything involved in serving the model, including prompts, retrieval, KV cache, decoding, memory, tools, and orchestration.</p>
               <p><strong>3. The Application Layer:</strong> the actual product layer: UI, permissions, business logic, monitoring, analytics, and workflows.</p>
-              <img src="three_layered_LLM-system_stack.png" alt="Three-Layer LLM System Stack showing the Application Layer, Runtime System, and Base Model" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <img src="three_layered_LLM-system_stack.webp" alt="Three-Layer LLM System Stack showing the Application Layer, Runtime System, and Base Model" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;" width="1536" height="1024" loading="lazy" decoding="async">
               <p>Most online explanations collapse these layers together. Separating them makes modern AI systems much easier to understand. Because ChatGPT-like systems are not "just models." They are runtime systems built around models. That distinction matters a lot.</p>
               <p>To understand why modern LLM systems look the way they do today, it helps to briefly understand the problems earlier NLP systems struggled to solve.</p>
 
@@ -164,7 +164,7 @@
 
               <h2>Why Transformers Scaled So Well</h2>
               <p>RNNs process sequences sequentially. Transformers process much of the sequence in parallel during training. The impact was profound. Parallelization allowed transformers to fully exploit modern GPU and TPU hardware. And once scaling became feasible, a new pattern emerged: larger models trained on larger datasets kept getting better. Sometimes unexpectedly better.</p>
-              <img src="inside_decoder_only_transformer_block.png" alt="Inside the Decoder-Only Transformer Block: token embeddings, masked multi-head self-attention, feed forward network, and next token prediction" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <img src="inside_decoder_only_transformer_block.webp" alt="Inside the Decoder-Only Transformer Block: token embeddings, masked multi-head self-attention, feed forward network, and next token prediction" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;" width="1536" height="1024" loading="lazy" decoding="async">
               <p>Underneath all of this architectural complexity sits a surprisingly simple training objective.</p>
 
               <h2>The Surprisingly Simple Training Objective</h2>
@@ -214,7 +214,7 @@
               <p>This is where AI systems become especially interesting. Because alignment is not purely technical. It encompasses product policy, safety policy, governance, ethics, and risk management.</p>
               <p>Questions around refusal behavior, harmful content, safety boundaries, and uncertainty expression are no longer purely ML problems. They become organizational and product decisions.</p>
               <p>And those decisions directly shape user experience.</p>
-              <img src="from_raw_text_to_interactive_AI_assistant.png" alt="From Raw Internet Text to Interactive AI Assistant: the complete LLM pipeline from data filtering and pretraining to instruction tuning, inference runtime, and retrieval" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <img src="from_raw_text_to_interactive_AI_assistant.webp" alt="From Raw Internet Text to Interactive AI Assistant: the complete LLM pipeline from data filtering and pretraining to instruction tuning, inference runtime, and retrieval" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;" width="1672" height="941" loading="lazy" decoding="async">
               <p>So far, we have mostly discussed how the model is trained and shaped. But an equally important story begins at inference time — the moment a real user sends a prompt.</p>
 
               <h2>What Actually Happens When You Press Enter</h2>
@@ -228,7 +228,7 @@
               <h2>The KV Cache: The Unsung Hero</h2>
               <p>Without caching, inference would be painfully inefficient. Every generated token would require recomputing attention across the entire prior sequence from scratch. Instead, models cache previously computed keys and values from attention layers. That dramatically reduces redundant computation.</p>
               <p>Modern LLM serving performance depends heavily on efficient cache management, batching strategies, memory layout optimization, and intelligent request scheduling. In many production systems, inference becomes as much a memory-management challenge as a raw compute problem.</p>
-              <img src="what_happens_after_you_press_enter.png" alt="Prefill vs Decode: What Happens After You Press Enter — showing the Prefill Phase, KV Cache, and Decode Phase of LLM inference" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <img src="what_happens_after_you_press_enter.webp" alt="Prefill vs Decode: What Happens After You Press Enter — showing the Prefill Phase, KV Cache, and Decode Phase of LLM inference" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;" width="1672" height="941" loading="lazy" decoding="async">
               <p>And this is exactly why modern AI products cannot be understood purely through model architecture alone. The surrounding runtime system plays an enormous role in the final user experience.</p>
 
               <h2>Runtime Systems Are a Huge Part of the Product</h2>
@@ -247,7 +247,7 @@
               <p>Hallucinations are not random glitches. They emerge naturally from the training objective. The model is optimized to produce plausible continuations — not guaranteed truth. That distinction matters enormously.</p>
               <p>If the system lacks grounding, retrieval, verification, or uncertainty calibration, it may still generate highly confident but incorrect outputs. And larger models do not automatically eliminate this problem.</p>
               <p>Modern mitigation approaches combine retrieval systems, tool usage, verification loops, stronger alignment strategies, instruction hierarchies, and uncertainty-aware behaviors. None fully eliminate hallucinations, but together they can significantly improve reliability.</p>
-              <img src="why_LLMs_hallucinate.png" alt="Why LLMs Hallucinate: Common Pathways — training data limitations, ambiguous prompts, overgeneralization, confident generation bias, and retrieval limitations" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;">
+              <img src="why_LLMs_hallucinate.webp" alt="Why LLMs Hallucinate: Common Pathways — training data limitations, ambiguous prompts, overgeneralization, confident generation bias, and retrieval limitations" style="max-width:100%;height:auto;display:block;margin:1.5rem auto;" width="1536" height="1024" loading="lazy" decoding="async">
 
               <h2>The Future Is Becoming More Layered, Not Less</h2>
               <p>The frontier is no longer just "bigger models." The industry is now simultaneously exploring multimodal systems, reasoning-focused models, long-context architectures, agent frameworks, orchestration systems, smaller local models, open-weight ecosystems, and on-device AI.</p>
