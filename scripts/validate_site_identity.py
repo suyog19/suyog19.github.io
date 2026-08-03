@@ -23,6 +23,10 @@ PUBLIC_PROFILES = {
     "https://medium.com/@suyog19",
     "https://github.com/suyog19",
 }
+PUBLIC_SYSTEM_REPOSITORIES = {
+    "systems/ai-dev-orchestrator/index.html": "https://github.com/suyog19/ai-dev-orchestrator",
+    "systems/survey-poll-serverless/index.html": "https://github.com/suyog19/survey-poll-app",
+}
 
 
 def load_nodes(relative: str) -> tuple[str, list[dict[str, object]]]:
@@ -89,13 +93,17 @@ def main() -> int:
         if reference_ids(website.get("hasPart")) != {WRITING_ID, SYSTEMS_ID, TRAINING_ID}:
             errors.append("index.html: WebSite must connect Writing, Systems, and Training")
 
-    _, about_nodes = load_nodes("about/index.html")
+    about_source, about_nodes = load_nodes("about/index.html")
     errors.extend(validate_person(node_by_id(about_nodes, PERSON_ID), "about/index.html"))
     profile = node_by_id(about_nodes, PROFILE_ID)
     if profile is None or profile.get("@type") != "ProfilePage":
         errors.append(f"about/index.html: missing ProfilePage {PROFILE_ID}")
     elif reference_id(profile.get("mainEntity")) != PERSON_ID or reference_id(profile.get("isPartOf")) != WEBSITE_ID:
         errors.append("about/index.html: ProfilePage must connect the stable Person and WebSite")
+    for public_profile in PUBLIC_PROFILES:
+        expected_link = f'href="{public_profile}" target="_blank" rel="me noopener noreferrer"'
+        if expected_link not in about_source:
+            errors.append(f"about/index.html: missing visible verified-profile link for {public_profile}")
 
     for relative, collection_id in (("writing/index.html", WRITING_ID), ("systems/index.html", SYSTEMS_ID)):
         _, nodes = load_nodes(relative)
@@ -162,6 +170,18 @@ def main() -> int:
     ):
         if disclosure not in provider_source:
             errors.append(f"training/provider/index.html: missing approved provider disclosure: {disclosure}")
+    if 'href="../../about/">Suyog Joshi</a>' not in provider_source:
+        errors.append("training/provider/index.html: provider must link to the canonical About profile")
+    for public_profile in PUBLIC_PROFILES:
+        expected_link = f'href="{public_profile}" target="_blank" rel="me noopener noreferrer"'
+        if expected_link not in provider_source:
+            errors.append(f"training/provider/index.html: missing verified provider profile {public_profile}")
+
+    for relative, repository in PUBLIC_SYSTEM_REPOSITORIES.items():
+        system_source = (ROOT / relative).read_text(encoding="utf-8")
+        expected_link = f'href="{repository}" target="_blank" rel="noopener noreferrer"'
+        if expected_link not in system_source:
+            errors.append(f"{relative}: missing safe public-repository link to {repository}")
 
     if errors:
         print("Site identity validation failed:", file=sys.stderr)
