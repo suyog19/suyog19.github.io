@@ -7,6 +7,23 @@
   function interestUrl(item, source, locationName) { return `/training/register-interest/?courseId=${encodeURIComponent(item.courseId)}&sourceSurface=${source}&ctaLocation=${locationName}`; }
   function updateLink(link, item, source, locationName) { if (item.primaryAction === 'APPLY') { link.href = `/apply/?courseId=${encodeURIComponent(item.courseId)}`; link.textContent = 'Apply'; link.hidden = false; } else if (item.primaryAction === 'GET_NOTIFIED') { link.href = interestUrl(item, source, locationName); link.textContent = 'Get notified'; link.hidden = false; } else if (item.primaryAction === 'REGISTER_INTEREST') { link.href = interestUrl(item, source, locationName); link.textContent = 'Register interest'; link.hidden = false; } else { link.hidden = true; link.removeAttribute('href'); } }
   function detailActionLinks() { return document.querySelectorAll('.course-hero [data-cta-location], .course-detail-hero [data-cta-location], [data-enrolment-card] [data-cta-location], [data-final-cta] [data-cta-location], [data-mobile-course-cta] a'); }
+  function updateDetailPresentation(item) {
+    const card = document.querySelector('[data-enrolment-card]');
+    const mobileStatus = document.querySelector('[data-mobile-course-cta] span');
+    const open = item.publicStatus === 'APPLICATIONS_OPEN';
+    const later = item.publicStatus === 'COMING_LATER';
+    const statusText = open ? 'Applications open' : later ? 'Coming later' : 'Applications not open';
+    if (card) {
+      const status = card.querySelector('.status-chip');
+      const title = card.querySelector('h2');
+      if (status) {
+        status.textContent = statusText;
+        status.className = `status-chip ${open ? 'status-chip--launched' : later ? 'status-chip--pipeline' : 'status-chip--unavailable'}`;
+      }
+      if (title) title.textContent = open ? 'Applications open for review' : later ? 'Applications are coming later' : 'Applications are not currently open';
+    }
+    if (mobileStatus) mobileStatus.textContent = statusText;
+  }
   function journeyCards() { return document.querySelectorAll('.journey-card[data-course-id]'); }
   function homeCards() { return document.querySelectorAll('.home-course-card[data-course-id]'); }
   function closeJourneyCard(card) { const status = card.querySelector('[data-course-status]'); const action = card.querySelector('[data-course-action="transactional"]'); if (status) { status.textContent = 'Availability unavailable'; status.className = 'status-chip status-chip--unavailable'; } if (action) { action.hidden = true; action.removeAttribute('href'); } }
@@ -17,10 +34,10 @@
     if (!base) { failClosed(); return; }
     try {
       const response = await fetch(`${base}/training/course-actions`, { headers: { Accept: 'application/json' }, cache: 'no-store' }); if (!response.ok) throw new Error('actions'); const body = await response.json(); if (!Array.isArray(body.items) || body.items.some(item => !validItem(item))) throw new Error('invalid actions'); const byId = new Map(body.items.map(item => [item.courseId, item]));
-      const page = document.querySelector('[data-course-detail]'); if (page) { const item = byId.get(page.dataset.courseId); if (!item) { failClosed(); return; } detailActionLinks().forEach(link => updateLink(link, item, 'COURSE_PAGE', (link.dataset.ctaLocation || (link.closest('[data-mobile-course-cta]') ? 'MOBILE' : 'ENROLMENT_PANEL')).toUpperCase())); }
+      const page = document.querySelector('[data-course-detail]'); if (page) { const item = byId.get(page.dataset.courseId); if (!item) { failClosed(); return; } updateDetailPresentation(item); detailActionLinks().forEach(link => updateLink(link, item, 'COURSE_PAGE', (link.dataset.ctaLocation || (link.closest('[data-mobile-course-cta]') ? 'MOBILE' : 'ENROLMENT_PANEL')).toUpperCase())); }
       journeyCards().forEach(card => { const item = byId.get(card.dataset.courseId); if (item) updateJourneyCard(card, item); else closeJourneyCard(card); });
       homeCards().forEach(card => { const item = byId.get(card.dataset.courseId); if (item) updateHomeCard(card, item); else closeJourneyCard(card); });
     } catch (_) { failClosed(); }
   }
-  window.sjCourseActions = { initialise, interestUrl, validItem, updateJourneyCard, updateHomeCard }; window.sjCourseActionsReady = initialise();
+  window.sjCourseActions = { initialise, interestUrl, validItem, updateDetailPresentation, updateJourneyCard, updateHomeCard }; window.sjCourseActionsReady = initialise();
 }());
