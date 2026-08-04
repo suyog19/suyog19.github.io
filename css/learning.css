@@ -677,6 +677,9 @@
 .validation-grid li { background: var(--learning-accent-soft); border-left: 3px solid var(--learning-accent); padding: 1rem; }
 .interest-layout { display: grid; gap: clamp(2rem,6vw,5rem); grid-template-columns: minmax(16rem,.8fr) minmax(0,1.2fr); }
 .interest-form,.interest-success { background: var(--color-bg); border: 1px solid var(--learning-border); padding: clamp(1.25rem,4vw,2.5rem); }
+.application-practical-summary { background: #fff7ed; border: 1px solid #fdba74; border-radius: .8rem; margin: 1.25rem 0; padding: clamp(1rem,3vw,1.75rem); }
+.application-practical-summary h2 { margin-top: 0; }
+.application-practical-summary ul { list-style: disc; padding-left: 1.25rem; }
 .interest-form .form-group { margin-bottom: 1.25rem; }
 .interest-form label,.interest-form legend { display: block; font-weight: 600; margin-bottom: .4rem; }
 .interest-form :is(input:not([type=checkbox]),textarea,select) { border: 1px solid var(--color-border); border-radius: .25rem; box-sizing: border-box; font: inherit; padding: .75rem; width: 100%; }
