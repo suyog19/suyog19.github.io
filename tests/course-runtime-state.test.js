@@ -34,3 +34,13 @@ test('malformed cohort data is rejected and capacity stays backend-owned', () =>
     assert.match(html, /data-cohort-size/);
   }
 });
+
+test('static fallback keeps transactional actions closed until runtime authorization', () => {
+  for (const slug of ['python-foundations-for-data-science', 'applied-data-analysis-with-python']) {
+    const html = fs.readFileSync(`training/${slug}/index.html`, 'utf8');
+    const actions = html.match(/<a[^>]+(?:apply\/\?courseId|register-interest\/\?courseId)[^>]*>/g) || [];
+    assert.ok(actions.length >= 4);
+    assert.ok(actions.every((action) => /\shidden(?:\s|>)/.test(action)));
+    assert.match(html, /<noscript>/);
+  }
+});
