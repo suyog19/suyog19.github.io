@@ -19,8 +19,10 @@ Launched pages use the existing `/feedback` endpoint with `targetType: PAGE`, a 
 
 ## Learner validation
 
-The required three-to-five unfamiliar learner sessions cannot be truthfully completed by repository automation. Use the eight questions in issue #433 without coaching, record only answer correctness, search effort, confusing wording/layout, viewport category, and resulting changes, and add anonymised findings here before closing the issue. No participant identity or raw sensitive feedback belongs in this repository.
+The product owner confirmed that the development pages were presented to learners and further feedback was collected. The non-sensitive synthesis became follow-up issues #441, #442, and #443: remove stale and duplicated commitments, prevent cross-surface drift, and restore the established teal-only Training palette. Participant identity and raw feedback are intentionally not stored in the repository.
+
+Issue #442 owns the final fresh-learner re-review after those follow-ups are available together on the development deployment.
 
 ## Residual limitation
 
-Human learner validation remains a release-readiness input. The implementation can be deployed for review, but issue #433 should remain open until those sessions are completed and any Critical or High confusion is resolved.
+The original review produced actionable follow-up scope rather than a production release. Final release readiness now depends on completing #441–#443, the fresh re-review recorded for #442, and resolving any Critical or High confusion.
