@@ -75,11 +75,13 @@
     const targetType = widget.getAttribute('data-feedback-target-type');
     const targetId = widget.getAttribute('data-feedback-target-id');
     const sourceLabel = widget.getAttribute('data-feedback-source-label') || 'piece';
+    const variant = widget.getAttribute('data-feedback-variant') || 'standard';
 
     return {
       targetType,
       targetId,
-      sourceLabel
+      sourceLabel,
+      variant
     };
   }
 
@@ -239,11 +241,11 @@
 
     const title = document.createElement('h2');
     title.className = 'feedback-widget-title';
-    title.textContent = 'Was this useful?';
+    title.textContent = config.variant === 'course-decision' ? 'Did this page give you enough information to decide whether to apply?' : 'Was this useful?';
 
     const copy = document.createElement('p');
     copy.className = 'feedback-widget-copy';
-    copy.textContent = 'A quick signal helps me understand what to write, clarify, or improve next.';
+    copy.textContent = config.variant === 'course-decision' ? 'Use the support link for application or enrolment help; this optional signal is only about page clarity.' : 'A quick signal helps me understand what to write, clarify, or improve next.';
 
     const intro = document.createElement('div');
     intro.className = 'feedback-widget-intro';
@@ -255,8 +257,8 @@
     choices.setAttribute('aria-label', 'Choose feedback for this ' + config.sourceLabel.toLowerCase());
 
     [
-      ['THUMBS_UP', 'Useful'],
-      ['THUMBS_DOWN', 'Not useful'],
+      ['THUMBS_UP', config.variant === 'course-decision' ? 'Yes' : 'Useful'],
+      ['THUMBS_DOWN', config.variant === 'course-decision' ? 'Not yet' : 'Not useful'],
       ['NONE', 'Leave a note']
     ].forEach(function (item) {
       const button = document.createElement('button');
@@ -276,7 +278,7 @@
     const label = document.createElement('label');
     label.className = 'feedback-widget-label';
     label.setAttribute('for', 'feedback-comment-' + config.targetType.toLowerCase() + '-' + config.targetId);
-    label.textContent = 'Optional context';
+    label.textContent = config.variant === 'course-decision' ? 'What information is still missing? (optional)' : 'Optional context';
 
     const textarea = document.createElement('textarea');
     textarea.id = 'feedback-comment-' + config.targetType.toLowerCase() + '-' + config.targetId;
