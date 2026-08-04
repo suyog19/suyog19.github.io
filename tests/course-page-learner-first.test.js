@@ -21,7 +21,7 @@ test('launched pages put practical decisions before fit and curriculum', () => {
 
 test('Python Foundations answers the agreed learner decision questions', () => {
   const html = read('training/python-foundations-for-data-science/index.html');
-  for (const phrase of ['October–November 2026', '2–3 hours', 'Hindi or Marathi', 'within two business days', 'within seven business days', '90 days after the final regular session', '75% attendance', 'no coding test', 'exact project may vary by cohort', 'GitHub is not required', 'screen sharing is voluntary', 'remaining balance is not requested before cohort confirmation']) assert.match(html, new RegExp(phrase, 'i'));
+  for (const phrase of ['October–November 2026', '2–3 hours', 'Hindi or Marathi', 'within two business days', 'within seven business days', '90 days after the final regular session', '11 of 14 regular live sessions', 'no coding test', 'exact project may vary by cohort', 'GitHub is not required', 'screen sharing is voluntary', 'remaining balance is not requested before cohort confirmation']) assert.match(html, new RegExp(phrase, 'i'));
   assert.doesNotMatch(html.match(/<meta[^>]+>|<script type="application\/ld\+json">[\s\S]*?<\/script>/g).join(' '), /personal data analyser/i);
 });
 
