@@ -32,6 +32,19 @@ class TrainingConsistencyTests(unittest.TestCase):
         errors = validate_consistency(catalogue, self.sources)
         self.assertTrue(any("catalogue-derived workload" in error and "5–9 hours total" in error for error in errors))
 
+    def test_capstone_article_grammar_regression_is_rejected(self):
+        sources = dict(self.sources)
+        path = "training/python-foundations-for-data-science/index.html"
+        sources[path] = sources[path].replace(
+            "Build a Core-Python structured-data analyser",
+            "Build an Core-Python structured-data analyser",
+        )
+        errors = validate_consistency(self.catalogue, sources)
+        self.assertIn(
+            f"{path}: old capstone term 'build an core-python structured-data analyser'",
+            errors,
+        )
+
     def test_pipeline_copy_is_outside_launched_stale_phrase_gate(self):
         sources = dict(self.sources)
         sources["unvalidated-pipeline-fixture"] = "criteria are not yet published"
