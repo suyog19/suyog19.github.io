@@ -6,6 +6,7 @@ on:
     paths:
       - "training/**/*.html"
       - scripts/validate_training_catalogue_schema.py
+      - data/training-courses.json
       - scripts/validate_article_structured_data.py
       - .github/workflows/validate-training-catalogue-schema.yml
   push:

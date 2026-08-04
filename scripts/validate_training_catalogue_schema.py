@@ -133,6 +133,10 @@ def validate_delivery_profile(course: dict[str, object], location: str) -> list[
         return errors
     if not isinstance(profile, dict):
         return [f"{location}: launched course requires a deliveryProfile"]
+    if course.get("minimumAge") != 18:
+        errors.append(f"{location}: launched course minimumAge must be 18")
+    if course.get("timezone") != "Asia/Kolkata":
+        errors.append(f"{location}: launched course timezone must be Asia/Kolkata")
     missing = sorted(DELIVERY_SECTIONS.difference(profile))
     if missing:
         errors.append(f"{location}: deliveryProfile missing {', '.join(missing)}")
@@ -168,6 +172,10 @@ def validate_delivery_profile(course: dict[str, object], location: str) -> list[
     planning = profile.get("planning")
     if not isinstance(planning, dict) or planning.get("certainty") != "currently-planned":
         errors.append(f"{location}: planning assumptions must use certainty 'currently-planned'")
+    elif "IST" not in str(planning.get("likelyCadence", "")):
+        errors.append(f"{location}: launched planning cadence must name IST")
+    elif planning.get("cohortSizeDisplay") != "10–15 learners":
+        errors.append(f"{location}: launched planning fallback must use 10–15 learners")
 
     def find_cohort_fields(value: object, path: str = "deliveryProfile") -> None:
         if isinstance(value, dict):

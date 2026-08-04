@@ -26,6 +26,16 @@ class DeliveryProfileValidationTests(unittest.TestCase):
         del course["deliveryProfile"]["support"]
         self.assertTrue(any("missing support" in error for error in validate_delivery_profile(course, "course")))
 
+    def test_age_timezone_and_planning_fallback_are_required(self):
+        course = copy.deepcopy(self.launched)
+        course["minimumAge"] = 17
+        course["timezone"] = "UTC"
+        course["deliveryProfile"]["planning"]["likelyCadence"] = "Two sessions weekly"
+        errors = validate_delivery_profile(course, "course")
+        self.assertTrue(any("minimumAge" in error for error in errors))
+        self.assertTrue(any("timezone" in error for error in errors))
+        self.assertTrue(any("cadence must name IST" in error for error in errors))
+
     def test_pipeline_course_does_not_require_launch_commitments(self):
         self.assertEqual(validate_delivery_profile(self.pipeline, "course"), [])
 
