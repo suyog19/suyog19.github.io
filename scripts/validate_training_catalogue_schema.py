@@ -19,7 +19,7 @@ COURSES = (
         "slug": "python-foundations-for-data-science",
         "stage": 1,
         "name": "Python Foundations for Data Science",
-        "description": "A live 14-session course that teaches core Python through an example structured-data capstone.",
+        "description": "A live 14-session course that teaches core Python through a Core-Python structured-data analyser.",
     },
     {
         "slug": "applied-data-analysis-with-python",
