@@ -65,6 +65,16 @@ UNCONFIRMED_COMMERCIAL_FIELDS = {
     "endDate",
     "eventStatus",
 }
+DELIVERY_SECTIONS = {
+    "duration", "workload", "language", "sessionExperience", "support",
+    "feedback", "recordings", "certificate", "applicationReview", "capstone",
+    "planning", "lastReviewedAt",
+}
+COHORT_FIELDS = {
+    "capacity", "minimumSize", "maximumSize", "capacityRemaining",
+    "minimumThresholdReached", "registrationWindow", "cohortId", "cohortLabel",
+    "startDate", "endDate", "tentativeStartAt", "tentativeEndAt",
+}
 
 
 def course_url(slug: str) -> str:
@@ -116,6 +126,63 @@ def validate_public_boundary(documents: list[object], location: str) -> list[str
     return errors
 
 
+def validate_delivery_profile(course: dict[str, object], location: str) -> list[str]:
+    errors: list[str] = []
+    profile = course.get("deliveryProfile")
+    if course.get("lifecycleStatus") != "launched":
+        return errors
+    if not isinstance(profile, dict):
+        return [f"{location}: launched course requires a deliveryProfile"]
+    missing = sorted(DELIVERY_SECTIONS.difference(profile))
+    if missing:
+        errors.append(f"{location}: deliveryProfile missing {', '.join(missing)}")
+
+    duration = profile.get("duration")
+    if not isinstance(duration, dict) or not isinstance(duration.get("approximateWeeks"), int) or duration.get("approximateWeeks", 0) <= 0:
+        errors.append(f"{location}: duration.approximateWeeks must be a positive integer")
+    workload = profile.get("workload")
+    if not isinstance(workload, dict):
+        errors.append(f"{location}: workload must be an object")
+    else:
+        for field in ("regularSessions", "sessionMinutes", "sessionsPerWeek"):
+            if not isinstance(workload.get(field), int) or workload.get(field, 0) <= 0:
+                errors.append(f"{location}: workload.{field} must be a positive integer")
+        normal = workload.get("normalIndependentHoursPerWeek")
+        capstone = workload.get("capstoneIndependentHoursPerWeek")
+        if not isinstance(normal, dict) or not all(isinstance(normal.get(key), (int, float)) for key in ("minimum", "maximum")) or normal.get("minimum", 0) > normal.get("maximum", 0):
+            errors.append(f"{location}: normal weekly workload requires an ordered minimum and maximum")
+        if not isinstance(capstone, dict) or not isinstance(capstone.get("maximum"), (int, float)):
+            errors.append(f"{location}: capstone weekly workload requires a maximum")
+
+    recordings = profile.get("recordings")
+    if isinstance(recordings, dict) and recordings.get("accessDaysAfterFinalRegularSession") and not recordings.get("regularSessionsPlanned"):
+        errors.append(f"{location}: recording access requires regularSessionsPlanned")
+    certificate = profile.get("certificate")
+    if isinstance(certificate, dict) and not certificate.get("available") and any(
+        certificate.get(key) for key in ("attendancePercentageMinimum", "capstoneSubmissionRequired")
+    ):
+        errors.append(f"{location}: certificate requirements require certificate availability")
+    capstone = profile.get("capstone")
+    if isinstance(capstone, dict) and capstone.get("cohortVariable") and not capstone.get("variationExplanation"):
+        errors.append(f"{location}: cohort-variable capstone requires learner-facing variationExplanation")
+    planning = profile.get("planning")
+    if not isinstance(planning, dict) or planning.get("certainty") != "currently-planned":
+        errors.append(f"{location}: planning assumptions must use certainty 'currently-planned'")
+
+    def find_cohort_fields(value: object, path: str = "deliveryProfile") -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in COHORT_FIELDS:
+                    errors.append(f"{location}: {path}.{key} duplicates backend-owned cohort state")
+                find_cohort_fields(child, f"{path}.{key}")
+        elif isinstance(value, list):
+            for child in value:
+                find_cohort_fields(child, path)
+
+    find_cohort_fields(profile)
+    return errors
+
+
 def validate_course(
     course: dict[str, object] | None,
     expected: dict[str, object],
@@ -149,6 +216,20 @@ def validate_course(
 
 def main() -> int:
     errors: list[str] = []
+    try:
+        source_catalogue = json.loads((ROOT / "data" / "training-courses.json").read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"Training catalogue validation failed:\n- data/training-courses.json: {exc}", file=sys.stderr)
+        return 1
+    if source_catalogue.get("schemaVersion") != "3.0.0":
+        errors.append("data/training-courses.json: schemaVersion must be 3.0.0")
+    source_courses = source_catalogue.get("courses")
+    if not isinstance(source_courses, list):
+        errors.append("data/training-courses.json: courses must be a list")
+        source_courses = []
+    for course in source_courses:
+        if isinstance(course, dict):
+            errors.extend(validate_delivery_profile(course, f"data/training-courses.json course {course.get('courseId', '<unknown>')!r}"))
     try:
         hub_documents, hub_nodes = load_documents("training/index.html")
     except json.JSONDecodeError as exc:
@@ -226,7 +307,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print("Validated the ordered 5-course catalogue, stable Course entities, breadcrumbs, provider, and public-data boundary.")
+    print("Validated the version 3 course catalogue, launched delivery profiles, stable Course entities, breadcrumbs, provider, and public-data boundary.")
     return 0
 
 
