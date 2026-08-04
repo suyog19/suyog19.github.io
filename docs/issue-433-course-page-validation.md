@@ -10,10 +10,12 @@ Launched pages use the existing `/feedback` endpoint with `targetType: PAGE`, a 
 
 ## Automated and device validation
 
-- Full Node test suite: 276 tests passed locally.
+- Full Node test suite: 277 tests passed locally, including explicit JavaScript-disabled transactional-action checks.
 - Catalogue, commercial, canonical-link, and public-route validators: passed locally.
-- Desktop, 390px, and 360px layout checks passed with no horizontal overflow or console warnings; the clarity prompt and operational support link remain above the final CTA.
-- Tablet, 200% zoom, keyboard, visible focus, screen-reader spot checks, and final API-failure/JavaScript-fallback review remain part of the `dev` acceptance pass.
+- Desktop, tablet (768px), 390px, 360px, and 640px reflow equivalent to a 1280px viewport at 200% zoom passed with no horizontal overflow or console warnings. Decision cards stack to one column, and the clarity prompt remains above the final CTA.
+- Keyboard activation of `Not yet` reveals the optional form, updates `aria-pressed`, advances focus in logical order, and retains a visible solid focus outline.
+- Screen-reader semantics spot check passed: one page `<h1>`, logical section headings, text certainty labels, labelled feedback group and textarea, descriptive button text, `aria-pressed` state, and polite live status.
+- API-failure tests confirm that unknown, malformed, and network-failure responses hide transactional actions. JavaScript-disabled source checks confirm that every launched-page Apply/Get notified action starts hidden while planning, curriculum, and `<noscript>` recovery guidance remain available.
 
 ## Learner validation
 
