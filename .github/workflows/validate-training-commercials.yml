@@ -6,28 +6,36 @@ on:
     paths:
       - data/training-courses.json
       - scripts/validate_training_commercials.py
+      - scripts/validate_training_consistency.py
       - "training/**/*.html"
       - "apply/**/*.html"
       - "my-learning/**/*.html"
       - "privacy/**/*.html"
       - "js/course-application*.js"
+      - js/course-actions.js
       - js/admin-gate3.js
       - "js/learner-*.js"
       - "tests/**/*.test.js"
+      - tests/test_training_consistency.py
+      - tests/test_training_delivery_profile.py
       - .github/workflows/validate-training-commercials.yml
   push:
     branches: [dev, main]
     paths:
       - data/training-courses.json
       - scripts/validate_training_commercials.py
+      - scripts/validate_training_consistency.py
       - "training/**/*.html"
       - "apply/**/*.html"
       - "my-learning/**/*.html"
       - "privacy/**/*.html"
       - "js/course-application*.js"
+      - js/course-actions.js
       - js/admin-gate3.js
       - "js/learner-*.js"
       - "tests/**/*.test.js"
+      - tests/test_training_consistency.py
+      - tests/test_training_delivery_profile.py
       - .github/workflows/validate-training-commercials.yml
 
 permissions:
@@ -45,4 +53,6 @@ jobs:
         with:
           node-version: "22"
       - run: python scripts/validate_training_commercials.py
+      - run: python scripts/validate_training_consistency.py
+      - run: python -m unittest tests/test_training_consistency.py tests/test_training_delivery_profile.py
       - run: node --test tests/*.test.js
