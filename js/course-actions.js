@@ -5,24 +5,35 @@
   const base = devHost(location.hostname) ? 'https://api-dev.suyogjoshi.com' : prodHost(location.hostname) ? 'https://api.suyogjoshi.com' : '';
   function validItem(item) { const text = value => typeof value === 'string' && value.trim().length > 0; if (!item || !text(item.courseId) || !text(item.publicTitle) || !text(item.slug) || !Number.isInteger(item.stage) || item.stage < 1 || item.stage > 5 || typeof item.interestCaptureEnabled !== 'boolean') return false; const topics = () => Array.isArray(item.topicOptions) && item.topicOptions.length <= 20 && item.topicOptions.every(text); const consent = () => item.interestCaptureEnabled === true && text(item.consentStatement) && text(item.consentVersion); if (item.primaryAction === 'APPLY') return item.publicStatus === 'APPLICATIONS_OPEN' && item.topicOptions === undefined && item.consentStatement === undefined && item.consentVersion === undefined; if (item.primaryAction === 'GET_NOTIFIED') return item.publicStatus === 'APPLICATIONS_NOT_OPEN' && consent() && topics() && item.topicOptions.length === 0; if (item.primaryAction === 'REGISTER_INTEREST') return item.publicStatus === 'COMING_LATER' && consent() && topics(); if (item.primaryAction === 'NONE') return item.interestCaptureEnabled === false && ['APPLICATIONS_NOT_OPEN', 'COMING_LATER'].includes(item.publicStatus) && item.topicOptions === undefined && item.consentStatement === undefined && item.consentVersion === undefined; return false; }
   function interestUrl(item, source, locationName) { return `/training/register-interest/?courseId=${encodeURIComponent(item.courseId)}&sourceSurface=${source}&ctaLocation=${locationName}`; }
-  function updateLink(link, item, source, locationName) { if (item.primaryAction === 'APPLY') { link.href = `/apply/?courseId=${encodeURIComponent(item.courseId)}`; link.textContent = 'Apply'; link.hidden = false; } else if (item.primaryAction === 'GET_NOTIFIED') { link.href = interestUrl(item, source, locationName); link.textContent = 'Get notified'; link.hidden = false; } else if (item.primaryAction === 'REGISTER_INTEREST') { link.href = interestUrl(item, source, locationName); link.textContent = 'Register interest'; link.hidden = false; } else { link.hidden = true; link.removeAttribute('href'); } }
+  function updateLink(link, item, source, locationName) { if (item.primaryAction === 'APPLY') { link.href = `/apply/?courseId=${encodeURIComponent(item.courseId)}`; link.textContent = 'Apply'; if (item.courseId === 'crs_python_foundations') link.textContent = 'Apply for the upcoming cohort'; link.hidden = false; } else if (item.primaryAction === 'GET_NOTIFIED') { link.href = interestUrl(item, source, locationName); link.textContent = 'Get notified'; link.hidden = false; } else if (item.primaryAction === 'REGISTER_INTEREST') { link.href = interestUrl(item, source, locationName); link.textContent = 'Register interest'; link.hidden = false; } else { link.hidden = true; link.removeAttribute('href'); } }
   function detailActionLinks() { return document.querySelectorAll('.course-hero [data-cta-location], .course-detail-hero [data-cta-location], [data-enrolment-card] [data-cta-location], [data-final-cta] [data-cta-location], [data-mobile-course-cta] a'); }
-  function updateDetailPresentation(item) {
+  function validCohort(cohort) { return !!cohort && typeof cohort.label === 'string' && cohort.label.trim() && Number.isInteger(cohort.minimumSize) && cohort.minimumSize > 0 && Number.isInteger(cohort.capacity) && cohort.capacity >= cohort.minimumSize && (cohort.tentativeStartAt == null || !Number.isNaN(Date.parse(cohort.tentativeStartAt))) && (cohort.tentativeEndAt == null || !Number.isNaN(Date.parse(cohort.tentativeEndAt))); }
+  function activeCohort(cohorts) { if (!Array.isArray(cohorts)) return null; const candidates = cohorts.filter(validCohort).filter(cohort => cohort.registrationOpen === true || ['OPEN', 'APPLICATIONS_OPEN'].includes(cohort.lifecycle) || ['OPEN', 'APPLICATIONS_OPEN'].includes(cohort.status)); return candidates[0] || null; }
+  function indianDate(value) { return value ? new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' }).format(new Date(value)) : ''; }
+  function detailView(item, cohorts) { const cohort = activeCohort(cohorts); if (!item.primaryAction) { const open = item.publicStatus === 'APPLICATIONS_OPEN'; const later = item.publicStatus === 'COMING_LATER'; return { status: open ? 'Applications open' : later ? 'Coming later' : 'Applications not open', title: open ? 'Applications open for review' : later ? 'Applications are coming later' : 'Applications are not currently open', tone: open ? 'launched' : later ? 'pipeline' : 'unavailable', cohort, action: item }; } const full = cohort && (cohort.isFull === true || cohort.capacityRemaining === 0); if (full) return { status: 'Current cohort is full', title: 'Current cohort is full', tone: 'unavailable', cohort, action: { ...item, primaryAction: 'NONE' } }; if (item.primaryAction === 'APPLY') return { status: 'Applications open', title: cohort ? `Applications open for the ${cohort.label} cohort` : 'Applications open for an upcoming cohort', tone: 'launched', cohort, action: item }; if (item.primaryAction === 'GET_NOTIFIED') return { status: 'Applications opening later', title: 'Applications opening later', tone: 'unavailable', cohort, action: item }; if (item.primaryAction === 'REGISTER_INTEREST') return { status: 'Planned for later', title: 'Course planned for a later stage', tone: 'pipeline', cohort, action: item }; return { status: 'No active intake', title: 'No cohort currently accepting applications', tone: 'unavailable', cohort, action: item }; }
+  function updateDetailPresentation(item, cohorts) {
+    const view = detailView(item, cohorts);
     const card = document.querySelector('[data-enrolment-card]');
     const mobileStatus = document.querySelector('[data-mobile-course-cta] span');
-    const open = item.publicStatus === 'APPLICATIONS_OPEN';
-    const later = item.publicStatus === 'COMING_LATER';
-    const statusText = open ? 'Applications open' : later ? 'Coming later' : 'Applications not open';
     if (card) {
       const status = card.querySelector('.status-chip');
       const title = card.querySelector('h2');
       if (status) {
-        status.textContent = statusText;
-        status.className = `status-chip ${open ? 'status-chip--launched' : later ? 'status-chip--pipeline' : 'status-chip--unavailable'}`;
+        status.textContent = view.status;
+        status.className = `status-chip status-chip--${view.tone}`;
       }
-      if (title) title.textContent = open ? 'Applications open for review' : later ? 'Applications are coming later' : 'Applications are not currently open';
+      if (title) title.textContent = view.title;
+      if (view.cohort) {
+        const window = card.querySelector('[data-cohort-window]');
+        const schedule = card.querySelector('[data-cohort-schedule]');
+        const size = card.querySelector('[data-cohort-size]');
+        if (window) window.textContent = view.cohort.label;
+        if (schedule) schedule.textContent = view.cohort.tentativeStartAt && view.cohort.tentativeEndAt ? `${indianDate(view.cohort.tentativeStartAt)}–${indianDate(view.cohort.tentativeEndAt)}${view.cohort.timezone ? ` (${view.cohort.timezone})` : ''} · tentative` : 'Exact dates and timings confirmed before payment';
+        if (size) size.textContent = `This cohort requires at least ${view.cohort.minimumSize} learners to proceed and is limited to ${view.cohort.capacity} learners.`;
+      }
     }
-    if (mobileStatus) mobileStatus.textContent = statusText;
+    if (mobileStatus) mobileStatus.textContent = view.status;
+    return view;
   }
   function journeyCards() { return document.querySelectorAll('.journey-card[data-course-id]'); }
   function homeCards() { return document.querySelectorAll('.home-course-card[data-course-id]'); }
@@ -34,10 +45,10 @@
     if (!base) { failClosed(); return; }
     try {
       const response = await fetch(`${base}/training/course-actions`, { headers: { Accept: 'application/json' }, cache: 'no-store' }); if (!response.ok) throw new Error('actions'); const body = await response.json(); if (!Array.isArray(body.items) || body.items.some(item => !validItem(item))) throw new Error('invalid actions'); const byId = new Map(body.items.map(item => [item.courseId, item]));
-      const page = document.querySelector('[data-course-detail]'); if (page) { const item = byId.get(page.dataset.courseId); if (!item) { failClosed(); return; } updateDetailPresentation(item); detailActionLinks().forEach(link => updateLink(link, item, 'COURSE_PAGE', (link.dataset.ctaLocation || (link.closest('[data-mobile-course-cta]') ? 'MOBILE' : 'ENROLMENT_PANEL')).toUpperCase())); }
+      const page = document.querySelector('[data-course-detail]'); if (page) { const item = byId.get(page.dataset.courseId); if (!item) { failClosed(); return; } let cohorts = []; try { const responses = await Promise.all([fetch(`${base}/training/courses/${encodeURIComponent(item.slug)}`, { headers: { Accept: 'application/json' }, cache: 'no-store' }), fetch(`${base}/training/courses/${encodeURIComponent(item.slug)}/cohorts`, { headers: { Accept: 'application/json' }, cache: 'no-store' })]); if (!responses.every(response => response.ok)) throw new Error('public course'); const courseBody = await responses[0].json(); const cohortBody = await responses[1].json(); const course = courseBody.course || courseBody; if (!course || (course.courseId && course.courseId !== item.courseId)) throw new Error('invalid course'); cohorts = cohortBody.items || cohortBody.cohorts || []; if (!Array.isArray(cohorts) || cohorts.some(cohort => !validCohort(cohort))) throw new Error('invalid cohorts'); } catch (_) { cohorts = []; } const view = updateDetailPresentation(item, cohorts); detailActionLinks().forEach(link => updateLink(link, view.action, 'COURSE_PAGE', (link.dataset.ctaLocation || (link.closest('[data-mobile-course-cta]') ? 'MOBILE' : 'ENROLMENT_PANEL')).toUpperCase())); }
       journeyCards().forEach(card => { const item = byId.get(card.dataset.courseId); if (item) updateJourneyCard(card, item); else closeJourneyCard(card); });
       homeCards().forEach(card => { const item = byId.get(card.dataset.courseId); if (item) updateHomeCard(card, item); else closeJourneyCard(card); });
     } catch (_) { failClosed(); }
   }
-  window.sjCourseActions = { initialise, interestUrl, validItem, updateDetailPresentation, updateJourneyCard, updateHomeCard }; window.sjCourseActionsReady = initialise();
+  window.sjCourseActions = { initialise, interestUrl, validItem, validCohort, activeCohort, detailView, updateDetailPresentation, updateJourneyCard, updateHomeCard }; window.sjCourseActionsReady = initialise();
 }());
