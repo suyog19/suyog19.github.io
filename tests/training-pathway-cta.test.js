@@ -43,7 +43,7 @@ test('shared action controller owns pathway status and transactional actions', (
   assert.match(actionsScript, /TRAINING_JOURNEY/);
   assert.match(actionsScript, /Applications not open/);
   assert.match(actionsScript, /Availability unavailable/);
-  assert.match(actionsScript, /link\.textContent = 'Apply'/);
+  assert.match(actionsScript, /link\.textContent = 'Apply for the upcoming cohort'/);
   assert.match(actionsScript, /const page = document\.querySelector\('\[data-course-detail\]'\)/);
   assert.match(actionsScript, /detailActionLinks\(\)\.forEach\(link => updateLink/);
   assert.match(actionsScript, /if \(!item\) \{ failClosed\(\); return; \}/);
