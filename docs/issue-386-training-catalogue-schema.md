@@ -19,3 +19,9 @@ The stable course identifier is the canonical course URL plus `#course`.
 Run `python scripts/validate_training_catalogue_schema.py`.
 
 The check validates JSON syntax, catalogue completeness and order, unique positions, stable IDs, canonical URLs, names, descriptions, provider references, course-page breadcrumbs, and the private-data boundary. It also prevents instance-only or unconfirmed commercial fields such as `courseMode` from being added without a confirmed `CourseInstance`. It runs automatically for relevant Training changes targeting or pushed to `dev` and `main`.
+
+## Version 3 delivery profiles
+
+Catalogue schema version `3.0.0` adds a structured `deliveryProfile` to every launched course. The profile owns durable learner commitments and labelled planning guidance. Current public actions, exact cohort dates, registration windows, cohort capacity and learner-specific state remain owned by the existing APIs.
+
+Pipeline courses may omit the profile until launch commitments are approved. Validation rejects incomplete or contradictory launched profiles, cohort-capacity duplication inside a profile, recording access without a recording commitment, unavailable certificates with eligibility requirements, cohort-variable capstones without an explanation, and planning data that claims to be confirmed cohort fact.
