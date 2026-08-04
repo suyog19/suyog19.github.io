@@ -148,7 +148,11 @@ def validate_consistency(catalogue: dict[str, object], sources: dict[str, str]) 
         errors.append("data/training-courses.json: Python capstone title is not canonical")
     if len(re.findall(re.escape(capstone), python_page, re.IGNORECASE)) < 6:
         errors.append("training/python-foundations-for-data-science/index.html: canonical capstone term is missing from one or more surfaces")
-    for old_term in ("example structured-data analyser", "personal data analyser"):
+    for old_term in (
+        "example structured-data analyser",
+        "personal data analyser",
+        "build an core-python structured-data analyser",
+    ):
         if old_term in python_page.lower():
             errors.append(f"training/python-foundations-for-data-science/index.html: old capstone term {old_term!r}")
 
