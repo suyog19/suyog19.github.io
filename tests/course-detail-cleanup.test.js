@@ -52,7 +52,7 @@ test('shared lifecycle controller and styles govern every course action', () => 
   const controller = fs.readFileSync(path.join(root, 'js', 'course-actions.js'), 'utf8');
   const css = fs.readFileSync(path.join(root, 'css', 'learning.css'), 'utf8');
 
-  assert.match(controller, /primaryAction === 'APPLY'[\s\S]*?link\.textContent = 'Apply'/);
+  assert.match(controller, /primaryAction === 'APPLY'[\s\S]*?link\.textContent = 'Apply for the upcoming cohort'/);
   assert.doesNotMatch(controller, /View course and apply/);
   assert.match(controller, /\[data-final-cta\] \[data-cta-location\]/);
   assert.match(controller, /else \{ link\.hidden = true; link\.removeAttribute\('href'\); \}/);
