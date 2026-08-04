@@ -22,19 +22,23 @@ Representative fixture tests prove that stale copy and catalogue workload drift 
 
 ## Automated validation
 
-- `python scripts/validate_training_consistency.py`: passed locally.
-- `python -m unittest tests/test_training_consistency.py tests/test_training_delivery_profile.py`: passed locally.
-- Full Node suite and all repository `validate_*.py` scripts: to be recorded after the issue diff is complete.
+- `python scripts/validate_training_consistency.py`: passed locally and in CI.
+- `python -m unittest tests/test_training_consistency.py tests/test_training_delivery_profile.py`: 9 passed locally and in CI.
+- `node --test tests/*.test.js`: 286 passed locally.
+- All repository `validate_*.py` scripts passed locally; the combined `dev` checks and Cloudflare Pages deployment passed at commit `787846c`.
 - CI runs the consistency validator and its Python tests for relevant catalogue, course, application, policy, runtime, and test changes.
 
 ## Development-environment smoke test
 
-To be completed on the merged development deployment for both launched course pages, the application routes, Terms, Conduct/Recording, and Privacy:
+Completed on the merged development deployment for both launched course pages, the application routes, Terms, Conduct/Recording, and Privacy:
 
-- desktop, 390px mobile, keyboard navigation, and 200% reflow;
-- successful runtime cohort/action response and safe API failure;
-- JavaScript-disabled public fallback;
-- policy version `1.1.0` and corrected launched-course commitments.
+- Desktop, 390px, 360px, and 640px reflow equivalent to a 1280px viewport at 200% zoom had no horizontal overflow. Decision grids stacked to one column at the constrained widths.
+- The shared certainty treatment computed to teal-only values: soft surface `rgb(240, 253, 250)`, text `rgb(17, 94, 89)`, and border/emphasis `rgb(15, 118, 110)`.
+- `Confirmed`, `Currently planned`, and `Confirmed before payment` remained explicit text. Keyboard navigation advanced in order and showed a solid 3px teal focus outline.
+- Both launched pages exposed one `<h1>`, age, total workload, IST, planned cohort range, and safe closed transactional actions when no authorised runtime action was available.
+- Unauthenticated application routes redirected to the email-verification gate without exposing the private form. Source and automated checks cover both launched course IDs, successful cohort override, malformed/unknown/network failure, and JavaScript-disabled closed-action fallback.
+- Terms, Conduct/Recording, and Privacy rendered without overflow and exposed policy version `1.1.0` with the corrected certificate, recording, and WhatsApp commitments.
+- Browser console output contained only a Chrome-extension message-channel warning; no site-script warning or error was observed.
 
 ## Fresh learner re-review
 
