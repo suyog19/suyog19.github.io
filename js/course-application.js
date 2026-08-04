@@ -19,6 +19,7 @@
   const resultTitle = document.getElementById('application-result-title');
   const resultDetail = document.getElementById('application-result-detail');
   const courseSummary = document.getElementById('application-course-summary');
+  const practicalSummary = document.getElementById('application-practical-summary');
   const profileFields = document.getElementById('profile-fields');
   const userLabel = document.getElementById('application-user-label');
   const logout = document.getElementById('application-logout');
@@ -129,7 +130,7 @@
     resultTitle.textContent = correctionMode ? 'Updated application received' : 'Application received';
     resultDetail.textContent = correctionMode
       ? 'This new application replaces your earlier submission. Only the updated application will be reviewed.'
-      : 'Your application will be reviewed. Check My Learning for the current status and next action.';
+      : 'We normally review your application within five business days. A cohort offer may arrive later because it depends on the final schedule and cohort formation. You can track your status and next steps in My Learning.';
     sessionStorage.removeItem(draftKey);
     sessionStorage.removeItem(idempotencyStateKey);
     if (trackCompletion) analytics('course_application_complete');
@@ -279,6 +280,7 @@
       const publicCourse = await auth.request('/training/courses/' + selectedCourse.slug, { method: 'GET' });
       if (!publicCourse.course || publicCourse.course.courseId !== courseId) throw Object.assign(new Error('COURSE_UNAVAILABLE'), { status: 404, body: { error: 'COURSE_UNAVAILABLE' } });
       courseSummary.textContent = 'Applying for ' + publicCourse.course.title + '. Applications are reviewed.';
+      if (practicalSummary) practicalSummary.hidden = courseId !== 'crs_python_foundations';
       try {
         const profile = await auth.request('/learners/me', { method: 'GET' });
         needsProfile = false;
