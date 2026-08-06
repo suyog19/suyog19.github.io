@@ -238,6 +238,38 @@
     return 'Not available';
   }
 
+  function safeTimeZone(value) {
+    if (typeof value !== 'string' || !value) return 'Asia/Kolkata';
+    try {
+      new Intl.DateTimeFormat('en-IN', { timeZone: value }).format();
+      return value;
+    } catch (_error) {
+      return 'Asia/Kolkata';
+    }
+  }
+
+  function timeZonePart(timeZone, style) {
+    try {
+      const parts = new Intl.DateTimeFormat('en-IN', {
+        timeZone, timeZoneName: style, hour: 'numeric', minute: '2-digit',
+      }).formatToParts(new Date());
+      const part = parts.find((item) => item.type === 'timeZoneName');
+      return part && part.value;
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  function timeZoneLabel(value) {
+    const timeZone = safeTimeZone(value);
+    const offset = (timeZonePart(timeZone, 'longOffset') || '').replace(/^GMT/, 'UTC');
+    let name = timeZonePart(timeZone, 'longGeneric');
+    if (!name || name === timeZone || /^GMT[+-]/.test(name)) {
+      name = timeZone.split('/').pop().replace(/_/g, ' ');
+    }
+    return offset && name !== offset ? name + ' (' + offset + ')' : name;
+  }
+
   function acknowledgementLabel(records) {
     if (!Array.isArray(records)) return 'Not available';
     if (!records.length) return 'Not recorded';
@@ -272,8 +304,10 @@
     safeCourseHref,
     safeActionHref,
     safeSupportHref,
+    safeTimeZone,
     presentationCode,
     resolvePresentation,
     statusPresentation,
+    timeZoneLabel,
   };
 }());
