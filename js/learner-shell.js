@@ -179,14 +179,23 @@
     }
     [applicationDetails, paymentDetails, cohortDetails, requestDetails].forEach((group) => { if (group.list.children.length) card.appendChild(group.details); });
     const next = presentation.primaryAction || journeyHref(application);
+    const changeHref = view.gate2ChangeHref(application);
+    const actions = element('div', 'learning-actions learner-journey-actions', '');
     if (next) {
       const linkLabel = next.correction ? 'View application' : next.label;
       const link = element('a', 'btn btn-secondary learner-journey-link', linkLabel);
       link.href = next.href;
       link.setAttribute('aria-label', linkLabel + ' for ' + title);
-      card.appendChild(link);
+      actions.appendChild(link);
       if (next.correction) card.appendChild(element('p', 'field-hint', 'Viewing is optional and does not change your application.'));
     }
+    if (changeHref && (!next || next.href !== changeHref)) {
+      const change = element('a', 'learner-change-link', 'Request a change');
+      change.href = changeHref;
+      change.setAttribute('aria-label', 'Request a change for ' + title);
+      actions.appendChild(change);
+    }
+    if (actions.children.length) card.appendChild(actions);
     if (!suppressCommunicationWarning && communicationFailed(application)) card.appendChild(element('p', 'learner-communication-warning', 'We could not confirm that the latest email was delivered. Your learning status shown above is unchanged.'));
     return card;
   }

@@ -50,6 +50,7 @@ function harness(request) {
     },
   };
   vm.runInNewContext(fs.readFileSync('js/training-release.js', 'utf8'), context);
+  vm.runInNewContext(fs.readFileSync('js/learner-summary.js', 'utf8'), context);
   vm.runInNewContext(fs.readFileSync('js/learner-payment.js', 'utf8'), context);
   return { context, elements, payment: context.window.sjLearnerPayment };
 }
@@ -122,4 +123,72 @@ test('uncertain or existing payment state remains fail closed', async () => {
     assert.equal(elements['payment-error-actions'].hidden, false);
     assert.match(elements['payment-status'].textContent, /Do not pay again/);
   }
+});
+
+test('reserved payment state exposes an authoritative secondary change-request link', async () => {
+  const calls = [];
+  const reserved = {
+    applications: [{
+      course: { title: 'Python Foundations' },
+      offer: { status: 'RESERVED', enrolmentId: 'enr_one' },
+      gate2: { enrolment: { status: 'RESERVED' }, action: { code: 'RESERVED' } },
+    }],
+  };
+  const { elements, payment } = harness(async (path) => {
+    calls.push(path);
+    return path.endsWith('/payment') ? { payment: { journeyStatus: 'RESERVED', payment: {} } } : reserved;
+  });
+  await payment.initialise();
+  assert.deepEqual(calls, ['/me/enrolments/enr_one/payment', '/me/learning-summary']);
+  const link = elements['payment-action'].children.find((child) => child.href);
+  assert.equal(link.textContent, 'Request cancellation or another change');
+  assert.equal(link.href, '/my-learning/change/?enrolmentId=enr_one');
+  assert.match(elements['payment-state'].children.map((child) => child.textContent).join(' '), /Deposit complete/);
+});
+
+test('reserved payment status still renders when the secondary summary lookup fails', async () => {
+  const { elements, payment } = harness(async (path) => {
+    if (path.endsWith('/payment')) return { payment: { journeyStatus: 'RESERVED', payment: {} } };
+    const error = new Error('summary unavailable'); error.status = 500; throw error;
+  });
+  await payment.initialise();
+  assert.equal(elements['payment-panel'].hidden, false);
+  assert.match(elements['payment-state'].children.map((child) => child.textContent).join(' '), /Deposit complete/);
+  assert.equal(elements['payment-action'].children.length, 0);
+});
+
+test('deposit change navigation fails closed for missing, ambiguous, stale, or ineligible summary state', async () => {
+  const eligible = {
+    offer: { status: 'RESERVED', enrolmentId: 'enr_one' },
+    gate2: { enrolment: { status: 'RESERVED' }, action: { code: 'RESERVED' } },
+  };
+  for (const summary of [
+    {},
+    { applications: [eligible, eligible] },
+    { applications: [{ ...eligible, gate2: { enrolment: { status: 'CANCELLED' } } }] },
+  ]) {
+    const { payment } = harness(async () => ({}));
+    assert.equal(payment.changeNavigation(summary, 'enr_one', 'RESERVED'), null);
+  }
+});
+
+test('existing request or refund receives status navigation instead of a duplicate request', () => {
+  for (const gateState of [
+    { learnerChange: { status: 'REQUESTED' } },
+    { refund: { status: 'PROCESSING' } },
+  ]) {
+    const { payment } = harness(async () => ({}));
+    const summary = { applications: [{
+      offer: { status: 'RESERVED', enrolmentId: 'enr_one' },
+      gate2: { enrolment: { status: 'RESERVED' }, action: { code: 'REFUND_PROCESSING' }, ...gateState },
+    }] };
+    const navigation = payment.changeNavigation(summary, 'enr_one', 'REFUND_PROCESSING');
+    assert.equal(navigation.href, '/my-learning/change/?enrolmentId=enr_one');
+    assert.equal(navigation.label, 'View request or refund status');
+  }
+});
+
+test('payment page loads the shared summary helper before its renderer', () => {
+  const html = fs.readFileSync('my-learning/payment/index.html', 'utf8');
+  assert.ok(html.indexOf('js/learner-summary.js') < html.indexOf('js/learner-payment.js'));
 });
