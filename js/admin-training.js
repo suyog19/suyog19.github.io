@@ -124,6 +124,14 @@
     return String(value);
   }
 
+  function applicationAnswerPresentation(answers) {
+    const value = answers || {};
+    if (value.programmingExperience === 'N/A' && value.weeklyAvailability === 'N/A') {
+      return { 'Optional learner note': value.learningGoal && value.learningGoal !== 'N/A' ? value.learningGoal : 'Not provided' };
+    }
+    return Object.fromEntries(Object.entries(value).map(([key, answer]) => [key, answer === 'N/A' ? 'Not provided' : answer]));
+  }
+
   function requestStillCurrent(current, expected) {
     return current.applicationId === expected.applicationId
       && current.sessionToken === expected.sessionToken
@@ -150,6 +158,7 @@
   }
 
   window.sjAdminTraining = {
+    applicationAnswerPresentation,
     createIdempotencyTracker,
     communicationPresentation,
     dateToIso,

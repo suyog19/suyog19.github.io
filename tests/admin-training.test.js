@@ -24,6 +24,21 @@ test('cohort validation enforces backend numeric and date invariants', () => {
   assert.equal(tools.validateCohort({ ...validCohort(), tentativeEndAt: '2026-08-01' }).tentativeEndAt, 'Tentative end must be after tentative start.');
 });
 
+test('application answer presentation hides compatibility placeholders', () => {
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(tools.applicationAnswerPresentation({ programmingExperience: 'N/A', learningGoal: 'N/A', weeklyAvailability: 'N/A' }))),
+    { 'Optional learner note': 'Not provided' },
+  );
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(tools.applicationAnswerPresentation({ programmingExperience: 'N/A', learningGoal: 'Please contact me', weeklyAvailability: 'N/A' }))),
+    { 'Optional learner note': 'Please contact me' },
+  );
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(tools.applicationAnswerPresentation({ programmingExperience: 'Python', learningGoal: 'Analysis', weeklyAvailability: 'Five hours' }))),
+    { programmingExperience: 'Python', learningGoal: 'Analysis', weeklyAvailability: 'Five hours' },
+  );
+});
+
 test('date-only cohort controls preserve inclusive day boundaries in ISO payloads', () => {
   const opening = new Date(tools.dateToIso('2026-08-01', false));
   const closing = new Date(tools.dateToIso('2026-08-01', true));
