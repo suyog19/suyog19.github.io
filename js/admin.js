@@ -21,6 +21,7 @@
     selectedApplication: null,
     selectedEnrolment: null,
     applicationCommunications: [],
+    pendingApplicationFocusId: '',
     trainingMutationPending: false,
     applicationRequestSequence: 0,
     feedbackSummary: null,
@@ -288,6 +289,7 @@
     state.selectedApplication = null;
     state.selectedEnrolment = null;
     state.applicationCommunications = [];
+    state.pendingApplicationFocusId = '';
     state.trainingMutationPending = false;
     state.applicationRequestSequence += 1;
     state.selectedMessageId = '';
@@ -883,6 +885,14 @@
       state.selectedEnrolment = results[0].enrolment || null;
       state.applicationCommunications = results[1];
       renderApplicationDetail();
+      if (
+        state.pendingApplicationFocusId === applicationId
+        && state.activeView === 'applications'
+      ) {
+        state.pendingApplicationFocusId = '';
+        els.applicationDetail.tabIndex = -1;
+        els.applicationDetail.focus();
+      }
     } catch (error) {
       const current = {
         applicationId: state.selectedApplicationId,
@@ -893,6 +903,26 @@
       renderEmptyDetail(els.applicationDetail, error.status === 404 ? 'Application not found.' : 'Application detail could not be loaded.');
       handleRequestError(error);
     }
+  }
+
+  function openApplication(applicationId) {
+    if (!/^[A-Za-z0-9_-]{1,160}$/.test(applicationId || '')) {
+      state.applicationRequestSequence += 1;
+      state.selectedApplicationId = '';
+      state.selectedApplication = null;
+      state.selectedEnrolment = null;
+      state.applicationCommunications = [];
+      state.pendingApplicationFocusId = '';
+      switchView('applications');
+      if (state.trainingCourses.length) renderApplications();
+      renderEmptyDetail(els.applicationDetail, 'Select an application to review.');
+      setStatus('The application reference from Today is unavailable. Choose the application from the review list.', 'warn');
+      return;
+    }
+    state.selectedApplicationId = applicationId;
+    state.pendingApplicationFocusId = applicationId;
+    switchView('applications');
+    if (state.trainingCourses.length) loadApplicationDetail(applicationId);
   }
 
   async function loadAllCommunications(applicationId) {
@@ -1498,6 +1528,7 @@
       sessionActive: () => Boolean(state.token),
       clearSession: (message) => clearSession(message),
     });
+    window.sjAdminApplicationsController = { open: openApplication };
     window.sjAdminTodayController = window.sjAdminToday.create({
       request: apiRequest,
       setStatus,

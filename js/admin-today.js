@@ -4,6 +4,17 @@
   const ID = /^[A-Za-z0-9_-]{1,160}$/;
   const KINDS = new Set(['APPLICATION', 'PAYMENT', 'REFUND', 'COMMUNICATION', 'COHORT']);
   const ACTIONS = new Set(['REVIEW_APPLICATION', 'REVIEW_PAYMENT', 'REVIEW_REFUND', 'REVIEW_COMMUNICATION', 'REVIEW_COHORT_DECISION', 'RECONCILE_COHORT', 'REVIEW_COHORT', 'REVIEW_COHORT_OBLIGATIONS', 'OPEN_COHORT']);
+  const ACTION_VIEWS = Object.freeze({
+    REVIEW_APPLICATION: 'applications',
+    REVIEW_PAYMENT: 'payments',
+    REVIEW_REFUND: 'payments',
+    REVIEW_COMMUNICATION: 'payments',
+    REVIEW_COHORT_DECISION: 'cohorts',
+    RECONCILE_COHORT: 'cohorts',
+    REVIEW_COHORT: 'cohorts',
+    REVIEW_COHORT_OBLIGATIONS: 'cohorts',
+    OPEN_COHORT: 'cohorts',
+  });
 
   function node(tag, value, className) {
     const element = document.createElement(tag);
@@ -29,16 +40,23 @@
       config.setStatus(config.friendlyError(error), 'error');
     }
 
+    function applicationId(item) {
+      if (typeof item.id !== 'string' || !item.id.startsWith('application:')) return '';
+      const value = item.id.slice('application:'.length);
+      return ID.test(value) ? value : '';
+    }
+
     function destination(item) {
       const context = item.context || {};
       const learnerId = ID.test(context.learner_id || '') ? context.learner_id : '';
       const cohortId = ID.test(context.cohort_id || '') ? context.cohort_id : '';
-      if (learnerId) return { view: 'learners', learnerId };
-      if (cohortId) return { view: 'cohorts', cohortId };
-      if (item.kind === 'APPLICATION') return { view: 'applications' };
-      if (['PAYMENT', 'REFUND', 'COMMUNICATION'].includes(item.kind)) return { view: 'payments' };
-      if (item.kind === 'COHORT') return { view: 'cohorts' };
-      return null;
+      const action = item.nextAction && item.nextAction.code;
+      const view = ACTION_VIEWS[action];
+      if (!view) return null;
+      if (action === 'REVIEW_APPLICATION') return { view, applicationId: applicationId(item) };
+      if (view === 'cohorts') return { view, cohortId };
+      if (view === 'learners') return { view, learnerId };
+      return { view };
     }
 
     function card(item) {
@@ -54,7 +72,9 @@
       const target = destination(item);
       if (target && typeof item.nextAction.label === 'string') {
         const button = node('button', item.nextAction.label, 'btn btn-secondary');
-        button.type = 'button'; button.dataset.todayAction = item.nextAction.code; button.dataset.adminView = target.view;
+        button.type = 'button'; button.dataset.todayAction = item.nextAction.code;
+        if (item.nextAction.code !== 'REVIEW_APPLICATION') button.dataset.adminView = target.view;
+        if (target.applicationId) button.dataset.todayApplication = target.applicationId;
         if (target.learnerId) button.dataset.todayLearner = target.learnerId;
         if (target.cohortId) button.dataset.todayCohort = target.cohortId;
         article.appendChild(button);
@@ -100,6 +120,10 @@
 
     root.addEventListener('click', (event) => {
       const action = event.target.closest('[data-today-action]'); if (!action || !ACTIONS.has(action.dataset.todayAction)) return;
+      if (action.dataset.todayAction === 'REVIEW_APPLICATION' && window.sjAdminApplicationsController) {
+        window.sjAdminApplicationsController.open(action.dataset.todayApplication || '');
+        return;
+      }
       if (ID.test(action.dataset.todayLearner || '') && window.sjAdminLearnersController) window.sjAdminLearnersController.select(action.dataset.todayLearner);
       if (ID.test(action.dataset.todayCohort || '') && window.sjAdminCohortsController) window.sjAdminCohortsController.select(action.dataset.todayCohort);
     });

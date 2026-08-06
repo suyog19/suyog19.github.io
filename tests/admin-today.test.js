@@ -48,3 +48,31 @@ test('issue 345 uses accessible live, loading, and responsive queue presentation
   assert.match(css, /\.admin-page \.admin-today-items \{ display: grid; grid-template-columns: repeat\(auto-fit, minmax\(15rem, 1fr\)\)/);
   assert.doesNotMatch(script, /innerHTML|insertAdjacentHTML|location\.(?:hash|search)|gtag\s*\(/);
 });
+
+test('issue 469 routes Today work by action semantics instead of supporting learner context', () => {
+  assert.match(script, /REVIEW_APPLICATION: 'applications'/);
+  assert.match(script, /REVIEW_PAYMENT: 'payments'/);
+  assert.match(script, /REVIEW_REFUND: 'payments'/);
+  assert.match(script, /REVIEW_COMMUNICATION: 'payments'/);
+  assert.match(script, /const view = ACTION_VIEWS\[action\]/);
+  assert.doesNotMatch(script, /if \(learnerId\) return \{ view: 'learners'/);
+});
+
+test('issue 469 opens the exact application from the authoritative Today item identifier', () => {
+  assert.match(script, /item\.id\.startsWith\('application:'\)/);
+  assert.match(script, /button\.dataset\.todayApplication = target\.applicationId/);
+  assert.match(script, /sjAdminApplicationsController\.open\(action\.dataset\.todayApplication \|\| ''\)/);
+  assert.match(shell, /window\.sjAdminApplicationsController = \{ open: openApplication \}/);
+  assert.match(shell, /state\.selectedApplicationId = applicationId/);
+});
+
+test('issue 469 safely falls back to Applications and focuses successfully loaded detail', () => {
+  assert.match(script, /action\.dataset\.todayAction === 'REVIEW_APPLICATION'/);
+  assert.match(script, /sjAdminApplicationsController\.open\(action\.dataset\.todayApplication \|\| ''\)/);
+  assert.doesNotMatch(script, /dataset\.todayApplication = item\.id/);
+  assert.match(shell, /state\.selectedApplicationId = ''/);
+  assert.match(shell, /application reference from Today is unavailable/);
+  assert.match(shell, /pendingApplicationFocusId === applicationId/);
+  assert.match(shell, /els\.applicationDetail\.focus\(\)/);
+  assert.match(shell, /if \(state\.trainingCourses\.length\) loadApplicationDetail\(applicationId\)/);
+});
