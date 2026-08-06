@@ -1,12 +1,16 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const vm = require('node:vm');
 
 const page = fs.readFileSync('admin/index.html', 'utf8');
 const script = fs.readFileSync('js/admin-communications.js', 'utf8');
 const learners = fs.readFileSync('js/admin-learners.js', 'utf8');
 const cohorts = fs.readFileSync('js/admin-cohorts.js', 'utf8');
 const shell = fs.readFileSync('js/admin.js', 'utf8');
+const context = { window: {} };
+vm.runInNewContext(script, context);
+const responseTools = context.window.sjAdminCommunications;
 
 test('issue 343 exposes business intent actions in learner and cohort context', () => {
   for (const intent of ['SEND_DEPOSIT_PAYMENT_LINK', 'REMIND_REMAINING_FEE', 'SEND_COHORT_UPDATE']) {
@@ -60,4 +64,42 @@ test('issue 343 dialog is accessible, safely rendered, and responsive', () => {
   assert.match(page, /id="admin-communication-error" role="alert"/);
   assert.doesNotMatch(script, /innerHTML|insertAdjacentHTML|outerHTML/);
   assert.match(fs.readFileSync('css/pages.css', 'utf8'), /\.admin-page \.admin-communication-dialog \{ width: min\(72rem/);
+});
+
+test('issue 472 unwraps valid authoritative preview and execution envelopes', () => {
+  const preview = {
+    intent: 'SEND_DEPOSIT_PAYMENT_LINK', scope: 'INDIVIDUAL', eligibleCount: 1, excludedCount: 0,
+    items: [{ enrolmentId: 'enrolment_1', eligible: true }], nextCursor: null, previewToken: 'a'.repeat(64),
+  };
+  const execution = {
+    intent: 'SEND_DEPOSIT_PAYMENT_LINK', scope: 'INDIVIDUAL', acceptedCount: 1, skippedCount: 0,
+    excludedCount: 0, outcomes: [{ enrolmentId: 'enrolment_1', status: 'ACCEPTED' }],
+  };
+  assert.equal(responseTools.previewFromResponse({ preview }), preview);
+  assert.equal(responseTools.executionFromResponse({ execution }), execution);
+  assert.match(script, /renderPreview\(authoritativePreview\)/);
+  assert.match(script, /renderOutcome\(authoritativeExecution\)/);
+});
+
+test('issue 472 rejects missing and malformed response envelopes without rendering undefined', () => {
+  const validPreview = {
+    intent: 'SEND_DEPOSIT_PAYMENT_LINK', scope: 'INDIVIDUAL', eligibleCount: 1, excludedCount: 0,
+    items: [], nextCursor: null, previewToken: 'b'.repeat(64),
+  };
+  for (const data of [null, {}, { preview: null }, { preview: [] }, { preview: { ...validPreview, eligibleCount: undefined } }, { preview: { ...validPreview, previewToken: 'invalid' } }]) {
+    assert.equal(responseTools.previewFromResponse(data), null);
+  }
+  for (const data of [null, {}, { execution: null }, { execution: [] }, { execution: { acceptedCount: 1 } }]) {
+    assert.equal(responseTools.executionFromResponse(data), null);
+  }
+  assert.match(script, /invalid communication preview\. No communication was sent/);
+  assert.match(script, /delivery response could not be verified\. Delivery may have been accepted/);
+  assert.match(script, /preview = null;\s*setFormEnabled\(false\)/);
+});
+
+test('issue 472 preserves envelope evidence until a valid execution is verified', () => {
+  const invalidExecutionBranch = script.slice(script.indexOf('if (!authoritativeExecution)'), script.indexOf('renderOutcome(authoritativeExecution)'));
+  assert.doesNotMatch(invalidExecutionBranch, /clearIdempotency/);
+  assert.doesNotMatch(invalidExecutionBranch, /setStatus\([^)]*success/);
+  assert.match(script, /renderOutcome\(authoritativeExecution\); config\.clearIdempotency\('communication-intent'\)/);
 });
