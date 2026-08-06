@@ -683,6 +683,8 @@
 .interest-form .form-group { margin-bottom: 1.25rem; }
 .interest-form label,.interest-form legend { display: block; font-weight: 600; margin-bottom: .4rem; }
 .interest-form :is(input:not([type=checkbox]),textarea,select) { border: 1px solid var(--color-border); border-radius: .25rem; box-sizing: border-box; font: inherit; padding: .75rem; width: 100%; }
+.application-shell :is(input:not([type=checkbox]),textarea,select) { border: 1px solid var(--color-border); border-radius: .25rem; box-sizing: border-box; font: inherit; padding: .75rem; width: 100%; }
+.application-shell :is(input,textarea,select)[aria-invalid=true] { border-color: #b91c1c; outline-color: #b91c1c; }
 .interest-form :is(input,textarea,select)[aria-invalid=true] { border-color: #b91c1c; outline-color: #b91c1c; }
 .interest-topics { display: grid; gap: .55rem; }
 .interest-topics label,.consent-field label { align-items: flex-start; display: flex; font-weight: 400; gap: .55rem; line-height: 1.5; }

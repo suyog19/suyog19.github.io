@@ -16,23 +16,23 @@
   function validate(model, needsProfile) {
     const fields = {};
     if (!course(model.courseId)) fields.courseId = 'Choose an available course.';
-    for (const key of ['programmingExperience', 'learningGoal', 'weeklyAvailability']) {
-      if (!bounded(model.answers[key], 1000)) fields[key] = 'Enter between 1 and 1000 characters.';
-    }
+    if (typeof model.learnerNote !== 'string' || model.learnerNote.trim().length > 500) fields.learnerNote = 'Keep your optional note within 500 characters.';
     if (needsProfile) {
       if (!bounded(model.fullName, 120)) fields.fullName = 'Enter your full name.';
-      if (typeof model.timezone !== 'string' || !/^[A-Za-z_]+(?:\/[A-Za-z0-9_+\-]+)+$/.test(model.timezone)) fields.timezone = 'Enter an IANA timezone.';
+      if (typeof model.timezone !== 'string' || !/^[A-Za-z_]+(?:\/[A-Za-z0-9_+\-]+)+$/.test(model.timezone)) fields.timezone = 'Choose a valid timezone.';
     }
-    if (model.adultEligibilityConfirmed !== true) fields.adultEligibilityConfirmed = 'Adult confirmation is required.';
-    if (!model.termsAccepted) fields.termsAccepted = 'Terms and privacy acknowledgement is required.';
-    if (!model.recordingAccepted) fields.recordingAccepted = 'Recorded-delivery acknowledgement is required.';
+    if (model.requiredConfirmation !== true) fields.requiredConfirmation = 'Confirm that you are 18 or older and accept the required course policies to submit your application.';
     return fields;
   }
   function payload(model) {
+    // Compatibility mapping for the existing Gate 1 contract. The application
+    // deliberately asks for one optional note while the API still requires all
+    // three legacy answer strings to be non-empty.
+    const note = model.learnerNote.trim();
     return { courseId: model.courseId, answers: {
-      programmingExperience: model.answers.programmingExperience.trim(),
-      learningGoal: model.answers.learningGoal.trim(),
-      weeklyAvailability: model.answers.weeklyAvailability.trim(),
+      programmingExperience: 'N/A',
+      learningGoal: note || 'N/A',
+      weeklyAvailability: 'N/A',
     }, acknowledgements: ACKNOWLEDGEMENTS.map((item) => ({ ...item })) };
   }
   function replacementPayload(model, expectedVersion) { return { ...payload(model), expectedVersion }; }
