@@ -149,33 +149,37 @@ test("three pipeline pages use one complete shared static-first structure", () =
   }
 });
 
-test("interest form is course-specific, consented, bounded and recoverable", () => {
+test("interest form is lightweight, course-specific, consented and recoverable", () => {
   const html = read("training/register-interest/index.html");
   const js = read("js/course-interest.js");
-  for (const field of [
-    "name",
-    "email",
-    "background",
-    "capability",
-    "intendedOutcome",
-    "consent",
-    "preferredTimeframe",
-    "topicInterests",
-    "instructorQuestion",
-  ])
+  for (const field of ["name", "email", "consent", "instructorQuestion"])
     assert.match(html + js, new RegExp(field));
+  assert.doesNotMatch(html, /Current role or learning background|Relevant current capability|Preferred launch timeframe|Main topics of interest/);
+  assert.match(html, /Anything you’d like us to know about your interest/);
+  assert.match(html, /Name <span>\(optional\)<\/span>/);
+  assert.match(html, /Notify me about this course/);
+  assert.match(html, /data-course-summary/);
+  assert.match(html, /data-change-course/);
+  assert.match(html, /Privacy Policy<\/a>/);
+  assert.match(html, /target="_blank" rel="noopener noreferrer"/);
   assert.match(js, /training\/course-actions/);
   assert.match(js, /submitting/);
   assert.match(js, /\[409, 422\]/);
   assert.match(js, /selected\.consentVersion/);
+  assert.match(js, /REQUIRED_PIPELINE_PLACEHOLDER = "N\/A"/);
+  assert.match(js, /DEFAULT_LEARNER_NAME = "Learner"/);
   assert.doesNotMatch(js, /sourcePageUrl|courseTitle:|courseStage:/);
   assert.match(js, /campaign/);
   assert.match(js, /preserve entered data|Your entries are still here/i);
   assert.match(html, /data-consent-statement/);
   assert.match(
     html,
-    /No application, waitlist, payment, offer, seat, enrolment, or certificate record/,
+    /not an application and does not reserve a seat or create any payment obligation/,
   );
+  assert.match(html, /data-success-course/);
+  assert.match(js, /Enter your email address\./);
+  assert.match(js, /Enter a valid email address\./);
+  assert.match(js, /Select the checkbox to receive updates about this course\./);
 });
 
 test("pipeline analytics expose stable identity and interaction events", () => {
