@@ -2,7 +2,9 @@
   'use strict';
 
   const ID = /^[A-Za-z0-9_-]{1,160}$/;
+  const PREVIEW_TOKEN = /^[a-f0-9]{64}$/;
   const INTENTS = new Set(['SEND_DEPOSIT_PAYMENT_LINK', 'REMIND_REMAINING_FEE', 'SEND_COHORT_UPDATE']);
+  const SCOPES = new Set(['INDIVIDUAL', 'COHORT']);
   const DECISIONS = { RESEND: 'Send the current canonical message again', REPLACE_EXPIRED: 'Create and send a current payment link', SUPPRESS: 'Do not send' };
   const REASONS = {
     DEPOSIT_NOT_DUE: 'A deposit is not currently due.', DEPOSIT_SETTLED_OR_BLOCKED: 'The deposit is settled, closed, or otherwise blocked.', CURRENT_LINK_UNAVAILABLE: 'There is no authoritative current payment link.', LINK_STATE_UNCERTAIN: 'The payment-link state is uncertain and must be reviewed.', CURRENT_COMMUNICATION_UNAVAILABLE: 'The current canonical deposit message cannot be sent again.', BALANCE_NOT_DUE: 'A remaining fee is not currently due.', BALANCE_SETTLED_OR_BLOCKED: 'The remaining fee is settled, closed, or otherwise blocked.', CURRENT_REMINDER_UNAVAILABLE: 'The current canonical reminder is unavailable.', CURRENT_COHORT_UPDATE_UNAVAILABLE: 'There is no current canonical cohort update to send.', JOINING_INFORMATION_NOT_SUPPORTED: 'Joining information is not yet supported by this action.'
@@ -11,6 +13,39 @@
   function node(tag, value, className) { const element = document.createElement(tag); if (className) element.className = className; element.textContent = value || ''; return element; }
   function safeId(value) { return ID.test(value || '') ? value : ''; }
   function reason(value) { return REASONS[value] || (value ? window.sjAdminUi.label(value) : 'Eligible'); }
+  function record(value) { return Boolean(value) && typeof value === 'object' && !Array.isArray(value); }
+  function count(value) { return Number.isSafeInteger(value) && value >= 0; }
+
+  function previewFromResponse(data) {
+    const value = record(data) ? data.preview : null;
+    if (
+      !record(value)
+      || !INTENTS.has(value.intent)
+      || !SCOPES.has(value.scope)
+      || !count(value.eligibleCount)
+      || !count(value.excludedCount)
+      || !Array.isArray(value.items)
+      || !value.items.every(record)
+      || !(value.nextCursor === null || (typeof value.nextCursor === 'string' && value.nextCursor.length >= 1 && value.nextCursor.length <= 2048))
+      || !(value.previewToken === null || (typeof value.previewToken === 'string' && PREVIEW_TOKEN.test(value.previewToken)))
+    ) return null;
+    return value;
+  }
+
+  function executionFromResponse(data) {
+    const value = record(data) ? data.execution : null;
+    if (
+      !record(value)
+      || !INTENTS.has(value.intent)
+      || !SCOPES.has(value.scope)
+      || !count(value.acceptedCount)
+      || !count(value.skippedCount)
+      || !count(value.excludedCount)
+      || !Array.isArray(value.outcomes)
+      || !value.outcomes.every(record)
+    ) return null;
+    return value;
+  }
 
   function create(config) {
     const dialog = document.getElementById('admin-communication-dialog');
@@ -76,7 +111,14 @@
       try {
         const data = await config.request('/admin/training/communication-intents/preview', { method: 'POST', body: JSON.stringify(request) });
         if (current !== generation) return;
-        preview = data; renderPreview(data);
+        const authoritativePreview = previewFromResponse(data);
+        if (!authoritativePreview) {
+          previewRoot.replaceChildren(node('p', 'The service returned an invalid communication preview. No communication was sent.', 'admin-empty'));
+          setError('Close this window and try again. Contact support if the preview remains unavailable.');
+          setFormEnabled(false);
+          return;
+        }
+        preview = authoritativePreview; renderPreview(authoritativePreview);
       } catch (failure) {
         if (failure.status === 401 || failure.status === 403) { dialog.close(); config.clearSession('Your admin session is no longer authorized. Sign in again.'); return; }
         previewRoot.replaceChildren(node('p', 'The authoritative preview could not be loaded. No communication was sent.', 'admin-empty')); setError(config.friendlyError(failure));
@@ -101,7 +143,14 @@
       execute.disabled = true; execute.setAttribute('aria-busy', 'true'); execute.textContent = 'Sending…';
       try {
         const data = await config.request('/admin/training/communication-intents/execute', { method: 'POST', body: JSON.stringify(body), headers: { 'Idempotency-Key': config.idempotencyKey('communication-intent', body) } });
-        renderOutcome(data); config.clearIdempotency('communication-intent');
+        const authoritativeExecution = executionFromResponse(data);
+        if (!authoritativeExecution) {
+          preview = null;
+          setFormEnabled(false);
+          setError('The delivery response could not be verified. Delivery may have been accepted. Close this window, refresh the learner, and review communication status before trying again.');
+          return;
+        }
+        renderOutcome(authoritativeExecution); config.clearIdempotency('communication-intent');
         config.setStatus('Communication request completed. Refreshing authoritative learner, cohort, and Today views.', 'success');
         if (config.refreshContext) config.refreshContext();
       } catch (failure) {
@@ -121,5 +170,5 @@
     return { open, clear: () => { generation += 1; request = null; preview = null; if (dialog.open) dialog.close(); } };
   }
 
-  window.sjAdminCommunications = { create };
+  window.sjAdminCommunications = { create, previewFromResponse, executionFromResponse };
 }());
