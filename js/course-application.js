@@ -24,6 +24,7 @@
   const userLabel = document.getElementById('application-user-label');
   const logout = document.getElementById('application-logout');
   const cancel = document.getElementById('application-cancel');
+  if (practicalSummary) practicalSummary.hidden = courseId !== 'crs_python_foundations';
   let needsProfile = false;
   let pending = false;
   let retryAction = initialise;
@@ -53,35 +54,46 @@
       courseId,
       fullName: document.getElementById('application-full-name').value,
       timezone: document.getElementById('application-timezone').value,
-      adultEligibilityConfirmed: document.getElementById('application-adult').checked,
-      termsAccepted: document.getElementById('application-terms').checked,
-      recordingAccepted: document.getElementById('application-recording').checked,
-      answers: {
-        programmingExperience: document.getElementById('application-experience').value,
-        learningGoal: document.getElementById('application-goal').value,
-        weeklyAvailability: document.getElementById('application-availability').value,
-      },
+      learnerNote: document.getElementById('application-note').value,
+      requiredConfirmation: document.getElementById('application-confirmation').checked,
     };
   }
   function saveDraft(value) {
     sessionStorage.setItem(draftKey, JSON.stringify(value || formModel()));
   }
+  function timezoneSupported(value) {
+    return typeof value === 'string' && Array.from(document.getElementById('application-timezone').options).some((option) => option.value === value);
+  }
+  function ensureTimezoneOption(value) {
+    const timezone = document.getElementById('application-timezone');
+    if (!value || timezoneSupported(value)) return;
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value.replaceAll('_', ' ');
+    timezone.appendChild(option);
+  }
+  function detectedTimezone() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (_) { return ''; }
+  }
   function restoreDraft() {
     const draft = readDraft();
-    if (!draft || draft.courseId !== courseId) return;
-    const values = {
-      'application-full-name': draft.fullName,
-      'application-timezone': draft.timezone,
-      'application-experience': draft.answers && draft.answers.programmingExperience,
-      'application-goal': draft.answers && draft.answers.learningGoal,
-      'application-availability': draft.answers && draft.answers.weeklyAvailability,
-    };
-    Object.entries(values).forEach(([id, value]) => {
-      if (typeof value === 'string') document.getElementById(id).value = value;
-    });
-    document.getElementById('application-adult').checked = draft.adultEligibilityConfirmed === true;
-    document.getElementById('application-terms').checked = draft.termsAccepted === true;
-    document.getElementById('application-recording').checked = draft.recordingAccepted === true;
+    if (!draft || draft.courseId !== courseId) return false;
+    if (typeof draft.fullName === 'string') document.getElementById('application-full-name').value = draft.fullName;
+    if (typeof draft.timezone === 'string' && draft.timezone) {
+      ensureTimezoneOption(draft.timezone);
+      document.getElementById('application-timezone').value = draft.timezone;
+    }
+    const legacyNote = draft.answers && draft.answers.learningGoal;
+    if (typeof draft.learnerNote === 'string') document.getElementById('application-note').value = draft.learnerNote;
+    else if (legacyNote && legacyNote !== 'N/A') document.getElementById('application-note').value = legacyNote;
+    document.getElementById('application-confirmation').checked = draft.requiredConfirmation === true
+      || (draft.adultEligibilityConfirmed === true && draft.termsAccepted === true && draft.recordingAccepted === true);
+    return true;
+  }
+  function initialiseTimezone(hasDraft) {
+    if (hasDraft) return;
+    const detected = detectedTimezone();
+    document.getElementById('application-timezone').value = timezoneSupported(detected) ? detected : 'Asia/Kolkata';
   }
   function idempotencyKey(value) {
     const fingerprint = model.fingerprint(value, sourceApplication);
@@ -95,19 +107,24 @@
   }
   function clearFieldErrors() {
     form.querySelectorAll('[aria-invalid="true"]').forEach((field) => field.removeAttribute('aria-invalid'));
+    form.querySelectorAll('.field-error').forEach((error) => { error.textContent = ''; error.hidden = true; });
   }
   function showFieldErrors(fields) {
     const ids = {
       fullName: 'application-full-name', timezone: 'application-timezone',
-      programmingExperience: 'application-experience', learningGoal: 'application-goal',
-      weeklyAvailability: 'application-availability', adultEligibilityConfirmed: 'application-adult',
-      termsAccepted: 'application-terms', recordingAccepted: 'application-recording',
+      learnerNote: 'application-note', requiredConfirmation: 'application-confirmation',
+    };
+    const errors = {
+      fullName: 'application-full-name-error', timezone: 'application-timezone-error',
+      learnerNote: 'application-note-error', requiredConfirmation: 'application-confirmation-error',
     };
     clearFieldErrors();
     const first = Object.keys(fields)[0];
     Object.keys(fields).forEach((key) => {
       const field = document.getElementById(ids[key]);
       if (field) field.setAttribute('aria-invalid', 'true');
+      const error = document.getElementById(errors[key]);
+      if (error) { error.textContent = fields[key]; error.hidden = false; }
     });
     const target = document.getElementById(ids[first]);
     if (target) target.focus();
@@ -195,7 +212,9 @@
     const fields = model.validate(value, needsProfile);
     if (Object.keys(fields).length) {
       showFieldErrors(fields);
-      message('Review the required information and try again.', 'error');
+      message(Object.keys(fields).length === 1 && fields.requiredConfirmation
+        ? 'Confirm your eligibility and accept the required policies to continue.'
+        : 'Please correct the highlighted information and try again.', 'error');
       return;
     }
     clearFieldErrors();
@@ -272,7 +291,8 @@
       retry.hidden = true;
       return;
     }
-    restoreDraft();
+    const hasDraft = restoreDraft();
+    initialiseTimezone(hasDraft);
     try {
       const user = await auth.restore();
       if (!user) { window.location.replace(loginUrl()); return; }
@@ -285,9 +305,9 @@
         const profile = await auth.request('/learners/me', { method: 'GET' });
         needsProfile = false;
         profileFields.hidden = true;
-        document.getElementById('application-adult').checked = profile.learner.adultEligibilityConfirmed === true;
         const current = new Set((profile.learner.acknowledgements || []).map((item) => item.documentId + ':' + (item.version || item.documentVersion)));
         missingAcknowledgements = model.ACKNOWLEDGEMENTS.filter((item) => !current.has(item.documentId + ':' + item.version));
+        document.getElementById('application-confirmation').checked = profile.learner.adultEligibilityConfirmed === true && missingAcknowledgements.length === 0;
       } catch (error) {
         if (error.status !== 404) throw error;
         needsProfile = true;
@@ -308,9 +328,8 @@
           throw Object.assign(new Error('APPLICATION_REPLACEMENT_CONFLICT'), { status: 409, body: { error: 'APPLICATION_REPLACEMENT_CONFLICT' } });
         }
         if (!readDraft()) {
-          document.getElementById('application-experience').value = sourceApplication.answers.programmingExperience;
-          document.getElementById('application-goal').value = sourceApplication.answers.learningGoal;
-          document.getElementById('application-availability').value = sourceApplication.answers.weeklyAvailability;
+          const existingNote = sourceApplication.answers && sourceApplication.answers.learningGoal;
+          document.getElementById('application-note').value = existingNote && existingNote !== 'N/A' ? existingNote : '';
         }
         courseSummary.textContent = 'Correcting ' + sourceApplication.reference + ' for ' + publicCourse.course.title + '. Your original remains active until you resubmit.';
         submit.textContent = 'Submit corrected application';
@@ -328,7 +347,18 @@
       recovery.hidden = false;
     }
   }
-  form.addEventListener('input', () => saveDraft());
+  form.addEventListener('input', (event) => {
+    saveDraft();
+    if (event.target && event.target.getAttribute('aria-invalid') === 'true') {
+      event.target.removeAttribute('aria-invalid');
+      const describedBy = (event.target.getAttribute('aria-describedby') || '').split(/\s+/);
+      describedBy.forEach((id) => {
+        const error = document.getElementById(id);
+        if (error && error.classList.contains('field-error')) { error.textContent = ''; error.hidden = true; }
+      });
+      message('', '');
+    }
+  });
   form.addEventListener('submit', (event) => { event.preventDefault(); submitApplication(); });
   retry.addEventListener('click', () => { recovery.hidden = true; retryAction(); });
   logout.addEventListener('click', async () => { saveDraft(); await auth.logout(); window.location.replace(loginUrl()); });

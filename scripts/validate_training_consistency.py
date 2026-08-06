@@ -23,6 +23,7 @@ SOURCE_PATHS = (
     "training/policies/conduct-recording/index.html",
     "training/policies/privacy/index.html",
     "js/course-actions.js",
+    "js/course-application-model.js",
 )
 STALE_LAUNCHED_COPY = (
     "criteria are not yet published",
@@ -167,8 +168,8 @@ def validate_consistency(catalogue: dict[str, object], sources: dict[str, str]) 
         "11 of 14 regular live sessions",
         "Core-Python structured-data analyser",
     ))
-    if 'id="application-adult"' not in application:
-        errors.append("apply/index.html: adult-confirmation control is missing")
+    if 'id="application-confirmation"' not in application or "I confirm that I am 18 or older" not in application:
+        errors.append("apply/index.html: combined adult-and-policy confirmation control is missing")
 
     terms = sources["training/policies/terms/index.html"]
     conduct = sources["training/policies/conduct-recording/index.html"]
@@ -178,7 +179,6 @@ def validate_consistency(catalogue: dict[str, object], sources: dict[str, str]) 
     require_all(errors, "privacy/index.html", privacy, WHATSAPP_COMMITMENTS)
 
     policy_surfaces = (
-        "apply/index.html",
         "privacy/index.html",
         "training/policies/terms/index.html",
         "training/policies/conduct-recording/index.html",
@@ -187,6 +187,8 @@ def validate_consistency(catalogue: dict[str, object], sources: dict[str, str]) 
     for location in policy_surfaces:
         if POLICY_VERSION not in sources[location]:
             errors.append(f"{location}: policy version {POLICY_VERSION} is missing")
+    if POLICY_VERSION not in sources["js/course-application-model.js"]:
+        errors.append(f"js/course-application-model.js: application acknowledgement version {POLICY_VERSION} is missing")
 
     runtime = sources["js/course-actions.js"]
     for token in ("minimumSize", "capacity", "data-cohort-size", "size.textContent"):

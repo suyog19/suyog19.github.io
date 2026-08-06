@@ -929,7 +929,7 @@
       ['Current application', application.isCurrent ? 'Yes' : 'No'], ['Version', application.version],
     ]));
     if (application.profileSnapshot) els.applicationDetail.appendChild(detailSection('Profile at submission', application.profileSnapshot));
-    if (application.answers) els.applicationDetail.appendChild(detailSection('Application answers', application.answers));
+    if (application.answers) els.applicationDetail.appendChild(detailSection('Application context', trainingTools.applicationAnswerPresentation(application.answers)));
     if (application.acknowledgements) {
       const acknowledgements = Object.fromEntries(application.acknowledgements.map((item, index) => ['Acknowledgement ' + (index + 1), (item.documentId || 'Document') + ' version ' + (item.version || 'unknown')]));
       els.applicationDetail.appendChild(detailSection('Acknowledgements', acknowledgements));

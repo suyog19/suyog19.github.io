@@ -3629,8 +3629,62 @@
   margin-top: .3rem;
 }
 
-.application-check > span {
+.application-check > div {
   min-width: 0;
+  font-weight: 400;
+}
+
+.application-check label {
+  font-weight: 400;
+}
+
+.application-check a {
+  color: #0f766e;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: .08em;
+  text-underline-offset: .16em;
+}
+
+.application-check a:hover {
+  color: #115e59;
+  text-decoration-thickness: .12em;
+}
+
+.application-check a:focus-visible {
+  border-radius: .15rem;
+  outline: 3px solid rgba(15, 118, 110, .3);
+  outline-offset: 2px;
+}
+
+.application-check-error {
+  margin-left: 1.75rem;
+}
+
+.field-optional {
+  color: var(--color-text-muted);
+  font-size: .85em;
+  font-weight: 400;
+}
+
+.application-course-details {
+  margin-top: 1rem;
+}
+
+.application-course-details summary {
+  color: #0f766e;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.application-course-details summary:focus-visible {
+  border-radius: .2rem;
+  outline: 3px solid rgba(15, 118, 110, .3);
+  outline-offset: 3px;
+}
+
+.application-course-details__body {
+  margin-top: 1rem;
 }
 
 .application-disclosure {
