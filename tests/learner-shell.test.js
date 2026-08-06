@@ -6,6 +6,7 @@ const vm = require('node:vm');
 class Element {
   constructor(tag = 'div') {
     this.tag = tag;
+    this.tagName = tag.toUpperCase();
     this.children = [];
     this.hidden = false;
     this.disabled = false;
@@ -13,11 +14,14 @@ class Element {
     this.href = '';
     this.attributes = {};
     this.listeners = {};
+    this.focused = false;
   }
   appendChild(child) { this.children.push(child); return child; }
   replaceChildren(...children) { this.children = children; }
   addEventListener(name, callback) { this.listeners[name] = callback; }
   setAttribute(name, value) { this.attributes[name] = value; }
+  getAttribute(name) { return this.attributes[name] || null; }
+  focus() { this.focused = true; }
 }
 
 function harness(authOverrides = {}) {
@@ -80,6 +84,10 @@ function findByHref(node, href) {
   return undefined;
 }
 
+function findAllByHref(node, href) {
+  return [node.href === href ? node : null, ...node.children.flatMap((child) => findAllByHref(child, href))].filter(Boolean);
+}
+
 test('renderer preserves empty-profile semantics and support fallbacks', () => {
   const { elements, shell } = harness();
   shell.renderSummary(summary({ support: { privacyUrl: 'https://evil.example/' } }));
@@ -126,7 +134,7 @@ test('renderer shows only explicit offers, safe recommendations, and failed deli
   const text = flattenedText(card);
   assert.doesNotMatch(text, /cohort offer is available/);
   assert.match(text, /View recommended course/);
-  assert.match(text, /application status shown above is unchanged/);
+  assert.match(text, /learning status shown above is unchanged/);
   assert.ok(findByHref(card, '/training/applied-data-analysis-with-python/'));
 });
 
@@ -153,8 +161,8 @@ test('offered enrolment without a payment projection links to learner-owned depo
     }],
   }));
   const href = '/my-learning/payment/?enrolmentId=enr_offer';
-  assert.equal(elements['learner-current-action'].hidden, false);
-  assert.ok(elements['learner-current-action'].children.length > 0);
+  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].children.length, 0);
   assert.ok(findByHref(elements['learner-applications'], href));
   assert.match(flattenedText(elements['learner-applications']), /place is not reserved yet/i);
   assert.match(flattenedText(elements['learner-applications']), /Review deposit details/);
@@ -191,7 +199,7 @@ test('renderer keeps Gate 2 domain stages separate and links only to focused jou
       },
     }],
   }));
-  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.equal(elements['learner-current-action'].hidden, true);
   const card = elements['learner-applications'].children[0];
   const joined = flattenedText(card);
   assert.match(joined, /Place status.*Seat reserved/);
@@ -214,8 +222,8 @@ test('unsupported Gate 3 and Gate 4 actions render neutral and inert', () => {
       }],
     }));
     const current = elements['learner-current-action'];
-    assert.equal(current.hidden, false);
-    assert.ok(current.children.length > 0);
+    assert.equal(current.hidden, true);
+    assert.equal(current.children.length, 0);
     const cardText = elements['learner-applications'].children[0].children.map((child) => child.textContent).join(' | ');
     assert.doesNotMatch(cardText, /Pay balance|Open course resources|Future action/);
   }
@@ -231,10 +239,10 @@ test('future actions stay inert when gate2 is absent or retains a supported code
     const application = { reference: 'APP-FUTURE', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code: shape.code, label: shape.label } };
     if (shape.gate2) application.gate2 = shape.gate2;
     shell.renderSummary(summary({ currentAction: { code: shape.code, label: shape.label, href: '/my-learning/' }, applications: [application] }));
-    assert.equal(elements['learner-current-action'].hidden, false);
-    assert.ok(elements['learner-current-action'].children.length > 0);
+    assert.equal(elements['learner-current-action'].hidden, true);
+    assert.equal(elements['learner-current-action'].children.length, 0);
     const card = elements['learner-applications'].children[0];
-    assert.match(card.children[1].textContent, /current learning status|cohort is confirmed|seat is reserved/i);
+    assert.match(flattenedText(card), /current learning status|cohort is confirmed|seat is reserved/i);
     assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay balance|Open course resources/);
   });
 });
@@ -247,10 +255,10 @@ test('Gate 2-only actions stay inert when their authoritative projection is miss
       currentAction: { code, label, href: '/my-learning/' },
       applications: [{ reference: 'APP-MISSING-G2', course: { title: 'Python' }, offer: { enrolmentId: 'enr_one', status: 'RESERVED' }, action: { code, label } }],
     }));
-    assert.equal(elements['learner-current-action'].hidden, false);
-    assert.ok(elements['learner-current-action'].children.length > 0);
+    assert.equal(elements['learner-current-action'].hidden, true);
+    assert.equal(elements['learner-current-action'].children.length, 0);
     const card = elements['learner-applications'].children[0];
-    assert.match(card.children[1].textContent, /Deposit due|Refund being processed/);
+    assert.match(flattenedText(card), /Deposit due|Refund being processed/);
     assert.doesNotMatch(card.children.map((child) => child.textContent).join(' | '), /Pay deposit|View refund status/);
   });
 });
@@ -271,7 +279,7 @@ test('Gate 3 renders backend-owned fee, grace, extension, credit, and safe balan
       },
     }],
   }));
-  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.equal(elements['learner-current-action'].hidden, true);
   const card = elements['learner-applications'].children[0];
   const text = flattenedText(card);
   assert.match(text, /Cohort status.*Confirmed/);
@@ -332,8 +340,8 @@ test('active course-area action uses only current authorised local eligibility',
     }],
   }));
   const journey = findByHref(elements['learner-applications'], '/my-learning/enr_hub/');
-  assert.equal(elements['learner-current-action'].hidden, false);
-  assert.ok(elements['learner-current-action'].children.length > 0);
+  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].children.length, 0);
   assert.equal(journey.textContent, 'Open your course area');
 });
 
@@ -343,7 +351,7 @@ test('Gate 3 malformed ownership and unknown enums fail closed', () => {
     currentAction: { code: 'BALANCE_DUE', label: 'Pay balance' },
     applications: [{ reference: 'APP-BAD', journeyStatus: 'BALANCE_DUE', course: { title: 'Python' }, offer: { enrolmentId: '../admin' }, action: { code: 'BALANCE_DUE', label: 'Pay balance' }, gate3: { cohortDecision: 'UNKNOWN', balanceStatus: 'UNKNOWN', action: { code: 'PAY_BALANCE' } } }],
   }));
-  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.equal(elements['learner-current-action'].hidden, true);
   const card = elements['learner-applications'].children[0];
   assert.equal(card.children.some((child) => child.href), false);
   assert.doesNotMatch(flattenedText(card), /UNKNOWN/);
@@ -360,21 +368,97 @@ test('renderer offers correction only when backend marks the current application
     }],
   }));
   const card = elements['learner-applications'].children[0];
-  const correction = findByHref(card, '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
-  assert.equal(correction.href, '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
-  assert.equal(correction.textContent, 'View or correct your application');
+  const corrections = findAllByHref(card, '/apply/?courseId=crs_python_foundations&applicationId=app_abc');
+  assert.deepEqual(corrections.map((link) => link.textContent), ['Edit application', 'View application']);
   const text = flattenedText(card);
   assert.match(text, /No action is required right now/);
-  assert.match(text, /Corrections are optional/);
+  assert.match(text, /Viewing is optional/);
+  assert.match(text, /Changes apply only after you submit an update/);
   assert.match(text, /Application/);
   assert.match(text, /Application reference.*APP-3/);
   assert.match(text, /Submitted/);
-  assert.match(text, /Submitted.*Under review.*Decision/);
-  assert.equal(elements['learner-current-action'].hidden, false);
-  assert.ok(elements['learner-current-action'].children.length > 0);
+  assert.match(text, /Submitted.*Awaiting review.*Decision/);
+  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].children.length, 0);
 });
 
-test('global current status remains available for zero or multiple application journeys', () => {
+test('single journey is course-first and progress exposes completed current and future meaning', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({ applications: [{
+    reference: 'APP-COURSE', course: { title: 'Python Foundations' },
+    action: { code: 'APPLICATION_RECEIVED' },
+  }] }));
+  const card = elements['learner-applications'].children[0];
+  assert.equal(card.children[1].tag, 'h2');
+  assert.equal(card.children[1].textContent, 'Python Foundations');
+  assert.equal(card.children[2].textContent, 'Status: Application received');
+  const progress = card.children.find((child) => child.attributes['aria-label'] === 'Application progress');
+  assert.deepEqual(progress.children.map((step) => step.attributes['aria-label']), [
+    'Submitted: completed', 'Awaiting review: current', 'Decision: future, not yet confirmed',
+  ]);
+  assert.equal(progress.children[1].attributes['aria-current'], 'step');
+  assert.deepEqual(progress.children.map((step) => step.children[0].textContent), ['✓', '●', '○']);
+});
+
+test('profile shows a readable timezone and progressively discloses consent records', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({ learner: {
+    verifiedEmail: 'learner@example.com', fullName: 'Learner', timezone: 'Asia/Kolkata',
+    adultEligibilityConfirmed: true, acknowledgements: [], promotionalConsent: null,
+  } }));
+  const profile = elements['learner-profile-details'];
+  assert.equal(profile.children[0].tag, 'dl');
+  assert.match(flattenedText(profile.children[0]), /Timezone.*India Standard Time.*UTC\+05:30/);
+  assert.doesNotMatch(flattenedText(profile.children[0]), /Asia\/Kolkata/);
+  assert.equal(profile.children[1].tag, 'details');
+  assert.match(flattenedText(profile.children[1]), /Consent and policy records.*Adult eligibility.*Agreements on record/);
+});
+
+test('multi-journey notification uses the backend-authorised action and names its course', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    currentAction: { code: 'OFFERED', label: 'View your offer' },
+    applications: [
+      { course: { title: 'Applied Python' }, action: { code: 'OFFERED' }, offer: { status: 'OFFERED', enrolmentId: 'enr_offer' } },
+      { course: { title: 'Python Foundations' }, action: { code: 'APPLICATION_RECEIVED' } },
+    ],
+  }));
+  const notification = elements['learner-current-action'];
+  assert.equal(notification.hidden, false);
+  assert.match(flattenedText(notification), /Needs your attention.*accepted.*For Applied Python/i);
+  assert.ok(findByHref(notification, '/my-learning/payment/?enrolmentId=enr_offer'));
+  const firstGroup = elements['learner-applications'].children[0];
+  assert.equal(firstGroup.children[1].children[1].tag, 'h3');
+});
+
+test('multi-journey communication warning appears once at page level', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({ applications: [
+    { course: { title: 'Python' }, action: { code: 'APPLICATION_RECEIVED' }, communication: { status: 'FAILED' } },
+    { course: { title: 'Applied Python' }, action: { code: 'UNDER_REVIEW' } },
+  ] }));
+  const allText = flattenedText(elements['learner-current-action']) + ' ' + flattenedText(elements['learner-applications']);
+  assert.equal(elements['learner-current-action'].hidden, false);
+  assert.equal((allText.match(/could not confirm delivery/gi) || []).length, 1);
+  assert.match(allText, /Python/);
+});
+
+test('consequential dates use the learner timezone and include its short name', () => {
+  const { elements, shell } = harness();
+  shell.renderSummary(summary({
+    learner: { verifiedEmail: 'learner@example.com', fullName: 'Learner', timezone: 'Europe/London', acknowledgements: [] },
+    applications: [{
+      course: { title: 'Python' }, journeyStatus: 'BALANCE_DUE', offer: { enrolmentId: 'enr_one' },
+      action: { code: 'BALANCE_DUE' },
+      gate3: { balanceStatus: 'DUE', amountDue: 1000, balanceDeadline: '2026-08-01T04:30:00Z', action: { code: 'PAY_BALANCE' } },
+    }],
+  }));
+  const text = flattenedText(elements['learner-applications']);
+  assert.match(text, /1 Aug 2026.*5:30.*GMT\+1/i);
+  assert.doesNotMatch(text, /IST/);
+});
+
+test('page notification appears only for no-journey guidance or a distinct multi-journey action', () => {
   const { elements, shell } = harness();
   shell.renderSummary(summary({ applications: [] }));
   assert.equal(elements['learner-current-action'].hidden, false);
@@ -386,8 +470,8 @@ test('global current status remains available for zero or multiple application j
       { reference: 'APP-2', course: { title: 'Applied Python' }, action: { code: 'UNDER_REVIEW' } },
     ],
   }));
-  assert.equal(elements['learner-current-action'].hidden, false);
-  assert.ok(elements['learner-current-action'].children.length > 0);
+  assert.equal(elements['learner-current-action'].hidden, true);
+  assert.equal(elements['learner-current-action'].children.length, 0);
 });
 
 test('initialise exposes retry and support recovery after a network error', async () => {
@@ -402,6 +486,15 @@ test('initialise exposes retry and support recovery after a network error', asyn
   assert.equal(elements['learner-error-actions'].hidden, false);
   assert.equal(elements['learner-retry'].disabled, false);
   assert.equal(typeof elements['learner-retry'].listeners.click, 'function');
+});
+
+test('successful retry moves focus to the refreshed course heading', async () => {
+  const response = summary({ applications: [{ course: { title: 'Python Foundations' }, action: { code: 'UNDER_REVIEW' } }] });
+  const { elements } = harness({ request: async () => response });
+  await elements['learner-retry'].listeners.click();
+  const card = elements['learner-applications'].children[0];
+  assert.equal(card.children[1].textContent, 'Python Foundations');
+  assert.equal(card.children[1].focused, true);
 });
 
 test('a failed refresh clears and hides previously rendered private state', async () => {
@@ -453,4 +546,18 @@ test('logout uncertainty hides private content and gives safe recovery guidance'
   assert.match(elements['learner-shell-status'].textContent, /could not confirm server sign-out/);
   assert.equal(elements['learner-shell-status'].hidden, false);
   assert.equal(elements['learner-error-actions'].hidden, false);
+});
+
+test('My Learning markup uses a conditional notice and learner-friendly support labels', () => {
+  const html = fs.readFileSync('my-learning/index.html', 'utf8');
+  assert.match(html, /id="learner-current-action"[^>]*hidden/);
+  assert.match(html, /aria-labelledby="learner-support-title"/);
+  assert.match(html, />Help and policies</);
+  assert.match(html, />Policies and agreements</);
+  assert.doesNotMatch(html, />Current policy versions</);
+  assert.doesNotMatch(fs.readFileSync('js/learner-shell.js', 'utf8'), /\.children\.find\(/);
+  assert.doesNotMatch(fs.readFileSync('js/learner-shell.js', 'utf8'), /\.attributes\[['"]data-/);
+  const css = fs.readFileSync('css/learning.css', 'utf8');
+  assert.match(css, /@media \(max-width: 480px\)[\s\S]*\.software-signal-learning \.header-inner \{[\s\S]*grid-template-columns: auto minmax\(0,1fr\) auto/);
+  assert.match(css, /\.software-signal-learning \.brand-text \{ display: none; \}/);
 });

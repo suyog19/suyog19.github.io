@@ -774,14 +774,25 @@
 .software-signal-learning .learner-account > summary { border: 1px solid var(--learning-border); cursor: pointer; font-weight: 600; list-style: none; padding: .55rem .8rem; }
 .software-signal-learning .learner-account__panel { background: #fff; border: 1px solid var(--learning-border); box-shadow: 0 12px 28px rgba(15,76,71,.12); display: grid; gap: .7rem; min-width: 15rem; padding: 1rem; position: absolute; right: 0; top: calc(100% + .4rem); z-index: 20; }
 .software-signal-learning .learner-account__panel span { color: var(--color-text-muted); font-size: .82rem; overflow-wrap: anywhere; }
-.software-signal-learning .learner-current-action { border-left: 5px solid var(--learning-accent-strong); margin: 1.5rem 0 2rem; padding: clamp(1.2rem,3vw,2rem); }
-.software-signal-learning .learner-current-action h2 { font-size: clamp(1.55rem,4vw,2.2rem); margin: .35rem 0 .65rem; }
+.software-signal-learning .learner-current-action { background: #fffbeb; border: 1px solid #f2d38a; border-left: 4px solid #a16207; margin: 1.25rem 0 1.5rem; padding: 1rem 1.15rem; }
+.software-signal-learning .learner-current-action h2 { font-size: 1.2rem; margin: .2rem 0 .35rem; }
+.software-signal-learning .learner-current-action p { margin: .25rem 0; }
+.software-signal-learning .learner-current-action .btn { margin-top: .65rem; }
+.software-signal-learning .learner-notification-course { color: var(--color-text-muted); font-size: .82rem; }
 .software-signal-learning .learner-journey-group { margin: 2.5rem 0; }
 .software-signal-learning .learner-journey-group > h2 { border-bottom: 1px solid var(--learning-border); font-size: 1.25rem; padding-bottom: .6rem; }
 .software-signal-learning .learner-application-progress { align-items: stretch; display: grid; gap: .4rem; grid-template-columns: repeat(auto-fit,minmax(7rem,1fr)); margin: 1.2rem 0; }
-.software-signal-learning .learner-application-progress__step { border-top: 3px solid var(--learning-border); font-size: .78rem; padding-top: .5rem; }
+.software-signal-learning .learner-application-progress__step { align-items: baseline; border-top: 3px solid var(--learning-border); color: var(--color-text-muted); display: flex; font-size: .78rem; gap: .35rem; padding-top: .5rem; }
 .software-signal-learning .learner-application-progress__step--complete { border-color: var(--learning-accent); }
+.software-signal-learning .learner-application-progress__step--complete, .software-signal-learning .learner-application-progress__step--current { color: var(--color-text); }
 .software-signal-learning .learner-application-progress__step--current { border-color: var(--learning-accent-strong); font-weight: 700; }
+.software-signal-learning .learner-application-progress__icon { color: var(--learning-accent-strong); font-weight: 700; }
+.software-signal-learning .learner-course-title { margin: .25rem 0 .5rem; }
+.software-signal-learning .learner-status-badge { background: #fff; border: 1px solid var(--learning-border); color: var(--learning-accent-strong); display: inline-block; font-size: .78rem; font-weight: 700; margin: 0 0 .5rem; padding: .25rem .5rem; }
+.software-signal-learning .learner-edit-application { display: inline-block; font-weight: 600; margin-top: .75rem; }
+.software-signal-learning .learner-profile-identity { margin-bottom: 1rem; }
+.software-signal-learning .learner-profile .learning-details { margin-top: .75rem; }
+.software-signal-learning .learner-support-links strong { flex-basis: 100%; }
 .software-signal-learning .learner-public-context { background: var(--learning-accent-soft); border-left: 4px solid var(--learning-accent-strong); grid-column: 1 / -1; margin-bottom: 1rem; padding: .85rem 1rem; }
 .software-signal-learning .learner-public-context a { font-weight: 700; margin-left: .25rem; }
 @media (max-width: 480px) {
@@ -833,6 +844,19 @@
     align-items: flex-start;
   }
 
+  .software-signal-learning .header-inner {
+    display: grid;
+    gap: .5rem;
+    grid-template-columns: auto minmax(0,1fr) auto;
+    height: auto;
+    min-height: 4rem;
+    padding-bottom: .5rem;
+    padding-top: .5rem;
+  }
+
+  .software-signal-learning .brand-text { display: none; }
+  .software-signal-learning .learning-header-context { text-align: center; }
+
   .software-signal-learning .learner-private-user {
     flex-basis: 100%;
     max-width: 100%;
@@ -840,7 +864,8 @@
   }
 
   .software-signal-learning .learner-session {
-    flex-wrap: wrap;
+    align-items: center;
+    flex-wrap: nowrap;
     justify-content: flex-end;
     min-width: 0;
   }
