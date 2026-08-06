@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   const auth = window.sjLearnerAuth;
+  const summaryView = window.sjLearnerSummary;
   const status = document.getElementById('payment-status');
   const panel = document.getElementById('payment-panel');
   const stateBox = document.getElementById('payment-state');
@@ -59,6 +60,32 @@
       return offer && offer.status === 'OFFERED' && offer.enrolmentId === id && !application.gate2;
     });
   }
+  function changeNavigation(summary, id, journeyStatus) {
+    if (!summaryView || !summary || !Array.isArray(summary.applications)) return null;
+    const matches = summary.applications.filter((application) => application
+      && application.offer && application.offer.enrolmentId === id);
+    if (matches.length !== 1) return null;
+    const application = matches[0];
+    const newRequestHref = summaryView.gate2ChangeHref(application);
+    if (journeyStatus === 'RESERVED' && newRequestHref) {
+      return { href: newRequestHref, label: 'Request cancellation or another change' };
+    }
+    const gate = application.gate2 || {};
+    if (gate.learnerChange || gate.refund) {
+      const statusHref = summaryView.gate2Href(application);
+      return statusHref ? { href: statusHref, label: 'View request or refund status' } : null;
+    }
+    return null;
+  }
+  async function loadChangeNavigation(id, journeyStatus) {
+    if (!['RESERVED', 'CANCELLATION_REQUESTED', 'REFUND_PROCESSING', 'REFUNDED'].includes(journeyStatus)) return null;
+    try {
+      const summary = await auth.request('/me/learning-summary', { method: 'GET' });
+      return changeNavigation(summary, id, journeyStatus);
+    } catch (_) {
+      return null;
+    }
+  }
   async function recoverPreparation(id) {
     try {
       const summary = await auth.request('/me/learning-summary', { method: 'GET' });
@@ -110,7 +137,7 @@
     return Boolean(window.sjTrainingRelease
       && window.sjTrainingRelease.capabilityEnabled('depositPayments', window.location.hostname));
   }
-  function render(data) {
+  function render(data, change) {
     const descriptor = STATES[data.journeyStatus] || STATES.PAYMENT_ACTION_NEEDED;
     const payment = data.payment || {};
     const review = data.review || {};
@@ -180,6 +207,11 @@
       check.addEventListener('click', initialise);
       action.appendChild(check);
     }
+    if (change) {
+      const link = text('a', change.label, 'btn btn-secondary learner-payment-change-link');
+      link.href = change.href;
+      action.appendChild(link);
+    }
   }
   async function initialise() {
     const id = enrolmentId();
@@ -202,7 +234,9 @@
         renderPreparation(id);
         return;
       }
-      render(response.payment || response);
+      const payment = response.payment || response;
+      const change = await loadChangeNavigation(id, payment.journeyStatus);
+      render(payment, change);
       panel.hidden = false;
       status.hidden = true;
     } catch (error) {
@@ -217,6 +251,6 @@
     }
   }
   retry.addEventListener('click', initialise);
-  window.sjLearnerPayment = { enrolmentId, initialise, isRecoverableOffer, money, render, renderPreparation, safePaymentUrl };
+  window.sjLearnerPayment = { changeNavigation, enrolmentId, initialise, isRecoverableOffer, loadChangeNavigation, money, render, renderPreparation, safePaymentUrl };
   if (!window.__SJ_DISABLE_AUTO_INIT__) initialise();
 }());

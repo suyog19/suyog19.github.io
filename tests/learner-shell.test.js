@@ -168,6 +168,53 @@ test('offered enrolment without a payment projection links to learner-owned depo
   assert.match(flattenedText(elements['learner-applications']), /Review deposit details/);
 });
 
+test('eligible offered and reserved journeys expose a separate course-aware change action', () => {
+  for (const [status, code] of [['OFFERED', 'DEPOSIT_DUE'], ['RESERVED', 'RESERVED']]) {
+    const { elements, shell } = harness();
+    shell.renderSummary(summary({
+      currentAction: { code, label: 'Current action' },
+      applications: [{
+        reference: 'APP-CHANGE', journeyStatus: code, course: { title: 'Python Foundations' },
+        offer: { status, enrolmentId: 'enr_change' }, action: { code, label: 'Current action' },
+        gate2: {
+          action: { code, label: 'Current action' },
+          enrolment: { status, seatReserved: status === 'RESERVED' },
+        },
+      }],
+    }));
+    const card = elements['learner-applications'].children[0];
+    const change = findByHref(card, '/my-learning/change/?enrolmentId=enr_change');
+    assert.ok(change);
+    assert.equal(change.textContent, 'Request a change');
+    assert.equal(change.attributes['aria-label'], 'Request a change for Python Foundations');
+    assert.ok(findByHref(card, '/my-learning/payment/?enrolmentId=enr_change'));
+  }
+});
+
+test('existing request, refund, invalid identity, and closed places never expose a new change action', () => {
+  const shapes = [
+    { status: 'RESERVED', learnerChange: { status: 'REQUESTED' } },
+    { status: 'RESERVED', refund: { status: 'PROCESSING' } },
+    { status: 'CANCELLED' },
+    { status: 'TRANSFERRED' },
+    { status: 'RESERVED', enrolmentId: '../admin' },
+  ];
+  shapes.forEach((shape) => {
+    const { elements, shell } = harness();
+    const enrolmentId = shape.enrolmentId || 'enr_change';
+    shell.renderSummary(summary({ applications: [{
+      course: { title: 'Python' }, offer: { status: shape.status, enrolmentId },
+      action: { code: shape.refund ? 'REFUND_PROCESSING' : shape.learnerChange ? 'CANCELLATION_REQUESTED' : 'RESERVED' },
+      gate2: {
+        action: { code: shape.refund ? 'REFUND_PROCESSING' : shape.learnerChange ? 'CANCELLATION_REQUESTED' : 'RESERVED' },
+        enrolment: { status: shape.status }, learnerChange: shape.learnerChange, refund: shape.refund,
+      },
+    }] }));
+    const card = elements['learner-applications'].children[0];
+    assert.equal(flattenedText(card).includes('Request a change'), false);
+  });
+});
+
 test('malformed or non-offered enrolments cannot expose initial deposit preparation', () => {
   for (const offer of [
     { status: 'OFFERED', enrolmentId: '../admin' },
