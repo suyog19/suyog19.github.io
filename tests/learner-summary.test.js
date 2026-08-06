@@ -64,6 +64,15 @@ test('boolean labels preserve true, false, and missing truth states', () => {
   assert.equal(view.booleanLabel(undefined, 'Yes', 'No'), 'Not available');
 });
 
+test('learner timezones stay machine-safe while displaying human-readable labels', () => {
+  assert.equal(view.safeTimeZone('Europe/London'), 'Europe/London');
+  assert.equal(view.safeTimeZone('Mars/Olympus'), 'Asia/Kolkata');
+  assert.equal(view.safeTimeZone(null), 'Asia/Kolkata');
+  assert.match(view.timeZoneLabel('Asia/Kolkata'), /India Standard Time.*UTC\+05:30/);
+  assert.doesNotMatch(view.timeZoneLabel('Asia/Kolkata'), /^Asia\/Kolkata$/);
+  assert.match(view.timeZoneLabel('Mars/Olympus'), /India Standard Time.*UTC\+05:30/);
+});
+
 test('only an explicit OFFERED state is actionable', () => {
   assert.equal(view.hasActionableOffer({ status: 'OFFERED' }), true);
   assert.equal(view.hasActionableOffer({ status: 'WITHDRAWN' }), false);

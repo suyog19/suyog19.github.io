@@ -56,17 +56,18 @@
       <p class="learning-eyebrow">Software Signal Learning</p>
       <h1>My Learning</h1>
       <p class="learning-intro">See your current course status, next action and important dates.</p>
-      <div id="learner-current-action" class="learner-current-action learning-status-card"></div>
+      <aside id="learner-current-action" class="learner-current-action" aria-label="Learning notification" hidden></aside>
       <div id="learner-applications" class="learner-application-list" aria-label="Current learning journeys"></div>
       <details class="learner-profile learning-details"><summary id="learner-profile-title">Your learner details</summary>
         <p id="learner-profile-empty" hidden>Complete your learner profile to apply.</p>
-        <dl id="learner-profile-details"></dl>
+        <div id="learner-profile-details"></div>
       </details>
-      <nav class="learner-support-links" aria-label="Learner support">
+      <nav class="learner-support-links" aria-labelledby="learner-support-title">
+        <strong id="learner-support-title">Help and policies</strong>
         <a id="learner-support-link" href="../contact/">Support</a>
         <a id="learner-privacy-link" href="../privacy/">Privacy</a>
         <a id="learner-grievance-link" href="../training/policies/#support-and-grievance-process">Grievance process</a>
-        <a href="../training/policies/#policy-identifiers">Current policy versions</a>
+        <a href="../training/policies/#policy-identifiers">Policies and agreements</a>
       </nav>
     </section>
   </main>
