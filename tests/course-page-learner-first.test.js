@@ -30,6 +30,15 @@ test('launched pages present included commitments as three-item lists', () => {
   }
 });
 
+test('Applied Data Analysis matches the reference planning details', () => {
+  const html = read('training/applied-data-analysis-with-python/index.html');
+  const weeklyCard = html.match(/<article><h3>Weekly commitment<\/h3>([\s\S]*?)<\/article>/);
+  assert.ok(weeklyCard, 'Applied Data Analysis should include a weekly commitment card');
+  assert.equal((weeklyCard[1].match(/<li>/g) || []).length, 3);
+  assert.match(weeklyCard[1], /Approximately 8 weeks and 14 regular sessions/);
+  assert.match(html, /Currently planned for October–November 2026\. Exact dates and timings will be confirmed before payment\./);
+});
+
 test('Python Foundations answers the agreed learner decision questions', () => {
   const html = read('training/python-foundations-for-data-science/index.html');
   for (const phrase of ['October–November 2026', '2–3 hours', 'Hindi or Marathi', 'within two business days', 'within seven business days', '90 days after the final regular session', '11 of 14 regular live sessions', 'no coding test', 'exact project may vary by cohort', 'GitHub is not required', 'screen sharing is voluntary', 'remaining balance is not requested before cohort confirmation']) assert.match(html, new RegExp(phrase, 'i'));
