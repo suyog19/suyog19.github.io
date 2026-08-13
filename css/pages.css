@@ -1111,7 +1111,38 @@
   font-size: 0.9375rem;
   line-height: 1.65;
   color: var(--color-text-muted);
-  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.wp-path-explore {
+  display: inline-block;
+  align-self: flex-start;
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.wp-path-start {
+  display: block;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+
+.wp-path-start strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.wp-path-explore:hover,
+.wp-path-start:hover strong {
+  color: #b91c1c;
 }
 
 /* Featured Writing */
@@ -1246,7 +1277,7 @@
 .wp-latest {
   padding-block: 5rem 6rem;
   background-color: var(--color-surface);
-  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .wp-latest-list {
@@ -1264,14 +1295,41 @@
 
 .wp-latest-row {
   display: grid;
-  grid-template-columns: minmax(7rem, 0.7fr) minmax(0, 2fr) minmax(8rem, 0.8fr);
-  align-items: baseline;
-  gap: 1.5rem;
-  padding-block: 1.125rem;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1.75rem;
+  padding-block: 1rem;
+  color: var(--color-text);
 }
 
-.wp-latest-date,
-.wp-latest-label {
+.wp-latest-cover {
+  display: block;
+  width: 10rem;
+  aspect-ratio: 1.91 / 1;
+  object-fit: cover;
+  background-color: var(--color-border);
+}
+
+.wp-latest-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.wp-latest-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.35;
+}
+
+.wp-latest-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0;
@@ -1280,15 +1338,11 @@
   line-height: 1.5;
 }
 
-.wp-latest-title {
-  font-size: 1rem;
+.wp-latest-publication {
+  margin-top: 0.35rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--color-text);
-  line-height: 1.45;
-}
-
-.wp-latest-label {
-  text-align: right;
+  color: var(--color-text-muted);
 }
 
 /* Writing page responsive */
@@ -1326,14 +1380,6 @@
     flex-direction: column;
   }
 
-  .wp-latest-row {
-    grid-template-columns: minmax(7rem, 0.6fr) minmax(0, 1.5fr);
-  }
-
-  .wp-latest-label {
-    grid-column: 2;
-    text-align: left;
-  }
 }
 
 @media (max-width: 768px) {
@@ -1371,12 +1417,35 @@
     border-bottom: 0;
   }
 
-  .wp-article-row,
-  .wp-latest-row {
+  .wp-article-row {
     flex-direction: column;
     display: flex;
     align-items: flex-start;
     gap: 0.3rem;
+  }
+
+  .wp-latest-row {
+    grid-template-columns: 6.75rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding-block: 0.875rem;
+  }
+
+  .wp-latest-cover {
+    width: 6.75rem;
+  }
+
+  .wp-latest-title {
+    font-size: 1rem;
+  }
+
+  .wp-latest-meta {
+    margin-top: 0.35rem;
+    font-size: 0.6875rem;
+  }
+
+  .wp-latest-publication {
+    font-size: 0.75rem;
   }
 
   .wp-path-card {
