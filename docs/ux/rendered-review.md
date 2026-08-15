@@ -75,6 +75,11 @@ Default minimum for UX-brief-required work:
 | Intermediate | 768px, 1024px, or 1280px wide | A breakpoint or composition changes materially |
 | Additional width | Brief-specific | A known content or layout risk requires it |
 
+Include a 320–360px narrow-width check when media and text share a row, long
+content has limited wrapping room, or the 390px composition could conceal a
+minimum-content squeeze. The #513 pilot caught an invariant violation at 320px
+despite a clean 390px render and no horizontal overflow.
+
 Viewport height may match the review environment (about 844–900px is useful),
 but always record it. Capture a full page when page rhythm or overall flow
 matters. Capture a viewport or focused region when detail would become illegible
