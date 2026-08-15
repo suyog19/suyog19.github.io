@@ -110,51 +110,86 @@
          Hero
          ============================================================ -->
     <section class="hero" id="hero">
-      <div class="container">
-        <p class="eyebrow">AI systems &bull; Software architecture &bull; Real-world engineering</p>
-        <h1 class="hero-headline">
-          I help individuals and organizations understand, design, and build intelligent software systems.
-        </h1>
-        <div class="hero-subtext-wrap">
-          <p class="hero-subtext">
-            Live, guided training in Python, data, machine learning, and AI systems — supported by practical writing, real engineering experience, and working software experiments.
-          </p>
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">AI systems &bull; Software architecture &bull; Real-world engineering</p>
+          <h1 class="hero-headline">Understand the system. Build what matters.</h1>
+          <p class="hero-subtext">I help individuals and organizations understand, design, and build intelligent software systems through live training, practical writing, and working software experiments.</p>
+          <div class="hero-ctas">
+            <a href="training/" class="btn btn-primary" data-home-event="home_training_click" data-cta-location="HERO">Explore training</a>
+            <a href="writing/" class="btn btn-secondary" data-home-event="home_writing_click" data-cta-location="HERO">Browse writing</a>
+          </div>
+          <ul class="hero-cues" aria-label="Areas of focus"><li>Learn</li><li>Reason</li><li>Build</li></ul>
         </div>
-        <div class="hero-ctas">
-          <a href="training/" class="btn btn-primary" data-home-event="home_training_click" data-cta-location="HERO">Explore training</a>
-          <a href="writing/" class="btn btn-secondary" data-home-event="home_writing_click" data-cta-location="HERO">Browse writing</a>
+        <div class="hero-system" role="img" aria-label="A layered system map connecting context, models, software, and human judgment">
+          <div class="hero-system-grid" aria-hidden="true">
+            <span class="hero-system-node hero-system-node--context">Context</span>
+            <span class="hero-system-node hero-system-node--model">Models</span>
+            <span class="hero-system-node hero-system-node--software">Software</span>
+            <span class="hero-system-node hero-system-node--judgment">Judgment</span>
+            <span class="hero-system-core">Reliable<br>systems</span>
+            <span class="hero-system-line hero-system-line--one"></span>
+            <span class="hero-system-line hero-system-line--two"></span>
+            <span class="hero-system-line hero-system-line--three"></span>
+          </div>
+          <p class="hero-system-caption"><span>01</span> Structure before spectacle</p>
         </div>
       </div>
     </section>
 
-    <section class="training-spotlight" id="training-spotlight" data-home-impression="home_training_spotlight_view">
+    <section class="featured-now" id="featured-now" data-home-impression="home_featured_now_view" aria-labelledby="featured-now-title">
       <div class="container">
-        <div class="training-spotlight-intro">
+        <div class="featured-now-header">
           <div>
-            <p class="eyebrow">Software Signal Learning</p>
-            <h2 class="section-title">Build practical capability from Python foundations to reliable AI systems.</h2>
+            <p class="eyebrow">Curated across the site</p>
+            <h2 class="section-title" id="featured-now-title">Featured now</h2>
           </div>
-          <div>
-            <p class="section-subtitle">Live, instructor-led online courses combining explanation, guided practice, review, and an applied project. Start at the stage that matches your current capability.</p>
-            <div class="training-spotlight-actions">
-              <a href="training/#starting-point" class="btn btn-primary" data-home-event="home_training_click" data-cta-location="STARTING_POINT">Find my starting point</a>
-              <a href="training/#journey" class="btn btn-secondary" data-home-event="home_training_click" data-cta-location="JOURNEY">Explore the learning pathway</a>
-            </div>
-          </div>
+          <p class="section-subtitle">Current ideas and learning paths worth spending time with.</p>
         </div>
-        <div class="home-course-grid">
-          <article class="home-course-card" data-course-id="crs_python_foundations">
-            <div class="home-course-card-top"><span class="home-course-stage">Stage 1</span><span class="status-chip status-chip--unavailable" data-course-status aria-live="polite">Checking availability</span></div>
-            <h3>Python Foundations for Data Science</h3>
-            <p>No prior programming required. Learn live across 14 × 90-minute sessions and build a personal data analyser using core Python.</p>
-            <div class="home-course-actions"><a href="training/python-foundations-for-data-science/" class="article-link" data-home-event="home_training_course_detail_click" data-course-id="crs_python_foundations">Course details <span aria-hidden="true">&rarr;</span></a><a class="btn btn-primary" data-course-action="transactional" data-home-course-action data-course-id="crs_python_foundations" hidden></a></div>
+
+        <div class="featured-now-grid">
+          <article class="feature-card feature-card--lead">
+            <a href="writing/architecture-matters-more-in-the-ai-era/" class="feature-card-media" data-home-event="home_featured_click" data-content-type="ARTICLE" data-content-id="architecture-matters-more-in-the-ai-era" data-feature-position="LEAD" aria-label="Read Architecture Matters More in the AI Era">
+              <img src="writing/architecture-matters-more-in-the-ai-era/cover.webp" width="1672" height="941" alt="Layered software architecture connecting intent, context, code, tests, and runtime" loading="lazy" decoding="async">
+            </a>
+            <div class="feature-card-body">
+              <div class="feature-card-meta"><span class="content-label">Article</span><span>8 min read</span></div>
+              <h3><a href="writing/architecture-matters-more-in-the-ai-era/" data-home-event="home_featured_click" data-content-type="ARTICLE" data-content-id="architecture-matters-more-in-the-ai-era" data-feature-position="LEAD">Architecture Matters More in the AI Era</a></h3>
+              <p>AI makes code easier to produce. That makes architectural clarity, boundaries, and review discipline more valuable, not less.</p>
+              <a href="writing/architecture-matters-more-in-the-ai-era/" class="editorial-link" data-home-event="home_featured_click" data-content-type="ARTICLE" data-content-id="architecture-matters-more-in-the-ai-era" data-feature-position="LEAD">Read the article <span aria-hidden="true">&rarr;</span></a>
+            </div>
           </article>
-          <article class="home-course-card" data-course-id="crs_applied_python">
-            <div class="home-course-card-top"><span class="home-course-stage">Stage 2</span><span class="status-chip status-chip--unavailable" data-course-status aria-live="polite">Checking availability</span></div>
-            <h3>Applied Data Analysis with Python</h3>
-            <p>For learners with working Python foundations. Learn live across 14 × 90-minute sessions and complete a defensible investigation of a real dataset.</p>
-            <div class="home-course-actions"><a href="training/applied-data-analysis-with-python/" class="article-link" data-home-event="home_training_course_detail_click" data-course-id="crs_applied_python">Course details <span aria-hidden="true">&rarr;</span></a><a class="btn btn-primary" data-course-action="transactional" data-home-course-action data-course-id="crs_applied_python" hidden></a></div>
-          </article>
+
+          <div class="featured-now-supporting">
+            <article class="feature-card feature-card--compact">
+              <a href="writing/not-all-engineering-tasks-belong-to-ai/" class="feature-card-media" data-home-event="home_featured_click" data-content-type="ARTICLE" data-content-id="not-all-engineering-tasks-belong-to-ai" data-feature-position="SUPPORTING_1" aria-label="Read Not All Engineering Tasks Belong to AI"><img src="writing/not-all-engineering-tasks-belong-to-ai/cover.webp" width="1536" height="1024" alt="A decision framework matching engineering tasks to human and AI responsibility" loading="lazy" decoding="async"></a>
+              <div class="feature-card-body">
+                <div class="feature-card-meta"><span class="content-label">Article</span><span>Decision framework</span></div>
+                <h3><a href="writing/not-all-engineering-tasks-belong-to-ai/" data-home-event="home_featured_click" data-content-type="ARTICLE" data-content-id="not-all-engineering-tasks-belong-to-ai" data-feature-position="SUPPORTING_1">Not All Engineering Tasks Belong to AI</a></h3>
+                <a href="writing/not-all-engineering-tasks-belong-to-ai/" class="editorial-link" data-home-event="home_featured_click" data-content-type="ARTICLE" data-content-id="not-all-engineering-tasks-belong-to-ai" data-feature-position="SUPPORTING_1">Read article <span aria-hidden="true">&rarr;</span></a>
+              </div>
+            </article>
+
+            <article class="feature-card feature-card--course home-course-card" data-course-id="crs_python_foundations">
+              <div class="feature-card-media course-visual course-visual--python" role="img" aria-label="Python data pipeline from input through functions to an analysed result"><span>data.csv</span><span>functions</span><span>insight</span></div>
+              <div class="feature-card-body">
+                <div class="feature-card-meta"><span class="content-label content-label--course">Course</span><span class="status-chip status-chip--unavailable" data-course-status aria-live="polite">Checking availability</span></div>
+                <h3><a href="training/python-foundations-for-data-science/" data-home-event="home_training_course_detail_click" data-course-id="crs_python_foundations">Python Foundations for Data Science</a></h3>
+                <p>Build a practical foundation through guided coding and a personal data analyser.</p>
+                <div class="home-course-actions"><a href="training/python-foundations-for-data-science/" class="editorial-link" data-home-event="home_training_course_detail_click" data-course-id="crs_python_foundations">Course details <span aria-hidden="true">&rarr;</span></a><a class="btn btn-primary" data-course-action="transactional" data-home-course-action data-course-id="crs_python_foundations" hidden></a></div>
+              </div>
+            </article>
+
+            <article class="feature-card feature-card--course home-course-card" data-course-id="crs_applied_python">
+              <div class="feature-card-media course-visual course-visual--analysis" role="img" aria-label="A structured analysis moving from raw observations to a defensible explanation"><span class="course-visual-bar"></span><span class="course-visual-bar"></span><span class="course-visual-bar"></span><span class="course-visual-axis">observe &rarr; test &rarr; explain</span></div>
+              <div class="feature-card-body">
+                <div class="feature-card-meta"><span class="content-label content-label--course">Course</span><span class="status-chip status-chip--unavailable" data-course-status aria-live="polite">Checking availability</span></div>
+                <h3><a href="training/applied-data-analysis-with-python/" data-home-event="home_training_course_detail_click" data-course-id="crs_applied_python">Applied Data Analysis with Python</a></h3>
+                <p>Turn an unfamiliar dataset into a reproducible, defensible investigation.</p>
+                <div class="home-course-actions"><a href="training/applied-data-analysis-with-python/" class="editorial-link" data-home-event="home_training_course_detail_click" data-course-id="crs_applied_python">Course details <span aria-hidden="true">&rarr;</span></a><a class="btn btn-primary" data-course-action="transactional" data-home-course-action data-course-id="crs_applied_python" hidden></a></div>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -192,39 +227,15 @@
     <!-- ============================================================
          Featured Writing
          ============================================================ -->
-    <section class="writing" id="writing">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Writing and Guides</h2>
-          <p class="section-subtitle">A structured engineering guide and selected articles that show how I think about AI-assisted software work.</p>
+    <section class="writing writing--calm" id="writing">
+      <div class="container calm-discovery">
+        <div>
+          <p class="eyebrow">A guided reading path</p>
+          <h2 class="section-title">AI-Assisted Software Engineering</h2>
         </div>
-
-        <div class="writing-grid">
-          <article class="article-card article-card--featured">
-            <span class="article-tag">Ordered practical guide · 9 articles</span>
-            <h3 class="article-title">AI-Assisted Software Engineering</h3>
-            <p class="article-summary">A practical path for engineers working with AI assistants across context, review, agents, constraints, and orchestration.</p>
-            <a href="writing/series/ai-assisted-software-engineering/" class="article-link" data-home-event="home_writing_series_click">Start the series <span aria-hidden="true">→</span></a>
-          </article>
-
-          <div class="article-cards-secondary">
-            <article class="article-card article-card--small">
-              <span class="article-tag">AI and Software Engineering</span>
-              <h3 class="article-title">Not All Engineering Tasks Belong to AI</h3>
-              <p class="article-summary">A practical matrix for deciding where AI helps, where it needs guidance, and where human judgment remains essential.</p>
-              <a href="writing/not-all-engineering-tasks-belong-to-ai/" class="article-link">Read article <span aria-hidden="true">→</span></a>
-            </article>
-            <article class="article-card article-card--small">
-              <span class="article-tag">AI and Software Engineering</span>
-              <h3 class="article-title">How To Tame Your Agent?</h3>
-              <p class="article-summary">Context helps AI understand. Constraints help it behave. Here is how to make AI agents safer, focused, economical, and reviewable.</p>
-              <a href="writing/how-to-tame-your-agent/" class="article-link">Read article <span aria-hidden="true">→</span></a>
-            </article>
-          </div>
-        </div>
-
-        <div class="section-cta">
-          <a href="writing/" class="btn btn-secondary">View all writing</a>
+        <div>
+          <p class="section-subtitle">Nine connected articles on context, review, agents, constraints, and orchestration&mdash;arranged as a practical engineering guide.</p>
+          <div class="calm-discovery-actions"><a href="writing/series/ai-assisted-software-engineering/" class="editorial-link" data-home-event="home_writing_series_click">Start the series <span aria-hidden="true">&rarr;</span></a><a href="writing/" class="editorial-link">View all writing <span aria-hidden="true">&rarr;</span></a></div>
         </div>
       </div>
     </section>
