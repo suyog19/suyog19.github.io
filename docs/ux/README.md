@@ -24,6 +24,10 @@ appropriate intent artifact using
 [ux-change-brief.md](ux-change-brief.md). The brief supplements the linked issue
 and does not replace its acceptance criteria.
 
+Material work is evaluated from the browser evidence and bounded iteration loop
+in [rendered-review.md](rendered-review.md), not from source code or acceptance
+criteria alone.
+
 ## Evidence labels
 
 - **Observed** — present in the rendered dev site or current implementation.
