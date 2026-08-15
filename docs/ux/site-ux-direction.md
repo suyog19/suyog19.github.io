@@ -2,6 +2,33 @@
 
 Status: draft for Product Owner accuracy and taste review under #504.
 
+## Evidence reviewed
+
+This direction consolidates evidence from:
+
+- current dev renders of Home, Training, Writing, Systems, About, Contact, a
+  representative article, a representative system, a launched course, and a
+  pipeline course at approximately 1440px and 390px;
+- the shared tokens and typography in `css/base.css`, reusable navigation,
+  button, card, and footer patterns in `css/components.css`, and page-family
+  composition in `css/pages.css`;
+- progressive navigation, form, and feedback behavior in `js/script.js`,
+  `js/contact.js`, and `js/feedback-widget.js`;
+- the accepted scoped learning identity in `css/learning.css` and
+  `content/plans/software-signal-learning-visual-system.md`;
+- learner-experience decisions in
+  `content/plans/software-signal-learner-experience-matrix.md`,
+  `content/plans/software-signal-learner-experience-evidence.md`, and
+  `content/plans/software-signal-learner-experience-closeout.md`;
+- public training and application direction in
+  `docs/plans/issue-179-training-public-experience.md` and
+  `docs/plans/issue-182-course-application.md`;
+- the repository architecture, accessibility, SEO, privacy, and progressive-
+  enhancement constraints in `AGENTS.md` and `CLAUDE.md`.
+
+Rendered observation remains primary for statements labelled **Observed**.
+Repository decisions support statements labelled **Previously decided**.
+
 ## Experience statement
 
 The site is a calm, credible working-knowledge hub. It should feel authored by
