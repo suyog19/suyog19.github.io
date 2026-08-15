@@ -60,8 +60,9 @@ This repository uses a lightweight agile agent model.
 | Role | Runtime | Responsibility |
 |---|---|---|
 | Customer / Product Owner | Suyog | Product intent, priority, acceptance criteria, final approval for production promotion. |
-| Scrum Master / Orchestrator | Codex | Workflow coordination, issue/branch/PR discipline, blocker handling, and handoffs. |
+| Engineering Manager / Scrum Master / Orchestrator | Codex | Workflow coordination, issue/branch/PR discipline, blocker and trade-off handling, required review gates, and handoffs. |
 | Team Lead / Architect | Codex | Technical direction, site architecture fit, SEO/deployment safety, and review of meaningful design decisions. |
+| Senior UX Designer | Codex or another design-capable agent context | User outcomes, information hierarchy, interaction design, responsive composition, visual-system consistency, accessibility-aware design guidance, rendered implementation review, and UX acceptance for applicable frontend changes. |
 | Software Developer 1 | Claude Code | Primary implementer for content, HTML, CSS, JS, docs, and PR updates. |
 | Software Developer 2 | Codex | Fallback or small-scope implementer when appropriate. |
 | QA / Reviewer | Codex | Functional checks, responsive review, SEO/link validation, and final PR review before merge to `dev`. |
@@ -73,17 +74,146 @@ Claude Code-specific working notes live in `CLAUDE.md`. Codex should also read
 ## Standard Workflow
 
 1. Confirm or create the GitHub issue.
-2. Sync from `dev`.
-3. Create a feature branch from `dev`.
-4. Make focused changes for the issue.
-5. Run relevant local validation.
-6. Open a PR into `dev` and link the issue.
-7. Address review feedback.
-8. Merge to `dev` when accepted.
-9. Leave the `dev` to `main` PR for human review and merge.
+2. Classify it as `UX review required`, `UX review optional`, or `UX review not required`, and record the decision briefly.
+3. For UX-required work, complete the UX direction and UX-Tech Lead feasibility gate before substantial coding.
+4. Sync from `dev` and create a feature branch from `dev`.
+5. Make focused changes. For material UX work, render an early coherent slice for UX review before completing the whole surface.
+6. Run relevant local validation. For UX-required work, include representative desktop and mobile evidence and resolve or disposition UX Must-fix findings.
+7. Open a PR into `dev`, link the issue, and record the UX traceability fields when applicable.
+8. Address UX, technical, and QA feedback without collapsing those responsibilities into one generic review.
+9. Before merging a UX-required PR into `dev`, record Senior UX `Accepted` status or the remaining deviations and their explicit approval.
+10. Merge to `dev` when accepted.
+11. Leave the `dev` to `main` PR for human review and merge.
 
 Agents must stop and ask Suyog before changing this workflow, branch protection,
 deployment behavior, domain configuration, or production promotion rules.
+
+## Senior UX Designer Charter
+
+The Senior UX Designer is a senior product and interaction design role, not a
+graphic-decoration pass. The role owns UX quality and design intent for
+applicable frontend work while Product Owner, architecture, development, QA,
+accessibility, security, and production-approval responsibilities remain
+separate.
+
+### UX applicability
+
+Classify UX impact at issue/workflow start:
+
+- `UX review required` for material changes to layout or composition,
+  information hierarchy, navigation or discovery, forms or task flows,
+  interaction or responsive behaviour, major component presentation, visual
+  identity, user-facing status/action comprehension, new surfaces, significant
+  redesigns, or issues explicitly scoped as UX/UI/usability/visual refresh/
+  redesign/learner experience.
+- `UX review optional` for small hierarchy-affecting copy changes, isolated CSS
+  fixes, small additions within an approved pattern, image crop/replacement
+  decisions, or visible accessibility trade-offs.
+- `UX review not required` for metadata or sitemap-only work, invisible
+  refactors, tests, backend-only work, and technical corrections with no visible
+  effect.
+
+The Engineering Manager / Orchestrator or Team Lead records the decision. A
+clearly material redesign cannot be marked not applicable merely to save time.
+Artefacts and review depth must remain proportional to risk; trivial changes do
+not need a full design cycle and optional polish cannot block indefinitely.
+
+### Responsibilities and boundaries
+
+The Senior UX Designer reasons about the target user and goal, first-impression
+comprehension, information architecture, decision friction, hierarchy,
+composition, page rhythm, existing-pattern fit, realistic responsive widths,
+keyboard/focus and semantic implications, media purpose and crop, interaction
+feedback, progressive enhancement, and relevant loading, empty, error, success,
+unavailable, selected, recommended, and current states.
+
+The role must not invent backend, commercial, learner, or product truth; change
+Product Owner intent silently; trade accessibility, security, or business
+constraints for aesthetics; introduce frameworks, dependencies, fonts, or a
+second design system for convenience; approve material UI from source alone;
+or treat a generated mockup as implementation-ready truth without checking
+repository constraints. Imagery and effects must have a user-experience purpose,
+not merely make a page look more designed.
+
+Responsibility boundaries are explicit:
+
+- Product Owner owns product intent, priority, business trade-offs, acceptance
+  criteria, and production promotion approval.
+- Engineering Manager / Orchestrator owns sequencing, handoffs, scope, trade-off
+  resolution, required reviews, and reaching a clear decision.
+- Senior UX Designer owns usability, comprehension, hierarchy, composition,
+  interaction intent, responsive design quality, cross-page continuity,
+  design-level accessibility, and conformance to the agreed UX direction.
+- Team Lead / Architect owns architecture, maintainability, reuse, feasibility,
+  performance, SEO, static rendering, and safe implementation boundaries.
+- Developer owns faithful implementation, code quality, responsive/state
+  behaviour, accepted findings, and review evidence.
+- QA / Reviewer owns functional and state correctness, accessibility
+  verification, responsive regression, links, SEO, analytics, and final
+  regression evidence.
+
+One runtime may perform multiple roles, but it must keep these review passes and
+decisions explicit. A fresh final UX review is preferred over assuming the
+earlier concept automatically remains correct.
+
+### UX Gate A - applicability
+
+After issue confirmation, record whether UX review is required, optional, or not
+required and why.
+
+### UX Gate B - implementation-ready direction
+
+Before substantial coding on UX-required work, the Senior UX Designer reviews
+the existing surface and produces a proportional brief that defines:
+
+- user and intended outcome, including what should be obvious in the first few
+  seconds;
+- primary, secondary, supporting, and intentionally quiet information/actions;
+- desktop composition, tablet transition, mobile order, and important spatial
+  relationships;
+- existing patterns to reuse, any justified new component/media treatment, and
+  card/CTA hierarchy;
+- relevant default, hover/focus, loading, success, error, empty/unavailable,
+  selected/recommended/current states;
+- a small set of design invariants that must survive technical adaptation; and
+- responsive and design-level accessibility expectations.
+
+Markdown, annotated screenshots, mockups, wireframes, or diagrams are all valid;
+Figma-level artefacts are not required. The Team Lead then reviews architecture
+fit, token/component reuse, CSS/regression risk, image and performance cost,
+SEO/static constraints, state availability, progressive enhancement, and
+maintainability. Legitimate constraints adjust the design; implementation
+convenience alone must not erase an essential invariant. Record unresolved
+trade-offs and escalate material product decisions through the Orchestrator.
+
+### UX Gate C - rendered implementation review
+
+The Developer renders the first coherent slice or primary viewport. The Senior
+UX Designer reviews the actual UI, not only source, and classifies findings:
+
+- `Must fix`: violates agreed intent, usability, accessibility-aware hierarchy,
+  responsive behaviour, or major visual quality.
+- `Should fix`: a meaningful in-scope quality improvement.
+- `Optional`: polish that does not block completion.
+
+Developer and Team Lead evaluate and iterate until only accepted deviations or
+non-blocking polish remain. Review representative desktop and mobile widths;
+add tablet widths and important loading/error/empty/success states when the
+design changes there. Use local or deployed rendering, screenshots, recordings,
+and fixtures as appropriate. Material visual changes require representative
+rendered evidence. Common failure checks include stretched cards and dead space,
+media overpowering tasks, poor column proportions, repeated content, cramped
+cards, broken mobile composition, semantic/visual hierarchy mismatch, weak
+focus over media, visual-system fragmentation, excessive layout-driven length,
+and copying a mockup's shape while losing its purpose.
+
+### UX Gate D - acceptance
+
+Before a UX-required PR merges into `dev`, the Senior UX Designer records
+`Accepted`, or records each remaining deviation, its rationale, and who approved
+it. Unresolved Must-fix findings must be addressed or explicitly escalated and
+dispositioned. UX acceptance does not replace QA, technical review, or Product
+Owner production approval.
 
 ## Commands
 
@@ -117,6 +247,8 @@ Before marking work complete, agents must ensure:
 - contact form behavior is preserved when relevant
 - feedback widget behavior is preserved on writing article and article-series pages when relevant
 - responsive layout is checked for user-facing UI changes
+- UX-required changes have rendered evidence, dispositioned Must-fix findings,
+  and recorded Senior UX acceptance
 - risks or skipped checks are recorded in the PR or final handoff
 
 If a check cannot be run, the agent must state why and what residual risk
@@ -191,6 +323,18 @@ Every PR must include:
 - validation performed
 - screenshots or browser notes for visual changes when practical
 - risks and rollback notes when relevant
+
+For UX-required work, the linked issue or PR must also record:
+
+- `UX review required: yes/no` and the reason
+- UX direction/design-evidence location
+- rendered implementation-review status
+- representative screenshot/recording evidence
+- unresolved or accepted deviations
+- final UX acceptance status
+
+Use issue/PR text and review comments for this traceability. Do not introduce a
+separate workflow service or status database.
 
 Commit messages and branch names should make the issue traceable.
 
