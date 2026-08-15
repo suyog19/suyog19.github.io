@@ -2,11 +2,8 @@
    Hero
    ============================================================ */
 .hero {
-  position: relative;
-  overflow: hidden;
-  padding-block: clamp(4.5rem, 7vw, 7rem);
-  background: #f3f0e9;
-  border-bottom: 1px solid #d8d3c8;
+  padding-top: 7rem;
+  padding-bottom: 8rem;
 }
 
 .hero-headline {
@@ -45,199 +42,6 @@
   flex-wrap: wrap;
   margin-top: 0.5rem;
 }
-
-/* Issue 492: editorial homepage cover and shared entrance-page discovery patterns */
-.hero-layout {
-  display: grid;
-  grid-template-columns: minmax(24rem, 0.82fr) minmax(32rem, 1.18fr);
-  gap: clamp(2.5rem, 5vw, 5rem);
-  align-items: center;
-  max-width: 1280px;
-}
-
-.hero-copy { min-width: 0; }
-.hero-copy .eyebrow {
-  display: flex;
-  align-items: center;
-  gap: .75rem;
-  color: #73533d;
-}
-.hero-copy .eyebrow::before { content: ''; width: 2.75rem; height: 1px; background: #b8673b; }
-.hero-copy .hero-headline {
-  max-width: 11ch;
-  font-size: clamp(3.5rem, 5.8vw, 6rem);
-  line-height: .96;
-  letter-spacing: -.045em;
-}
-.hero-copy .hero-subtext { max-width: 58ch; margin-bottom: 2rem; }
-
-.hero-cues {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 3rem;
-  color: var(--color-text-muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.hero-cues li + li::before { content: '/'; margin-right: 1.5rem; color: var(--color-border); }
-
-.hero-visual {
-  position: relative;
-  min-width: 0;
-  margin: 0;
-  border: 1px solid #bfb9ae;
-  background: #111;
-  overflow: hidden;
-  box-shadow: 1.25rem 1.25rem 0 #ddd7cc;
-}
-
-.hero-visual img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-}
-
-.hero-visual-caption {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: .9rem 1rem;
-  border-top: 1px solid rgba(255,255,255,.18);
-  color: rgba(255,255,255,.72);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.featured-now {
-  padding-block: clamp(4.5rem, 8vw, 7rem);
-  background: #ebe7df;
-  border-block: 1px solid var(--color-border);
-}
-
-.featured-now > .container { max-width: 1280px; }
-
-.featured-now-header {
-  display: grid;
-  grid-template-columns: 1fr minmax(18rem, 0.7fr);
-  gap: 3rem;
-  align-items: end;
-  margin-bottom: 2.5rem;
-}
-
-.featured-now-header .section-title,
-.featured-now-header .section-subtitle { margin-bottom: 0; }
-
-.featured-now-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(30rem, 0.95fr);
-  gap: 1rem;
-  align-items: start;
-}
-
-.featured-now-supporting {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.feature-card {
-  min-width: 0;
-  border: 1px solid #d8d5cd;
-  background: var(--color-bg);
-  display: flex;
-  flex-direction: column;
-}
-
-.feature-card--compact { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(9rem, .8fr) minmax(0, 1.2fr); }
-.feature-card--compact .feature-card-media { min-height: 100%; aspect-ratio: auto; }
-
-.feature-card-media {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  background: #e8e6e0;
-}
-
-.feature-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 180ms ease; }
-.feature-card-media:hover img { transform: scale(1.015); }
-
-.feature-card-body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding: clamp(1.25rem, 2.4vw, 2rem); }
-.feature-card--lead .feature-card-body { padding: clamp(1.75rem, 3vw, 3rem); }
-.feature-card--lead .feature-card-body { background: #151515; color: #fff; }
-.feature-card--lead .feature-card-meta { color: rgba(255,255,255,.62); }
-.feature-card--lead .content-label,
-.feature-card--lead h3 a,
-.feature-card--lead .editorial-link { color: #fff; }
-.feature-card--lead .feature-card-body > p { color: rgba(255,255,255,.7); }
-
-.feature-card-meta {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 1.6rem;
-  margin-bottom: 1rem;
-  color: var(--color-text-muted);
-  font-size: 0.7rem;
-  letter-spacing: 0.04em;
-}
-
-.content-label {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.6rem;
-  padding: 0.2rem 0.55rem;
-  border: 1px solid currentColor;
-  color: var(--color-text);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.content-label--course { color: #0d5a51; }
-.feature-card h3 { font-family: var(--font-serif); font-size: clamp(1.1rem, 1.7vw, 1.4rem); line-height: 1.25; margin-bottom: 0.85rem; }
-.feature-card--lead h3 { max-width: 20ch; font-size: clamp(1.75rem, 3vw, 2.65rem); }
-.feature-card h3 a { color: inherit; }
-.feature-card-body > p { color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1.5rem; }
-
-.editorial-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  margin-top: auto;
-  padding-block: 0.2rem;
-  border-bottom: 1px solid currentColor;
-  color: var(--color-text);
-  font-size: 0.82rem;
-  font-weight: 600;
-}
-
-.home-course-actions { width: 100%; margin-top: auto; }
-.home-course-actions [hidden] { display: none !important; }
-.feature-card--course .home-course-actions .btn { margin-top: 0.75rem; font-size: 0.78rem; padding: 0.55rem 0.8rem; }
-
-.course-visual { color: #dff7f1; background: #0d3430; }
-.course-visual--python { display: flex; align-items: center; justify-content: space-around; padding: 1.25rem; }
-.course-visual--python span { position: relative; z-index: 1; padding: .45rem .55rem; border: 1px solid rgba(223,247,241,.45); background: #0d3430; font: 500 .66rem/1 var(--font-sans); }
-.course-visual--python span + span::before { content: '→'; position: absolute; right: calc(100% + .35rem); color: #78a69d; }
-
-.course-visual--analysis { display: flex; align-items: flex-end; gap: 8%; padding: 1.4rem 1.4rem 2.5rem; }
-.course-visual-bar { display: block; width: 18%; border: 1px solid #78a69d; background: rgba(120,166,157,.2); }
-.course-visual-bar:nth-child(1) { height: 30%; }.course-visual-bar:nth-child(2) { height: 58%; }.course-visual-bar:nth-child(3) { height: 78%; }
-.course-visual-axis { position: absolute; left: 1.4rem; bottom: 1rem; font-size: .6rem; letter-spacing: .06em; text-transform: uppercase; }
-
-.writing--calm { background: var(--color-bg); }
-.calm-discovery { display: grid; grid-template-columns: minmax(0, 1fr) minmax(20rem, .85fr); gap: clamp(2rem, 7vw, 6rem); align-items: start; }
-.calm-discovery .section-title,
-.calm-discovery .section-subtitle { margin-bottom: 0; }
-.calm-discovery-actions { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.75rem; }
 
 /* ============================================================
    Homepage Training Spotlight
@@ -710,11 +514,6 @@
    Responsive — page sections
    ============================================================ */
 @media (max-width: 900px) {
-  .hero-layout { grid-template-columns: minmax(0, 1fr) minmax(19rem, .75fr); gap: 2.5rem; }
-  .featured-now-grid { grid-template-columns: 1fr; }
-  .featured-now-supporting { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .feature-card--compact { grid-column: auto; display: flex; }
-  .feature-card--compact .feature-card-media { min-height: 0; aspect-ratio: 16 / 9; }
   .training-spotlight-intro { grid-template-columns: 1fr; }
 
   .about-inner {
@@ -736,24 +535,11 @@
     padding-block: var(--section-py);
   }
 
-  .featured-now { padding-block: var(--section-py); }
-
   /* Hero */
   .hero {
     padding-top: 4.5rem;
     padding-bottom: 4.5rem;
   }
-
-  .hero-layout,
-  .featured-now-header,
-  .calm-discovery { grid-template-columns: 1fr; }
-  .hero-layout { gap: 3rem; }
-  .hero-copy .hero-headline { max-width: 18ch; }
-  .hero-visual { max-width: 35rem; width: 100%; }
-  .featured-now-header { gap: 1rem; }
-  .featured-now-supporting { grid-template-columns: 1fr 1fr; }
-  .feature-card--compact { grid-column: 1 / -1; display: grid; }
-  .calm-discovery { gap: 1rem; }
 
   /* Pillars */
   .pillars-grid {
@@ -819,25 +605,10 @@
 }
 
 @media (max-width: 480px) {
-  .hero { padding-top: 3rem; padding-bottom: 3rem; }
-  .hero-layout { gap: 2rem; }
   .hero-ctas {
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .hero-cues { gap: .75rem; margin-top: 1.75rem; }
-  .hero-cues li + li::before { margin-right: .75rem; }
-  .hero-copy .hero-headline { font-size: 3.15rem; }
-  .hero-copy .hero-subtext { font-size: 1rem; line-height: 1.6; }
-  .hero-visual { box-shadow: .75rem .75rem 0 #ddd7cc; }
-  .hero-visual img { aspect-ratio: 4 / 3; }
-  .featured-now-supporting { grid-template-columns: 1fr; }
-  .feature-card--compact { grid-column: auto; display: flex; }
-  .feature-card-media { aspect-ratio: 16 / 8.5; }
-  .feature-card--lead .feature-card-media { aspect-ratio: 16 / 10; }
-  .feature-card--lead h3 { font-size: 1.65rem; }
-  .feature-card-body { padding: 1.25rem; }
 
   .training-spotlight-actions,
   .home-course-actions {
