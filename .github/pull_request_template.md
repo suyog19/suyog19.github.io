@@ -8,12 +8,11 @@ Closes #
 
 ## UX review
 
-- UX review required: yes / no - reason:
-- UX direction/design evidence:
-- Rendered implementation review: not applicable / pending / complete
-- Representative evidence:
-- Must-fix findings: none / resolved / escalated (details)
-- Accepted deviations:
-- Final Senior UX status: not applicable / pending / Accepted
+- UX applicability: brief required / lightweight note / not required — reason:
+- UX brief and invariants: not applicable / link:
+- Rendered evidence and iteration: not applicable / pending / link:
+- Must-fix findings: not applicable / none / unresolved / resolved / escalated:
+- Accepted deviations and approver: none / details:
+- Final UX status: not applicable / pending / UX accepted / accepted with approved deviation
 
 ## Risks and rollback
