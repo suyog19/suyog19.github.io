@@ -25,11 +25,11 @@ Important workflow reminders:
 - Open PRs into `dev` and link the issue.
 - Agents may merge accepted PRs into `dev`.
 - PRs from `dev` to `main` must be merged by a human.
-- At issue start, record the `AGENTS.md` UX-impact classification. For
-  UX-required work, do not begin substantial implementation without the agreed
-  UX direction and Team Lead feasibility review; hand off an early rendered
-  slice plus desktop/mobile evidence for Senior UX review, then record UX
-  acceptance before merge to `dev`.
+- At issue start, record the `AGENTS.md` UX applicability level. For
+  UX-brief-required work, use `docs/ux/ux-change-brief.md` before substantial
+  implementation, then follow `docs/ux/rendered-review.md` for an early rendered
+  slice, representative evidence, Senior UX findings, and acceptance before
+  merge to `dev`.
 
 ## Project Overview
 
