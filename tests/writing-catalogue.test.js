@@ -57,8 +57,9 @@ test('reader recommendations are merged into Choose Your Path without removing t
   assert.match(html, /Topic Clusters/);
 });
 
-test('cover styling reserves a consistent crop and stays compact on mobile', () => {
+test('cover styling preserves title measure across mobile widths', () => {
   assert.match(css, /\.wp-latest-cover \{[\s\S]*?aspect-ratio: 1\.91 \/ 1;[\s\S]*?object-fit: cover;/);
-  assert.match(css, /@media \(max-width: 480px\) \{[\s\S]*?\.wp-latest-row \{[\s\S]*?grid-template-columns: 6\.75rem minmax\(0, 1fr\);/);
+  assert.match(css, /@media \(max-width: 480px\) \{[\s\S]*?\.wp-latest-row \{[\s\S]*?grid-template-columns: 5\.5rem minmax\(0, 1fr\);/);
+  assert.match(css, /@media \(max-width: 360px\) \{[\s\S]*?\.wp-latest-row \{[\s\S]*?grid-template-columns: minmax\(0, 1fr\);[\s\S]*?\.wp-latest-cover \{[\s\S]*?display: none;/);
   assert.match(css, /\.wp-latest-row \{[\s\S]*?color: var\(--color-text\);/);
 });

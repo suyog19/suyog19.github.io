@@ -25,6 +25,11 @@ Important workflow reminders:
 - Open PRs into `dev` and link the issue.
 - Agents may merge accepted PRs into `dev`.
 - PRs from `dev` to `main` must be merged by a human.
+- At issue start, record the `AGENTS.md` UX applicability level. For
+  UX-brief-required work, use `docs/ux/ux-change-brief.md` before substantial
+  implementation, then follow `docs/ux/rendered-review.md` for an early rendered
+  slice, representative evidence, Senior UX findings, and acceptance before
+  merge to `dev`.
 
 ## Project Overview
 
