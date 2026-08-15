@@ -19,6 +19,11 @@ pixel specifications.
    current issue, accepted issue-specific direction, this baseline, then the
    currently rendered implementation.
 
+For a user-visible change, classify its UX impact and prepare the smallest
+appropriate intent artifact using
+[ux-change-brief.md](ux-change-brief.md). The brief supplements the linked issue
+and does not replace its acceptance criteria.
+
 ## Evidence labels
 
 - **Observed** — present in the rendered dev site or current implementation.
