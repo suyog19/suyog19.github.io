@@ -141,11 +141,42 @@ Final rendered review and acceptance are recorded below after validation.
 
 ### Senior UX acceptance
 
-`Accepted`. The revised homepage satisfies the recorded design invariants at
-the representative desktop, tablet/zoom-equivalent, and mobile widths. No
-Must-fix findings or accepted deviations remain. This acceptance is the UX
-decision only; the automated and repository checks above provide the separate
-QA/technical evidence.
+The initial `Accepted` disposition was withdrawn after Product Owner review on
+the real `dev.suyogjoshi.com` surface. The first correction improved geometry
+but did not materially improve the page's visual character: the hero remained a
+conventional text/diagram split, the diagram felt generic, and the page still
+read as a cautious rearrangement rather than the approved editorial Option 2
+direction. Passing structural and responsive checks was not sufficient evidence
+of UX quality.
+
+### Reopened Must-fix findings
+
+1. Replace the generic CSS system diagram with meaningful, purpose-built
+   architectural media that gives the hero depth and a memorable point of view.
+2. Make the headline, media, surface, and spatial rhythm read as one editorial
+   composition rather than two unrelated columns on a white page.
+3. Give `Featured now` a clearly distinct visual register from the lower card
+   grids while preserving the authoritative Training state contract.
+
+### Corrective iteration
+
+- A purpose-built architectural systems image now serves as the hero's LCP
+  candidate. It uses layered physical structures and a single signal path to
+  express boundaries, context, and orchestration without stock people, AI
+  clichés, labels, or decorative-only imagery.
+- The hero now uses an off-white editorial field, a stronger display scale,
+  asymmetric near-full-width composition, a fine warm accent, tactile image
+  offset, and an explicit study caption.
+- `Featured now` uses a warmer section field and a dark editorial body for the
+  lead feature, creating a deliberate transition from hero to discovery while
+  leaving the lower homepage calm.
+- The image is a 1536x1024 WebP (about 186 KB) with intrinsic dimensions,
+  meaningful alt text, and high fetch priority because it is now the intended
+  LCP media.
+
+Final acceptance for this corrective iteration must be based on the deployed
+`dev` rendering and Product Owner feedback; it is not self-approved from local
+geometry alone.
 
 ## Pilot process retrospective
 

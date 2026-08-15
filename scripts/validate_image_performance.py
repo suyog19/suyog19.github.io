@@ -128,15 +128,17 @@ def validate_html(path: Path) -> list[str]:
 
     relative = path.relative_to(ROOT)
     is_article = len(relative.parts) == 3 and relative.parts[0] == "writing" and relative.name == "index.html"
+    has_home_hero = relative == Path("index.html")
     if parser.images:
-        expected_high = 1 if is_article else 0
+        expected_high = 1 if is_article or has_home_hero else 0
         if high_priority != expected_high:
             errors.append(
                 f"{relative.as_posix()}: expected {expected_high} high-priority image, found {high_priority}"
             )
-        if is_article and parser.images[0].get("loading") != "eager":
-            errors.append(f"{relative.as_posix()}: primary article image must load eagerly")
-        for position, image in enumerate(parser.images[1:] if is_article else parser.images, start=2 if is_article else 1):
+        if (is_article or has_home_hero) and parser.images[0].get("loading") != "eager":
+            errors.append(f"{relative.as_posix()}: primary LCP image must load eagerly")
+        skip_first = is_article or has_home_hero
+        for position, image in enumerate(parser.images[1:] if skip_first else parser.images, start=2 if skip_first else 1):
             if image.get("loading") != "lazy":
                 errors.append(f"{relative.as_posix()} img[{position}]: below-fold image must load lazily")
 

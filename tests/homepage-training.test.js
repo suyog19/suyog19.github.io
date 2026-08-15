@@ -7,7 +7,7 @@ const analytics = fs.readFileSync('js/homepage.js', 'utf8');
 const courseActions = fs.readFileSync('js/course-actions.js', 'utf8');
 
 test('homepage places Featured now directly after the asymmetric hero', () => {
-  assert.ok(html.indexOf('class="hero-system"') > html.indexOf('id="hero"'));
+  assert.ok(html.indexOf('class="hero-visual"') > html.indexOf('id="hero"'));
   assert.ok(html.indexOf('id="featured-now"') > html.indexOf('id="hero"'));
   assert.ok(html.indexOf('id="featured-now"') < html.indexOf('id="start-here"'));
   assert.match(html, />Explore training<\/a>/);
@@ -49,5 +49,8 @@ test('homepage consolidates writing and instruments the approved hierarchy', () 
 
 test('homepage imagery excludes portrait, headshot and stock-person sources', () => {
   assert.doesNotMatch(html, /portrait|headshot|unsplash|pexels|stock-photo/i);
-  assert.match(html, /role="img" aria-label="A layered system map/);
+  assert.match(html, /src="public\/images\/home\/systems-architecture-hero\.webp"/);
+  assert.match(html, /alt="An architectural model of transparent software layers connected by a single signal path"/);
+  assert.match(html, /loading="eager"/);
+  assert.match(html, /fetchpriority="high"/);
 });
