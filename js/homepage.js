@@ -10,9 +10,6 @@
       course_id: data.courseId,
       course_action: data.courseAction,
       system_id: data.systemId,
-      content_type: data.contentType,
-      content_id: data.contentId,
-      feature_position: data.featurePosition,
       source_surface: 'HOMEPAGE',
     });
   }
