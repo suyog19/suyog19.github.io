@@ -75,6 +75,14 @@ fit in a short issue description or comment.
 - Applicable page-family direction: `docs/ux/pages/...`
 - Existing patterns and prior decisions to preserve:
 
+### Strategic altitude
+
+- Whole-page and cross-site system reviewed:
+- Does the local brief create or expose a broader inconsistency:
+- Best in-scope recommendation:
+- Stronger overall recommendation, if different:
+- Recommendation strength: strongly recommended | acceptable within constraints
+
 ### Desired outcome
 
 - What becomes easier, clearer, or smoother:
@@ -177,6 +185,13 @@ The Senior UX Designer owns design diagnosis and recommendation. Consult Suyog
 about intent and taste when his judgment materially changes the direction; do
 not ask him to perform design execution.
 
+Before consultation, Senior UX must complete the strategic-altitude check in
+the brief. If the best in-scope implementation differs from the strongest
+overall recommendation, present both, recommend one direction, and explain what
+would remain inconsistent or incomplete under the narrower choice. Do not use
+the current issue boundary as a reason to withhold the broader recommendation;
+do not implement the broader scope without approval and issue traceability.
+
 ### Consult Suyog when
 
 - introducing a genuinely new visual direction;
@@ -261,6 +276,11 @@ Before substantial implementation begins, confirm:
 
 - the applicability level and reason are recorded;
 - required context links and prior decisions are identified;
+- the complete page, relevant page family, and cross-site system have been
+  reviewed at strategic altitude;
+- the best in-scope recommendation and any stronger overall recommendation are
+  stated separately, including whether the former is strongly recommended or
+  merely acceptable within constraints;
 - two to six rendered-observable invariants exist for material work;
 - open subjective decisions are either resolved or explicitly assigned;
 - Tech Lead feasibility findings are recorded for UX-brief-required work;
