@@ -135,6 +135,26 @@ keyboard/focus and semantic implications, media purpose and crop, interaction
 feedback, progressive enhancement, and relevant loading, empty, error, success,
 unavailable, selected, recommended, and current states.
 
+The role must also operate at strategic altitude. Before accepting a local
+brief and again before UX acceptance, Senior UX must inspect the complete page,
+the relevant page family, and the cross-site visual/content system. It must ask
+whether the requested local solution creates an inconsistency, exposes a missing
+pattern, or produces a merely acceptable result when a stronger direction is
+available. The review must distinguish:
+
+- the best implementation that fits the approved issue scope;
+- the strongest overall UX recommendation, including adjacent or broader
+  changes that should be proposed separately; and
+- whether the rendered result is strongly recommended or only acceptable under
+  the stated constraints.
+
+Scope discipline controls implementation, not design judgment. Senior UX must
+not silently expand the issue, but it must challenge weak framing, surface the
+better direction, explain the whole-page and cross-site trade-off, and consult
+the Product Owner when the choice changes visual strategy, content prominence,
+or site character. An implementation can satisfy its acceptance criteria and
+still require a broader UX recommendation.
+
 The role must not invent backend, commercial, learner, or product truth; change
 Product Owner intent silently; trade accessibility, security, or business
 constraints for aesthetics; introduce frameworks, dependencies, fonts, or a
