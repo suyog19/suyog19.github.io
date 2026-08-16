@@ -211,6 +211,11 @@ Known omissions or instability: None | <explanation and residual risk>
 Needs another iteration | UX-ready subject to stated deferrals | Escalation
 required
 
+**Recommendation strength:** Strongly recommended | Acceptable within constraints
+
+**Broader UX recommendation:** None | <stronger whole-page or cross-site direction,
+why it is better, and the issue/decision owner needed before implementation>
+
 **Deferrals/risks:** <owner, destination issue, and rationale>
 ```
 
@@ -236,6 +241,10 @@ Exercise senior judgment over the relevant subset; do not produce a numeric
 scorecard for every item:
 
 - first-impression comprehension and primary hierarchy;
+- whole-page coherence and the relationship to the relevant cross-site visual
+  and content system;
+- whether the local change creates asymmetry, exposes a missing pattern, or
+  suggests a stronger direction beyond the current issue;
 - composition, balance, whitespace, density, and section rhythm;
 - typography hierarchy and reading comfort;
 - media appropriateness and performance-aware behavior;
@@ -246,6 +255,13 @@ scorecard for every item:
 - interaction continuity with adjacent pages;
 - signs of a second design system;
 - superficial imitation of a mockup that loses its intended purpose.
+
+A scoped implementation must not receive unqualified UX acceptance merely
+because it satisfies the issue. Record whether it is strongly recommended from
+the overall UX perspective or only acceptable within constraints. When a
+stronger broader direction exists, state it explicitly and route it through the
+Product Owner and issue-first workflow rather than either suppressing it or
+silently expanding scope.
 
 ## Bounded iteration and escalation
 

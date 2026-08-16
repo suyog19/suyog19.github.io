@@ -31,3 +31,17 @@ test('homepage consolidates writing and instruments the approved hierarchy', () 
   for (const event of ['home_training_click', 'home_writing_click', 'home_training_spotlight_view', 'home_training_course_detail_click', 'home_training_course_action_click', 'home_offering_click', 'home_writing_series_click', 'home_system_click']) assert.match(`${html}\n${analytics}\n${courseActions}`, new RegExp(event));
   assert.doesNotMatch(analytics, /email|application_id|cohort_id/i);
 });
+
+test('homepage Writing section uses a coherent three-image editorial system', () => {
+  const writingSection = html.match(/<section class="writing"[\s\S]*?<\/section>/)?.[0] || '';
+  const expectedCovers = [
+    'writing/series/ai-assisted-software-engineering/series-cover.webp',
+    'writing/not-all-engineering-tasks-belong-to-ai/cover.webp',
+    'writing/how-to-tame-your-agent/cover.webp',
+  ];
+
+  assert.equal((writingSection.match(/<img\b/g) || []).length, 3);
+  expectedCovers.forEach(cover => assert.match(writingSection, new RegExp(cover.replaceAll('/', '\\/'))));
+  assert.equal((writingSection.match(/loading="lazy"/g) || []).length, 3);
+  assert.equal((writingSection.match(/decoding="async"/g) || []).length, 3);
+});
