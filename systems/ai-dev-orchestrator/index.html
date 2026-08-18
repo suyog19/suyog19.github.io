@@ -3,16 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AI Dev Orchestrator — exploring how AI-assisted workflows can shape the way software is designed, built, and reviewed." />
+  <meta name="description" content="A practical account of AI Dev Orchestrator: a working prototype for repository onboarding, role-based AI workflows, review gates, and human-controlled delivery." />
   <title>AI Dev Orchestrator | Suyog Joshi</title>
   <link rel="canonical" href="https://suyogjoshi.com/systems/ai-dev-orchestrator/" />
   <meta property="og:title" content="AI Dev Orchestrator | Suyog Joshi" />
-  <meta property="og:description" content="AI Dev Orchestrator — exploring how AI-assisted workflows can shape the way software is designed, built, and reviewed." />
+  <meta property="og:description" content="A practical account of AI Dev Orchestrator: a working prototype for repository onboarding, role-based AI workflows, review gates, and human-controlled delivery." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://suyogjoshi.com/systems/ai-dev-orchestrator/" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="AI Dev Orchestrator | Suyog Joshi" />
-  <meta name="twitter:description" content="AI Dev Orchestrator — exploring how AI-assisted workflows can shape the way software is designed, built, and reviewed." />
+  <meta name="twitter:description" content="A practical account of AI Dev Orchestrator: a working prototype for repository onboarding, role-based AI workflows, review gates, and human-controlled delivery." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": "https://suyogjoshi.com/systems/ai-dev-orchestrator/#system",
+    "headline": "AI Dev Orchestrator",
+    "description": "A practical account of AI Dev Orchestrator: a working prototype for repository onboarding, role-based AI workflows, review gates, and human-controlled delivery.",
+    "url": "https://suyogjoshi.com/systems/ai-dev-orchestrator/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://suyogjoshi.com/systems/ai-dev-orchestrator/" },
+    "author": { "@id": "https://suyogjoshi.com/#person" },
+    "publisher": { "@id": "https://suyogjoshi.com/#person" },
+    "isPartOf": { "@id": "https://suyogjoshi.com/#website" }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -64,7 +78,7 @@
           <a href="../" class="article-back-link">← Back to Systems</a>
           <p class="article-tag">Software Systems</p>
           <h1 class="article-page-title">AI Dev Orchestrator</h1>
-          <p class="article-page-subtitle">Exploring how AI-assisted workflows can shape the way software is designed, built, and reviewed.</p>
+          <p class="article-page-subtitle">A working prototype for turning repository context and issue intent into reviewable software changes without handing release authority to AI.</p>
         </div>
       </div>
     </div>
@@ -74,31 +88,57 @@
         <div class="article-reading-col">
           <div class="article-body">
 
-            <h2>Context</h2>
-            <p>This system started as an exploration of how AI tools could be used not just for coding, but across the entire software development lifecycle.</p>
-            <p>The goal was to understand how planning, implementation, review, and iteration could be structured when AI becomes part of the workflow.</p>
+            <p><strong>Status:</strong> working prototype and architecture exploration. It has implemented onboarding, workflow, review, and release-gate capabilities, but it is not an autonomous replacement for an engineering team.</p>
 
-            <h2>Problem</h2>
-            <p>Software development is often fragmented across tools, roles, and stages. Even with AI tools, the workflow remains loosely structured.</p>
-            <p>The problem was to explore whether a more intentional system could bring clarity and consistency to AI-assisted development.</p>
+            <h2>The engineering question</h2>
+            <p>Most coding assistants begin after a developer has already chosen the repository, interpreted the issue, found the relevant conventions, and decided how the change should be reviewed. That leaves the difficult coordination work outside the tool.</p>
+            <p>AI Dev Orchestrator tests a broader question: can repository knowledge, explicit agent roles, validation evidence, and human decision gates be assembled into one repeatable delivery workflow?</p>
 
-            <h2>Approach</h2>
-            <p>The system was designed as a structured workflow where different AI tools played specific roles.</p>
-            <p>ChatGPT was used for design and structuring, while Claude was used for implementation. Human judgment was used to validate, refine, and control outcomes.</p>
+            <h2>System boundary</h2>
+            <p>The orchestrator sits between a work item and a GitHub pull request. It can inspect and profile a repository, retain architecture and convention snapshots, dispatch bounded workflow roles, run repository-specific commands, publish review status, and prepare a change for human judgment.</p>
+            <p>It does not own product intent, credentials, branch-protection policy, or final approval. First-use runs require manual review, and the orchestrator has a permanent self-modification guard that prevents it from auto-merging changes to its own repository.</p>
 
-            <h2>What worked</h2>
-            <p>The structured workflow improved clarity in development.</p>
-            <p>Using different AI tools for different roles helped reduce ambiguity.</p>
+            <div class="flow-sequence" aria-label="AI Dev Orchestrator delivery boundary">
+              <span class="flow-sequence-step">Issue and repository</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Context and capability profile</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Role-based workflow</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Tests and review evidence</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Human-controlled pull request</span>
+            </div>
 
-            <h2>Public repository</h2>
-            <p>Explore the implementation and project history in the <a href="https://github.com/suyog19/ai-dev-orchestrator" target="_blank" rel="noopener noreferrer">AI Dev Orchestrator repository on GitHub</a>.</p>
+            <h2>What was implemented</h2>
+            <ul>
+              <li>Repository onboarding that detects a capability profile, runs known checks, and records architecture and coding-convention snapshots.</li>
+              <li>Jira-to-repository mapping and workflow dispatch backed by PostgreSQL and a Redis queue.</li>
+              <li>Separate planning, implementation, testing, review, documentation, and governance responsibilities inside a coordinated run.</li>
+              <li>GitHub status publication, deployment validation hooks, clarification handling, and an operator dashboard.</li>
+              <li>First-use and self-modification safety gates that keep early or self-referential releases under manual control.</li>
+            </ul>
 
-            <h2>What didn't</h2>
-            <p>Coordination between tools required manual intervention.</p>
-            <p>The system still depends heavily on human judgment.</p>
+            <h2>Key decisions and trade-offs</h2>
+            <p>Role separation made the workflow easier to reason about than one long model conversation, but it also introduced coordination state and more places where incomplete context can propagate. Repository profiles use automatic detection for common stacks and explicit command hints for atypical repositories; that keeps onboarding convenient without pretending detection is always correct.</p>
+            <p>The release gate uses completed-run evidence rather than model confidence. This makes the path slower than unconditional automation, but keeps merge authority outside the generated work. The same trade-off appears in repository bootstrapping: the system opens a branch and pull request rather than writing directly to the protected integration branch.</p>
 
-            <h2>What changed</h2>
-            <p>This system changed how I think about AI in software engineering — not as a tool, but as part of the workflow design.</p>
+            <h2>Inspectable evidence</h2>
+            <p>The <a href="https://github.com/suyog19/ai-dev-orchestrator" target="_blank" rel="noopener noreferrer">public AI Dev Orchestrator repository on GitHub</a> contains the FastAPI service, workflow and queue code, repository profiling, GitHub status integration, bootstrap templates, tests, phase summaries, security notes, and operations runbooks.</p>
+            <p>That repository supports the claim that the workflow exists as implemented software. It does not by itself prove broad team adoption, unattended reliability, or effectiveness across every repository shape.</p>
+
+            <h2>Limitations and what remains unproven</h2>
+            <ul>
+              <li>External-project setup still requires operator configuration for Jira mappings, repository permissions, branch protection, and deployment profiles.</li>
+              <li>Automatic capability detection can fall back to an unknown profile; explicit command hints are then required for meaningful validation.</li>
+              <li>The workflow has been dogfooded and exercised through bounded scenarios, not validated across large numbers of teams or repositories.</li>
+              <li>Model output still requires human review. More agents do not remove ambiguity, security risk, or responsibility.</li>
+              <li>The prototype does not establish comparative delivery-speed, cost, quality, or reliability benchmarks.</li>
+            </ul>
+
+            <h2>Outcome and learning</h2>
+            <p>The useful result was not “AI can write the whole system.” It was a clearer delivery architecture: repository context must be acquired before generation, responsibilities must be separated, validation must produce evidence, and authority must remain explicit.</p>
+            <p>That changed the design from a chain of tools into a governed workflow. The remaining manual gates are not unfinished polish; they are part of the system boundary.</p>
 
           </div>
         </div>
