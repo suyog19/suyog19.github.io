@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import struct
 import sys
@@ -13,6 +14,19 @@ from xml.etree import ElementTree
 
 ROOT = Path(__file__).parents[1]
 RASTER_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
+SOCIAL_KEYS = {
+    "og:image",
+    "og:image:width",
+    "og:image:height",
+    "og:image:alt",
+    "twitter:card",
+    "twitter:image",
+    "twitter:image:alt",
+    "robots",
+}
+SOCIAL_PREVIEW_PREFIX = "https://suyogjoshi.com/assets/social-previews/"
+SOCIAL_PREVIEW_MANIFEST = json.loads((ROOT / "data" / "social-previews.json").read_text(encoding="utf-8"))
+SOCIAL_PREVIEW_BY_PAGE = {entry["page"]: entry for entry in SOCIAL_PREVIEW_MANIFEST["entries"]}
 
 
 class ImageParser(HTMLParser):
@@ -27,7 +41,7 @@ class ImageParser(HTMLParser):
             self.images.append(values)
         elif tag == "meta":
             key = values.get("property") or values.get("name")
-            if key in {"og:image", "twitter:image"} and values.get("content"):
+            if key in SOCIAL_KEYS and values.get("content"):
                 self.social[str(key)] = str(values["content"])
 
 
@@ -140,18 +154,66 @@ def validate_html(path: Path) -> list[str]:
             if image.get("loading") != "lazy":
                 errors.append(f"{relative.as_posix()} img[{position}]: below-fold image must load lazily")
 
-    if parser.social:
-        if set(parser.social) != {"og:image", "twitter:image"}:
+    image_meta = {key: parser.social[key] for key in ("og:image", "twitter:image") if key in parser.social}
+    if image_meta:
+        if set(image_meta) != {"og:image", "twitter:image"}:
             errors.append(f"{relative.as_posix()}: social image metadata must include matching Open Graph and Twitter images")
-        elif parser.social["og:image"] != parser.social["twitter:image"]:
+        elif image_meta["og:image"] != image_meta["twitter:image"]:
             errors.append(f"{relative.as_posix()}: Open Graph and Twitter image URLs must match")
-        for key, url in parser.social.items():
+        for key, url in image_meta.items():
             parsed = urlparse(url)
             asset = ROOT / parsed.path.lstrip("/")
             if parsed.netloc != "suyogjoshi.com" or not asset.is_file():
                 errors.append(f"{relative.as_posix()}: {key} does not resolve to a production-compatible local asset")
             elif asset.suffix.lower() not in {".png", ".jpg", ".jpeg"}:
                 errors.append(f"{relative.as_posix()}: {key} must retain a PNG or JPEG social-crawler fallback")
+
+    page_key = relative.as_posix()
+    entry = SOCIAL_PREVIEW_BY_PAGE.get(page_key)
+    preview_url = parser.social.get("og:image", "")
+    if entry:
+        expected_url = f"{SOCIAL_PREVIEW_PREFIX}{entry['filename']}"
+        expected = {
+            "og:image": expected_url,
+            "og:image:width": str(SOCIAL_PREVIEW_MANIFEST["dimensions"]["width"]),
+            "og:image:height": str(SOCIAL_PREVIEW_MANIFEST["dimensions"]["height"]),
+            "og:image:alt": entry["alt"],
+            "twitter:card": "summary_large_image",
+            "twitter:image": expected_url,
+            "twitter:image:alt": entry["alt"],
+        }
+        for key, value in expected.items():
+            if parser.social.get(key) != value:
+                errors.append(f"{page_key}: {key} must be {value!r}")
+        if "noindex" in parser.social.get("robots", "").lower():
+            errors.append(f"{page_key}: approved public social preview cannot be attached to a noindex page")
+        asset = ROOT / "assets" / "social-previews" / entry["filename"]
+        if asset.is_file():
+            actual = image_dimensions(asset)
+            declared = (
+                SOCIAL_PREVIEW_MANIFEST["dimensions"]["width"],
+                SOCIAL_PREVIEW_MANIFEST["dimensions"]["height"],
+            )
+            if actual != declared:
+                errors.append(f"{page_key}: social preview must be {declared[0]}x{declared[1]}, found {actual[0]}x{actual[1]}")
+    elif preview_url.startswith(SOCIAL_PREVIEW_PREFIX):
+        errors.append(f"{page_key}: social preview is not registered in data/social-previews.json")
+    return errors
+
+
+def validate_social_preview_manifest() -> list[str]:
+    errors: list[str] = []
+    pages = [entry["page"] for entry in SOCIAL_PREVIEW_MANIFEST["entries"]]
+    filenames = [entry["filename"] for entry in SOCIAL_PREVIEW_MANIFEST["entries"]]
+    if len(pages) != len(set(pages)):
+        errors.append("data/social-previews.json: duplicate page entries")
+    if len(filenames) != len(set(filenames)):
+        errors.append("data/social-previews.json: duplicate preview filenames")
+    if set(entry["variant"] for entry in SOCIAL_PREVIEW_MANIFEST["entries"]) - {"core", "learning"}:
+        errors.append("data/social-previews.json: variants must be core or learning")
+    output_assets = {path.name for path in (ROOT / "assets" / "social-previews").glob("*.png")}
+    if output_assets != set(filenames):
+        errors.append("assets/social-previews: output PNG set must exactly match the manifest")
     return errors
 
 
@@ -174,6 +236,7 @@ def main() -> int:
     pages = sorted(ROOT.rglob("*.html"))
     for page in pages:
         errors.extend(validate_html(page))
+    errors.extend(validate_social_preview_manifest())
     errors.extend(validate_dynamic_demo())
     if errors:
         print("Image performance validation failed:", file=sys.stderr)
