@@ -9,6 +9,7 @@ python scripts/validate_canonical_urls.py
 python scripts/validate_custom_404.py
 python scripts/validate_image_performance.py
 python scripts/validate_public_routes.py
+python scripts/validate_public_discovery.py
 python scripts/validate_site_identity.py
 python scripts/validate_training_catalogue_schema.py
 python scripts/validate_training_commercials.py
