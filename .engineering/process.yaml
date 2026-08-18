@@ -1,0 +1,70 @@
+schema_version: 1
+process:
+  source: suyog19/software-engineering-process
+  version: 1.0.0
+  revision: fa26e629787fbab681b389f02a9f9a6e28d8481a
+  profile: frontend
+repository:
+  name: suyog19/suyog19.github.io
+overrides:
+  validation:
+    commands:
+    - python scripts/validate_article_structured_data.py
+    - python scripts/validate_canonical_urls.py
+    - python scripts/validate_custom_404.py
+    - python scripts/validate_image_performance.py
+    - python scripts/validate_public_routes.py
+    - python scripts/validate_site_identity.py
+    - python scripts/validate_training_catalogue_schema.py
+    - python scripts/validate_training_commercials.py
+    - python scripts/validate_training_consistency.py
+    - python scripts/validate_training_discoverability.py
+    - python -m unittest tests/test_training_consistency.py tests/test_training_delivery_profile.py
+    - node --test tests/*.test.js
+  classification:
+    protected_path_hints:
+    - admin/**
+    - js/admin-*.js
+    - js/*auth*.js
+    - js/*payment*.js
+    - apply/**
+    - my-learning/**
+    - privacy/**
+    - training/policies/**
+    additional_protected_characteristics:
+    - learner_private_surface
+    - privacy_retention
+    - public_api_contract
+  ux:
+    additional_required_when:
+    - learning_experience_change
+    - public_editorial_hierarchy_change
+local_context:
+- category: operating_contract
+  path: docs/engineering/operating-contract.md
+  load_when: load before issue, branch, pull-request, role, approval, or release workflow
+    actions
+- category: architecture
+  path: docs/engineering/architecture.md
+  load_when: load for HTML, CSS, JavaScript, content structure, API integration, SEO,
+    or sitemap changes
+- category: ux_product_design
+  path: docs/ux/
+  load_when: load for any user-visible change; use engineering-process.md for applicability
+    and Gates A-D
+- category: deployment_release
+  path: docs/engineering/deployment-release.md
+  load_when: load for hosting, deployment, domains, monitoring, environments, or production
+    promotion
+- category: validation_testing
+  path: docs/engineering/validation-testing.md
+  load_when: load when selecting, running, changing, or reporting frontend validation
+    and test evidence
+- category: other
+  path: docs/canonical-url-policy.md
+  load_when: load for public routes, links, canonical metadata, hosting redirects,
+    or sitemap changes
+- category: security_domain
+  path: docs/privacy-retention-operations.md
+  load_when: load for privacy, retention, deletion, personal data, or sensitive operational
+    changes
