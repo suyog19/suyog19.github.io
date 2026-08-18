@@ -13,6 +13,13 @@ ROOT = Path(__file__).parents[1]
 WRITING = ROOT / "writing"
 PRODUCTION_ORIGIN = "https://suyogjoshi.com"
 PERSON_ID = f"{PRODUCTION_ORIGIN}/#person"
+WEBSITE_ID = f"{PRODUCTION_ORIGIN}/#website"
+TOPIC_HUBS = (
+    "ai-assisted-software-engineering",
+    "engineering-context-and-knowledge",
+    "ai-agents-and-review",
+    "agile-process-and-engineering-leadership",
+)
 
 
 class StructuredDataParser(HTMLParser):
@@ -34,7 +41,7 @@ class StructuredDataParser(HTMLParser):
                 self.meta[key.lower()] = values.get("content", "")
         elif tag == "link" and "canonical" in values.get("rel", "").lower().split():
             self.canonical = values.get("href", "")
-        elif tag == "h1" and "article-page-title" in values.get("class", "").split():
+        elif tag == "h1" and ({"article-page-title", "topic-hub-title"} & set(values.get("class", "").split())):
             self._capture_headline = True
         elif tag == "script" and values.get("type", "").lower() == "application/ld+json":
             self._json_ld = True
@@ -120,6 +127,50 @@ def validate_article(path: Path) -> list[str]:
     return errors
 
 
+def validate_topic_hub(path: Path) -> list[str]:
+    errors: list[str] = []
+    relative = path.relative_to(ROOT)
+    parser = StructuredDataParser()
+    source = path.read_text(encoding="utf-8")
+    try:
+        parser.feed(source)
+    except json.JSONDecodeError as exc:
+        return [f"{relative}: malformed structured data: {exc}"]
+    nodes = [node for document in parser.json_documents for node in schema_nodes(document)]
+    if any(node.get("@type") == "BlogPosting" for node in nodes):
+        errors.append(f"{relative}: topic hubs must not use BlogPosting")
+    collections = [node for node in nodes if node.get("@type") == "CollectionPage"]
+    if len(collections) != 1:
+        return errors + [f"{relative}: expected exactly one CollectionPage, found {len(collections)}"]
+    node = collections[0]
+    if node.get("url") != parser.canonical or node.get("@id") != f"{parser.canonical}#collection":
+        errors.append(f"{relative}: url or @id does not match canonical")
+    if node.get("name") != parser.headline:
+        errors.append(f"{relative}: name does not match visible h1")
+    if node.get("description") != parser.meta.get("description"):
+        errors.append(f"{relative}: description does not match meta description")
+    if node.get("isPartOf") != {"@id": WEBSITE_ID} or node.get("creator") != {"@id": PERSON_ID}:
+        errors.append(f"{relative}: CollectionPage must reference the canonical WebSite and Person")
+    item_list = node.get("mainEntity")
+    if not isinstance(item_list, dict) or item_list.get("@type") != "ItemList":
+        errors.append(f"{relative}: mainEntity must be an ItemList")
+        return errors
+    items = item_list.get("itemListElement")
+    if item_list.get("numberOfItems") != 3 or not isinstance(items, list) or len(items) != 3:
+        errors.append(f"{relative}: starting-path ItemList must contain exactly three items")
+        return errors
+    if [item.get("position") for item in items if isinstance(item, dict)] != [1, 2, 3]:
+        errors.append(f"{relative}: starting-path positions must be 1, 2, 3")
+    for item in items:
+        if not isinstance(item, dict) or item.get("@type") != "ListItem" or not item.get("name") or not item.get("url"):
+            errors.append(f"{relative}: each starting-path entry must be a named ListItem with a URL")
+            continue
+        href = str(item["url"]).removeprefix(f"{PRODUCTION_ORIGIN}/writing/")
+        if f'href="../../{href}"' not in source:
+            errors.append(f"{relative}: structured starting-path URL is not a visible link: {item['url']}")
+    return errors
+
+
 def main() -> int:
     errors: list[str] = []
     article_paths = sorted(path / "index.html" for path in WRITING.iterdir() if path.is_dir() and path.name != "series" and (path / "index.html").exists())
@@ -137,12 +188,14 @@ def main() -> int:
             errors.append(f"{relative}: series pages must not use BlogPosting")
         if not any(node.get("@type") == "CollectionPage" for node in nodes):
             errors.append(f"{relative}: missing CollectionPage structured data")
+    for slug in TOPIC_HUBS:
+        errors.extend(validate_topic_hub(WRITING / "topics" / slug / "index.html"))
     if errors:
         print("Article structured-data validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(f"Validated BlogPosting structured data for {len(article_paths)} public articles and 2 series pages.")
+    print(f"Validated structured data for {len(article_paths)} public articles, 2 series pages, and {len(TOPIC_HUBS)} topic hubs.")
     return 0
 
 
