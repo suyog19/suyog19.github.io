@@ -13,6 +13,18 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="AI-Assisted Invoice Review Workflow | Suyog Joshi" />
   <meta name="twitter:description" content="Try a static AI-assisted invoice review demo with synthetic invoices, extracted fields, business checks, and human review actions." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "@id": "https://suyogjoshi.com/systems/ai-workflow-lab/invoice-review-demo/#demo",
+    "name": "AI-Assisted Invoice Review Workflow",
+    "description": "Try a static AI-assisted invoice review demo with synthetic invoices, extracted fields, business checks, and human review actions.",
+    "url": "https://suyogjoshi.com/systems/ai-workflow-lab/invoice-review-demo/",
+    "isPartOf": { "@id": "https://suyogjoshi.com/systems/ai-workflow-lab/#system" },
+    "creator": { "@id": "https://suyogjoshi.com/#person" }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -65,7 +77,7 @@
           <a href="#sample-invoices" class="btn btn-primary" data-scroll-target="sample-invoices">Try Demo</a>
           <a href="#how-it-works" class="invoice-demo-text-link" data-scroll-target="how-it-works">How it works</a>
         </div>
-        <p class="invoice-demo-trust-note">Demo uses synthetic sample invoices only. No real documents are uploaded or processed.</p>
+        <p class="invoice-demo-trust-note"><strong>Status:</strong> static interactive simulation using synthetic sample invoices. No real documents are uploaded or processed.</p>
       </div>
     </section>
 
@@ -105,6 +117,15 @@
             <li>Keeps humans in control through review actions and audit history</li>
           </ul>
           <a class="btn btn-secondary" href="../">Read the build notes</a>
+        </div>
+        <div class="invoice-demo-card invoice-demo-explainer-card">
+          <h3>What this does not prove</h3>
+          <ul>
+            <li>The page replays pre-authored scenarios; it does not call the document-processing backend.</li>
+            <li>Extracted values and confidence labels are synthetic examples, not measured model accuracy.</li>
+            <li>Review actions update only the in-page demonstration and do not approve a payment or accounting entry.</li>
+            <li>The demo does not establish production scale, latency, reliability, or regulatory suitability.</li>
+          </ul>
         </div>
       </div>
     </section>

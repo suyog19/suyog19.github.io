@@ -3,16 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Survey/Poll Serverless System — a focused system to test API design, serverless architecture, and deployment discipline." />
+  <meta name="description" content="A small serverless poll prototype showing a browser-to-FastAPI-to-DynamoDB vote path, atomic counters, AWS SAM infrastructure, and explicit limits." />
   <title>Survey/Poll Serverless System | Suyog Joshi</title>
   <link rel="canonical" href="https://suyogjoshi.com/systems/survey-poll-serverless/" />
   <meta property="og:title" content="Survey/Poll Serverless System | Suyog Joshi" />
-  <meta property="og:description" content="Survey/Poll Serverless System — a focused system to test API design, serverless architecture, and deployment discipline." />
+  <meta property="og:description" content="A small serverless poll prototype showing a browser-to-FastAPI-to-DynamoDB vote path, atomic counters, AWS SAM infrastructure, and explicit limits." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://suyogjoshi.com/systems/survey-poll-serverless/" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Survey/Poll Serverless System | Suyog Joshi" />
-  <meta name="twitter:description" content="Survey/Poll Serverless System — a focused system to test API design, serverless architecture, and deployment discipline." />
+  <meta name="twitter:description" content="A small serverless poll prototype showing a browser-to-FastAPI-to-DynamoDB vote path, atomic counters, AWS SAM infrastructure, and explicit limits." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": "https://suyogjoshi.com/systems/survey-poll-serverless/#system",
+    "headline": "Survey/Poll Serverless System",
+    "description": "A small serverless poll prototype showing a browser-to-FastAPI-to-DynamoDB vote path, atomic counters, AWS SAM infrastructure, and explicit limits.",
+    "url": "https://suyogjoshi.com/systems/survey-poll-serverless/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://suyogjoshi.com/systems/survey-poll-serverless/" },
+    "author": { "@id": "https://suyogjoshi.com/#person" },
+    "publisher": { "@id": "https://suyogjoshi.com/#person" },
+    "isPartOf": { "@id": "https://suyogjoshi.com/#website" }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -64,7 +78,7 @@
           <a href="../" class="article-back-link">← Back to Systems</a>
           <p class="article-tag">Software Systems</p>
           <h1 class="article-page-title">Survey/Poll Serverless System</h1>
-          <p class="article-page-subtitle">A focused system to test API design, serverless architecture, and deployment discipline.</p>
+          <p class="article-page-subtitle">A deliberately small prototype for tracing one vote from a browser through a serverless API to an atomic DynamoDB update.</p>
         </div>
       </div>
     </div>
@@ -74,31 +88,54 @@
         <div class="article-reading-col">
           <div class="article-body">
 
-            <h2>Context</h2>
-            <p>This system was built as a small but complete end-to-end experiment to test how a serverless architecture behaves in practice.</p>
-            <p>It focuses on clarity of API design, event flow, and deployment discipline rather than scale or features.</p>
+            <p><strong>Status:</strong> small historical prototype with a public repository. It demonstrates an end-to-end serverless vote path; it is not presented as a production survey platform.</p>
 
-            <h2>Problem</h2>
-            <p>Many architectural discussions remain theoretical. The problem here was to validate decisions through a real, working system — even if small.</p>
-            <p>The focus was not scale, but correctness and discipline.</p>
+            <h2>The engineering question</h2>
+            <p>A serverless diagram can look complete while hiding the details that determine whether the design is coherent: request validation, state updates, environment separation, failure responses, and deployable infrastructure.</p>
+            <p>This prototype asks whether a minimal poll can make that whole path inspectable without expanding into accounts, survey authoring, analytics, or administration.</p>
 
-            <h2>Approach</h2>
-            <p>A minimal system was built using API-driven design, serverless functions, and a simple data model.</p>
-            <p>The goal was to cover the full lifecycle: design, implementation, deployment, and validation.</p>
+            <h2>System boundary</h2>
+            <p>The browser renders a fixed poll and posts one selected choice to a FastAPI endpoint. The API reads the poll record, rejects unknown polls or choices, and applies an atomic DynamoDB update to the selected counter and total vote count. Mangum adapts the FastAPI application to AWS Lambda, and AWS SAM defines the function, HTTP API, DynamoDB table, and stage-specific configuration.</p>
+            <p>Poll creation, identity, duplicate-vote prevention, rate limiting, moderation, reporting, and operational administration are outside this experiment.</p>
 
-            <h2>What worked</h2>
-            <p>End-to-end clarity was achieved.</p>
-            <p>The system made it easier to validate architectural decisions through execution.</p>
+            <div class="flow-sequence" aria-label="Survey poll request path">
+              <span class="flow-sequence-step">Static browser form</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">HTTP API</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">FastAPI on Lambda</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Atomic DynamoDB update</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Updated counts</span>
+            </div>
 
-            <h2>Public repository</h2>
-            <p>Explore the implementation and project history in the <a href="https://github.com/suyog19/survey-poll-app" target="_blank" rel="noopener noreferrer">Survey/Poll application repository on GitHub</a>.</p>
+            <h2>Implementation and decisions</h2>
+            <ul>
+              <li>The API exposes a health route and one vote command: <code>POST /polls/{poll_id}/vote</code>.</li>
+              <li>A poll is stored under a single <code>poll_id</code> partition key with a choice-count map and total.</li>
+              <li>DynamoDB <code>ADD</code> updates both counters atomically instead of reading, incrementing, and rewriting them in application code.</li>
+              <li>On-demand table billing and a 256 MB, 10-second Lambda keep the prototype small and avoid capacity planning.</li>
+              <li>Separate development and production table names make environment boundaries visible in infrastructure rather than relying on operator memory.</li>
+            </ul>
+            <p>The trade-off is deliberate simplicity. A single-item counter model is easy to understand, but it has not been load-tested for a hot poll and should not be treated as a proven high-throughput design.</p>
 
-            <h2>What didn't</h2>
-            <p>The system is intentionally small, so it does not expose all real-world constraints.</p>
-            <p>Further complexity will be needed to fully validate scalability.</p>
+            <h2>Inspectable evidence</h2>
+            <p>The <a href="https://github.com/suyog19/survey-poll-app" target="_blank" rel="noopener noreferrer">public Survey/Poll application repository on GitHub</a> contains the browser client, FastAPI handler, AWS SAM template, and environment configuration.</p>
+            <p>The repository supports the architecture claims on this page. It does not provide production traffic, scale, latency, availability, or user-adoption evidence.</p>
 
-            <h2>What changed</h2>
-            <p>It reinforced the importance of validating ideas through real systems rather than discussions alone.</p>
+            <h2>Limitations and what remains unproven</h2>
+            <ul>
+              <li>The browser uses a configured API base and fixed poll identifier; there is no discovery or authoring workflow.</li>
+              <li>There is no authentication, authorization, voter identity, duplicate-vote control, abuse prevention, or rate limiting.</li>
+              <li>The prototype allows broad cross-origin access and would need a narrower origin policy before handling a real public workflow.</li>
+              <li>Errors are intentionally basic, and the repository does not demonstrate monitoring, alarms, backup, recovery, or incident handling.</li>
+              <li>No benchmark establishes how the single-record counter behaves under sustained concurrent voting.</li>
+            </ul>
+
+            <h2>Outcome and learning</h2>
+            <p>The useful outcome is a small, traceable architecture rather than a long feature list. The prototype makes one request path concrete enough to inspect where validation belongs, why atomic persistence matters, and how infrastructure choices become part of the application contract.</p>
+            <p>It also shows where a prototype stops being evidence: a deployable path is not the same as an operated, secure, or scalable product.</p>
 
           </div>
         </div>

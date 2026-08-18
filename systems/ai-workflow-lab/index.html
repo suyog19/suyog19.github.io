@@ -13,6 +13,20 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="AI Workflow Lab | Suyog Joshi" />
   <meta name="twitter:description" content="AI Workflow Lab turns business documents into structured, reviewable data with evidence, confidence, and missing-field reporting." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": "https://suyogjoshi.com/systems/ai-workflow-lab/#system",
+    "headline": "AI Workflow Lab",
+    "description": "AI Workflow Lab turns business documents into structured, reviewable data with evidence, confidence, and missing-field reporting.",
+    "url": "https://suyogjoshi.com/systems/ai-workflow-lab/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://suyogjoshi.com/systems/ai-workflow-lab/" },
+    "author": { "@id": "https://suyogjoshi.com/#person" },
+    "publisher": { "@id": "https://suyogjoshi.com/#person" },
+    "isPartOf": { "@id": "https://suyogjoshi.com/#website" }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -74,11 +88,41 @@
         <div class="article-reading-col">
           <div class="article-body">
 
+            <p><strong>Status:</strong> working serverless platform module with public-safe static evidence and one live ingestion-comparison tool. The public examples demonstrate bounded capabilities; they are not a production document-approval product.</p>
+
             <h2>Problem</h2>
             <p>Many business workflows still begin with unstructured documents: invoices, receipts, statements, forms, and messages. Extracting values is only part of the problem. The harder question is whether a person can review where each value came from and understand what was not found.</p>
 
+            <h2>System boundary</h2>
+            <p>The backend accepts documents, stores document artifacts and metadata, queues asynchronous processing, extracts or understands text, produces structured fields, applies deterministic workflow validation, records review and audit state, and supports grounded retrieval over approved knowledge collections.</p>
+            <p>The public Systems page does not expose private documents or an operational review queue. Three child routes replay synthetic, pre-generated evidence. The ingestion comparator is the only public child tool that uploads a visitor-selected document to the backend; it publishes its own format, size, retention, and advisory-analysis boundaries before submission.</p>
+
+            <h2>Architecture and trust boundaries</h2>
+            <div class="flow-sequence" aria-label="AI Workflow Lab system architecture">
+              <span class="flow-sequence-step">Upload or approved source</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">S3 document artifact</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Queued Lambda processing</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Extraction and validation</span>
+              <span class="flow-sequence-arrow">-&gt;</span>
+              <span class="flow-sequence-step">Review and audit state</span>
+            </div>
+            <p>DynamoDB stores document, workflow, and audit records; S3 stores document-derived artifacts; SQS separates upload requests from processing; and optional OpenSearch/Bedrock capabilities support grounded knowledge retrieval. OCR is a fallback for image-only receipt and invoice inputs, not the default claim for every document.</p>
+            <p>The important boundary is between interpretation and authority. Models may describe, extract, compare, or summarise. Deterministic validation and a human reviewer remain responsible for workflow decisions.</p>
+
+            <h2>Key decisions and trade-offs</h2>
+            <ul>
+              <li>A serverless module reuses the platform's deployment, health, storage, and operations patterns, at the cost of asynchronous state that must be made explicit.</li>
+              <li>Original documents and large generated artifacts stay in S3 while DynamoDB retains bounded metadata and workflow state.</li>
+              <li>Evidence snippets, confidence, missing fields, and audit events are first-class outputs rather than hidden implementation details.</li>
+              <li>Static public demos make review states inspectable without exposing private documents; they prove presentation and workflow semantics, not live-model accuracy.</li>
+              <li>Retrieval and AI-generated comparisons remain optional so deterministic extraction and parser output can still be inspected independently.</li>
+            </ul>
+
             <h2>Pipeline</h2>
-            <p>The Phase 4 demo focuses on the path from document text to structured, reviewable fields.</p>
+            <p>The public evidence begins with the path from document text to structured, reviewable fields.</p>
 
             <div class="flow-sequence" aria-label="AI Workflow Lab Phase 4 pipeline">
               <span class="flow-sequence-step">Business document</span>
@@ -118,7 +162,7 @@
 
             <div class="demo-source-note">
               <h2>What the examples use</h2>
-              <p>The invoice visual below is synthetic and uses the same public-safe values as the extracted fields shown in the demo. The current backend does not yet perform OCR on scanned images, so this page shows a realistic static visual plus the matching Phase 4 transcript-derived output.</p>
+              <p>The invoice visual below is synthetic and uses the same public-safe values as the extracted fields shown in the demo. The backend now supports OCR fallback for image-only receipts and invoices, but this static page does not run that backend path; it pairs the visual with matching transcript-derived output.</p>
               <figure class="demo-scan-reference">
                 <img src="ai-workflow-lab-invoice-demo.svg" alt="Synthetic invoice visual matching the extracted fields shown on this page" width="960" height="1220" loading="lazy" decoding="async">
                 <figcaption>Synthetic public-safe invoice visual. The values match the extracted fields below; this is not a claim that the backend currently performs OCR on scanned images.</figcaption>
@@ -273,8 +317,8 @@ Payment Method: card</pre>
               </div>
             </div>
 
-            <h2>What this proves</h2>
-            <p>Phase 4 proves that AI Workflow Lab can produce reviewable structured data from everyday business documents.</p>
+            <h2>What the public evidence demonstrates</h2>
+            <p>The examples demonstrate the contract for producing and presenting reviewable structured data from everyday business documents.</p>
             <ul>
               <li>Document-type-aware field extraction.</li>
               <li>Public-safe fixture outputs.</li>
@@ -283,12 +327,12 @@ Payment Method: card</pre>
               <li>A clear boundary between extraction and workflow decisions.</li>
             </ul>
 
-            <h2>What comes next in Phase 5</h2>
-            <p>Phase 5 should focus on what happens after extraction: human review, validation, exception handling, routing by confidence or missing fields, and audit-friendly workflow state.</p>
-            <p>Phase 4 does not decide whether a document should be approved, rejected, reimbursed, paid, or posted to accounting. It prepares data that can support those later workflow decisions.</p>
+            <h2>Decision and review layer</h2>
+            <p>The backend has moved beyond extraction into deterministic validation, exception handling, human review state, reviewer actions, and an audit trail. The invoice child demo presents a public-safe simulation of that progression.</p>
+            <p>The boundary remains deliberate: extraction and validation can prepare evidence, but the lab does not approve payments, reimbursements, or accounting entries on behalf of a user.</p>
 
             <div class="process-flow" aria-label="Phase 5 focus areas">
-              <div class="process-flow-label">Phase 5 focus</div>
+              <div class="process-flow-label">Decision and review</div>
               <ul class="process-flow-steps">
                 <li>Human review screens</li>
                 <li>Validation and exception handling</li>
@@ -301,9 +345,9 @@ Payment Method: card</pre>
             <ul>
               <li>The current demos use synthetic public-safe fixtures.</li>
               <li>The public invoice image is a visual reference; extracted fields shown here come from matching synthetic transcripts.</li>
-              <li>The current backend does not perform OCR on scanned image input.</li>
+              <li>OCR support is a fallback for bounded receipt and invoice inputs; the static examples on this page do not validate a live OCR run.</li>
               <li>The examples are static and do not call production APIs.</li>
-              <li>The extraction outputs are demo artifacts, not a production review queue.</li>
+              <li>The public extraction outputs are demo artifacts, not a production review queue.</li>
               <li>The demos do not approve payments, reimbursements, or accounting entries.</li>
               <li>The demos do not make LLM-based decisions.</li>
             </ul>
@@ -315,6 +359,10 @@ Payment Method: card</pre>
               <li>Expense receipt extraction package</li>
               <li>Evidence and missing-fields viewer package</li>
             </ul>
+
+            <h2>Outcome and learning</h2>
+            <p>The lab clarified that extraction quality is only one part of a trustworthy document workflow. A useful system must also expose provenance, uncertainty, missing information, validation, review authority, and audit state.</p>
+            <p>It also reinforced a practical separation: public demos can make the engineering contract understandable, while private document processing and operational review remain behind the platform boundary.</p>
 
           </div>
         </div>
