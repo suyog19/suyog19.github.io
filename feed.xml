@@ -1,0 +1,326 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Suyog Joshi Writing</title>
+    <link>https://suyogjoshi.com/writing/</link>
+    <description>Articles and essays on AI, software architecture, intelligent systems, and engineering practice.</description>
+    <language>en</language>
+    <copyright>Copyright 2026 Suyog Joshi</copyright>
+    <atom:link href="https://suyogjoshi.com/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 Aug 2026 09:00:00 +0000</lastBuildDate>
+    <item>
+      <title>When AI Writes the Code, What Makes a Language Good?</title>
+      <link>https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975</link>
+      <guid isPermaLink="true">https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975</guid>
+      <description>What programming-language qualities matter when AI writes more code, including explicitness, feedback, tooling, contracts, and human reviewability.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 17 Aug 2026 09:00:00 +0000</pubDate>
+      <category>Architecture in the AI Era</category>
+      <source url="https://medium.com/towards-artificial-intelligence/">Towards AI</source>
+    </item>
+    <item>
+      <title>The Rise of Multi-Model Software Engineering</title>
+      <link>https://medium.com/gitconnected/the-rise-of-multi-model-software-engineering-afa2c27b29bc?sk=bf073a9753b436a016e31bb619389bfc</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/the-rise-of-multi-model-software-engineering-afa2c27b29bc?sk=bf073a9753b436a016e31bb619389bfc</guid>
+      <description>How engineering teams can use different AI models for planning, implementation, review, and evidence without treating one model as universally best.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 17 Aug 2026 09:00:00 +0000</pubDate>
+      <category>AI-Assisted Software Engineering</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>I Built an AI Software Team. The Hard Part Wasn’t Coding.</title>
+      <link>https://medium.com/gitconnected/i-built-an-ai-software-team-the-hard-part-wasnt-coding-225382309c08?sk=7b471a2acfa79394053eba2851d1278c</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/i-built-an-ai-software-team-the-hard-part-wasnt-coding-225382309c08?sk=7b471a2acfa79394053eba2851d1278c</guid>
+      <description>A practical account of building an AI software team and discovering that context, coordination, review, and human control are harder than code generation.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Tue, 11 Aug 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>Why Multi-Agent Coding Fails</title>
+      <link>https://medium.com/towards-artificial-intelligence/why-multi-agent-coding-fails-6b3a45746477?sk=b085842583c07888997f98f3cf9544e2</link>
+      <guid isPermaLink="true">https://medium.com/towards-artificial-intelligence/why-multi-agent-coding-fails-6b3a45746477?sk=b085842583c07888997f98f3cf9544e2</guid>
+      <description>Why multi-agent coding workflows fail when roles, context, handoffs, validation, and human authority are not designed as an engineering system.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 10 Aug 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <source url="https://medium.com/towards-artificial-intelligence/">Towards AI</source>
+    </item>
+    <item>
+      <title>I Made Architecture Documentation Fail the Build When It Lies</title>
+      <link>https://medium.com/gitconnected/i-made-architecture-documentation-fail-the-build-when-it-lies-ee92ff8287be?sk=214958e0f39257ad4678975a7e8ebaa1</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/i-made-architecture-documentation-fail-the-build-when-it-lies-ee92ff8287be?sk=214958e0f39257ad4678975a7e8ebaa1</guid>
+      <description>How executable architecture checks can detect documentation drift and make important system boundaries fail visibly during delivery.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 05 Aug 2026 09:00:00 +0000</pubDate>
+      <category>Architecture in the AI Era</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>AI Is Quietly Changing How Junior Engineers Become Senior</title>
+      <link>https://medium.com/gitconnected/ai-is-quietly-changing-how-junior-engineers-become-senior-952f128b0888?sk=84d73ea9017579353d8df3faa573f428</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/ai-is-quietly-changing-how-junior-engineers-become-senior-952f128b0888?sk=84d73ea9017579353d8df3faa573f428</guid>
+      <description>How AI-assisted implementation changes the experience junior engineers need to develop judgment, debugging skill, and senior-level understanding.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 03 Aug 2026 09:00:00 +0000</pubDate>
+      <category>Engineering Leadership</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>Why Architecture Matters More in the AI Era</title>
+      <link>https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/</guid>
+      <description>Why architecture matters more when AI makes implementation faster, from boundaries and contracts to ownership, review, and system thinking.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 06 Jul 2026 09:00:00 +0000</pubDate>
+      <category>Architecture</category>
+      <category>Architecture in the AI Era</category>
+    </item>
+    <item>
+      <title>The Agent Risk Register: What to Check Before Letting AI Act</title>
+      <link>https://suyogjoshi.com/writing/agent-risk-register/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/agent-risk-register/</guid>
+      <description>A practical agent risk register for defining AI agent permissions, scope, evidence, review, blast radius, rollback, and ownership.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 04 Jul 2026 09:00:00 +0000</pubDate>
+      <category>Governance</category>
+      <category>Review and Governance</category>
+    </item>
+    <item>
+      <title>AI Governance Without Bureaucracy</title>
+      <link>https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/</guid>
+      <description>AI governance works best inside normal engineering workflow: story quality, context, PR checks, review gates, evidence, and ownership.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 04 Jul 2026 09:00:00 +0000</pubDate>
+      <category>Governance</category>
+    </item>
+    <item>
+      <title>The Human + AI Responsibility Map</title>
+      <link>https://suyogjoshi.com/writing/human-ai-responsibility-map/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/human-ai-responsibility-map/</guid>
+      <description>A practical responsibility map for AI-assisted engineering: what AI can assist with, what humans must own, and how teams scale review with risk.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 03 Jul 2026 09:00:00 +0000</pubDate>
+      <category>Governance</category>
+    </item>
+    <item>
+      <title>Human Review Gates in AI-Assisted Delivery</title>
+      <link>https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/</guid>
+      <description>Human review gates help AI-assisted software teams make intent, design, risk, validation, release, and ownership decisions explicit.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 01 Jul 2026 09:00:00 +0000</pubDate>
+      <category>Governance</category>
+    </item>
+    <item>
+      <title>AI Code Review Is Not Just Code Review</title>
+      <link>https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/</guid>
+      <description>Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Tue, 30 Jun 2026 09:00:00 +0000</pubDate>
+      <category>AI Review</category>
+    </item>
+    <item>
+      <title>Knowledge Debt Is the New Technical Debt</title>
+      <link>https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/</guid>
+      <description>A practical explanation of knowledge debt, how it differs from technical debt, why AI-assisted teams feel its cost, and how to manage it.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Knowledge Debt</category>
+    </item>
+    <item>
+      <title>Business Rules as Context: The Missing Layer in AI-Assisted Development</title>
+      <link>https://suyogjoshi.com/writing/business-rules-as-context/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/business-rules-as-context/</guid>
+      <description>Why business rules must become first-class context for AI-assisted development when correctness depends on eligibility, limits, exceptions, and operations.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Business Rules</category>
+    </item>
+    <item>
+      <title>Documentation Is Becoming Executable Context</title>
+      <link>https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/</guid>
+      <description>How AI-assisted software work is changing documentation from a passive reference into an active part of delivery.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 27 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Documentation</category>
+    </item>
+    <item>
+      <title>Why AI Punishes Tribal Knowledge in Software Teams</title>
+      <link>https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/</guid>
+      <description>Tribal knowledge has always been expensive in software teams. AI-assisted development makes the cost harder to hide.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 26 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Tribal Knowledge</category>
+    </item>
+    <item>
+      <title>The Context Supply Chain: How Organizational Knowledge Reaches AI Output</title>
+      <link>https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/</guid>
+      <description>AI output often fails long before the prompt is written.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 26 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Knowledge Flow</category>
+    </item>
+    <item>
+      <title>Stronger Evidence Chains for AI-Assisted Engineering Changes</title>
+      <link>https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/</guid>
+      <description>As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Thu, 25 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Evidence</category>
+    </item>
+    <item>
+      <title>Enterprise AI Adoption Is a Context Problem</title>
+      <link>https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/</guid>
+      <description>Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Thu, 25 Jun 2026 09:00:00 +0000</pubDate>
+      <category>AI Adoption</category>
+    </item>
+    <item>
+      <title>Process as Code: Making Engineering Standards Visible to Humans and AI Assistants</title>
+      <link>https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/</guid>
+      <description>How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 24 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Engineering Standards</category>
+    </item>
+    <item>
+      <title>From Developer to AI Orchestrator</title>
+      <link>https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/</guid>
+      <description>AI is moving software engineering from implementation toward judgment, review, design, architecture, governance, and orchestration.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sun, 21 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Series</category>
+    </item>
+    <item>
+      <title>Why Reviewing AI-Generated Work Is a Different Skill</title>
+      <link>https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/</guid>
+      <description>AI can generate polished software artifacts quickly, but engineers still need to uncover assumptions, missing context, and hidden risks.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Series</category>
+    </item>
+    <item>
+      <title>Using Multiple AI Agents as a Software Engineering Team</title>
+      <link>https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/</guid>
+      <description>A practical model for using architecture, coding, test, review, security, documentation, and human governance agents in software engineering.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Series</category>
+    </item>
+    <item>
+      <title>Not All Engineering Tasks Belong to AI</title>
+      <link>https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/</guid>
+      <description>A practical matrix for deciding which software engineering tasks AI can handle, where humans must guide it, and where judgment remains essential.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 19 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Series</category>
+    </item>
+    <item>
+      <title>How To Tame Your Agent?</title>
+      <link>https://suyogjoshi.com/writing/how-to-tame-your-agent/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/how-to-tame-your-agent/</guid>
+      <description>A practical guide to controlling AI agents with context, constraints, plans, scope, tests, review separation, and human accountability.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 15 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Series</category>
+    </item>
+    <item>
+      <title>Beyond the Repository: Why AI Needs Work Context Too</title>
+      <link>https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/</guid>
+      <description>Why AI-assisted development needs work context from stories, acceptance criteria, constraints, traceability, and governance, not only repository context.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 15 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Work Context</category>
+    </item>
+    <item>
+      <title>How I Structure Repositories So AI Can Actually Understand Them</title>
+      <link>https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/</guid>
+      <description>A practical guide to structuring repositories with README files, architecture docs, ADRs, standards, maps, and AGENTS.md so AI assistants can work well.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 12 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Repository Context</category>
+    </item>
+    <item>
+      <title>Stop Prompting Harder. Start Giving Better Context.</title>
+      <link>https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/</guid>
+      <description>Why AI-assisted software engineering depends less on clever prompts and more on giving coding assistants the right context, constraints, and working memory.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 10 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Context Design</category>
+    </item>
+    <item>
+      <title>Coding Assistants Are Not Junior Developers</title>
+      <link>https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/</guid>
+      <description>AI coding assistants are powerful software engineering tools, but treating them like junior developers creates the wrong expectations.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 06 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Engineering Judgment</category>
+    </item>
+    <item>
+      <title>AI Is Not Replacing Agile. It Is Stress-Testing It.</title>
+      <link>https://suyogjoshi.com/writing/ai-stress-testing-agile/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/ai-stress-testing-agile/</guid>
+      <description>AI is not replacing Agile — it's stress-testing it. Teams with strong engineering discipline are accelerating. Teams with weak practices are amplified faster.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Thu, 04 Jun 2026 09:00:00 +0000</pubDate>
+      <category>Agile</category>
+    </item>
+    <item>
+      <title>How Modern LLM Systems Really Work</title>
+      <link>https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/</guid>
+      <description>A practical guide to how modern LLM systems work — from transformers, attention, and pretraining to inference runtimes, KV cache, RLHF, and AI agents.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Thu, 07 May 2026 09:00:00 +0000</pubDate>
+      <category>AI Systems</category>
+    </item>
+    <item>
+      <title>Understanding the AI Ecosystem</title>
+      <link>https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/</guid>
+      <description>A practical, systems-level explanation of the modern AI ecosystem for engineers, learners, and decision makers.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 02 May 2026 09:00:00 +0000</pubDate>
+      <category>AI Systems</category>
+    </item>
+    <item>
+      <title>How I Used Two AIs to Build a Software Engineering System</title>
+      <link>https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/</guid>
+      <description>A practical reflection on using ChatGPT for design, Claude for implementation, and human judgment to keep the system grounded.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 02 May 2026 09:00:00 +0000</pubDate>
+      <category>System Story</category>
+    </item>
+    <item>
+      <title>AI, Machine Learning and Data Science — Explained Simply</title>
+      <link>https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/</link>
+      <guid isPermaLink="true">https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/</guid>
+      <description>A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 02 May 2026 09:00:00 +0000</pubDate>
+      <category>AI Foundations</category>
+    </item>
+  </channel>
+</rss>

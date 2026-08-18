@@ -1,0 +1,25 @@
+name: Validate public discovery
+
+on:
+  pull_request:
+  push:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate generated feed and search index
+        run: python scripts/validate_public_discovery.py
+      - name: Test public search behavior
+        run: node --test tests/public-search.test.js
