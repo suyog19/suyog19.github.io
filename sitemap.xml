@@ -32,6 +32,30 @@
   </url>
 
   <url>
+    <loc>https://suyogjoshi.com/writing/topics/ai-assisted-software-engineering/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/writing/topics/engineering-context-and-knowledge/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/writing/topics/ai-agents-and-review/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://suyogjoshi.com/writing/topics/agile-process-and-engineering-leadership/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

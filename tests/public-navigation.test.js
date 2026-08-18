@@ -35,8 +35,8 @@ test('every public page exposes Training exactly once in primary navigation', ()
   const files = htmlFiles();
   const publicPages = files.filter((file) => !excludedRoutes.has(file));
 
-  assert.equal(files.length, 67, 'update the public-route classification when routes change');
-  assert.equal(publicPages.length, 58);
+  assert.equal(files.length, 71, 'update the public-route classification when routes change');
+  assert.equal(publicPages.length, 62);
 
   for (const file of publicPages) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
