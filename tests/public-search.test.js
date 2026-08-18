@@ -46,6 +46,18 @@ test('external articles and course states are explicit in generated metadata', (
   courses.forEach((item) => assert.match(item.state, /^(Launched|Proposed) course/));
 });
 
+test('internal results stay on the current site while external destinations remain absolute', () => {
+  const internal = index.items.find((item) => !item.external && item.type === 'Article');
+  const external = index.items.find((item) => item.external);
+  assert.match(search.resultUrl(internal), /^\/writing\//);
+  assert.doesNotMatch(search.resultUrl(internal), /^https?:\/\//);
+  assert.equal(search.resultUrl(external), external.url);
+  assert.equal(search.resultUrl({ external: false, url: 'https://example.com/writing/' }), '/search/');
+  assert.equal(search.resultUrl({ external: false, url: 'https://suyogjoshi.com//evil.example/path' }), '/search/');
+  assert.equal(search.resultUrl({ external: false, url: 'https://suyogjoshi.com/\\evil.example/path' }), '/search/');
+  assert.equal(search.resultUrl({ external: false, url: 'not a URL' }), '/search/');
+});
+
 test('external discovery metadata survives Latest Writing rotation', () => {
   const catalogueUrls = [...writing.matchAll(/<a href="(https:\/\/medium\.com\/[^"?]+\?sk=[^"]+)" class="wp-article-row"[\s\S]*?data-discovery-title=/g)]
     .map((match) => match[1]);
