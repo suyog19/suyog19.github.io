@@ -40,6 +40,7 @@ for (const slug of slugs) {
 test('topic hub presentation is scoped and responsive', () => {
   assert.match(css, /\.topic-hub-hero\s*\{/);
   assert.match(css, /\.topic-hub-grid\s*\{/);
+  assert.match(css, /\.topic-hub-path\s*\{[\s\S]*?list-style: none;[\s\S]*?padding-left: 0;/);
   assert.match(css, /@media \(max-width: 900px\)[\s\S]*?\.topic-hub-grid/);
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.topic-hub-path-item/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.topic-hub/);
