@@ -8,6 +8,18 @@ const latest = html.match(/<!-- Latest Writing -->[\s\S]*?<\/section>/)?.[0] || 
 
 const externalArticles = [
   {
+    title: 'The Rise of Multi-Model Software Engineering',
+    publication: 'Level Up Coding',
+    url: 'https://medium.com/gitconnected/the-rise-of-multi-model-software-engineering-afa2c27b29bc?sk=bf073a9753b436a016e31bb619389bfc',
+    latestOnly: true,
+  },
+  {
+    title: 'When AI Writes the Code, What Makes a Language Good?',
+    publication: 'Towards AI',
+    url: 'https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975',
+    latestOnly: true,
+  },
+  {
     title: 'I Built an AI Software Team. The Hard Part Wasn’t Coding.',
     publication: 'Level Up Coding',
     url: 'https://medium.com/gitconnected/i-built-an-ai-software-team-the-hard-part-wasnt-coding-225382309c08?sk=7b471a2acfa79394053eba2851d1278c',
@@ -34,8 +46,8 @@ test('Latest Writing is a finite visual stream immediately after the hero', () =
   assert.ok(html.indexOf('<!-- Latest Writing -->') < html.indexOf('<!-- Choose Your Path -->'));
   assert.equal((latest.match(/class="wp-latest-item"/g) || []).length, 8);
   assert.equal((latest.match(/class="wp-latest-cover"/g) || []).length, 8);
-  assert.equal((latest.match(/data-hosting="external"/g) || []).length, 4);
-  assert.equal((latest.match(/data-hosting="internal"/g) || []).length, 4);
+  assert.equal((latest.match(/data-hosting="external"/g) || []).length, 6);
+  assert.equal((latest.match(/data-hosting="internal"/g) || []).length, 2);
   assert.equal((latest.match(/<img[^>]+width="[^"]+"[^>]+height="[^"]+"/g) || []).length, 8);
 });
 
@@ -44,7 +56,9 @@ test('external writing uses Friend URLs with publication and accessible link sem
     const escapedUrl = article.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     assert.match(latest, new RegExp(`href="${escapedUrl}"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+aria-label="[^"]+opens in a new tab`));
     assert.match(latest, new RegExp(`Published in ${article.publication}`));
-    assert.ok((html.match(new RegExp(article.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length >= 2, `${article.title} must also appear in a topic cluster`);
+    if (!article.latestOnly) {
+      assert.ok((html.match(new RegExp(article.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length >= 2, `${article.title} must also appear in a topic cluster`);
+    }
   }
 });
 
