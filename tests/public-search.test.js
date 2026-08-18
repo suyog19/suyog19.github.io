@@ -70,3 +70,9 @@ test('search page is progressively enhanced with useful no-JavaScript browsing',
   assert.match(page, /role="status" aria-live="polite"/);
   assert.doesNotMatch(page, /name="q"|action="/);
 });
+
+test('Writing explains the RSS utility without overstating the action', () => {
+  assert.match(writing, /href="\.\.\/feed\.xml"[^>]*>Follow via RSS<\/a>/);
+  assert.match(writing, /Use this feed URL with your preferred RSS reader\./);
+  assert.doesNotMatch(writing, /Subscribe to Writing/);
+});
