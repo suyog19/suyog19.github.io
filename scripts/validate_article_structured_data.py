@@ -1,4 +1,4 @@
-"""Validate structured data on public writing articles and series pages."""
+"""Validate structured data on public Writing and Systems pages."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 WRITING = ROOT / "writing"
+SYSTEMS = ROOT / "systems"
 PRODUCTION_ORIGIN = "https://suyogjoshi.com"
 PERSON_ID = f"{PRODUCTION_ORIGIN}/#person"
 WEBSITE_ID = f"{PRODUCTION_ORIGIN}/#website"
@@ -20,6 +21,18 @@ TOPIC_HUBS = (
     "ai-agents-and-review",
     "agile-process-and-engineering-leadership",
 )
+SYSTEM_DETAILS = (
+    "ai-dev-orchestrator",
+    "ai-workflow-lab",
+    "ai-native-learning-platform",
+    "survey-poll-serverless",
+)
+SYSTEM_DEMOS = {
+    "invoice-review-demo": "CreativeWork",
+    "vendor-onboarding-rag-demo": "CreativeWork",
+    "knowledge-markdown-demo": "CreativeWork",
+    "ingestion-comparator": "WebApplication",
+}
 
 
 class StructuredDataParser(HTMLParser):
@@ -41,7 +54,7 @@ class StructuredDataParser(HTMLParser):
                 self.meta[key.lower()] = values.get("content", "")
         elif tag == "link" and "canonical" in values.get("rel", "").lower().split():
             self.canonical = values.get("href", "")
-        elif tag == "h1" and ({"article-page-title", "topic-hub-title"} & set(values.get("class", "").split())):
+        elif tag == "h1" and ({"article-page-title", "topic-hub-title", "rag-demo-title", "invoice-demo-title"} & set(values.get("class", "").split())):
             self._capture_headline = True
         elif tag == "script" and values.get("type", "").lower() == "application/ld+json":
             self._json_ld = True
@@ -171,6 +184,87 @@ def validate_topic_hub(path: Path) -> list[str]:
     return errors
 
 
+def parsed_page(path: Path) -> tuple[StructuredDataParser, list[dict[str, object]], list[str]]:
+    parser = StructuredDataParser()
+    try:
+        parser.feed(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        return parser, [], [f"{path.relative_to(ROOT)}: malformed structured data: {exc}"]
+    nodes = [node for document in parser.json_documents for node in schema_nodes(document)]
+    return parser, nodes, []
+
+
+def validate_system_index(path: Path) -> list[str]:
+    parser, nodes, errors = parsed_page(path)
+    if errors:
+        return errors
+    relative = path.relative_to(ROOT)
+    collections = [node for node in nodes if node.get("@type") == "CollectionPage"]
+    if len(collections) != 1:
+        return [f"{relative}: expected exactly one CollectionPage, found {len(collections)}"]
+    node = collections[0]
+    if node.get("url") != parser.canonical or node.get("@id") != f"{parser.canonical}#collection":
+        errors.append(f"{relative}: CollectionPage url or @id does not match canonical")
+    if node.get("description") != parser.meta.get("description"):
+        errors.append(f"{relative}: CollectionPage description does not match meta description")
+    if node.get("isPartOf") != {"@id": WEBSITE_ID} or node.get("creator") != {"@id": PERSON_ID}:
+        errors.append(f"{relative}: CollectionPage must reference the canonical WebSite and Person")
+    return errors
+
+
+def validate_system_detail(path: Path) -> list[str]:
+    parser, nodes, errors = parsed_page(path)
+    if errors:
+        return errors
+    relative = path.relative_to(ROOT)
+    articles = [node for node in nodes if node.get("@type") == "TechArticle"]
+    if len(articles) != 1:
+        return [f"{relative}: expected exactly one TechArticle, found {len(articles)}"]
+    node = articles[0]
+    required = ("@context", "@id", "headline", "description", "url", "mainEntityOfPage", "author", "publisher", "isPartOf")
+    for field in required:
+        if not node.get(field):
+            errors.append(f"{relative}: TechArticle missing {field}")
+    if node.get("headline") != parser.headline:
+        errors.append(f"{relative}: TechArticle headline does not match visible h1")
+    if node.get("description") != parser.meta.get("description"):
+        errors.append(f"{relative}: TechArticle description does not match meta description")
+    if node.get("url") != parser.canonical or node.get("@id") != f"{parser.canonical}#system":
+        errors.append(f"{relative}: TechArticle url or @id does not match canonical")
+    if node.get("mainEntityOfPage") != {"@type": "WebPage", "@id": parser.canonical}:
+        errors.append(f"{relative}: TechArticle mainEntityOfPage does not match canonical")
+    for role in ("author", "publisher"):
+        if node.get(role) != {"@id": PERSON_ID}:
+            errors.append(f"{relative}: TechArticle {role} must reference {PERSON_ID}")
+    if node.get("isPartOf") != {"@id": WEBSITE_ID}:
+        errors.append(f"{relative}: TechArticle must reference the canonical WebSite")
+    return errors
+
+
+def validate_system_demo(path: Path, expected_type: str) -> list[str]:
+    parser, nodes, errors = parsed_page(path)
+    if errors:
+        return errors
+    relative = path.relative_to(ROOT)
+    works = [node for node in nodes if node.get("@type") == expected_type]
+    if len(works) != 1:
+        return [f"{relative}: expected exactly one {expected_type}, found {len(works)}"]
+    node = works[0]
+    suffix = "application" if expected_type == "WebApplication" else "demo"
+    if node.get("name") != parser.headline:
+        errors.append(f"{relative}: {expected_type} name does not match visible h1")
+    if node.get("description") != parser.meta.get("description"):
+        errors.append(f"{relative}: {expected_type} description does not match meta description")
+    if node.get("url") != parser.canonical or node.get("@id") != f"{parser.canonical}#{suffix}":
+        errors.append(f"{relative}: {expected_type} url or @id does not match canonical")
+    parent_id = f"{PRODUCTION_ORIGIN}/systems/ai-workflow-lab/#system"
+    if node.get("isPartOf") != {"@id": parent_id} or node.get("creator") != {"@id": PERSON_ID}:
+        errors.append(f"{relative}: {expected_type} must reference the parent System and canonical Person")
+    if expected_type == "WebApplication" and node.get("applicationCategory") != "DeveloperApplication":
+        errors.append(f"{relative}: WebApplication must use DeveloperApplication category")
+    return errors
+
+
 def main() -> int:
     errors: list[str] = []
     article_paths = sorted(path / "index.html" for path in WRITING.iterdir() if path.is_dir() and path.name != "series" and (path / "index.html").exists())
@@ -190,12 +284,21 @@ def main() -> int:
             errors.append(f"{relative}: missing CollectionPage structured data")
     for slug in TOPIC_HUBS:
         errors.extend(validate_topic_hub(WRITING / "topics" / slug / "index.html"))
+    errors.extend(validate_system_index(SYSTEMS / "index.html"))
+    for slug in SYSTEM_DETAILS:
+        errors.extend(validate_system_detail(SYSTEMS / slug / "index.html"))
+    for slug, expected_type in SYSTEM_DEMOS.items():
+        errors.extend(validate_system_demo(SYSTEMS / "ai-workflow-lab" / slug / "index.html", expected_type))
     if errors:
         print("Article structured-data validation failed:", file=sys.stderr)
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(f"Validated structured data for {len(article_paths)} public articles, 2 series pages, and {len(TOPIC_HUBS)} topic hubs.")
+    print(
+        f"Validated structured data for {len(article_paths)} public articles, 2 series pages, "
+        f"{len(TOPIC_HUBS)} topic hubs, 1 Systems index, {len(SYSTEM_DETAILS)} System details, "
+        f"and {len(SYSTEM_DEMOS)} System demos."
+    )
     return 0
 
 
