@@ -27,6 +27,8 @@ overrides:
     - js/admin-*.js
     - js/*auth*.js
     - js/*payment*.js
+    - js/contact.js
+    - js/feedback-widget.js
     - apply/**
     - my-learning/**
     - privacy/**

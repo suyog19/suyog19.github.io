@@ -65,7 +65,9 @@ contract: `targetType`, `targetId`, `rating`, optional trimmed `comment`,
 `sourcePageUrl`, `anonymousId`, and empty honeypot `website`. Do not send `userId`.
 Keep the `window.sjFeedbackAuth.getToken()` bearer-token extension point, hidden
 initial comment field, existing CTA/placeholder guidance, 1800-character limit,
-and accepted ratings `THUMBS_UP`, `THUMBS_DOWN`, and `NONE`.
+and accepted ratings `THUMBS_UP`, `THUMBS_DOWN`, and `NONE`. The widget posts to
+`/feedback`, reuses the stable `sj_feedback_anonymous_id` browser-storage key,
+expects `201 Created`, and treats other 2xx responses as accepted for resilience.
 
 ## Contact form
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-18T11:56:14.876024+00:00",
+  "generated_at": "2026-08-18T12:02:05.374870+00:00",
   "generated_files": {
     ".engineering/generated/resolved-policy.json": "sha256:99d5f7a2a5bd481f527d8c1c164c989ef6f3d43493ee0d64bfbda58cbd36d262",
     ".engineering/skills/architecture-review/SKILL.md": "sha256:54680e22888f28b40390c5f402fafa7cc5338f3a8db6ebd29ebfac62a854b0e1",
@@ -12,7 +12,7 @@
     "AGENTS.md": "sha256:e7ddff8ff02918cb9cb840c3d967a01d1894d7765aaaddbbfe9bcfaa5e0daf3b",
     "CLAUDE.md": "sha256:957b93063e5be757eda5d37ed338765508e59ce217b010b7f2cb898965c6114d"
   },
-  "manifest_digest": "sha256:dac391ca38406feae23c931183dd5dd59d3e4c916f2912d56ce79c0d427c2d34",
+  "manifest_digest": "sha256:467c8bf9d9e1629c667a083878c925de5ac4b01d193b7601e07878f2ffcef3c6",
   "policy_digest": "sha256:d41e6f27d1ef7c8595127927c0c20712edb5ce4cd1c6707d3c246bed87d78310",
   "revision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
   "schema_version": 1,
