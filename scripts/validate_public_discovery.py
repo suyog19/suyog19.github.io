@@ -155,12 +155,25 @@ def validate_search(errors: list[str]) -> None:
     if not isinstance(items, list):
         error(errors, "search index items must be a list")
         return
-    expected_counts = {"Article": 34, "Topic Hub": 4, "Series": 2, "System": 4, "Demo": 4, "Course": 5}
+    expected_counts = {
+        "Article": len(discovery.internal_articles()) + len(discovery.external_articles()),
+        "Topic Hub": len(discovery.structured_paths("writing/topics", "CollectionPage")),
+        "Series": len(discovery.structured_paths("writing/series", "CollectionPage")),
+        "System": len(discovery.structured_paths("systems", "TechArticle")),
+        "Demo": len(discovery.structured_paths("systems", "CreativeWork")) + len(discovery.structured_paths("systems", "WebApplication")),
+        "Course": len(discovery.course_items()),
+    }
     actual_counts = {content_type: sum(item.get("type") == content_type for item in items) for content_type in ALLOWED_TYPES}
     if actual_counts != expected_counts:
         error(errors, f"search index type coverage mismatch: {actual_counts}")
     ids: set[str] = set()
     approved_external = {str(item["url"]) for item in discovery.external_articles()}
+    latest_parser = discovery.LatestWritingParser()
+    latest_parser.feed((ROOT / "writing" / "index.html").read_text(encoding="utf-8"))
+    latest_external = {item.get("url", "") for item in latest_parser.items}
+    missing_from_catalogue = latest_external - approved_external
+    if missing_from_catalogue:
+        error(errors, f"Latest external Writing is missing durable catalogue metadata: {sorted(missing_from_catalogue)}")
     catalogue = json.loads((ROOT / "data" / "training-courses.json").read_text(encoding="utf-8"))["courses"]
     course_state = {
         course["courseId"]: ("Launched course" if course["lifecycleStatus"] == "launched" else "Proposed course")
@@ -227,7 +240,9 @@ def main() -> int:
         for message in errors:
             print(f"- {message}", file=sys.stderr)
         return 1
-    print("Validated 34 Writing feed entries and 53 public search destinations across 6 approved content types.")
+    feed_count = len(discovery.internal_articles()) + len(discovery.external_articles())
+    search_count = len(discovery.build_search_index(discovery.internal_articles() + discovery.external_articles())["items"])
+    print(f"Validated {feed_count} Writing feed entries and {search_count} public search destinations across 6 approved content types.")
     return 0
 
 

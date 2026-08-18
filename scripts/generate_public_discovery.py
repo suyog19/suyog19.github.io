@@ -25,30 +25,6 @@ AUTHOR = "Suyog Joshi"
 FEED_PATH = ROOT / "feed.xml"
 SEARCH_PATH = ROOT / "data" / "search-index.json"
 
-TOPIC_HUB_PATHS = (
-    "writing/topics/ai-assisted-software-engineering/index.html",
-    "writing/topics/engineering-context-and-knowledge/index.html",
-    "writing/topics/ai-agents-and-review/index.html",
-    "writing/topics/agile-process-and-engineering-leadership/index.html",
-)
-SERIES_PATHS = (
-    "writing/series/index.html",
-    "writing/series/ai-assisted-software-engineering/index.html",
-)
-SYSTEM_PATHS = (
-    "systems/ai-dev-orchestrator/index.html",
-    "systems/ai-workflow-lab/index.html",
-    "systems/ai-native-learning-platform/index.html",
-    "systems/survey-poll-serverless/index.html",
-)
-DEMO_PATHS = (
-    "systems/ai-workflow-lab/invoice-review-demo/index.html",
-    "systems/ai-workflow-lab/vendor-onboarding-rag-demo/index.html",
-    "systems/ai-workflow-lab/knowledge-markdown-demo/index.html",
-    "systems/ai-workflow-lab/ingestion-comparator/index.html",
-)
-
-
 class PageParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
@@ -151,6 +127,35 @@ class LatestWritingParser(HTMLParser):
             self._buffer.append(data)
 
 
+class ExternalWritingParser(HTMLParser):
+    """Read approved external Writing from durable catalogue-link metadata."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.items: list[dict[str, str]] = []
+        self._href = ""
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = {key: value or "" for key, value in attrs}
+        if tag == "a" and values.get("href", "").startswith("https://medium.com/"):
+            self._href = values["href"].strip()
+        if "data-discovery-title" in values:
+            self.items.append(
+                {
+                    "title": values.get("data-discovery-title", "").strip(),
+                    "url": values.get("href", self._href).strip(),
+                    "summary": values.get("data-discovery-summary", "").strip(),
+                    "published": values.get("data-discovery-published", "").strip(),
+                    "topic": values.get("data-discovery-topic", "").strip(),
+                    "source": values.get("data-discovery-source", "").strip(),
+                }
+            )
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "a":
+            self._href = ""
+
+
 def schema_nodes(document: object) -> list[dict[str, object]]:
     if isinstance(document, dict):
         graph = document.get("@graph")
@@ -231,16 +236,26 @@ def internal_articles() -> list[dict[str, object]]:
 
 
 def external_articles() -> list[dict[str, object]]:
-    parser = LatestWritingParser()
+    parser = ExternalWritingParser()
     parser.feed((ROOT / "writing" / "index.html").read_text(encoding="utf-8"))
     required = ("title", "url", "summary", "published", "topic", "source")
     for index, item in enumerate(parser.items, start=1):
         missing = [field for field in required if not item.get(field)]
         if missing:
-            raise ValueError(f"External Latest Writing item {index} is missing: {', '.join(missing)}")
+            raise ValueError(f"External Writing catalogue item {index} is missing: {', '.join(missing)}")
         if urlparse(item["url"]).scheme != "https":
             raise ValueError(f"External Writing URL must use HTTPS: {item['url']}")
     return [{**item, "topics": [item["topic"]], "external": True} for item in parser.items]
+
+
+def structured_paths(root: str, schema_type: str) -> list[str]:
+    """Discover eligible public pages from their existing structured metadata."""
+    paths: list[str] = []
+    for path in sorted((ROOT / root).rglob("index.html")):
+        _, nodes = parse_page(path.relative_to(ROOT))
+        if any(node.get("@type") == schema_type for node in nodes):
+            paths.append(path.relative_to(ROOT).as_posix())
+    return paths
 
 
 def page_search_item(relative: str, content_type: str) -> dict[str, object]:
@@ -313,14 +328,15 @@ def build_search_index(articles: list[dict[str, object]]) -> dict[str, object]:
             "published": article["published"],
         }
         items.append(entry)
-    for relative in TOPIC_HUB_PATHS:
+    for relative in structured_paths("writing/topics", "CollectionPage"):
         items.append(page_search_item(relative, "Topic Hub"))
-    for relative in SERIES_PATHS:
+    for relative in structured_paths("writing/series", "CollectionPage"):
         items.append(page_search_item(relative, "Series"))
-    for relative in SYSTEM_PATHS:
+    for relative in structured_paths("systems", "TechArticle"):
         items.append(page_search_item(relative, "System"))
-    for relative in DEMO_PATHS:
-        items.append(page_search_item(relative, "Demo"))
+    for schema_type in ("CreativeWork", "WebApplication"):
+        for relative in structured_paths("systems", schema_type):
+            items.append(page_search_item(relative, "Demo"))
     items.extend(course_items())
     items.sort(key=lambda item: (str(item["type"]), str(item["title"]).casefold()))
     return {

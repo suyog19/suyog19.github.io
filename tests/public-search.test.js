@@ -6,6 +6,7 @@ const search = require('../js/public-search.js');
 const index = JSON.parse(fs.readFileSync('data/search-index.json', 'utf8'));
 const source = fs.readFileSync('js/public-search.js', 'utf8');
 const page = fs.readFileSync('search/index.html', 'utf8');
+const writing = fs.readFileSync('writing/index.html', 'utf8');
 
 function titles(query) {
   return search.search(index.items, query).map((item) => item.title);
@@ -43,6 +44,15 @@ test('external articles and course states are explicit in generated metadata', (
   const courses = index.items.filter((item) => item.type === 'Course');
   assert.equal(courses.length, 5);
   courses.forEach((item) => assert.match(item.state, /^(Launched|Proposed) course/));
+});
+
+test('external discovery metadata survives Latest Writing rotation', () => {
+  const catalogueUrls = [...writing.matchAll(/<a href="(https:\/\/medium\.com\/[^"?]+\?sk=[^"]+)" class="wp-article-row"[\s\S]*?data-discovery-title=/g)]
+    .map((match) => match[1]);
+  const latestUrls = [...writing.matchAll(/<a href="(https:\/\/medium\.com\/[^"?]+\?sk=[^"]+)" class="wp-latest-row"/g)]
+    .map((match) => match[1]);
+  assert.equal(new Set(catalogueUrls).size, 6);
+  latestUrls.forEach((url) => assert.ok(catalogueUrls.includes(url)));
 });
 
 test('search runtime stays local and does not create URL or storage state', () => {

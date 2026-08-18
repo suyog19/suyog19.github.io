@@ -103,9 +103,11 @@ Add one standard-library Python generator that derives two committed artifacts:
 - `data/search-index.json`, a compact public discovery index.
 
 The generator reads existing canonical HTML/JSON-LD and the existing public
-Training catalogue. External Writing metadata remains anchored in the Latest
-Writing entries; those entries gain only the concise source and summary fields
-that cannot be derived safely offline. The generator supports `--check`, so CI
+Training catalogue. External Writing metadata is anchored in its durable topic-
+cluster catalogue link, independent of temporary Latest Writing placement; the
+link carries only fields that cannot be derived safely offline. The generator
+discovers hubs, series, Systems, and demos by their structured page types rather
+than a parallel route list. It supports `--check`, so CI
 fails when source metadata changes without regenerated artifacts.
 
 The search runtime is a small page-specific vanilla-JavaScript module. It
@@ -115,8 +117,8 @@ then topics/type/source, then summary. It never transmits or stores queries.
 
 ### Feed policy
 
-- Include all internally hosted `BlogPosting` pages and approved external
-  entries participating in Latest Writing.
+- Include all internally hosted `BlogPosting` pages and every approved external
+  entry in the durable Writing topic catalogue.
 - Internal items use their production canonical URL and `datePublished`.
 - External items use their approved Medium destination, visible catalogue date,
   explicit source, and stable URL as GUID. No local canonical is invented.
@@ -125,11 +127,10 @@ then topics/type/source, then summary. It never transmits or stores queries.
 
 ### Search inclusion policy
 
-- Article: internal BlogPosting pages plus approved external Latest Writing.
-- Topic Hub: the four durable Writing topic hubs.
-- Series: the series landing page and ordered AI-assisted engineering series.
-- System: the four System detail pages.
-- Demo: the four AI Workflow Lab child demos.
+- Article: internal BlogPosting pages plus approved external catalogue entries.
+- Topic Hub and Series: eligible CollectionPage routes under their public roots.
+- System: TechArticle routes under Systems.
+- Demo: CreativeWork and WebApplication child routes under Systems.
 - Course: the five canonical course routes from the existing public Training
   catalogue; compatibility aliases and transactional routes are excluded.
 
@@ -155,10 +156,12 @@ python scripts/generate_public_discovery.py
 python scripts/validate_public_discovery.py
 ```
 
-External Writing is added to Latest Writing with its real destination, date,
-topic, publication, and concise summary, then regenerated. CI runs the
-validator, which invokes generation in check mode, validates RSS/XML and search
-privacy/integrity, and exercises representative queries. This extends the
+External Writing is added to its topic cluster with its real destination, date,
+topic, publication, and concise discovery summary; it may also appear in the
+finite Latest Writing stream. Validation rejects any external Latest item that
+lacks durable catalogue metadata. CI invokes generation in check mode, validates
+RSS/XML, route coverage, and search privacy/integrity, and exercises representative
+queries. This extends the
 current validation family and remains compatible with later #387 consolidation.
 
 Residual risk: metadata quality depends on concise public descriptions staying
