@@ -6,6 +6,7 @@
   'use strict';
 
   const TYPE_ORDER = ['Article', 'Topic Hub', 'Series', 'System', 'Demo', 'Course'];
+  const PRODUCTION_HOST = 'suyogjoshi.com';
 
   function normalize(value) {
     return String(value || '')
@@ -66,13 +67,29 @@
       .map((candidate) => candidate.item);
   }
 
+  function resultUrl(item) {
+    if (item.external) return item.url;
+    try {
+      const target = new URL(item.url);
+      if (target.protocol !== 'https:' || target.hostname !== PRODUCTION_HOST || target.port) {
+        return '/search/';
+      }
+      if (!target.pathname.startsWith('/') || target.pathname.startsWith('//')) {
+        return '/search/';
+      }
+      return `${target.pathname}${target.search}${target.hash}`;
+    } catch (_error) {
+      return '/search/';
+    }
+  }
+
   function createResult(documentRef, item) {
     const li = documentRef.createElement('li');
     li.className = 'search-result';
 
     const heading = documentRef.createElement('h2');
     const link = documentRef.createElement('a');
-    link.href = item.url;
+    link.href = resultUrl(item);
     link.textContent = item.title;
     if (item.external) {
       link.target = '_blank';
@@ -177,5 +194,5 @@
   }
 
   if (typeof document !== 'undefined' && typeof fetch === 'function') init(document, fetch);
-  return { normalize, acronym, score, search, createResult, init };
+  return { normalize, acronym, score, search, resultUrl, createResult, init };
 });
