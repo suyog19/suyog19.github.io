@@ -1,0 +1,207 @@
+{
+  "core": {
+    "capabilities": {
+      "architect": {
+        "authority": "architecture_and_technical_boundaries"
+      },
+      "ci-automation": {
+        "authority": "objective_checks_and_policy_enforcement"
+      },
+      "engineering-manager": {
+        "authority": "delivery_risk_and_operational_realism"
+      },
+      "functional-qa": {
+        "authority": "independent_behavioural_assurance"
+      },
+      "independent-review": {
+        "authority": "fresh_context_final_review"
+      },
+      "non-functional-qa": {
+        "authority": "security_reliability_performance_privacy_operations"
+      },
+      "orchestrator": {
+        "authority": "classification_handoffs_and_evidence"
+      },
+      "product-owner": {
+        "authority": "product_intent_and_acceptance"
+      },
+      "senior-ux-designer": {
+        "authority": "user_interaction_accessibility_perspective"
+      },
+      "software-developer": {
+        "authority": "implementation_within_resolved_obligations"
+      },
+      "solution-sufficiency": {
+        "authority": "minimum_sufficient_solution_and_feedback_triage"
+      }
+    },
+    "controls": {
+      "committed_secrets_prohibited": {
+        "enabled": true,
+        "semantics": "locked"
+      },
+      "exact_revision_evidence": {
+        "enabled": true,
+        "semantics": "locked"
+      },
+      "human_production_boundary": {
+        "enabled": true,
+        "prevent_self_approval": true,
+        "semantics": "locked"
+      },
+      "independent_review": {
+        "enabled": true,
+        "fresh_context_required": true,
+        "implementation_context_may_issue_verdict": false,
+        "semantics": "locked"
+      },
+      "issue_first": {
+        "enabled": true,
+        "semantics": "locked"
+      },
+      "protected_characteristics": {
+        "semantics": "extensible",
+        "values": [
+          "financial_consequence",
+          "payment",
+          "authentication",
+          "authorization",
+          "iam",
+          "secrets",
+          "sensitive_data",
+          "production_controls",
+          "irreversible_data"
+        ]
+      },
+      "protected_fail_closed": {
+        "enabled": true,
+        "semantics": "locked"
+      },
+      "repository_paths": {
+        "semantics": "overridable",
+        "values": []
+      },
+      "required_capabilities": {
+        "semantics": "extensible",
+        "values": [
+          "software-developer",
+          "ci-automation"
+        ]
+      },
+      "traceability": {
+        "enabled": true,
+        "semantics": "locked"
+      },
+      "validation_commands": {
+        "semantics": "overridable",
+        "values": []
+      }
+    },
+    "native_enforcement": {
+      "production_environment": {
+        "prevent_self_review": true,
+        "required_human_reviewer": true
+      },
+      "protected_branches": true,
+      "required_status_checks": [
+        "engineering-process"
+      ]
+    },
+    "process": {
+      "source": "suyog19/software-engineering-process",
+      "version": "1.0.0"
+    },
+    "schema_version": 1
+  },
+  "delivery_profiles": {
+    "Lean": {
+      "prohibited_actions": [
+        "self_independent_review",
+        "unapproved_scope_expansion"
+      ],
+      "required_capabilities": [
+        "software-developer",
+        "independent-review",
+        "ci-automation"
+      ],
+      "required_evidence": [
+        "classification/v1",
+        "test-result/v1",
+        "independent-review/v1"
+      ]
+    },
+    "Protected": {
+      "prohibited_actions": [
+        "self_independent_review",
+        "autonomous_production_approval",
+        "weakening_native_controls",
+        "unresolved_protected_ambiguity"
+      ],
+      "required_capabilities": [
+        "product-owner",
+        "architect",
+        "engineering-manager",
+        "software-developer",
+        "functional-qa",
+        "non-functional-qa",
+        "independent-review",
+        "solution-sufficiency",
+        "ci-automation"
+      ],
+      "required_evidence": [
+        "classification/v1",
+        "architecture-decision/v1",
+        "test-result/v1",
+        "functional-qa-verdict/v1",
+        "non-functional-qa-verdict/v1",
+        "independent-review/v1",
+        "solution-sufficiency/v1",
+        "human-approval/v1"
+      ]
+    },
+    "Standard": {
+      "prohibited_actions": [
+        "self_independent_review",
+        "unapproved_scope_expansion"
+      ],
+      "required_capabilities": [
+        "software-developer",
+        "functional-qa",
+        "independent-review",
+        "ci-automation"
+      ],
+      "required_evidence": [
+        "classification/v1",
+        "test-result/v1",
+        "functional-qa-verdict/v1",
+        "independent-review/v1"
+      ]
+    }
+  },
+  "profile": {
+    "add": {
+      "capabilities": [],
+      "protected_characteristics": [
+        "client_security",
+        "sensitive_admin_action",
+        "refund_or_cancellation"
+      ],
+      "protected_path_hints": [
+        "**/auth/**",
+        "**/payments/**",
+        "**/checkout/**",
+        "**/admin/security/**"
+      ],
+      "ux_triggers": [
+        "new_user_journey",
+        "major_existing_journey_change",
+        "information_architecture_change",
+        "material_navigation_change",
+        "material_layout_change",
+        "user_facing_workflow_redesign"
+      ]
+    },
+    "description": "User journeys, interaction, accessibility, browser behaviour and client risk.",
+    "name": "frontend"
+  }
+}
