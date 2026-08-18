@@ -6408,6 +6408,19 @@
   border-color: var(--color-text);
 }
 
+.wp-rss-utility {
+  align-items: baseline;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.65rem;
+}
+
+.wp-rss-utility small {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
 .search-shell {
   max-width: 52rem;
 }
