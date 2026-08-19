@@ -2,6 +2,88 @@
 
 Control issue: `suyog19/software-signal#23`
 
+## Narrow-mobile correction — issue #561
+
+**Applicability:** UX brief required — the production provider form fails the accepted responsive form/task-flow invariant at a real mobile width.
+
+### Evidence and user impact
+
+A Product Owner mobile screenshot on 19 August 2026 shows the beehiiv form's horizontal, fixed-width treatment compressing its only email input beside the Subscribe button until the visible placeholder reads `Enter you`. Live production inspection confirms that the complete placeholder is `Enter your email`, so the clipped text is a rendered layout defect rather than intended copy.
+
+The field has no separate visible label. The clipping therefore removes the reader's clearest visual cue about what information is required and makes the primary action look unfinished immediately before the quiet launch.
+
+### Approved direction
+
+- Replace the cramped Slim single-row treatment with a Launch-compatible Regular inline form whose field and button stack vertically.
+- Show a visible `Email address` label and retain the `Enter your email` placeholder.
+- Hide the provider title and subtitle because the surrounding page already supplies the newsletter identity, promise, consent, cadence, confirmation, privacy, and unsubscribe context.
+- Preserve the high-contrast Subscribe button, double opt-in, provider success/error behavior, accessible iframe title, and hosted fallback.
+- Do not attempt to style the cross-origin iframe from site CSS.
+
+This direction follows beehiiv's current embedded-form guidance, which specifically recommends Regular over Slim for mobile-heavy audiences because Regular stacks fields and adapts better at small widths.
+
+The references to a Slim source form and an available visible label record the initial screenshot-based hypotheses. Provider inspection in iteration 2 superseded both: the source form was Regular with horizontal/fixed-width styling, and beehiiv disables the label control for this single-field form.
+
+### Observable invariants
+
+1. At 320, 360, and 390 CSS px, `Email address`, the complete placeholder, and `Subscribe` are readable without clipping or horizontal overflow.
+2. The field and button form one clear vertical action sequence with touch-friendly sizing and visible focus.
+3. Surrounding consent, confirmation, unsubscribe, and Privacy Notice wording remains before the form action.
+4. Provider invalid, submitting, success, and human-verification states remain contained and understandable at narrow widths.
+5. Desktop retains a compact, balanced form without repeating the surrounding newsletter title or description.
+
+### Senior UX Gate B finding
+
+- **Must fix:** the production Slim layout materially clips the only visible email instruction at the supplied mobile width and fails invariant 3 of the original brief.
+- **Should fix:** remove duplicated provider title/subtitle and use a visible email label while moving to a vertical Regular layout.
+- **What works / preserve:** surrounding promise-to-consent-to-action order, restrained editorial treatment, high-contrast action, double opt-in explanation, privacy route, and accessible iframe title.
+- **Result:** needs another iteration; quiet-launch invitations remain paused.
+- **Recommendation strength:** strongly recommended and blocking for `suyog19/software-signal#27`.
+
+### Iteration 2 — provider correction and Gate C
+
+Reviewed 19 August 2026 against the live provider form ID `73d5eecc-14a6-4de7-9654-a6b57f593298`.
+
+The existing form was already a Regular inline form, but its internal form direction was horizontal, its form width was fixed at 400px, and its background used fit-content width with 80px padding. The production correction:
+
+- keeps the documented Regular inline layout;
+- hides the duplicated provider title and subtitle;
+- changes the form direction to vertical;
+- changes both the background and form widths to fill the available iframe width;
+- reduces background padding from 80px to 24px;
+- sets a 12px field/button gap; and
+- uses a 48px field/button height setting.
+
+Double opt-in remains enabled. The success message remains `Success! Now check your email to confirm your subscription.` The embed ID and website script are unchanged, so no code or production-branch promotion is required for the provider configuration to take effect.
+
+beehiiv disables the visible-label toggle for a single-field form. This is an accepted provider constraint: the input retains the semantic email type and accessible name, while the corrected full-width layout keeps the complete `Enter your email` placeholder visible. Adding a visually disconnected label outside the cross-origin iframe would not programmatically label the control and is not recommended.
+
+### Rendered evidence — issue #561 iteration 2
+
+- Capture method: live production inspection plus a temporary local width fixture containing the production provider iframe at exact CSS widths; Chrome browser plugin `26.707.72221`.
+- Compared with: the Product Owner's production mobile screenshot showing the clipped `Enter you` state.
+- The temporary fixture is intentionally not committed and contains no submitted address.
+
+| Surface/state | Width | Result |
+| --- | ---: | --- |
+| Provider form/default | 320 CSS px | 270px stacked field/button; complete placeholder; 320/320 document width; pass |
+| Provider form/default | 360 CSS px | 310px stacked field/button; complete placeholder; 360/360 document width; pass |
+| Provider form/default | 390 CSS px | 340px stacked field/button; complete placeholder; 390/390 document width; pass |
+| Production `/newsletter/` default | current desktop review viewport | 333px stacked field/button in a 383px iframe; 206px iframe height inside a 240px container; pass |
+| Provider form/invalid email | 320 CSS px | native validation retains focus on the email input with no submission or overflow; pass |
+
+Geometry in every exact-width fixture used 25px side insets, a 72px rendered field, a 12px rendered gap, and a 72px rendered button. The provider reports no internal horizontal overflow. The outer page code and reading order are unchanged from the accepted #23 evidence.
+
+Submitting, success, and human-verification logic were not retransmitted during this layout-only correction to avoid creating another subscriber event. Double opt-in and the configured success message were inspected directly; the previously approved production end-to-end evidence remains applicable because the form ID and settings behavior are unchanged.
+
+### Gate D — issue #561 UX acceptance
+
+- **Must-fix resolution:** resolved. The field and action now stack and the complete email instruction remains visible at 320, 360, and 390 CSS px.
+- **Should-fix resolution:** duplicated provider title/subtitle removed; visible-label recommendation accepted as a provider-constrained deviation because the single email field disables that control.
+- **What works / preserve:** outer promise, consent, privacy, confirmation, archive fallback, button contrast, double opt-in, and iframe title are unchanged.
+- **Result:** UX accepted. Product Owner confirmation on the original mobile device gates resuming issue #27 invitations, not this correction's merge to `dev`.
+- **Recommendation strength:** strongly recommended.
+
 ## UX change brief
 
 **Applicability:** UX brief required — this change adds a public page, a third-party email form, new discovery paths, and responsive success/error states.
