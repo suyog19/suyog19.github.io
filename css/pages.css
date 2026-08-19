@@ -6652,6 +6652,206 @@
   margin-top: 0.65rem;
 }
 
+/* ============================================================
+   Software Signal newsletter
+   ============================================================ */
+.newsletter-promo {
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  padding-block: 6.25rem;
+}
+
+.newsletter-promo-grid,
+.newsletter-hero-grid,
+.newsletter-more-grid {
+  align-items: center;
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.85fr);
+}
+
+.newsletter-promo-copy .section-subtitle {
+  margin-bottom: 1.25rem;
+  max-width: 58ch;
+}
+
+.newsletter-expectation,
+.newsletter-privacy {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+
+.newsletter-expectation {
+  margin-bottom: 1.5rem;
+}
+
+.newsletter-embed {
+  min-height: 15rem;
+  min-width: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.newsletter-embed iframe {
+  max-width: 100%;
+}
+
+.newsletter-embed noscript p {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  line-height: 1.7;
+  padding: 1.5rem;
+}
+
+.newsletter-embed noscript a,
+.newsletter-privacy a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.newsletter-hero {
+  padding-block: clamp(5.5rem, 9vw, 8rem);
+}
+
+.newsletter-hero-grid {
+  align-items: start;
+}
+
+.newsletter-intro h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  margin-bottom: 1.75rem;
+  max-width: 18ch;
+}
+
+.newsletter-lede {
+  color: var(--color-text-muted);
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.75;
+  max-width: 58ch;
+}
+
+.newsletter-details {
+  border-top: 1px solid var(--color-border);
+  list-style: none;
+  margin-top: 2.5rem;
+}
+
+.newsletter-details li {
+  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  padding-block: 1.1rem;
+}
+
+.newsletter-details strong {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.newsletter-details span {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.newsletter-signup {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.newsletter-signup-kicker {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+.newsletter-signup h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 0.9rem;
+}
+
+.newsletter-signup > p:not(.newsletter-signup-kicker):not(.newsletter-privacy) {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.newsletter-signup .newsletter-embed {
+  margin-inline: -0.75rem;
+  width: calc(100% + 1.5rem);
+}
+
+.newsletter-more {
+  background: var(--color-surface);
+  border-block: 1px solid var(--color-border);
+  padding-block: 5.5rem;
+}
+
+.newsletter-more-grid {
+  align-items: start;
+}
+
+.newsletter-more-grid p {
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+
+.wp-newsletter-callout {
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-top: 2rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+@media (max-width: 800px) {
+  .newsletter-promo-grid,
+  .newsletter-hero-grid,
+  .newsletter-more-grid,
+  .wp-newsletter-callout {
+    grid-template-columns: 1fr;
+  }
+
+  .newsletter-promo,
+  .newsletter-hero {
+    padding-block: 4.5rem;
+  }
+
+  .newsletter-intro h1 {
+    max-width: none;
+  }
+
+  .wp-newsletter-callout .btn {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter-details li {
+    gap: 0.35rem;
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 700px) {
   .search-control-row,
   .search-browse-grid {
