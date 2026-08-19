@@ -17,9 +17,9 @@ third-party embed changes from automatic loading to an explicit user action.
   redesign is required.
 - Best in-scope and strongest overall recommendation are the same: disclose the
   Google Forms boundary and let the visitor load the embed deliberately.
-- Recommendation strength: strongly recommended. Production evidence showed the
-  current lazy iframe still transfers about 4.77 MB and makes 93 third-party
-  requests during initial rendering.
+- Recommendation strength: strongly recommended. Production and branch-preview
+  comparison showed the current lazy iframe adds about 4.58 MB and 89 requests
+  during initial rendering.
 
 ## Desired outcome and hierarchy
 

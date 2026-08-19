@@ -65,16 +65,35 @@ identity and privacy-safe event contract remain unchanged.
 
 ### Research third-party embed
 
-The lazy Google Forms iframe entered the measured viewport and loaded immediately:
-about 4.77 MB across 93 third-party requests, including 86 font requests. This was
-the only material avoidable residual cost. The embed now loads only after the user
+The lazy Google Forms iframe entered the measured viewport and loaded immediately.
+Compared with the deferred preview, it added about 4.58 MB and 89 requests; the
+baseline included 86 font requests in total. This was the only material avoidable
+residual cost. The embed now loads only after the user
 presses a disclosed native button; the direct Google Forms link remains available
 with or without JavaScript.
 
 ## After evidence
 
-Production-equivalent branch-preview measurements and rendered mobile/desktop
-review will be appended after the implementation preview is deployed.
+The Cloudflare branch preview at commit `f2b8c04` used the same Lighthouse version
+and profiles as the baseline:
+
+| Research initial state | Mobile | Desktop |
+| --- | --- | --- |
+| Before | score 63; LCP 8.60 s; CLS .020; 4,868 KB; 102 requests | score 100; LCP .52 s; CLS .001; 4,869 KB; 102 requests |
+| After | score 78; LCP 4.56 s; CLS 0; 286 KB; 13 requests | score 100; LCP .54 s; CLS .001; 287 KB; 13 requests |
+
+The after trace contains only the site's two font files, font CSS, asynchronous
+analytics, and eight first-party requests. No Google Forms document, script, or
+form-owned font loads before activation. This removes about 94% of initial transfer
+and 87% of requests from this page. After activation, browser review confirmed the
+same titled Google Forms iframe loads successfully.
+
+Rendered review covered 1440×900 desktop and 390×844 mobile at the feature state.
+The default and loaded states had no horizontal overflow; the native button had a
+unique accessible name and visible focus behavior; Enter activated one iframe; the
+live status announced loading/completion; and the direct fallback remained visible.
+Typography hierarchy, page rhythm, mobile reading order, and the existing research
+and Training visual boundaries were preserved.
 
 ## Accepted residual costs
 
