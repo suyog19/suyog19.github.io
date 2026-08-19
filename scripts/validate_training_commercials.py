@@ -62,7 +62,6 @@ policy_files = [
     ROOT / "training" / "policies" / "index.html",
     ROOT / "training" / "policies" / "terms" / "index.html",
     ROOT / "training" / "policies" / "cancellation-refunds" / "index.html",
-    ROOT / "training" / "policies" / "privacy" / "index.html",
     ROOT / "training" / "policies" / "conduct-recording" / "index.html",
     ROOT / "training" / "provider" / "index.html",
     ROOT / "privacy" / "index.html",

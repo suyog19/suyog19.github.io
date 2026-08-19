@@ -100,3 +100,17 @@ page, set the canonical and robots metadata correctly, run
 `python scripts/validate_public_seo.py`. Do not add `priority` or `changefreq`.
 Sitemap `lastmod` is emitted only from an explicit visible semantic `Last updated`
 date; never infer it from Git history or filesystem timestamps.
+
+### Public route renames
+
+Treat a rename as a compatibility contract only when the old URL was genuinely
+public and still has value. Choose one clean canonical directory destination,
+update controlled links, and retain one `noindex` legacy HTML page with the new
+canonical, an immediate meta refresh, and a visible destination link. Add matching
+slash and no-slash permanent rules to `_redirects` where the active host supports
+them. Do not forward arbitrary query strings or fragments in page JavaScript.
+
+Run `python scripts/validate_legacy_redirects.py` and
+`python scripts/validate_public_seo.py`, then verify deployed status and redirect
+chains where host-level behavior matters. Unknown or mistyped routes belong to the
+custom 404 recovery flow; never guess a destination from path fragments.
