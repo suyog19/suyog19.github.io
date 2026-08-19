@@ -6818,6 +6818,66 @@
   margin-bottom: 1.5rem;
 }
 
+.newsletter-confirmed {
+  align-items: center;
+  display: flex;
+  min-height: min(44rem, calc(100vh - 10rem));
+  padding-block: clamp(5rem, 10vw, 8rem);
+  text-align: center;
+}
+
+.newsletter-confirmed-inner {
+  max-width: 46rem;
+}
+
+.newsletter-confirmed-mark {
+  align-items: center;
+  background: var(--color-text);
+  border-radius: 50%;
+  color: var(--color-bg);
+  display: inline-flex;
+  font-size: 1.25rem;
+  height: 3.5rem;
+  justify-content: center;
+  margin-bottom: 1.75rem;
+  width: 3.5rem;
+}
+
+.newsletter-confirmed h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0 auto 1.5rem;
+  max-width: 13ch;
+}
+
+.newsletter-confirmed-lede,
+.newsletter-confirmed-next {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-inline: auto;
+  max-width: 42rem;
+}
+
+.newsletter-confirmed-lede {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-confirmed-next {
+  font-size: 0.95rem;
+}
+
+.newsletter-confirmed-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 2.25rem;
+}
+
 .wp-newsletter-callout {
   align-items: center;
   background: var(--color-surface);
@@ -6855,6 +6915,14 @@
   .newsletter-details li {
     gap: 0.35rem;
     grid-template-columns: 1fr;
+  }
+
+  .newsletter-confirmed-actions {
+    display: grid;
+  }
+
+  .newsletter-confirmed-actions .btn {
+    width: 100%;
   }
 }
 
