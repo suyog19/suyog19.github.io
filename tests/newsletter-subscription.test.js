@@ -24,8 +24,28 @@ test('newsletter discovery remains contextual and preserves a hosted fallback', 
   assert.match(home, /href="newsletter\/"/);
   assert.match(writing, /href="\.\.\/newsletter\/"/);
   assert.match(newsletter, /https:\/\/newsletter\.suyogjoshi\.com\/subscribe/);
-  assert.match(newsletter, /check your inbox|confirmation email/i);
+  assert.match(newsletter, /check your inbox|confirmation email|email you to confirm/i);
   assert.match(newsletter, /href="\.\.\/privacy\/"/);
+});
+
+test('signup wording records explicit newsletter consent before the form action', () => {
+  for (const [name, html] of [['home', home], ['newsletter', newsletter]]) {
+    assert.match(html, /By selecting Subscribe, you ask to receive Software Signal Weekly/,
+      `${name} must state the newsletter-specific consent action`);
+    assert.match(html, /one practical email every Saturday/);
+    assert.match(html, /(?:your )?subscription starts only after confirmation/);
+    assert.match(html, /Unsubscribe (?:anytime|at any time)/);
+    assert.match(html, /Privacy Notice/);
+    const consentIndex = html.indexOf('By selecting Subscribe');
+    const unsubscribeIndex = html.indexOf('Unsubscribe', consentIndex);
+    const privacyIndex = html.indexOf('Privacy Notice', consentIndex);
+    const formIndex = html.indexOf('class="newsletter-embed"', consentIndex);
+    assert.ok(consentIndex >= 0 && unsubscribeIndex > consentIndex && privacyIndex > consentIndex,
+      `${name} must present unsubscribe and privacy information with the consent statement`);
+    assert.ok(unsubscribeIndex < formIndex && privacyIndex < formIndex,
+      `${name} must present unsubscribe and privacy information before the form action`);
+  }
+  assert.match(newsletter, /Email only; no name or profile is required/);
 });
 
 test('generated provider frames receive a stable accessible title', () => {
