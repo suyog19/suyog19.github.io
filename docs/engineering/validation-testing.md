@@ -20,6 +20,7 @@ python scripts/validate_article_structured_data.py
 python scripts/validate_canonical_urls.py
 python scripts/validate_custom_404.py
 python scripts/validate_image_performance.py
+python scripts/validate_legacy_redirects.py
 python scripts/validate_public_routes.py
 python scripts/validate_public_discovery.py
 python scripts/validate_site_identity.py

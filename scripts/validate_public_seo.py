@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).parents[1]
 CHECKS = (
     ("generated sitemap", "generate_sitemap.py", "--check"),
+    ("legacy public-route redirects", "validate_legacy_redirects.py"),
     ("canonical URLs and local links", "validate_canonical_urls.py"),
     ("article structured data", "validate_article_structured_data.py"),
     ("site and person identity", "validate_site_identity.py"),
