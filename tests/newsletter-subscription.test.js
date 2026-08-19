@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '..');
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const writing = fs.readFileSync(path.join(root, 'writing', 'index.html'), 'utf8');
 const newsletter = fs.readFileSync(path.join(root, 'newsletter', 'index.html'), 'utf8');
+const confirmed = fs.readFileSync(path.join(root, 'newsletter', 'confirmed', 'index.html'), 'utf8');
 const privacy = fs.readFileSync(path.join(root, 'privacy', 'index.html'), 'utf8');
 const behavior = fs.readFileSync(path.join(root, 'js', 'newsletter.js'), 'utf8');
 const formId = '73d5eecc-14a6-4de7-9654-a6b57f593298';
@@ -62,4 +63,14 @@ test('privacy notice discloses newsletter processing and preserves the training 
   assert.match(privacy, /suppression record/i);
   assert.match(privacy, /eligible deletion/i);
   assert.match(privacy, /software-signal-privacy@1\.1\.0/);
+});
+
+test('double-opt-in confirmation destination acknowledges success without another form', () => {
+  assert.match(confirmed, /Your subscription is confirmed/);
+  assert.match(confirmed, /no need to enter your email again/i);
+  assert.match(confirmed, /arrive in your inbox on Saturday/i);
+  assert.match(confirmed, /https:\/\/newsletter\.suyogjoshi\.com\//);
+  assert.match(confirmed, /href="\.\.\/\.\.\/"/);
+  assert.match(confirmed, /name="robots" content="noindex, follow"/);
+  assert.doesNotMatch(confirmed, /<form\b|data-beehiiv-form|>Subscribe</i);
 });
