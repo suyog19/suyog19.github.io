@@ -15,10 +15,12 @@ The public sections follow directory URLs:
 - research: `research/<slug>/index.html` without a section index;
 - About and Contact: one-level `index.html` pages.
 
-Content additions must update every applicable section/home index and
-`sitemap.xml`. Writing index additions normally update both its featured grid and
-the appropriate thematic group. Detail pages wrap header, body, feedback when
-applicable, and related navigation in an `<article>`.
+Content additions must update every applicable section/home index. The public-page
+inventory derives sitemap membership from route, canonical and robots metadata;
+authors generate the committed `sitemap.xml` rather than edit it independently.
+Writing index additions normally update both its featured grid and the appropriate
+thematic group. Detail pages wrap header, body, feedback when applicable, and
+related navigation in an `<article>`.
 
 ## CSS and page patterns
 
@@ -92,5 +94,9 @@ Joshi`; `og:type` is `article` for writing/system detail and `website` for index
 Aim for a human-readable 140-160 character description.
 
 Only add `og:image` and `twitter:image` when a page-specific 1200x630 social image
-exists; then use production URLs and `summary_large_image`. Every public new page
-is added to `sitemap.xml` with the existing page-type priority convention.
+exists; then use production URLs and `summary_large_image`. For every new public
+page, set the canonical and robots metadata correctly, run
+`python scripts/generate_sitemap.py`, commit the generated `sitemap.xml`, and run
+`python scripts/validate_public_seo.py`. Do not add `priority` or `changefreq`.
+Sitemap `lastmod` is emitted only from an explicit visible semantic `Last updated`
+date; never infer it from Git history or filesystem timestamps.
