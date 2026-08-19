@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, '..');
 const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const writing = fs.readFileSync(path.join(root, 'writing', 'index.html'), 'utf8');
 const newsletter = fs.readFileSync(path.join(root, 'newsletter', 'index.html'), 'utf8');
+const privacy = fs.readFileSync(path.join(root, 'privacy', 'index.html'), 'utf8');
 const behavior = fs.readFileSync(path.join(root, 'js', 'newsletter.js'), 'utf8');
 const formId = '73d5eecc-14a6-4de7-9654-a6b57f593298';
 
@@ -32,4 +33,13 @@ test('generated provider frames receive a stable accessible title', () => {
   assert.match(behavior, /setAttribute\('title', 'Subscribe to Software Signal Weekly'\)/);
   assert.match(home, /src="js\/newsletter\.js"/);
   assert.match(newsletter, /src="\.\.\/js\/newsletter\.js"/);
+});
+
+test('privacy notice discloses newsletter processing and preserves the training snapshot', () => {
+  assert.match(privacy, /software-signal-privacy@1\.2\.0/);
+  assert.match(privacy, /beehiiv receives your email address/i);
+  assert.match(privacy, /double opt-in/i);
+  assert.match(privacy, /suppression record/i);
+  assert.match(privacy, /eligible deletion/i);
+  assert.match(privacy, /software-signal-privacy@1\.1\.0/);
 });

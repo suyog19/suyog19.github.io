@@ -63,6 +63,28 @@ Desktop uses a two-column editorial introduction and form region where space per
 
 ## Rendered review record
 
+### Evidence index — iteration 2
+
+- Reviewed implementation commit: `5e1fb51d195ce59ee036f96f99718a2a0d3f9483` (the subsequent evidence-only commit does not change rendered code).
+- Capture date: 19 August 2026.
+- Capture method: in-app Browser against `python -m http.server 8080`, browser zoom unchanged, explicit viewport override, viewport and focused screenshots, semantic DOM snapshots, and DOM-backed overflow/resource checks.
+- Compared with: iteration 1 at `9a8da6e0ad51dc632b66275adb67faca3b858efa`, where the missing generated-iframe title and incomplete privacy disclosure were identified.
+
+| Page/state | Viewport | Evidence |
+|---|---:|---|
+| `/newsletter/`, default viewport | 1440×900 | `23-i2-newsletter-1440x900-default.jpg` |
+| `/newsletter/`, default full-page flow | 1440×900 | `23-i2-newsletter-1440x900-full.jpg` |
+| `/newsletter/`, default viewport | 390×844 | `23-i2-newsletter-390x844-default.jpg` |
+| `/newsletter/`, form-focused | 390×844 | `23-i2-newsletter-390x844-form.jpg` |
+| Home, contextual signup | 1440×900 | `23-i2-home-1440x900-context.jpg` |
+| Writing, contextual callout | 390×844 | `23-i2-writing-390x844-context.jpg` |
+
+The routine screenshot set is held in the implementer's temporary review workspace at `C:\Users\ADMIN\AppData\Local\Temp\ss23-rendered-evidence` and is intentionally not committed. It contains no submitted address. The live double-opt-in evidence used the explicitly approved test alias and remains private in beehiiv and Gmail; no private screenshot is attached publicly.
+
+At 1440×900 and 390×844, `/newsletter/` reported document widths no greater than the viewport (`1425/1440` and `375/390`) and the generated iframe exposed the title `Subscribe to Software Signal Weekly`. Semantic inspection confirmed heading order, newsletter-detail list, form region, email textbox, Subscribe button, Privacy Notice link, archive link, mobile navigation control, and contextual Home/Writing routes. The provider iframe loaded in each final capture with no visible resource-failure state. Console capture was not available in this browser surface; the full automated suite and live provider flow are the compensating evidence.
+
+Provider-state evidence: an invalid address exercised native error feedback without transmission; the approved alias then rendered the production human-verification step, entered beehiiv as `pending`, received a branded-domain confirmation email, became `active` after confirmation, and received the complete welcome email. Both test messages landed in Gmail Spam, which is recorded as an operational deliverability risk rather than a subscription-UX defect.
+
 ### Gate B — implementation review
 
 - Reviewed the dedicated page, Home signup surface, and Writing callout against the established editorial direction at desktop and the 390 px mobile breakpoint.
