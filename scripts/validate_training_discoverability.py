@@ -6,6 +6,8 @@ import re
 from html.parser import HTMLParser
 from pathlib import Path
 
+from public_page_inventory import PageClassification, discover_pages
+
 
 ROOT = Path(__file__).parents[1]
 ORIGIN = "https://suyogjoshi.com"
@@ -26,18 +28,12 @@ INDEXABLE_ROUTES = (
 
 NOINDEX_ROUTES = (
     "/training/register-interest/",
-    "/training/policies/privacy/",
     "/apply/",
     "/my-learning/",
     "/my-learning/balance/",
     "/my-learning/change/",
     "/my-learning/payment/",
     "/admin/",
-)
-
-LEGACY_ROUTES = (
-    "/training/python-foundations-ai-data/",
-    "/training/applied-python-ai-ml/",
 )
 
 COURSE_ROUTES = INDEXABLE_ROUTES[1:6]
@@ -125,6 +121,11 @@ def main() -> None:
     errors: list[str] = []
     sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
     sitemap_urls = set(re.findall(r"<loc>([^<]+)</loc>", sitemap))
+    legacy_routes = tuple(
+        page.route
+        for page in discover_pages(ROOT)
+        if page.classification is PageClassification.LEGACY_NONCANONICAL
+    )
 
     for route in INDEXABLE_ROUTES:
         page = parse(route)
@@ -159,7 +160,7 @@ def main() -> None:
         if ORIGIN + route in sitemap_urls:
             errors.append(f"{route}: noindex route must not appear in sitemap.xml")
 
-    for route in LEGACY_ROUTES:
+    for route in legacy_routes:
         page = parse(route)
         if "noindex" not in page.robots:
             errors.append(f"{route}: legacy redirect must declare noindex")
@@ -198,7 +199,7 @@ def main() -> None:
     print(
         "Training discoverability validation passed for "
         f"{len(INDEXABLE_ROUTES)} indexable, {len(NOINDEX_ROUTES)} noindex, "
-        f"and {len(LEGACY_ROUTES)} legacy routes."
+        f"and {len(legacy_routes)} inventory-derived legacy routes."
     )
 
 

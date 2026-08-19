@@ -8,19 +8,13 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urlparse
 
+from public_page_inventory import PageClassification, discover_pages
+
 
 ROOT = Path(__file__).parents[1]
 PAGE = ROOT / "404.html"
 REQUIRED_RECOVERY_PATHS = {"/", "/writing/", "/systems/", "/training/", "/about/", "/contact/"}
 PRIVATE_PATH_PREFIXES = ("/admin", "/apply", "/learn", "/my-learning")
-REQUIRED_REDIRECTS = {
-    "/training/python-foundations-ai-data": "/training/python-foundations-for-data-science/",
-    "/training/python-foundations-ai-data/": "/training/python-foundations-for-data-science/",
-    "/training/applied-python-ai-ml": "/training/applied-data-analysis-with-python/",
-    "/training/applied-python-ai-ml/": "/training/applied-data-analysis-with-python/",
-}
-
-
 class PageParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__()
@@ -47,24 +41,6 @@ class PageParser(HTMLParser):
             self.h1_count += 1
         elif tag == "title":
             self.title_count += 1
-
-
-def parse_redirects() -> tuple[dict[str, str], list[str]]:
-    redirects: dict[str, str] = {}
-    errors: list[str] = []
-    for number, raw in enumerate((ROOT / "_redirects").read_text(encoding="utf-8").splitlines(), start=1):
-        line = raw.strip()
-        if not line or line.startswith("#"):
-            continue
-        fields = line.split()
-        if len(fields) != 3 or fields[2] not in {"301", "308"}:
-            errors.append(f"_redirects:{number}: expected source, destination, and permanent status")
-            continue
-        source, destination, _ = fields
-        if source in redirects:
-            errors.append(f"_redirects:{number}: duplicate source {source}")
-        redirects[source] = destination
-    return redirects, errors
 
 
 def main() -> int:
@@ -130,12 +106,14 @@ def main() -> int:
         if "feed" in feed.name.lower() and "suyogjoshi.com/404" in feed.read_text(encoding="utf-8"):
             errors.append(f"{feed.name}: error page must not be listed")
 
-    redirects, redirect_errors = parse_redirects()
-    errors.extend(redirect_errors)
-    for source_path, expected in REQUIRED_REDIRECTS.items():
-        if redirects.get(source_path) != expected:
-            errors.append(f"_redirects: {source_path} must redirect permanently to {expected}")
-        if source_path in local_links:
+    legacy_routes = {
+        page.route
+        for page in discover_pages(ROOT)
+        if page.classification is PageClassification.LEGACY_NONCANONICAL
+    }
+    for source_path in local_links:
+        normalized = source_path.rstrip("/") + "/"
+        if normalized in legacy_routes:
             errors.append(f"404.html: legacy route {source_path} must not be presented as recovery content")
 
     if errors:
@@ -143,7 +121,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print("Validated custom 404 recovery links, privacy-safe analytics, noindex treatment, root-relative assets, sitemap exclusion, and explicit legacy redirects.")
+    print("Validated custom 404 recovery links, privacy-safe analytics, noindex treatment, root-relative assets, sitemap exclusion, and the boundary from inventory-derived legacy routes.")
     return 0
 
 

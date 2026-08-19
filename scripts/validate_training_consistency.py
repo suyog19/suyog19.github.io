@@ -21,7 +21,6 @@ SOURCE_PATHS = (
     "privacy/index.html",
     "training/policies/terms/index.html",
     "training/policies/conduct-recording/index.html",
-    "training/policies/privacy/index.html",
     "js/course-actions.js",
     "js/course-application-model.js",
 )
@@ -182,7 +181,6 @@ def validate_consistency(catalogue: dict[str, object], sources: dict[str, str]) 
         "privacy/index.html",
         "training/policies/terms/index.html",
         "training/policies/conduct-recording/index.html",
-        "training/policies/privacy/index.html",
     )
     for location in policy_surfaces:
         if POLICY_VERSION not in sources[location]:
