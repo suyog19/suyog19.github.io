@@ -10,10 +10,10 @@ preview deployments must not become search results or competing canonical identi
 | Production | `suyogjoshi.com` | No `X-Robots-Tag`; page-level metadata and `robots.txt` remain authoritative. |
 | Stable development | `dev.suyogjoshi.com` | Host-scoped `_headers` rule emits `X-Robots-Tag: noindex, nofollow`. |
 | Stable Pages project | `suyogjoshi-dev.pages.dev` | Host-scoped `_headers` rule emits `X-Robots-Tag: noindex, nofollow`. |
-| Branch and commit previews | Cloudflare-generated preview subdomains | Cloudflare Pages supplies `X-Robots-Tag: noindex` on preview responses. Preview aliases are platform-generated and are not a finite repository-owned host list. |
+| Branch and commit previews | `*.suyogjoshi-dev.pages.dev` | A host-placeholder `_headers` rule adds `X-Robots-Tag: noindex, nofollow`; Cloudflare also supplies its native preview `noindex`. Preview aliases are platform-generated and are not a finite host list. |
 
-The `_headers` rules are absolute and limited to the two stable non-production
-hosts. No development-only robots metadata belongs in shared HTML. GitHub Pages
+The `_headers` rules are host-scoped and limited to the stable non-production
+hosts plus one-label Cloudflare preview subdomains. No development-only robots metadata belongs in shared HTML. GitHub Pages
 does not interpret Cloudflare's `_headers` configuration, and the deployed-host
 validator separately fails if production ever emits an `X-Robots-Tag` response.
 

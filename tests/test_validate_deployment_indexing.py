@@ -17,6 +17,13 @@ from validate_deployment_indexing import (  # noqa: E402
 
 
 class DeploymentIndexingTests(unittest.TestCase):
+    def test_cloudflare_header_rules_cover_stable_and_preview_hosts(self) -> None:
+        rules = (ROOT / "_headers").read_text(encoding="utf-8")
+        self.assertIn("https://dev.suyogjoshi.com/*", rules)
+        self.assertIn("https://suyogjoshi-dev.pages.dev/*", rules)
+        self.assertIn("https://:preview.suyogjoshi-dev.pages.dev/*", rules)
+        self.assertEqual(rules.count("X-Robots-Tag: noindex, nofollow"), 3)
+
     def test_non_production_accepts_complete_robots_header(self) -> None:
         response = Response(200, "https://dev.suyogjoshi.com/writing/", "NOINDEX, nofollow")
         self.assertEqual(validate_non_production("https://dev.suyogjoshi.com", "/writing/", response), [])
