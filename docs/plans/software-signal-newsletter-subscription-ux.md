@@ -67,7 +67,7 @@ Desktop uses a two-column editorial introduction and form region where space per
 
 - Reviewed implementation commit: `5e1fb51d195ce59ee036f96f99718a2a0d3f9483` (the subsequent evidence-only commit does not change rendered code).
 - Capture date: 19 August 2026.
-- Capture method: in-app Browser against `python -m http.server 8080`, browser zoom unchanged, explicit viewport override, viewport and focused screenshots, semantic DOM snapshots, and DOM-backed overflow/resource checks.
+- Capture method: in-app Browser plugin `26.707.72221` against `python -m http.server 8080`, browser zoom unchanged, explicit viewport override, viewport and focused screenshots, semantic DOM snapshots, and DOM-backed overflow/resource checks.
 - Compared with: iteration 1 at `9a8da6e0ad51dc632b66275adb67faca3b858efa`, where the missing generated-iframe title and incomplete privacy disclosure were identified.
 
 | Page/state | Viewport | Evidence |
@@ -77,7 +77,7 @@ Desktop uses a two-column editorial introduction and form region where space per
 | `/newsletter/`, default viewport | 390×844 | `23-i2-newsletter-390x844-default.jpg` |
 | `/newsletter/`, form-focused | 390×844 | `23-i2-newsletter-390x844-form.jpg` |
 | Home, contextual signup | 1440×900 | `23-i2-home-1440x900-context.jpg` |
-| Writing, contextual callout | 390×844 | `23-i2-writing-390x844-context.jpg` |
+| Writing, contextual callout | 390×844 | `23-i2-writing-390x844-context.jpg` (`SHA-256 37CB97C6C343E3255C4E7ADADE913A3628507A3FDCB71DC670F286A782B39840`) |
 
 The routine screenshot set is held in the implementer's temporary review workspace at `C:\Users\ADMIN\AppData\Local\Temp\ss23-rendered-evidence` and is intentionally not committed. It contains no submitted address. The live double-opt-in evidence used the explicitly approved test alias and remains private in beehiiv and Gmail; no private screenshot is attached publicly.
 
