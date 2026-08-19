@@ -36,6 +36,7 @@
       });
       gate.hidden = true;
       container.appendChild(frame);
+      frame.focus();
     });
     return { container: container, gate: gate, loadButton: loadButton, status: status };
   }

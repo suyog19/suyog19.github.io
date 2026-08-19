@@ -11,8 +11,10 @@ function element(attributes = {}) {
     textContent: '',
     children: [],
     listeners: {},
+    focused: false,
     addEventListener(type, listener) { this.listeners[type] = listener; },
     appendChild(child) { this.children.push(child); },
+    focus() { this.focused = true; },
     getAttribute(name) { return this.attributes[name] || null; },
     setAttribute(name, value) { this.attributes[name] = value; },
   };
@@ -53,6 +55,7 @@ test('load action creates one privacy-bounded titled iframe and announces state'
   assert.equal(frames[0].referrerPolicy, 'strict-origin-when-cross-origin');
   assert.equal(elements['survey-form-gate'].hidden, true);
   assert.equal(elements['survey-load-button'].disabled, true);
+  assert.equal(frames[0].focused, true);
   assert.equal(elements['survey-load-status'].textContent, 'Loading survey form…');
   frames[0].listeners.load();
   assert.equal(elements['survey-load-status'].textContent, 'Survey form loaded.');
