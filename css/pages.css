@@ -6686,6 +6686,12 @@
   margin-bottom: 1.5rem;
 }
 
+.newsletter-expectation a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .newsletter-embed {
   min-height: 15rem;
   min-width: 0;
