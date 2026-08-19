@@ -2,6 +2,71 @@
 
 Control issue: `suyog19/software-signal#23`
 
+## Post-confirmation destination — issue #564
+
+**Applicability:** UX brief required — this change repairs the material success state at the end of the double-opt-in task flow.
+
+### Evidence and user impact
+
+After selecting `Confirm Subscription` in the beehiiv double-opt-in email, a Product Owner mobile screenshot on 19 August 2026 shows the reader landing on the generic newsletter home page. The page presents an empty Email field and Subscribe button without acknowledging confirmation. A reader who has just completed the required action cannot tell whether it succeeded or whether the form requires another submission.
+
+beehiiv documents the publication home page as the default post-confirmation destination and provides an `Opt-in Redirect URL` under the double-opt-in email settings. Issue #564 uses that direct setting rather than a paid automation or a second signup flow.
+
+### Approved direction
+
+- Add a dedicated `/newsletter/confirmed/` utility success page on `suyogjoshi.com`.
+- Lead with the explicit status `Your subscription is confirmed.`
+- State that no further email entry is required and that the next edition arrives Saturday.
+- Offer optional paths to previous editions and the site home page.
+- Do not render an email field, Subscribe action, survey, recommendation step, or promotional detour.
+- Configure beehiiv's double-opt-in redirect to the dedicated production URL only after the page is live.
+- Keep double opt-in enabled and use no subscriber address or identifier in the redirect URL.
+
+### Observable invariants
+
+1. Confirmation success is the first and dominant message at 320, 390, and 1440 CSS px.
+2. The page explicitly says there is no need to enter the email again and contains no signup form.
+3. The Saturday expectation is visible before optional navigation.
+4. Archive and Home actions are clearly secondary to the completed status and remain usable by keyboard and touch.
+5. The page works without JavaScript, has no horizontal overflow, and is `noindex, follow` as a task-completion utility route.
+
+### Gate A — UX and feasibility acceptance
+
+Senior UX accepts the dedicated, restrained success page as the strongest in-scope correction. It reuses the site's established typography, header, footer, button, spacing, and color system. Team Lead feasibility review confirms that the static route and provider redirect require no backend, personal-data handling, dependency, automation, or embed change. Provider availability must be supported by current beehiiv documentation and an unlocked account control before the redirect is saved.
+
+### Iteration 1 rendered review and Gate B
+
+Reviewed the local feature-branch route on 19 August 2026 in Chrome browser plugin `26.707.72221` at 320×844, 390×844, and 1440×900.
+
+| Surface/state | Viewport | Result |
+| --- | ---: | --- |
+| `/newsletter/confirmed/`, default | 320×844 | Dominant confirmation status, complete copy, stacked full-width actions, no form, no horizontal overflow; pass |
+| `/newsletter/confirmed/`, default | 390×844 | Dominant confirmation status, complete copy, stacked actions, no form, 390/390 document width; pass |
+| `/newsletter/confirmed/`, default | 1440×900 | Centered 654px content measure, balanced actions, full header/footer context, no form, 1440px viewport with no page overflow; pass |
+
+Semantic inspection confirms one `h1`, no forms, and two meaningful continuation links: `Read previous editions` and `Return home`. The page remains complete without JavaScript. The focused newsletter contract test also rejects any form, beehiiv embed, or Subscribe action on this route.
+
+Senior UX Gate B findings:
+
+- **Must fix:** none.
+- **Should fix:** none.
+- **What works / preserve:** immediate confirmation wording, explicit no-repeat instruction, Saturday expectation, restrained optional actions, and generous completion-state whitespace.
+- **Result:** UX-ready.
+- **Recommendation strength:** strongly recommended.
+
+### Provider/free-tier verification
+
+The signed-in publication settings expose `Opt in redirect URL` directly beneath the enabled `Double opt in email` control, with no upgrade marker or locked state. beehiiv's current double-opt-in documentation describes the publication home page as the default and this field as the standard way to choose another destination; it does not label the redirect as a paid-plan feature. The workspace temporarily displays a Max trial badge, so availability is not inferred from the account badge alone. The implementation uses only this documented double-opt-in setting and explicitly excludes Smart Nudge, automations, surveys, recommendations, and other paid growth features.
+
+The redirect value will be `https://suyogjoshi.com/newsletter/confirmed/`. It contains no email address, subscriber ID, token, or query parameter. Saving remains deferred until the route is promoted and verified on production.
+
+### Gate D — issue #564 UX acceptance
+
+- **Result:** UX accepted for merge to `dev`.
+- **Accepted delivery sequence:** publish the static destination first; then set and verify the provider redirect. This prevents confirmation links from being sent to a route that is not yet live.
+- **Invitation gate:** quiet-launch invitations remain paused until one safe end-to-end confirmation proves the production redirect and final destination.
+- **Recommendation strength:** strongly recommended.
+
 ## Narrow-mobile correction — issue #561
 
 **Applicability:** UX brief required — the production provider form fails the accepted responsive form/task-flow invariant at a real mobile width.
