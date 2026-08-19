@@ -17,6 +17,10 @@ must be preserved.
 
 ## Review cadence and boundaries
 
+- Treat beehiiv as the owning provider for newsletter subscription records.
+  Confirm an unsubscribe stops delivery, preserve the minimum suppression record
+  needed to honour that choice, and process an eligible verified deletion through
+  beehiiv's subscriber controls.
 - Review application and learner-profile records when they reach the published
   365-day baseline and when a verified request is received.
 - Preserve payment, refund, tax, dispute, consent, and operational evidence for
@@ -36,6 +40,11 @@ must be preserved.
    reference, and any retention reason. Do not record the deleted content.
 4. Confirm completion or provide a progress update through the verified contact
    channel within the response windows stated in the Privacy Notice.
+
+For newsletter requests, verify the exact subscriber address, inspect its
+current beehiiv status, and use the provider's unsubscribe or deletion control
+as applicable. Do not export the subscriber list or copy engagement history into
+the operations log.
 
 ## Escalation
 
