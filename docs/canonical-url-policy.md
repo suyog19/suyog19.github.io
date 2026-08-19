@@ -31,7 +31,10 @@ python scripts/validate_canonical_urls.py
 ```
 
 The validator checks every HTML page for canonical and Open Graph consistency,
-directory-style structured-data URLs, private-route indexing controls, sitemap
-agreement, explicit `index.html` links, broken local links/resources, and
-missing in-page fragment targets. The same validation runs for pull requests
-and pushes targeting `dev` or `main`.
+directory-style structured-data URLs, private-route indexing controls, existing
+sitemap targets, explicit `index.html` links, broken local links/resources, and
+missing in-page fragment targets. `python scripts/generate_sitemap.py --check`
+adds the reverse guarantee that every indexable canonical page appears exactly
+once and every noindex, private or non-canonical page is excluded. Run
+`python scripts/validate_public_seo.py` for the complete public publishing contract.
+The same validation runs for pull requests and pushes targeting `dev` or `main`.
