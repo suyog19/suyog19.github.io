@@ -17,7 +17,7 @@
   <meta name="twitter:image" content="https://suyogjoshi.com/research/ai-teaching-workflows/ai-assisted-teaching-workflows-research.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/base.css">
   <link rel="stylesheet" href="../../css/components.css">
   <link rel="stylesheet" href="../../css/pages.css">
@@ -144,18 +144,22 @@
           <p>No personal information will be shared publicly. If any insights are published later, they will be anonymized.</p>
           <p>This is not a sales pitch. The goal is to understand real educator workflows before designing any product.</p>
         </div>
-        <div class="rp-form-wrap">
-          <!-- TODO: Replace the src attribute value below with your Google Form embed URL.         -->
-          <!-- Embed URL format: https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true -->
-          <iframe
-            src="https://docs.google.com/forms/d/e/1FAIpQLSdcKNYwgHaLnKaW1hcUIAexQA7QQ1B_bxl8fAzV86EZTz_jUg/viewform?embedded=true"
-            title="AI Teaching Workflows Research Survey"
-            frameborder="0"
-            marginheight="0"
-            marginwidth="0"
-            loading="lazy">
-            Loading survey form…
-          </iframe>
+        <div class="rp-form-wrap" id="survey-embed">
+          <div class="rp-form-gate" id="survey-form-gate">
+            <h3>Load the survey when you are ready</h3>
+            <p>The embedded survey is provided by Google Forms and downloads additional third-party resources only after you choose to load it.</p>
+            <button
+              class="btn btn-primary"
+              id="survey-load-button"
+              type="button"
+              data-survey-src="https://docs.google.com/forms/d/e/1FAIpQLSdcKNYwgHaLnKaW1hcUIAexQA7QQ1B_bxl8fAzV86EZTz_jUg/viewform?embedded=true">
+              Load survey form
+            </button>
+          </div>
+          <p class="rp-form-status" id="survey-load-status" aria-live="polite"></p>
+          <noscript>
+            <p>JavaScript is disabled. <a href="https://docs.google.com/forms/d/e/1FAIpQLSdcKNYwgHaLnKaW1hcUIAexQA7QQ1B_bxl8fAzV86EZTz_jUg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Open the survey directly in Google Forms.</a></p>
+          </noscript>
         </div>
         <p class="rp-form-fallback">
           Having trouble viewing the form?
@@ -206,6 +210,7 @@
   </footer>
 
   <script src="../../js/script.js"></script>
+  <script src="../../js/research-survey.js"></script>
   <script>
     (function () {
       var heroCta = document.getElementById('hero-cta');
