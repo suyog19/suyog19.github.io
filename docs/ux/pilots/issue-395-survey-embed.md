@@ -58,3 +58,11 @@ page-specific vanilla script. It creates the titled iframe only after the native
 button is activated, preserves the external fallback, adds no dependency or build
 step, and does not change analytics identity or event contracts. No unresolved
 material trade-off or Product Owner taste decision remains.
+
+## Gate D outcome
+
+**UX accepted — 19 August 2026.** The repository owner explicitly authorized the
+reviewed implementation to proceed. Final desktop and mobile review confirmed the
+brief's hierarchy, disclosure, fallback, responsive layout, visible focus, and
+keyboard activation requirements. Focus moves into the newly loaded survey iframe
+so hiding the activation gate does not strand keyboard users.

@@ -31,7 +31,9 @@ Production compressed transfer is approximately 1.1 KB for `base.css`, 2.3 KB fo
 reported roughly 10–19 KB unused CSS depending on the route, but the three common
 stylesheets are cached for ten minutes and Google font files for one year. A broad
 page-family split would add ownership and inclusion risk for a small one-time saving,
-so the shared architecture remains. Training pages deliberately add `learning.css`;
+so the shared architecture remains. These cache headers make repeat reuse eligible,
+but the supplied Lighthouse runs do not directly demonstrate a true warm-navigation
+transfer saving. Training pages deliberately add `learning.css`;
 the repository audit confirms unrelated routes do not load it.
 
 Raw growth budgets preserve today's architecture with reviewed headroom: 3,000
@@ -67,7 +69,8 @@ identity and privacy-safe event contract remain unchanged.
 
 The lazy Google Forms iframe entered the measured viewport and loaded immediately.
 Compared with the deferred preview, it added about 4.58 MB and 89 requests; the
-baseline included 86 font requests in total. This was the only material avoidable
+baseline trace classified 74 requests as fonts, or 78 when the four font stylesheet
+requests are included. This was the only material avoidable
 residual cost. The embed now loads only after the user
 presses a disclosed native button; the direct Google Forms link remains available
 with or without JavaScript.
@@ -97,8 +100,8 @@ and Training visual boundaries were preserved.
 
 ## Accepted residual costs
 
-- Shared CSS stays global because its compressed cold cost is modest and warm
-  navigation reuses it; raw size alone does not justify fragmentation.
+- Shared CSS stays global because its compressed cold cost is modest and its cache
+  headers permit repeat reuse; raw size alone does not justify fragmentation.
 - Google Fonts and Analytics remain because they support approved identity and
   measurement, and neither showed a material blocking/CLS regression.
 - Course pages retain several small, scoped scripts because they progressively
