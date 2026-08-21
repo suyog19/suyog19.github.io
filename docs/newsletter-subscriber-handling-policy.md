@@ -4,7 +4,7 @@
 
 Editorial blueprint: [Software Signal Weekly Blueprint](https://github.com/suyog19/digital-garden/blob/main/newsletters/software-signal-weekly/blueprint.md)
 
-Production configuration: [beehiiv Production Configuration](https://github.com/suyog19/software-signal/blob/main/strategy/software-signal-newsletter-beehiiv-production-configuration.md)
+Production configuration: [beehiiv Production Configuration](newsletter-beehiiv-production-configuration.md)
 
 Related privacy runbook: [Privacy retention operations](privacy-retention-operations.md)
 
