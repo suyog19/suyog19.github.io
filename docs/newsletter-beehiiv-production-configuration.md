@@ -6,7 +6,7 @@
 
 Editorial blueprint: [Software Signal Newsletter Blueprint](https://github.com/suyog19/digital-garden/blob/main/newsletters/software-signal-weekly/blueprint.md)
 
-PoC evidence: [beehiiv Launch PoC](https://github.com/suyog19/software-signal/blob/main/strategy/software-signal-newsletter-beehiiv-poc.md)
+PoC evidence: [beehiiv Launch PoC](newsletter-beehiiv-launch-poc.md)
 
 Subscriber controls: [Software Signal Weekly Subscriber Handling Policy](newsletter-subscriber-handling-policy.md)
 
