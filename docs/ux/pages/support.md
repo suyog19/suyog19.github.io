@@ -360,6 +360,19 @@ Screenshot integrity:
 - `572-i1-support-390x844-default.png` — SHA-256
   `9160f8473ec6601d09b644f96a940b97daa4b1d14ae63efe40bc916dfe3b78c0`
 
+Collaborator-accessible copies are attached to the rendered-evidence comment on
+[PR #582](https://github.com/suyog19/suyog19.github.io/pull/582#issuecomment-5395758618).
+
+### Evidence refinement — iteration 2
+
+Fresh independent review identified that the Support rules pushed the shared
+`pages.css` beyond its raw-size budget. Commit `dc70d23` moved the byte-identical
+composition into a route-scoped `support.css`, added a 6,000-byte budget and a
+test rejecting use outside `/support/`, and reduced `pages.css` to 148,547 bytes.
+Rendered rechecks at 1440×900 and 390×844 preserved the iteration-1 geometry
+exactly: equal 516×380.39px desktop cards, equal 350×383.58px mobile cards, and
+document widths matching their 1440px and 390px client widths.
+
 ### Gate B — Senior UX rendered review
 
 - **Must fix:** none.
