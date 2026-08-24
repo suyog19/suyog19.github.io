@@ -30,7 +30,7 @@ test('support page implements the approved hierarchy and public metadata', () =>
 
 test('financial choices remain equal and fail closed until provider stories verify them', () => {
   assert.equal((html.match(/class="support-choice-card"/g) || []).length, 2);
-  assert.match(html, /<button[^>]*disabled[^>]*>Support once with Razorpay<\/button>/);
+  assert.match(html, /<a[^>]*aria-disabled="true"[^>]*data-support-razorpay[^>]*>Support once with Razorpay<\/a>/);
   assert.match(html, /<button[^>]*disabled[^>]*>Support regularly on GitHub<\/button>/);
   assert.match(html, /Razorpay path has been verified/);
   assert.match(html, /GitHub Sponsors path has been verified/);
@@ -53,7 +53,7 @@ test('support uses the established public shell without primary-navigation expan
   const primaryNav = html.match(/<nav\b[^>]*aria-label="Primary navigation"[^>]*>[\s\S]*?<\/nav>/);
   assert.ok(primaryNav);
   assert.doesNotMatch(primaryNav[0], />Support<\/a>/);
-  for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../css/support.css', '../js/script.js']) {
+  for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../css/support.css', '../js/script.js', '../js/support-payment.js']) {
     assert.match(html, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
   assert.doesNotMatch(html, /<img\b|<iframe\b|<form\b|data-[a-z-]*payment/i);
@@ -66,5 +66,5 @@ test('support composition is scoped and responsive without a new interaction sys
   assert.match(css, /@media \(max-width: 900px\)[\s\S]*?\.support-choice-grid[\s\S]*?grid-template-columns: 1fr/);
   assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.support-choice-action \.btn[\s\S]*?width: 100%/);
   const localScripts = [...html.matchAll(/<script[^>]+src="(\.\.[^"]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(localScripts, ['../js/script.js']);
+  assert.deepEqual(localScripts, ['../js/script.js', '../js/support-payment.js']);
 });
