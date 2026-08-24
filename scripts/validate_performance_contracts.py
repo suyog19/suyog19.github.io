@@ -14,11 +14,13 @@ FONT_STYLESHEET = (
     "&family=Inter:wght@400;500;600&display=swap"
 )
 LEARNING_ROOTS = {"apply", "learn", "my-learning", "privacy", "training"}
+SUPPORT_ROOTS = {"support"}
 RAW_SIZE_BUDGETS = {
     "css/base.css": 3000,
     "css/components.css": 12000,
     "css/pages.css": 150000,
     "css/learning.css": 54000,
+    "css/support.css": 6000,
 }
 
 
@@ -65,6 +67,10 @@ def validate(root: Path = ROOT) -> list[str]:
         learning = [href for href in page.stylesheets if urlparse(href).path.endswith("/css/learning.css")]
         if learning and route_root(path, root) not in LEARNING_ROOTS:
             errors.append(f"{relative}: unrelated route loads css/learning.css")
+
+        support = [href for href in page.stylesheets if urlparse(href).path.endswith("/css/support.css")]
+        if support and route_root(path, root) not in SUPPORT_ROOTS:
+            errors.append(f"{relative}: unrelated route loads css/support.css")
 
         font_links = [href for href in page.stylesheets if urlparse(href).netloc == "fonts.googleapis.com"]
         if font_links and font_links != [FONT_STYLESHEET]:

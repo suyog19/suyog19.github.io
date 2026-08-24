@@ -5,7 +5,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'support', 'index.html'), 'utf8');
-const css = fs.readFileSync(path.join(root, 'css', 'pages.css'), 'utf8');
+const css = fs.readFileSync(path.join(root, 'css', 'support.css'), 'utf8');
 
 test('support page implements the approved hierarchy and public metadata', () => {
   assert.match(html, /<title>Support the Work \| Suyog Joshi<\/title>/);
@@ -53,7 +53,7 @@ test('support uses the established public shell without primary-navigation expan
   const primaryNav = html.match(/<nav\b[^>]*aria-label="Primary navigation"[^>]*>[\s\S]*?<\/nav>/);
   assert.ok(primaryNav);
   assert.doesNotMatch(primaryNav[0], />Support<\/a>/);
-  for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../js/script.js']) {
+  for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../css/support.css', '../js/script.js']) {
     assert.match(html, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
   assert.doesNotMatch(html, /<img\b|<iframe\b|<form\b|data-[a-z-]*payment/i);
