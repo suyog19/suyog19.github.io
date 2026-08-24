@@ -418,10 +418,15 @@ destinations; they do not imply transaction success or expose placeholder links.
   viewport emulation, semantic DOM inspection, computed geometry, horizontal-
   overflow checks, same-tab navigation, browser-Back recovery, and repeated CTA
   activation.
-- The canonical Test Mode destination resolved to
-  `https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view`; the rendered action has no
+- The canonical Test Mode destination resolves to
+  `https://pages.razorpay.com/pl_TTdbTEtwC4vyYF/view`; the rendered action has no
   `aria-disabled` state on development/local hosts and remains closed by the host
   matrix on production and unknown hosts.
+- The initially reviewed provider page (`pl_TTcwSP5BE6K7WC`) was subsequently
+  proven to be a Live Mode artifact when it initiated a real-bank login. It was
+  deactivated immediately with zero payments, removed from source, and replaced
+  by the independently mode-verified Test page above. No real credentials or
+  payment were submitted.
 
 The first activated mobile render exposed a Must-fix inequality: the longer
 Razorpay recovery guidance and native anchor/button line-height difference made

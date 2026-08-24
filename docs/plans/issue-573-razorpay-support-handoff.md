@@ -2,10 +2,13 @@
 
 ## Decision status
 
-Gate A direction is complete. The Test Mode page was published on 2026-08-24 and
-its canonical public destination is
-`https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view`. Remaining end-to-end evidence
-must pass before the change is merged.
+Gate A direction is complete. The verified Test Mode page was published on
+2026-08-24 and its canonical public destination is
+`https://pages.razorpay.com/pl_TTdbTEtwC4vyYF/view`. Remaining end-to-end evidence
+must pass before the change is merged. An earlier page (`pl_TTcwSP5BE6K7WC`) was
+found to be a Live Mode page after its bank handoff requested real credentials.
+It was immediately deactivated with zero payments and is not permitted by the
+frontend allow-list.
 
 ## Architecture decision
 
@@ -81,6 +84,9 @@ Create the Test Mode page with:
       provider minimum INR 1, no maximum, no expiry, no redirect, and no custom
       success message.
 - [x] Exact canonical long Payment Page URL verified without query or fragment.
+- [x] Published provider record verified in Test Mode: page
+      `pl_TTdbTEtwC4vyYF`, Active, zero payments before synthetic testing; short
+      URL resolves to the exact canonical destination with HTTP 200.
 - [ ] Successful synthetic Test Mode transaction visible in the page/payment
       records, with only non-sensitive identifiers/status recorded.
 - [ ] Cancel/back, failed payment, retry, repeated CTA activation, and provider

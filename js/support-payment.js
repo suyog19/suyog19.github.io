@@ -2,7 +2,7 @@
   'use strict';
 
   const DESTINATIONS = Object.freeze({
-    development: '',
+    development: 'https://pages.razorpay.com/pl_TTdbTEtwC4vyYF/view',
     production: '',
   });
   const DEVELOPMENT_HOSTS = new Set(['dev.suyogjoshi.com', 'localhost', '127.0.0.1']);
