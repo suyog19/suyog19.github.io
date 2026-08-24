@@ -494,8 +494,10 @@ page both times.
   site-side payment state.
 - **Provider states:** an Incognito Test Mode journey displayed simulated failure,
   retry/success, and Checkout-close recovery. The authenticated dedicated-page
-  record then showed one Test payment, one unit, and INR 10 Test revenue. Evidence
-  excludes customer and payment identifiers.
+  detail then listed one Failed row and one Captured row and showed one Test
+  payment, one unit, and INR 10 Test revenue. The redacted machine-readable record
+  is `docs/evidence/issue-573-razorpay-test-mode.json`; it excludes customer and
+  payment identifiers.
 - **Unavailable state:** the deployed feature-preview hostname remained inert
   because it is outside the exact host allow-list; production also remains closed.
 - **Gate D result:** UX acceptance remains valid after correcting the provider
