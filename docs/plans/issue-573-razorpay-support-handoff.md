@@ -87,14 +87,39 @@ Create the Test Mode page with:
 - [x] Published provider record verified in Test Mode: page
       `pl_TTdbTEtwC4vyYF`, Active, zero payments before synthetic testing; short
       URL resolves to the exact canonical destination with HTTP 200.
-- [ ] Successful synthetic Test Mode transaction visible in the page/payment
+- [x] Successful synthetic Test Mode transaction visible in the page/payment
       records, with only non-sensitive identifiers/status recorded.
-- [ ] Cancel/back, failed payment, retry, repeated CTA activation, and provider
+- [x] Cancel/back, failed payment, retry, repeated CTA activation, and provider
       unavailable paths checked on representative desktop and mobile widths.
-- [ ] No secret, payment credential, customer identity, transaction payload, or
+- [x] No secret, payment credential, customer identity, transaction payload, or
       provider signature appears in source, screenshots, logs, or PR evidence.
-- [ ] Gate B rendered findings, Gate C disposition, and Gate D UX acceptance are
+- [x] Gate B rendered findings, Gate C disposition, and Gate D UX acceptance are
       appended to `docs/ux/pages/support.md` for the exact implementation revision.
+
+## Final journey evidence
+
+Implementation revision `d4ee5ec` was exercised on 2026-08-24 against the
+published Test Mode page `pl_TTdbTEtwC4vyYF`:
+
+- the short provider URL resolved with HTTP 200 to the exact canonical long URL;
+- the authenticated provider record showed Test Mode, Active, no expiry, and zero
+  payments before testing;
+- a simulated Netbanking failure displayed Razorpay's failure state, Retry then
+  reached the mock-bank success state, and the dedicated page record advanced to
+  one payment, one unit, and INR 10 Test revenue;
+- closing Checkout with its native close control returned to the unchanged
+  Payment Page without another payment;
+- same-tab handoff and browser Back recovery were repeated from the local Support
+  page; repeated CTA activation created no site-side order or state;
+- 1440×900 and 390×844 renders retained equal card heights, equal mobile control
+  dimensions, native semantics, and zero horizontal overflow;
+- the deployed branch-preview hostname remained inert because it is not an
+  approved development or production host, proving the provider-unavailable path;
+- the withdrawn Live page remained absent from the frontend allow-list. Its
+  dashboard record was inactive with zero payments.
+
+No customer value, support phone, email, payment identifier, credential, bank
+detail, or provider payload is included in this evidence.
 
 ## Official provider basis
 
