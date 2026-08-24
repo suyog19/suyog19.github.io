@@ -1,7 +1,9 @@
 # Support page UX direction
 
-Issue: [#571](https://github.com/suyog19/suyog19.github.io/issues/571)  
-Parent epic: [#570](https://github.com/suyog19/suyog19.github.io/issues/570)  
+Issue: [#571](https://github.com/suyog19/suyog19.github.io/issues/571)
+
+Parent epic: [#570](https://github.com/suyog19/suyog19.github.io/issues/570)
+
 Status: implementation-ready direction awaiting Product Owner approval
 
 ## UX change brief
