@@ -4,7 +4,7 @@ Issue: [#571](https://github.com/suyog19/suyog19.github.io/issues/571)
 
 Parent epic: [#570](https://github.com/suyog19/suyog19.github.io/issues/570)
 
-Status: implementation-ready direction awaiting Product Owner approval
+Status: approved implementation reference; `/support/` implementation accepted under #572
 
 ## UX change brief
 
@@ -320,3 +320,89 @@ technical trade-off remains open.
   Support to primary navigation.
 - **Implementation hold:** substantial `/support/` implementation must not begin
   until the Product Owner records approval or specific requested changes on #571.
+
+## Issue #572 rendered implementation review
+
+### Evidence index — iteration 1
+
+- Reviewed implementation commit: `8b7fb45354894ffb3fd56be957dc224ae966e06d`.
+- Capture date: 24 August 2026.
+- Capture method: browser plugin `26.707.72221` against
+  `http://localhost:8080/support/`, explicit viewport overrides, full-page and
+  focused screenshots, semantic DOM snapshot, computed geometry, keyboard focus,
+  console/resource checks, and horizontal-overflow checks.
+- Routine screenshots are held in the temporary review workspace at
+  `C:\Users\ADMIN\AppData\Local\Temp\issue-572-rendered-evidence` and are not
+  committed. The branch-preview URL is recorded on the implementation PR after
+  deployment.
+
+| Page/state | Viewport | Result |
+| --- | ---: | --- |
+| `/support/`, default | 1440×900 | Complete editorial flow; equal 516×380px financial cards; pass |
+| `/support/`, default | 1024×900 | Two comfortable equal-width financial cards; pass |
+| `/support/`, default | 768×900 | Financial choices recompose to equal full-width stacked cards; pass |
+| `/support/`, default | 390×844 | Approved reading order, full-width disabled actions, no overflow; pass |
+| `/support/`, narrow default | 320×844 | CTA labels wrap without clipping; equal cards and 305/305px document width; pass |
+| `/support/`, keyboard focus | 390×844 | First Tab exposes the global 2px focus outline with 3px offset; pass |
+
+The 1440px render reported a 1425px document width in a 1425px client area; the
+390px and 320px renders reported 375/375px and 305/305px respectively. At 320px,
+both full labels wrap into 207×62px disabled controls rather than truncate. The
+semantic snapshot contains one H1, sequential H2 regions, equal-level financial
+H3s, native disabled buttons with availability descriptions, and ordinary links
+for non-financial and commercial routes. No console warnings or errors were
+reported.
+
+Screenshot integrity:
+
+- `572-i1-support-1440x900-default.png` — SHA-256
+  `587c6816d96e068d3806848f4be955756ab9216125853dcc4031de6a438af04b`
+- `572-i1-support-390x844-default.png` — SHA-256
+  `9160f8473ec6601d09b644f96a940b97daa4b1d14ae63efe40bc916dfe3b78c0`
+
+Collaborator-accessible copies are attached to the rendered-evidence comment on
+[PR #582](https://github.com/suyog19/suyog19.github.io/pull/582#issuecomment-5395758618).
+
+### Evidence refinement — iteration 2
+
+Fresh independent review identified that the Support rules pushed the shared
+`pages.css` beyond its raw-size budget. Commit `dc70d23` moved the byte-identical
+composition into a route-scoped `support.css`, added a 6,000-byte budget and a
+test rejecting use outside `/support/`, and reduced `pages.css` to 148,547 bytes.
+Rendered rechecks at 1440×900 and 390×844 preserved the iteration-1 geometry
+exactly: equal 516×380.39px desktop cards, equal 350×383.58px mobile cards, and
+document widths matching their 1440px and 390px client widths.
+
+### Gate B — Senior UX rendered review
+
+- **Must fix:** none.
+- **Should fix:** none.
+- **Optional:** none required for this implementation scope.
+- **What works / preserve:** the opening viewport explains independent work and
+  optionality before financial action; the outcome sequence makes support's
+  purpose concrete; the two provider choices have identical visual status; the
+  non-financial section retains real weight and direct actions; the trust boundary
+  is readable rather than fine print; and the page remains recognisably part of
+  the existing editorial site without imagery or a second design language.
+- **Result:** UX-ready.
+- **Recommendation strength:** strongly recommended.
+- **Broader UX recommendation:** none. Discovery and provider activation remain
+  correctly assigned to #573–#575.
+
+### Gate C — convergence
+
+No Must-fix or Should-fix finding required another visual iteration. Rechecks at
+320px, 390px, 768px, 1024px, and 1440px preserved all six approved invariants.
+The native disabled provider controls and adjacent availability descriptions are
+an intentional fail-closed implementation while #573 and #574 verify exact
+destinations; they do not imply transaction success or expose placeholder links.
+
+### Gate D — UX acceptance
+
+- **Result:** UX accepted for merge to `dev`.
+- **Accepted deviations:** none.
+- **Deferrals:** activate the Razorpay and GitHub Sponsors actions only through
+  #573 and #574 after their Protected provider-path assurance. Add deliberate
+  Support discovery only through #575.
+- **Rendered-review limitation:** provider return, success, cancellation, and error
+  states do not exist in #572 and therefore were not fabricated or reviewed.

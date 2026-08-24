@@ -32,6 +32,7 @@ class PerformanceContractTests(unittest.TestCase):
     def test_accepts_scoped_assets_and_deferred_survey(self) -> None:
         self.write("index.html", f'<link rel="stylesheet" href="{FONT_STYLESHEET}">')
         self.write("training/index.html", '<link rel="stylesheet" href="../css/learning.css">')
+        self.write("support/index.html", '<link rel="stylesheet" href="../css/support.css">')
         self.write(
             "research/ai-teaching-workflows/index.html",
             '<button id="survey-load-button" data-survey-src="https://docs.google.com/forms/example"></button>'
@@ -43,6 +44,10 @@ class PerformanceContractTests(unittest.TestCase):
     def test_rejects_learning_css_on_unrelated_page(self) -> None:
         self.write("writing/index.html", '<link rel="stylesheet" href="../css/learning.css">')
         self.assertTrue(any("unrelated route" in error for error in validate(self.root)))
+
+    def test_rejects_support_css_on_unrelated_page(self) -> None:
+        self.write("writing/index.html", '<link rel="stylesheet" href="../css/support.css">')
+        self.assertTrue(any("unrelated route loads css/support.css" in error for error in validate(self.root)))
 
     def test_rejects_eager_research_iframe(self) -> None:
         self.write("research/ai-teaching-workflows/index.html", '<iframe src="https://docs.google.com/forms/example"></iframe>')
