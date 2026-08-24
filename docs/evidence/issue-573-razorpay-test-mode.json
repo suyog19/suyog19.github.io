@@ -1,0 +1,53 @@
+{
+  "schema": "provider-verification/v1",
+  "issue": 573,
+  "provider": "Razorpay Payment Pages",
+  "environment": "Test Mode",
+  "observedAt": "2026-08-24T14:45:00Z",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "implementationRevision": "d4ee5ec2ee48c7716310c649cf41261bd72aba17",
+  "page": {
+    "id": "pl_TTdbTEtwC4vyYF",
+    "canonicalUrl": "https://pages.razorpay.com/pl_TTdbTEtwC4vyYF/view",
+    "shortUrl": "https://rzp.io/rzp/XUvRnkxb",
+    "status": "Active",
+    "expiry": "No Expiry",
+    "item": "Support amount",
+    "currency": "INR"
+  },
+  "modeEvidence": {
+    "toolbarControl": "Switch to Live Mode",
+    "toolbarControlChecked": true,
+    "sidebarTestModeChecked": true,
+    "pageMessage": "You are in Test Mode, so only test data is shown."
+  },
+  "aggregate": {
+    "totalPayments": 1,
+    "unitsSold": 1,
+    "totalRevenueMinor": 1000,
+    "capturedRows": 1,
+    "failedRows": 1
+  },
+  "journey": {
+    "failureDisplayed": true,
+    "retrySucceeded": true,
+    "successDisplayed": true,
+    "checkoutCloseReturned": true,
+    "realCredentialsSubmitted": false,
+    "realMoneyUsed": false
+  },
+  "counterReconciliation": {
+    "dedicatedPageDetail": "Authoritative page detail listed one Captured row and one Failed row; identifiers and customer columns were excluded from evidence.",
+    "publicPageCounter": "The public page payload still reported zero payments during review and is treated as a lagging presentation counter, not transaction evidence.",
+    "globalOverview": "The global Test Mode overview initially reported zero captured payments while the dedicated page detail already showed the two status rows; the page-specific record is used for this page-scoped acceptance criterion."
+  },
+  "privacy": {
+    "containsCustomerIdentity": false,
+    "containsSupportPhone": false,
+    "containsEmail": false,
+    "containsPaymentIdentifier": false,
+    "containsBankDetail": false,
+    "containsCredential": false,
+    "containsProviderPayload": false
+  }
+}

@@ -1,0 +1,22 @@
+name: Required engineering process
+
+on: [pull_request, push]
+
+permissions:
+  contents: read
+
+jobs:
+  engineering-process:
+    name: engineering-process
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned engineering process
+        run: pip install 'git+https://github.com/suyog19/software-engineering-process@fa26e629787fbab681b389f02a9f9a6e28d8481a'
+      - name: Validate repository process
+        run: engineering-process validate

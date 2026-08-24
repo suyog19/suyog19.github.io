@@ -105,7 +105,7 @@
         <div class="support-choice-heading">
           <p class="eyebrow">Financial support</p>
           <h2 class="support-section-title" id="support-choices-title">Choose how you would like to support</h2>
-          <p class="support-section-intro">One-time and recurring support are handled by external providers. Secure provider links are being verified before either option is activated.</p>
+          <p class="support-section-intro">One-time and recurring support are handled by external providers. Each option is activated only after its secure provider path has been verified.</p>
         </div>
         <div class="support-choice-grid">
           <article class="support-choice-card" aria-labelledby="support-once-title">
@@ -115,7 +115,7 @@
               <p>Make a single contribution through Razorpay. You will choose the amount and complete the transaction on Razorpay's site.</p>
             </div>
             <div class="support-choice-action">
-              <button class="btn btn-primary" type="button" disabled aria-describedby="support-once-status">Support once with Razorpay</button>
+              <a class="btn btn-primary" aria-disabled="true" aria-describedby="support-once-status" data-support-razorpay>Support once with Razorpay</a>
               <p class="support-availability" id="support-once-status">Unavailable until the Razorpay path has been verified.</p>
             </div>
           </article>
@@ -202,5 +202,6 @@
   </footer>
 
   <script src="../js/script.js"></script>
+  <script src="../js/support-payment.js"></script>
 </body>
 </html>
