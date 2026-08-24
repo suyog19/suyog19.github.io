@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 
 const source = fs.readFileSync('js/support-payment.js', 'utf8');
+const TEST_MODE_DESTINATION = 'https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view';
 
 function load(hostname = 'unknown.example') {
   const attributes = new Map([['aria-disabled', 'true']]);
@@ -52,10 +53,23 @@ test('host selection is closed outside exact development and production hosts', 
 });
 
 test('missing provider configuration preserves the inert unavailable action', () => {
-  const { attributes, status } = load('dev.suyogjoshi.com');
+  const { attributes, status } = load('suyogjoshi.com');
   assert.equal(attributes.get('aria-disabled'), 'true');
   assert.equal(attributes.has('href'), false);
   assert.match(status.textContent, /Unavailable until/);
+});
+
+test('verified Test Mode page activates only on development hosts', () => {
+  for (const host of ['dev.suyogjoshi.com', 'localhost', '127.0.0.1']) {
+    const { attributes } = load(host);
+    assert.equal(attributes.get('href'), TEST_MODE_DESTINATION);
+    assert.equal(attributes.has('aria-disabled'), false);
+  }
+  for (const host of ['suyogjoshi.com', 'www.suyogjoshi.com', 'unknown.example']) {
+    const { attributes } = load(host);
+    assert.equal(attributes.has('href'), false);
+    assert.equal(attributes.get('aria-disabled'), 'true');
+  }
 });
 
 test('valid stage configuration activates same-tab navigation without customer data', () => {
@@ -79,4 +93,9 @@ test('cross-stage and malformed destinations remain closed', () => {
 
 test('frontend contains no checkout embed, callback, secret, amount, or transaction persistence', () => {
   assert.doesNotMatch(source, /checkout\.razorpay|callback|key_secret|payment_id|signature|localStorage|sessionStorage|fetch\(|XMLHttpRequest|amount=/i);
+});
+
+test('source binds the canonical Test Mode page exactly once and leaves production closed', () => {
+  assert.equal(source.split(TEST_MODE_DESTINATION).length - 1, 1);
+  assert.match(source, /production:\s*''/);
 });

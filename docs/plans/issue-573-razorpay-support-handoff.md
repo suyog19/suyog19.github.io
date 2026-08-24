@@ -2,9 +2,10 @@
 
 ## Decision status
 
-Gate A direction is complete; the exact provider artifact and end-to-end evidence
-remain pending authenticated Razorpay Test Mode access. No provider URL is approved
-until the checks in this document pass.
+Gate A direction is complete. The Test Mode page was published on 2026-08-24 and
+its canonical public destination is
+`https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view`. Remaining end-to-end evidence
+must pass before the change is merged.
 
 ## Architecture decision
 
@@ -76,8 +77,10 @@ Create the Test Mode page with:
 
 ## Acceptance evidence checklist
 
-- [ ] Authenticated Test Mode page settings inspected and bounded values recorded.
-- [ ] Exact canonical long Payment Page URL verified without query or fragment.
+- [x] Authenticated Test Mode page settings inspected: customer-decided INR amount,
+      provider minimum INR 1, no maximum, no expiry, no redirect, and no custom
+      success message.
+- [x] Exact canonical long Payment Page URL verified without query or fragment.
 - [ ] Successful synthetic Test Mode transaction visible in the page/payment
       records, with only non-sensitive identifiers/status recorded.
 - [ ] Cancel/back, failed payment, retry, repeated CTA activation, and provider
