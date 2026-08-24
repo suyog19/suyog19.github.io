@@ -530,8 +530,9 @@ page both times.
   the same tab, and browser Back restores the unchanged Support page.
 - GitHub's public API and an unauthenticated HTTP request confirmed an accessible
   public listing, a visible monthly-sponsor goal, recurring options, and HTTP 200.
-- **Must fix:** remove the stray drafting note at the beginning of the public
-  Sponsors introduction, then repeat the unauthenticated profile check.
+- **Must fix (resolved):** the stray drafting note at the beginning of the public
+  Sponsors introduction was removed. An unauthenticated recheck returned HTTP 200,
+  showed the clean introduction, goal, and monthly path, and found no drafting note.
 - **Should fix:** none.
 - **What works / preserve:** calm provider-neutral hierarchy, equal choice
   geometry, no duplicated pricing, progressive native navigation, and coarse
@@ -540,10 +541,16 @@ page both times.
 ### Gate C — convergence
 
 The website implementation has no outstanding rendered, accessibility, responsive,
-or measurement finding. Provider-profile convergence remains pending only on the
-Gate B drafting-note correction and public revalidation.
+measurement, or provider-profile finding. The provider correction was confirmed by
+GitHub's saved-state alert and repeated unauthenticated public verification. The
+redacted machine-readable record is
+`docs/evidence/issue-574-github-sponsors.json`.
 
 ### Gate D — UX acceptance
 
-Pending the provider-profile Must-fix item above. Production promotion remains a
-separate human-controlled decision; this review authorizes no production merge.
+- **Result:** UX accepted for the #574 GitHub Sponsors activation.
+- **Accepted deviations:** none.
+- **Recommendation strength:** strongly recommended within the approved #571
+  direction.
+- **Production boundary:** production promotion remains a separate human-controlled
+  decision; this review authorizes no production merge.
