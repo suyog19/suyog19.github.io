@@ -503,3 +503,54 @@ page both times.
 - **Gate D result:** UX acceptance remains valid after correcting the provider
   page. The destination changed, but the accepted hierarchy, copy, layout,
   semantics, responsive behavior, and recovery model did not.
+
+## Issue #574 GitHub Sponsors activation review
+
+### Gate A — journey intent and mandatory direction
+
+- Activate the verified public profile at `https://github.com/sponsors/suyog19`
+  as a native same-tab link that remains usable without JavaScript.
+- Keep amounts, tiers, billing, management, cancellation, identity, and outcome
+  state on GitHub. The website names the provider and recurring relationship but
+  does not duplicate provider mechanics.
+- Measure only outbound sponsorship intent with the allow-listed event
+  `support_sponsorship_intent` and fixed non-personal parameters: provider,
+  cadence, and source page. The click is never treated as a completed sponsorship.
+- Preserve equal visual and semantic status for the Razorpay and GitHub actions,
+  the voluntary-support boundary, and all six approved Support invariants.
+
+### Gate B — first rendered and provider review
+
+- At 1440×900, both financial cards measured 516×385.02px and both native links
+  measured 434×48px. Document scroll width equalled client width.
+- At 390×844, both cards measured 335×388.20px and both native links measured
+  277×48px. Document scroll width equalled client width.
+- The GitHub action exposes its provider in visible text, uses the established
+  2px focus outline with 3px offset, navigates to the exact Sponsors profile in
+  the same tab, and browser Back restores the unchanged Support page.
+- GitHub's public API and an unauthenticated HTTP request confirmed an accessible
+  public listing, a visible monthly-sponsor goal, recurring options, and HTTP 200.
+- **Must fix (resolved):** the stray drafting note at the beginning of the public
+  Sponsors introduction was removed. An unauthenticated recheck returned HTTP 200,
+  showed the clean introduction, goal, and monthly path, and found no drafting note.
+- **Should fix:** none.
+- **What works / preserve:** calm provider-neutral hierarchy, equal choice
+  geometry, no duplicated pricing, progressive native navigation, and coarse
+  outcome-neutral measurement.
+
+### Gate C — convergence
+
+The website implementation has no outstanding rendered, accessibility, responsive,
+measurement, or provider-profile finding. The provider correction was confirmed by
+GitHub's saved-state alert and repeated unauthenticated public verification. The
+redacted machine-readable record is
+`docs/evidence/issue-574-github-sponsors.json`.
+
+### Gate D — UX acceptance
+
+- **Result:** UX accepted for the #574 GitHub Sponsors activation.
+- **Accepted deviations:** none.
+- **Recommendation strength:** strongly recommended within the approved #571
+  direction.
+- **Production boundary:** production promotion remains a separate human-controlled
+  decision; this review authorizes no production merge.

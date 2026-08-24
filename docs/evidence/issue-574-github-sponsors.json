@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "issue": 574,
+  "observedAt": "2026-08-24T15:06:00Z",
+  "provider": "GitHub Sponsors",
+  "profile": {
+    "canonicalUrl": "https://github.com/sponsors/suyog19",
+    "publicListing": true,
+    "unauthenticatedHttpStatus": 200,
+    "monthlyGoalVisible": true,
+    "monthlySelectionVisible": true,
+    "recurringOptionsPresent": true,
+    "oneTimeOptionPresent": true,
+    "cleanIntroductionVisible": true,
+    "draftingNoteAbsent": true
+  },
+  "websiteHandoff": {
+    "sameTab": true,
+    "browserBackRestoresSupportPage": true,
+    "worksWithoutJavaScript": true,
+    "pricingDuplicatedOnWebsite": false,
+    "outcomeInferredFromClick": false
+  },
+  "privacy": {
+    "event": "support_sponsorship_intent",
+    "fixedParameters": [
+      "provider",
+      "cadence",
+      "source_page"
+    ],
+    "personalDataIncluded": false,
+    "amountIncluded": false,
+    "tierIncluded": false,
+    "destinationUrlIncluded": false,
+    "sponsorshipOutcomeIncluded": false
+  }
+}
