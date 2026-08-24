@@ -28,16 +28,16 @@ test('support page implements the approved hierarchy and public metadata', () =>
   assert.deepEqual(markers, [...markers].sort((a, b) => a - b));
 });
 
-test('financial choices remain equal and fail closed until provider stories verify them', () => {
+test('financial choices remain equal and use only verified provider paths', () => {
   assert.equal((html.match(/class="support-choice-card"/g) || []).length, 2);
   assert.match(html, /<a[^>]*aria-disabled="true"[^>]*data-support-razorpay[^>]*>Support once with Razorpay<\/a>/);
-  assert.match(html, /<button[^>]*disabled[^>]*>Support regularly on GitHub<\/button>/);
+  assert.match(html, /<a[^>]*href="https:\/\/github\.com\/sponsors\/suyog19"[^>]*rel="external"[^>]*aria-describedby="support-regular-status"[^>]*data-support-github-sponsors[^>]*>Support regularly on GitHub<\/a>/);
   assert.match(html, /Razorpay path has been verified/);
-  assert.match(html, /GitHub Sponsors path has been verified/);
   assert.doesNotMatch(html, /href="https:\/\/(?:[^"/]+\.)?rzp\.io/i);
-  assert.doesNotMatch(html, /href="https:\/\/github\.com\/sponsors\//i);
   assert.doesNotMatch(html, /recommended|most popular|donate now|buy me a coffee/i);
   assert.match(html, /Each option is activated only after its secure provider path has been verified/);
+  assert.match(html, /GitHub shows the available options and manages your sponsorship/);
+  assert.doesNotMatch(html, /\$\d+|per month|monthly tier/i);
 });
 
 test('non-financial support and commercial boundaries remain explicit', () => {
