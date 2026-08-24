@@ -49,7 +49,7 @@
     action.setAttribute('href', destination);
     action.setAttribute('rel', 'external');
     action.removeAttribute('aria-disabled');
-    status.textContent = 'Opens Razorpay in this tab. Choose your amount there. If Razorpay does not confirm completion, return with your browser Back button to retry.';
+    status.textContent = 'Same tab. Razorpay confirms; if not, go Back and retry.';
     return true;
   }
 

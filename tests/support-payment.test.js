@@ -80,7 +80,8 @@ test('valid stage configuration activates same-tab navigation without customer d
   assert.equal(state.attributes.get('rel'), 'external');
   assert.equal(state.attributes.has('target'), false);
   assert.equal(state.attributes.has('aria-disabled'), false);
-  assert.match(state.status.textContent, /does not confirm completion/);
+  assert.match(state.status.textContent, /Razorpay confirms/);
+  assert.match(state.status.textContent, /go Back and retry/);
 });
 
 test('cross-stage and malformed destinations remain closed', () => {

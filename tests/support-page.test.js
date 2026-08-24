@@ -37,6 +37,7 @@ test('financial choices remain equal and fail closed until provider stories veri
   assert.doesNotMatch(html, /href="https:\/\/(?:[^"/]+\.)?rzp\.io/i);
   assert.doesNotMatch(html, /href="https:\/\/github\.com\/sponsors\//i);
   assert.doesNotMatch(html, /recommended|most popular|donate now|buy me a coffee/i);
+  assert.match(html, /Each option is activated only after its secure provider path has been verified/);
 });
 
 test('non-financial support and commercial boundaries remain explicit', () => {

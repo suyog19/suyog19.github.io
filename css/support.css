@@ -20,7 +20,7 @@
 .support-choice-type { color: var(--color-text-muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 0.75rem; text-transform: uppercase; }
 .support-choice-card > div:first-child > p:last-child { margin-top: 1rem; max-width: 42ch; }
 .support-choice-action { margin-top: 2.5rem; }
-.support-choice-action .btn { text-align: center; }
+.support-choice-action .btn { align-items: center; display: flex; justify-content: center; line-height: 1.4; min-height: 3rem; text-align: center; }
 .support-choice-action .btn:disabled,
 .support-choice-action .btn[aria-disabled="true"] { background: var(--color-text-muted); border-color: var(--color-text-muted); cursor: not-allowed; opacity: 0.72; }
 .support-availability { color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.55; margin-top: 0.85rem; max-width: 34ch; }
