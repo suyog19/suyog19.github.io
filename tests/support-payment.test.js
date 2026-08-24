@@ -58,8 +58,13 @@ test('missing provider configuration preserves the inert unavailable action', ()
   assert.match(status.textContent, /Unavailable until/);
 });
 
-test('source configuration remains inert until a verified stage page is recorded', () => {
-  for (const host of ['dev.suyogjoshi.com', 'localhost', '127.0.0.1', 'suyogjoshi.com', 'www.suyogjoshi.com', 'unknown.example']) {
+test('source configuration activates only verified development hosts', () => {
+  for (const host of ['dev.suyogjoshi.com', 'localhost', '127.0.0.1']) {
+    const { attributes } = load(host);
+    assert.equal(attributes.get('href'), 'https://pages.razorpay.com/pl_TTdbTEtwC4vyYF/view');
+    assert.equal(attributes.has('aria-disabled'), false);
+  }
+  for (const host of ['suyogjoshi.com', 'www.suyogjoshi.com', 'unknown.example']) {
     const { attributes } = load(host);
     assert.equal(attributes.has('href'), false);
     assert.equal(attributes.get('aria-disabled'), 'true');
@@ -90,7 +95,8 @@ test('frontend contains no checkout embed, callback, secret, amount, or transact
   assert.doesNotMatch(source, /checkout\.razorpay|callback|key_secret|payment_id|signature|localStorage|sessionStorage|fetch\(|XMLHttpRequest|amount=/i);
 });
 
-test('source leaves development and production closed without an approved page', () => {
-  assert.match(source, /development:\s*''/);
+test('source records only the approved Test Mode development page', () => {
+  assert.match(source, /development:\s*'https:\/\/pages\.razorpay\.com\/pl_TTdbTEtwC4vyYF\/view'/);
   assert.match(source, /production:\s*''/);
+  assert.doesNotMatch(source, /pl_TTcwSP5BE6K7WC|6x2ZLHMT/);
 });
