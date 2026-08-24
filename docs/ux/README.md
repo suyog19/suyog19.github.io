@@ -45,6 +45,7 @@ criteria alone.
 - [Systems](pages/systems.md)
 - [About](pages/about.md)
 - [Contact](pages/contact.md)
+- [Support](pages/support.md)
 - [Article detail](pages/article-detail.md)
 - [System detail](pages/system-detail.md)
 - [Course detail](pages/course-detail.md)
