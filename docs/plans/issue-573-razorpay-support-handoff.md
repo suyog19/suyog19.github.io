@@ -105,8 +105,9 @@ published Test Mode page `pl_TTdbTEtwC4vyYF`:
 - the authenticated provider record showed Test Mode, Active, no expiry, and zero
   payments before testing;
 - a simulated Netbanking failure displayed Razorpay's failure state, Retry then
-  reached the mock-bank success state, and the dedicated page record advanced to
-  one payment, one unit, and INR 10 Test revenue;
+  reached the mock-bank success state, and the dedicated page detail listed one
+  Failed row and one Captured row; its aggregate advanced to one payment, one
+  unit, and INR 10 Test revenue;
 - closing Checkout with its native close control returned to the unchanged
   Payment Page without another payment;
 - same-tab handoff and browser Back recovery were repeated from the local Support
@@ -120,6 +121,11 @@ published Test Mode page `pl_TTdbTEtwC4vyYF`:
 
 No customer value, support phone, email, payment identifier, credential, bank
 detail, or provider payload is included in this evidence.
+
+The redacted machine-readable provider observation is recorded at
+`docs/evidence/issue-573-razorpay-test-mode.json`. It also reconciles the public
+page and global-overview counters, which lagged the authoritative dedicated-page
+detail during review and must not be used to contradict its Captured/Failed rows.
 
 ## Official provider basis
 
