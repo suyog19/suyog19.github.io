@@ -406,3 +406,71 @@ destinations; they do not imply transaction success or expose placeholder links.
   Support discovery only through #575.
 - **Rendered-review limitation:** provider return, success, cancellation, and error
   states do not exist in #572 and therefore were not fabricated or reviewed.
+
+## Issue #573 Razorpay activation review
+
+### Evidence and iteration
+
+- Reviewed implementation commits: `73fc6ee` (first activated render) and
+  `3c920fe` (converged render).
+- Capture date: 24 August 2026.
+- Capture method: local nested `/support/` route in Chrome 152 with exact CDP
+  viewport emulation, semantic DOM inspection, computed geometry, horizontal-
+  overflow checks, same-tab navigation, browser-Back recovery, and repeated CTA
+  activation.
+- The canonical Test Mode destination resolved to
+  `https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view`; the rendered action has no
+  `aria-disabled` state on development/local hosts and remains closed by the host
+  matrix on production and unknown hosts.
+
+The first activated mobile render exposed a Must-fix inequality: the longer
+Razorpay recovery guidance and native anchor/button line-height difference made
+the one-time card taller than the recurring card. The converged implementation
+normalises both controls and shortens the guidance without losing same-tab,
+provider-confirmation, Back, or retry meaning. It also replaces stale copy that
+said neither option was activated with stage-neutral verification wording.
+
+| Page/state | Viewport | Converged result |
+| --- | ---: | --- |
+| `/support/`, activated | 1440×900 | Equal 516×385.02px cards and 48px controls; no overflow |
+| `/support/`, activated | 768×900 | Equal 319.13px stacked cards and 48px controls; no overflow |
+| `/support/`, activated | 640×900 | Equal 313.69px stacked cards and 48px controls; no overflow |
+| `/support/`, activated | 390×844 | Equal 350×388.20px cards and 48px controls; no overflow |
+| `/support/`, activated | 360×900 | Equal 320×388.20px cards and 48px controls; no overflow |
+| `/support/`, activated | 340×900 | Equal 300×433.77px cards and 66.38px wrapped controls; no overflow |
+| `/support/`, activated | 320×900 | Equal 280×433.77px cards and 66.38px wrapped controls; no overflow |
+
+Representative captures are held in the temporary review workspace at
+`C:\Users\ADMIN\AppData\Local\Temp\issue-573-rendered-evidence-final`:
+
+- `573-support-1440-choices.png` — SHA-256
+  `85a2cc335b24d9a849732b86e1b5bfa4acb42cf6ba6d625d99c5439d4ae247ae`
+- `573-support-390-choices.png` — SHA-256
+  `bd9c104fc7d35d472cfc5c3aaf4dd6933db7e17255c83b2aff4e9a9f7ede61f4`
+
+### Gate B — Senior UX rendered review
+
+- **Must fix:** equalise one-time and recurring card/control geometry after the
+  Razorpay recovery text is activated; remove stale all-options-unavailable copy.
+- **Should fix:** none.
+- **What works / preserve:** provider choice remains below the voluntary-support
+  explanation; Razorpay and GitHub keep identical CTA treatment; the provider
+  identity, amount ownership, confirmation boundary, and recovery path are clear;
+  no urgency, recommendation, embed, or on-site success treatment was introduced.
+
+### Gate C — convergence
+
+Both Must-fix findings are resolved in `3c920fe`. Exact computed geometry at seven
+representative widths preserves equal status, full-width mobile actions, clean
+wrapping, and zero horizontal overflow. Same-tab navigation reached the exact
+canonical provider URL twice, and Back returned to the unchanged local support
+page both times.
+
+### Gate D — UX acceptance
+
+- **Result:** UX accepted for the #573 Razorpay activation.
+- **Accepted deviations:** none.
+- **Deferrals:** synthetic Razorpay success and failure states remain functional-
+  assurance evidence and must not be inferred from the outbound handoff render.
+- **Recommendation strength:** strongly recommended within the approved #571
+  direction.
