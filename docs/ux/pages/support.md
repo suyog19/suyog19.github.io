@@ -479,3 +479,25 @@ page both times.
   assurance evidence and must not be inferred from the outbound handoff render.
 - **Recommendation strength:** strongly recommended within the approved #571
   direction.
+
+### Final Test Mode journey revalidation
+
+- **Implementation reviewed:** `d4ee5ec` with canonical Test Mode page
+  `pl_TTdbTEtwC4vyYF`.
+- **Desktop:** at 1440×900, both provider cards measured 516×385.02px and both
+  controls remained 48px high; document width equalled client width.
+- **Mobile:** at 390×844, both cards measured 335×388.20px and both controls
+  measured 277×48px; document width equalled client width.
+- **Interaction:** the enabled native link exposed the exact canonical URL,
+  navigated in the same tab, and browser Back restored the unchanged Support page.
+  A second activation repeated the same provider navigation without creating
+  site-side payment state.
+- **Provider states:** an Incognito Test Mode journey displayed simulated failure,
+  retry/success, and Checkout-close recovery. The authenticated dedicated-page
+  record then showed one Test payment, one unit, and INR 10 Test revenue. Evidence
+  excludes customer and payment identifiers.
+- **Unavailable state:** the deployed feature-preview hostname remained inert
+  because it is outside the exact host allow-list; production also remains closed.
+- **Gate D result:** UX acceptance remains valid after correcting the provider
+  page. The destination changed, but the accepted hierarchy, copy, layout,
+  semantics, responsive behavior, and recovery model did not.
