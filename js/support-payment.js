@@ -8,6 +8,7 @@
   const DEVELOPMENT_HOSTS = new Set(['dev.suyogjoshi.com', 'localhost', '127.0.0.1']);
   const PRODUCTION_HOSTS = new Set(['suyogjoshi.com', 'www.suyogjoshi.com']);
   const PAYMENT_PAGE_PATH = /^\/pl_[A-Za-z0-9]+\/view\/?$/;
+  const PRESET_AMOUNTS = Object.freeze({ '250': '₹250', '500': '₹500', '1000': '₹1,000' });
 
   function stageForHost(hostname) {
     if (DEVELOPMENT_HOSTS.has(hostname)) return 'development';
@@ -38,18 +39,37 @@
     return isExactPaymentPage(destination) ? destination : null;
   }
 
+  function destinationForAmount(destination, amount) {
+    if (!isExactPaymentPage(destination)) return null;
+    if (typeof amount !== 'string') return null;
+    if (amount === 'custom') return destination;
+    if (!Object.prototype.hasOwnProperty.call(PRESET_AMOUNTS, amount)) return null;
+    const url = new URL(destination);
+    url.searchParams.set('support_amount', amount);
+    return url.toString();
+  }
+
   function activate(documentRoot, hostname, destinations) {
     const action = documentRoot.querySelector('[data-support-razorpay]');
     const status = documentRoot.querySelector('#support-once-status');
-    if (!action || !status) return false;
+    const amountGroup = documentRoot.querySelector('[data-support-amounts]');
+    if (!action || !status || !amountGroup) return false;
 
     const destination = resolveDestination(hostname, destinations);
     if (!destination) return false;
 
-    action.setAttribute('href', destination);
     action.setAttribute('rel', 'external');
-    action.removeAttribute('aria-disabled');
-    status.textContent = 'Same tab. Razorpay confirms; if not, go Back and retry.';
+    amountGroup.removeAttribute('disabled');
+    amountGroup.addEventListener('change', function (event) {
+      const amount = event && event.target ? event.target.value : '';
+      const amountDestination = destinationForAmount(destination, amount);
+      if (!amountDestination) return;
+      action.setAttribute('href', amountDestination);
+      action.removeAttribute('aria-disabled');
+      action.textContent = amount === 'custom' ? 'Choose a custom amount on Razorpay' : 'Support with ' + PRESET_AMOUNTS[amount];
+      status.textContent = amount === 'custom' ? 'You’ll enter the amount on Razorpay.' : PRESET_AMOUNTS[amount] + ' will be prefilled on Razorpay.';
+    });
+    status.textContent = 'Choose an amount. Razorpay confirms payment; use Back to cancel or recover.';
     return true;
   }
 
@@ -68,7 +88,7 @@
     return true;
   }
 
-  const api = Object.freeze({ activate, isExactPaymentPage, resolveDestination, stageForHost, trackSponsorIntent });
+  const api = Object.freeze({ activate, destinationForAmount, isExactPaymentPage, resolveDestination, stageForHost, trackSponsorIntent });
   window.sjSupportPayment = api;
   activate(document, window.location.hostname, DESTINATIONS);
   trackSponsorIntent(document, window.gtag);

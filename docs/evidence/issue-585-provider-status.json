@@ -1,0 +1,40 @@
+{
+  "schema": "provider-observation/v1",
+  "issue": 585,
+  "observedAt": "2026-08-25",
+  "provider": "razorpay",
+  "mode": "test",
+  "paymentPage": "pl_TTdbTEtwC4vyYF",
+  "dashboardAccess": "authenticated-and-verified",
+  "verified": {
+    "amountPrefillContract": true,
+    "fieldDescriptionCapability": false,
+    "successRedirectCapability": true,
+    "automatedReceiptCapability": true,
+    "publicMerchantIdentity": "Suyog Joshi",
+    "publicPurpose": "Support Software Signal",
+    "publicMode": "test",
+    "requiredFields": ["email", "phone"],
+    "amountField": "Support amount",
+    "amountQueryKey": "support_amount",
+    "presetAmountsVerified": [250, 500, 1000],
+    "successRedirect": "https://dev.suyogjoshi.com/support/thank-you/",
+    "automatedReceiptsEnabled": true,
+    "trustedBusinessBadge": "inactive-no-enable-control",
+    "brandingLogo": "not-configured-provider-rejected-jpg-png-upload",
+    "cancelCloseRecovery": "verified-returns-to-payment-page",
+    "recoverableFailure": "verified-native-retry-remains-in-razorpay"
+  },
+  "pendingAuthenticatedChecks": [
+    "automated-receipt-delivery-after-new-test-payment",
+    "receipt-identity",
+    "successful-test-payment-redirect-after-dev-deployment"
+  ],
+  "providerLimitations": {
+    "defaultFieldHelp": "The actual Payment Page editor requires Email and Phone but exposes no help-text control for those default fields.",
+    "logoUpload": "The account-level branding dialog rejected attempted PNG/JPG-compatible uploads, so the verified merchant name remains the supported identity treatment."
+  },
+  "containsPii": false,
+  "containsPaymentIdentifiers": false,
+  "productionActivated": false
+}
