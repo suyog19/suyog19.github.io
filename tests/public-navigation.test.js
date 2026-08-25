@@ -33,6 +33,7 @@ function expectedTrainingHref(file) {
 }
 
 function expectedSupportHref(file) {
+  if (file === '404.html') return '/support/';
   const from = path.posix.dirname(file);
   const relative = path.posix.relative(from === '.' ? '' : from, 'support');
   return relative ? `${relative}/` : './';

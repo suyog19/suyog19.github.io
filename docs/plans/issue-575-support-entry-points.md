@@ -1,6 +1,6 @@
 # Issue 575 — deliberate Support entry points
 
-Issue: [#575](https://github.com/suyog19/suyog19.github.io/issues/575)  
+Issue: [#575](https://github.com/suyog19/suyog19.github.io/issues/575)
 Parent epic: [#570](https://github.com/suyog19/suyog19.github.io/issues/570)
 
 ## Gate A — UX context and brief
@@ -69,8 +69,10 @@ primary-navigation change. Relative links remain explicit and depth-correct.
 
 ### Gate B — first rendered review
 
-**Iteration:** 1  
-**Capture method:** browser-controlled local render at `http://127.0.0.1:8080/`  
+**Iteration:** 1
+
+**Capture method:** browser-controlled local render at `http://127.0.0.1:8080/`
+
 **Viewports:** 1440×900 and 390×844 (browser content widths 1425 and 375 after
 scrollbar allocation)
 
@@ -101,8 +103,10 @@ resource failure, and did not affect rendering or interaction.
 
 ### Gate C — convergence
 
-**Must fix:** none.  
-**Should fix:** none.  
+**Must fix:** none.
+
+**Should fix:** none.
+
 **Optional:** none required for this scope.
 
 **What works / preserve:** the footer's existing type, spacing, wrapping, focus
