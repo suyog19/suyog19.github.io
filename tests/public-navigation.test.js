@@ -103,6 +103,17 @@ test('every existing public-shell footer exposes one restrained Support link', (
   }
 });
 
+test('the Support footer self-link exposes its current-page state', () => {
+  const html = fs.readFileSync(path.join(repositoryRoot, 'support/index.html'), 'utf8');
+  const footer = html.match(/<footer\b[^>]*class="[^"]*\bsite-footer\b[^>]*>[\s\S]*?<\/footer>/);
+  assert.ok(footer, 'Support must retain its public-shell footer');
+  assert.match(
+    footer[0],
+    /<a\b(?=[^>]*\bhref="\.\/")(?=[^>]*\baria-current="page")[^>]*>Support<\/a>/,
+    'the Support footer link must expose its current-page state',
+  );
+});
+
 test('private and compatibility routes stay outside the public navigation contract', () => {
   for (const file of excludedRoutes) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
