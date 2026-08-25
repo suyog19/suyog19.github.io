@@ -46,7 +46,7 @@
     "automatedReceiptsEnabled": true,
     "publicTestModeBannerAbsent": true,
     "presetAmountVerified": 500,
-    "realPaymentSubmittedDuringReleasePreparation": false,
+    "agentSubmittedRealPaymentBeforeProductOwnerVerification": false,
     "humanLivePaymentVerification": {
       "reportedAt": "2026-08-25",
       "paymentCompleted": true,
