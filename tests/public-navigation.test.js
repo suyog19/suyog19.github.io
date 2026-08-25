@@ -32,6 +32,13 @@ function expectedTrainingHref(file) {
   return relative ? `${relative}/` : './';
 }
 
+function expectedSupportHref(file) {
+  if (file === '404.html') return '/support/';
+  const from = path.posix.dirname(file);
+  const relative = path.posix.relative(from === '.' ? '' : from, 'support');
+  return relative ? `${relative}/` : './';
+}
+
 test('every public page exposes Training exactly once in primary navigation', () => {
   const files = htmlFiles();
   const publicPages = files.filter((file) => !excludedRoutes.has(file));
@@ -72,6 +79,39 @@ test('Training pages expose the active Training navigation state', () => {
       `${file} must mark Training as the current page`,
     );
   }
+});
+
+test('every existing public-shell footer exposes one restrained Support link', () => {
+  const footerPages = [...htmlFiles(), '404.html'].filter((file) => {
+    const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
+    return /<footer\b[^>]*class="[^"]*\bsite-footer\b/.test(html);
+  });
+
+  assert.equal(footerPages.length, 62, 'update the footer contract when public shells change');
+
+  for (const file of footerPages) {
+    const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
+    const footer = html.match(/<footer\b[^>]*class="[^"]*\bsite-footer\b[^>]*>[\s\S]*?<\/footer>/);
+    assert.ok(footer, `${file} must retain its public-shell footer`);
+
+    const supportLinks = [...footer[0].matchAll(/<a\b([^>]*)>Support<\/a>/g)];
+    assert.equal(supportLinks.length, 1, `${file} must include exactly one restrained Support footer link`);
+
+    const href = supportLinks[0][1].match(/\bhref="([^"]+)"/);
+    assert.ok(href, `${file} Support footer link must have an href`);
+    assert.equal(href[1], expectedSupportHref(file), `${file} Support link must resolve by directory depth`);
+  }
+});
+
+test('the Support footer self-link exposes its current-page state', () => {
+  const html = fs.readFileSync(path.join(repositoryRoot, 'support/index.html'), 'utf8');
+  const footer = html.match(/<footer\b[^>]*class="[^"]*\bsite-footer\b[^>]*>[\s\S]*?<\/footer>/);
+  assert.ok(footer, 'Support must retain its public-shell footer');
+  assert.match(
+    footer[0],
+    /<a\b(?=[^>]*\bhref="\.\/")(?=[^>]*\baria-current="page")[^>]*>Support<\/a>/,
+    'the Support footer link must expose its current-page state',
+  );
 });
 
 test('private and compatibility routes stay outside the public navigation contract', () => {
