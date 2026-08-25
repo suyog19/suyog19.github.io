@@ -87,9 +87,10 @@ success return are material task-flow and status-comprehension changes.
   reload restored the required unselected state; and the thank-you page exposed
   its noindex, non-authoritative boundary and onward navigation at 390px.
 - Gate D: implementation UX accepted with no visual deviation. Authenticated
-  Test Mode inspection confirmed automated receipts and the success redirect to
-  `https://dev.suyogjoshi.com/support/thank-you/`. Receipt delivery remains tied
-  to the final synthetic journey and is not inferred from configuration alone.
+  Test Mode inspection confirmed automated receipts and the configured success
+  redirect to `https://dev.suyogjoshi.com/support/thank-you/`. A provider test-card
+  payment confirmed success, inbox receipt delivery, and clear Suyog Joshi / Support
+  Software Signal identity without retaining payer or payment identifiers.
 
 ## Public provider observation
 
@@ -103,4 +104,11 @@ enable control. The page did not expose custom field help text in the public ren
 Current hosted behavior was verified directly: `support_amount=250`,
 `support_amount=500`, and `support_amount=1000` populate the normalized `Support
 amount` field; the generic `amount` key does not. No payment or customer value was
-submitted during this prefill verification.
+submitted during this prefill verification. A subsequent synthetic Test Mode payment
+verified the successful-payment state, automated receipt delivery, and receipt
+identity. Despite saving and publishing the redirect first to the development route
+and then to an accessible branch preview, Test Mode stayed on Razorpay's own success
+screen and exposed no return control. The durable development redirect is restored;
+Live Mode remains untested and subject to human release approval. The site copy and
+provider evidence disclose this observed hosted-page limitation rather than treating
+the redirect setting as proof of navigation.
