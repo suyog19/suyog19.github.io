@@ -57,7 +57,7 @@ test('support uses the established public shell without primary-navigation expan
   const primaryNav = html.match(/<nav\b[^>]*aria-label="Primary navigation"[^>]*>[\s\S]*?<\/nav>/);
   assert.ok(primaryNav);
   assert.doesNotMatch(primaryNav[0], />Support<\/a>/);
-  for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../css/support.css', '../js/script.js', '../js/support-payment.js']) {
+  for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../css/support.css', '../js/script.js', '../js/support-payment.js', '../js/support-analytics.js']) {
     assert.match(html, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
   assert.doesNotMatch(html, /<img\b|<iframe\b|<form\b|data-[a-z-]*payment/i);
@@ -70,5 +70,5 @@ test('support composition is scoped and responsive without a new interaction sys
   assert.match(css, /@media \(max-width: 900px\)[\s\S]*?\.support-choice-grid[\s\S]*?grid-template-columns: 1fr/);
   assert.match(css, /@media \(max-width: 640px\)[\s\S]*?\.support-choice-action \.btn[\s\S]*?width: 100%/);
   const localScripts = [...html.matchAll(/<script[^>]+src="(\.\.[^"]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(localScripts, ['../js/script.js', '../js/support-payment.js']);
+  assert.deepEqual(localScripts, ['../js/script.js', '../js/support-payment.js', '../js/support-analytics.js']);
 });
