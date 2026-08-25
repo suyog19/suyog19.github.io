@@ -9,7 +9,7 @@
   "verified": {
     "amountPrefillContract": true,
     "fieldDescriptionCapability": false,
-    "successRedirectCapability": true,
+    "successRedirectCapability": "configured-but-not-honored-in-test-mode",
     "automatedReceiptCapability": true,
     "publicMerchantIdentity": "Suyog Joshi",
     "publicPurpose": "Support Software Signal",
@@ -20,19 +20,21 @@
     "presetAmountsVerified": [250, 500, 1000],
     "successRedirect": "https://dev.suyogjoshi.com/support/thank-you/",
     "automatedReceiptsEnabled": true,
+    "successfulTestPayment": "verified-with-provider-test-card",
+    "receiptDelivery": "verified-in-recipient-inbox",
+    "receiptIdentity": "Suyog Joshi / Support Software Signal / selected amount",
     "trustedBusinessBadge": "inactive-no-enable-control",
     "brandingLogo": "not-configured-provider-rejected-jpg-png-upload",
     "cancelCloseRecovery": "verified-returns-to-payment-page",
     "recoverableFailure": "verified-native-retry-remains-in-razorpay"
   },
   "pendingAuthenticatedChecks": [
-    "automated-receipt-delivery-after-new-test-payment",
-    "receipt-identity",
-    "successful-test-payment-redirect-after-dev-deployment"
+    "successful-payment-redirect-in-live-mode-after-human-release-approval"
   ],
   "providerLimitations": {
     "defaultFieldHelp": "The actual Payment Page editor requires Email and Phone but exposes no help-text control for those default fields.",
-    "logoUpload": "The account-level branding dialog rejected attempted PNG/JPG-compatible uploads, so the verified merchant name remains the supported identity treatment."
+    "logoUpload": "The account-level branding dialog rejected attempted PNG/JPG-compatible uploads, so the verified merchant name remains the supported identity treatment.",
+    "testModeRedirect": "The success redirect was saved and published, then tested with both the development URL and an accessible Cloudflare preview URL. Razorpay displayed its own successful-payment state and confirmation-email message but did not navigate or expose a return control. The durable development URL was restored. Live Mode remains governed and untested."
   },
   "containsPii": false,
   "containsPaymentIdentifiers": false,
