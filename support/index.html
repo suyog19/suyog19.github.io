@@ -112,11 +112,25 @@
             <div>
               <p class="support-choice-type">One-time</p>
               <h3 id="support-once-title">One-time support</h3>
-              <p>Make a single contribution through Razorpay. You will choose the amount and complete the transaction on Razorpay's site.</p>
+              <p>Choose an amount here, then complete a one-time contribution on Razorpay's site.</p>
             </div>
             <div class="support-choice-action">
-              <a class="btn btn-primary" aria-disabled="true" aria-describedby="support-once-status" data-support-razorpay>Support once with Razorpay</a>
+              <fieldset class="support-amounts" data-support-amounts disabled>
+                <legend>Choose a one-time amount</legend>
+                <div class="support-amount-grid">
+                  <label><input type="radio" name="support-amount" value="250"><span>₹250</span></label>
+                  <label><input type="radio" name="support-amount" value="500"><span>₹500</span></label>
+                  <label><input type="radio" name="support-amount" value="1000"><span>₹1,000</span></label>
+                  <label><input type="radio" name="support-amount" value="custom"><span>Custom</span></label>
+                </div>
+              </fieldset>
+              <a class="btn btn-primary" aria-disabled="true" aria-describedby="support-payment-context support-once-status" data-support-razorpay>Choose an amount to continue</a>
+              <div class="support-payment-context" id="support-payment-context">
+                <p>One-time contribution. No subscription.</p>
+                <p>Secure payment via Razorpay. You’ll briefly continue to Razorpay; its success action is configured to return you here when the provider supports it.</p>
+              </div>
               <p class="support-availability" id="support-once-status">Unavailable until the Razorpay path has been verified.</p>
+              <p class="support-help">Payment trouble? <a href="mailto:contact@suyogjoshi.com?subject=Software%20Signal%20support%20payment">Email Suyog</a>. Do not include card, UPI, bank, or payment credentials.</p>
             </div>
           </article>
 
