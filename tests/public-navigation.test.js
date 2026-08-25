@@ -36,12 +36,13 @@ test('every public page exposes Training exactly once in primary navigation', ()
   const files = htmlFiles();
   const publicPages = files.filter((file) => !excludedRoutes.has(file));
 
-  assert.equal(files.length, 75, 'update the public-route classification when routes change');
-  assert.equal(publicPages.length, 65);
+  assert.equal(files.length, 76, 'update the public-route classification when routes change');
+  assert.equal(publicPages.length, 66);
   assert.ok(publicPages.includes('newsletter/index.html'), 'the newsletter entry point must remain in the public route set');
   assert.ok(publicPages.includes('newsletter/confirmed/index.html'), 'the newsletter confirmation utility must remain in the public route set');
   assert.ok(publicPages.includes('search/index.html'), 'the durable public search utility must remain in the public route set');
   assert.ok(publicPages.includes('support/index.html'), 'the canonical Support page must remain in the public route set');
+  assert.ok(publicPages.includes('support/thank-you/index.html'), 'the Support return state must retain the public shell');
 
   for (const file of publicPages) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');

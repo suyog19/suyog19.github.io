@@ -30,7 +30,10 @@ test('support page implements the approved hierarchy and public metadata', () =>
 
 test('financial choices remain equal and use only verified provider paths', () => {
   assert.equal((html.match(/class="support-choice-card"/g) || []).length, 2);
-  assert.match(html, /<a[^>]*aria-disabled="true"[^>]*data-support-razorpay[^>]*>Support once with Razorpay<\/a>/);
+  assert.match(html, /<a[^>]*aria-disabled="true"[^>]*data-support-razorpay[^>]*>Choose an amount to continue<\/a>/);
+  for (const amount of ['250', '500', '1000', 'custom']) assert.match(html, new RegExp(`name="support-amount" value="${amount}"`));
+  assert.match(html, /One-time contribution\. No subscription\./);
+  assert.match(html, /briefly continue to Razorpay and return here after a successful payment/);
   assert.match(html, /<a[^>]*href="https:\/\/github\.com\/sponsors\/suyog19"[^>]*rel="external"[^>]*aria-describedby="support-regular-status"[^>]*data-support-github-sponsors[^>]*>Support regularly on GitHub<\/a>/);
   assert.match(html, /Razorpay path has been verified/);
   assert.doesNotMatch(html, /href="https:\/\/(?:[^"/]+\.)?rzp\.io/i);
