@@ -11,9 +11,10 @@ only fixed, allow-listed categorical values. They never contain names, email
 addresses, payment or sponsorship identifiers, amounts, URLs, query strings,
 referrers, free text, or provider response payloads.
 
-An outbound click is intent, not revenue. A return to the Razorpay thank-you route
-is a provider-reported success return, not independent proof of a captured payment.
-Razorpay remains the source of truth for captured and failed one-time payments.
+An outbound click is intent, not revenue. A visit to the public Razorpay thank-you
+route is not independent proof of a captured payment: the static route can also be
+opened directly. Razorpay remains the source of truth for captured and failed
+one-time payments.
 GitHub Sponsors has no reliable completion source available to this site, so no
 recurring-support conversion event or metric is defined.
 
@@ -25,12 +26,12 @@ recurring-support conversion event or metric is defined.
 | `support_page_view` | `/support/` initializes | `page_type: support` | Explicit Support visit measure alongside GA4's normal page view. No referrer is copied into the event. |
 | `support_one_time_intent` | An enabled Razorpay action is clicked after an amount choice | `provider: razorpay`; `cadence: one_time`; `source_page: support` | One-time support handoff intent. The selected amount and destination URL are deliberately excluded. |
 | `support_sponsorship_intent` | The native GitHub Sponsors action is clicked | `provider: github_sponsors`; `cadence: recurring`; `source_page: support` | Recurring outbound intent only. This existing event is retained; it never means sponsorship completion. |
-| `support_razorpay_success_return` | `/support/thank-you/` initializes after Razorpay's configured success action returns there | `provider: razorpay`; `reported_status: success`; `verification: provider_return_only` | A provider-reported success return. It is not named or counted as a captured-payment conversion without provider reconciliation. |
 
-No site event is defined for Razorpay failure or cancellation because the static
-site does not receive a reliable failure/cancellation callback. Those outcomes are
-reviewed only in Razorpay's provider records. Missing analytics must never block a
-native link, alter payment state, or change navigation.
+No site event is defined for Razorpay success, failure, or cancellation because the
+static site does not receive a reliable signed callback and its thank-you route is
+publicly addressable. Those outcomes are reviewed only in Razorpay's provider
+records. Missing analytics must never block a native link, alter payment state, or
+change navigation.
 
 ## Minimum experiment metrics
 
@@ -39,12 +40,10 @@ native link, alter payment state, or change navigation.
    corresponding public-page audience, segmented only by `entry_location` and
    coarse `source_section`.
 3. **One-time intent:** `support_one_time_intent` count and rate per Support visit.
-4. **Provider-return signal:** `support_razorpay_success_return` count and rate per
-   one-time intent, labelled as provider-return evidence rather than completion.
-5. **Verified one-time completions and failures:** captured/failed records from
+4. **Verified one-time completions and failures:** captured/failed records from
    Razorpay's own reporting, reviewed separately from GA4 and without copying
    customer or payment identifiers into analytics or repository evidence.
-6. **Recurring intent:** `support_sponsorship_intent` count and rate per Support
+5. **Recurring intent:** `support_sponsorship_intent` count and rate per Support
    visit. There is no GitHub sponsorship completion metric until a reliable,
    privacy-reviewed source of truth exists.
 
@@ -60,7 +59,7 @@ combined revenue or generic `purchase` event is introduced.
   GitHub completion language.
 - In dev/review, inspect the GA command queue (or GA4 DebugView when available) and
   exercise footer entry, Support view, one-time intent, recurring intent, and the
-  bounded thank-you return without submitting a real payment.
+  native provider actions without submitting a real payment.
 - Razorpay failure/captured outcomes are not synthesized as site analytics events.
 
 ## UX applicability
