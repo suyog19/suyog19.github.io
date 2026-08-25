@@ -1,0 +1,63 @@
+{
+  "schema": "provider-observation/v1",
+  "issue": 585,
+  "observedAt": "2026-08-25",
+  "provider": "razorpay",
+  "mode": "test",
+  "paymentPage": "pl_TTdbTEtwC4vyYF",
+  "dashboardAccess": "authenticated-and-verified",
+  "verified": {
+    "amountPrefillContract": true,
+    "fieldDescriptionCapability": false,
+    "successRedirectCapability": "configured-but-not-honored-in-test-mode",
+    "automatedReceiptCapability": true,
+    "publicMerchantIdentity": "Suyog Joshi",
+    "publicPurpose": "Support Software Signal",
+    "publicMode": "test",
+    "requiredFields": ["email", "phone"],
+    "amountField": "Support amount",
+    "amountQueryKey": "support_amount",
+    "presetAmountsVerified": [250, 500, 1000],
+    "successRedirect": "https://dev.suyogjoshi.com/support/thank-you/",
+    "automatedReceiptsEnabled": true,
+    "successfulTestPayment": "verified-with-provider-test-card",
+    "receiptDelivery": "verified-in-recipient-inbox",
+    "receiptIdentity": "Suyog Joshi / Support Software Signal / selected amount",
+    "trustedBusinessBadge": "inactive-no-enable-control",
+    "brandingLogo": "not-configured-provider-rejected-jpg-png-upload",
+    "cancelCloseRecovery": "verified-returns-to-payment-page",
+    "recoverableFailure": "verified-native-retry-remains-in-razorpay"
+  },
+  "pendingAuthenticatedChecks": [
+    "successful-live-payment-redirect-after-production-deployment"
+  ],
+  "providerLimitations": {
+    "defaultFieldHelp": "The actual Payment Page editor requires Email and Phone but exposes no help-text control for those default fields.",
+    "logoUpload": "The account-level branding dialog rejected attempted PNG/JPG-compatible uploads, so the verified merchant name remains the supported identity treatment.",
+    "testModeRedirect": "The success redirect was saved and published, then tested with both the development URL and an accessible Cloudflare preview URL. Razorpay displayed its own successful-payment state and confirmation-email message but did not navigate or expose a return control. The durable development URL was restored."
+  },
+  "productionPromotion": {
+    "approvedAt": "2026-08-25",
+    "mode": "live",
+    "paymentPage": "pl_TTcwSP5BE6K7WC",
+    "canonicalUrl": "https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view",
+    "status": "active",
+    "successRedirect": "https://suyogjoshi.com/support/thank-you/",
+    "automatedReceiptsEnabled": true,
+    "publicTestModeBannerAbsent": true,
+    "presetAmountVerified": 500,
+    "agentSubmittedRealPaymentBeforeProductOwnerVerification": false,
+    "humanLivePaymentVerification": {
+      "reportedAt": "2026-08-25",
+      "paymentCompleted": true,
+      "receiptDelivery": "verified-by-product-owner-in-recipient-inbox",
+      "successRedirect": "not-reported",
+      "containsPii": false,
+      "containsPaymentIdentifiers": false
+    }
+  },
+  "containsPii": false,
+  "containsPaymentIdentifiers": false,
+  "liveProviderPageActivated": true,
+  "productionSiteDeployment": "pending-human-main-merge"
+}
