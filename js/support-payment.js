@@ -73,23 +73,7 @@
     return true;
   }
 
-  function trackSponsorIntent(documentRoot, analytics) {
-    const action = documentRoot.querySelector('[data-support-github-sponsors]');
-    if (!action || typeof action.addEventListener !== 'function') return false;
-
-    action.addEventListener('click', function () {
-      if (typeof analytics !== 'function') return;
-      analytics('event', 'support_sponsorship_intent', {
-        provider: 'github_sponsors',
-        cadence: 'recurring',
-        source_page: 'support',
-      });
-    });
-    return true;
-  }
-
-  const api = Object.freeze({ activate, destinationForAmount, isExactPaymentPage, resolveDestination, stageForHost, trackSponsorIntent });
+  const api = Object.freeze({ activate, destinationForAmount, isExactPaymentPage, resolveDestination, stageForHost });
   window.sjSupportPayment = api;
   activate(document, window.location.hostname, DESTINATIONS);
-  trackSponsorIntent(document, window.gtag);
 })();

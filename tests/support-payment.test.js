@@ -19,22 +19,17 @@ function load(hostname = 'unknown.example') {
     addEventListener(name, listener) { amountListeners.set(name, listener); },
     removeAttribute(name) { amountAttributes.delete(name); },
   };
-  const sponsorListeners = new Map();
-  const sponsorAction = {
-    addEventListener(name, listener) { sponsorListeners.set(name, listener); },
-  };
   const document = {
     querySelector(selector) {
       if (selector === '[data-support-razorpay]') return action;
       if (selector === '#support-once-status') return status;
       if (selector === '[data-support-amounts]') return amountGroup;
-      if (selector === '[data-support-github-sponsors]') return sponsorAction;
       return null;
     },
   };
   const window = { location: { hostname } };
   vm.runInNewContext(source, { URL, document, window });
-  return { action, amountAttributes, amountListeners, attributes, sponsorAction, sponsorListeners, status, tools: window.sjSupportPayment };
+  return { action, amountAttributes, amountListeners, attributes, status, tools: window.sjSupportPayment };
 }
 
 test('support handoff accepts only an exact Razorpay Payment Page URL', () => {
@@ -137,25 +132,4 @@ test('source records only the approved stage-specific Test and Live pages', () =
   assert.match(source, /development:\s*'https:\/\/pages\.razorpay\.com\/pl_TTdbTEtwC4vyYF\/view'/);
   assert.match(source, /production:\s*'https:\/\/pages\.razorpay\.com\/pl_TTcwSP5BE6K7WC\/view'/);
   assert.doesNotMatch(source, /6x2ZLHMT/);
-});
-
-test('GitHub Sponsors intent analytics are coarse, allow-listed, and outcome-neutral', () => {
-  const state = load();
-  const calls = [];
-  assert.equal(state.tools.trackSponsorIntent({
-    querySelector: (selector) => selector === '[data-support-github-sponsors]' ? state.sponsorAction : null,
-  }, (...args) => calls.push(args)), true);
-  state.sponsorListeners.get('click')();
-  assert.equal(JSON.stringify(calls), JSON.stringify([[
-    'event',
-    'support_sponsorship_intent',
-    { provider: 'github_sponsors', cadence: 'recurring', source_page: 'support' },
-  ]]));
-  assert.doesNotMatch(JSON.stringify(calls), /amount|tier|user|login|url|success|complete|payment/i);
-});
-
-test('missing analytics does not interfere with the native Sponsors link', () => {
-  const state = load();
-  assert.equal(state.sponsorListeners.has('click'), true);
-  assert.doesNotThrow(() => state.sponsorListeners.get('click')());
 });
