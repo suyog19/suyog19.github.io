@@ -46,9 +46,18 @@
     "automatedReceiptsEnabled": true,
     "publicTestModeBannerAbsent": true,
     "presetAmountVerified": 500,
-    "realPaymentSubmitted": false
+    "realPaymentSubmittedDuringReleasePreparation": false,
+    "humanLivePaymentVerification": {
+      "reportedAt": "2026-08-25",
+      "paymentCompleted": true,
+      "receiptDelivery": "verified-by-product-owner-in-recipient-inbox",
+      "successRedirect": "not-reported",
+      "containsPii": false,
+      "containsPaymentIdentifiers": false
+    }
   },
   "containsPii": false,
   "containsPaymentIdentifiers": false,
-  "productionActivated": false
+  "liveProviderPageActivated": true,
+  "productionSiteDeployment": "pending-human-main-merge"
 }

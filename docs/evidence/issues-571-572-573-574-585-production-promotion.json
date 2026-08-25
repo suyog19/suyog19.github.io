@@ -1,5 +1,6 @@
 {
   "schema": "production-promotion/v1",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
   "approvedIssues": [571, 572, 573, 574, 585],
   "approvedBy": "product-owner-request",
   "productionBaseRevision": "83be8c6af304d3c9d4e7876a1076f7e925361585",
@@ -10,7 +11,7 @@
     {
       "issue": 564,
       "reason": "Not included in the Product Owner's approved production scope.",
-      "pathsAbsentFromPromotion": [
+      "changedPathsAbsentFromPromotionDiff": [
         "docs/newsletter-beehiiv-launch-poc.md",
         "docs/newsletter-beehiiv-production-configuration.md",
         "docs/newsletter-subscriber-handling-policy.md",
@@ -42,7 +43,13 @@
     "automatedReceiptsEnabled": true,
     "successRedirectConfigured": true,
     "presetAmountVerified": 500,
-    "realPaymentSubmittedDuringPromotion": false
+    "realPaymentSubmittedDuringReleasePreparation": false,
+    "humanLivePaymentVerification": {
+      "reportedAt": "2026-08-25",
+      "paymentCompleted": true,
+      "receiptDelivery": "verified-by-product-owner-in-recipient-inbox",
+      "successRedirect": "not-reported"
+    }
   },
   "privacy": {
     "containsPii": false,
