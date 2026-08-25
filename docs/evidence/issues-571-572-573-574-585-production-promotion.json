@@ -1,0 +1,53 @@
+{
+  "schema": "production-promotion/v1",
+  "approvedIssues": [571, 572, 573, 574, 585],
+  "approvedBy": "product-owner-request",
+  "productionBaseRevision": "83be8c6af304d3c9d4e7876a1076f7e925361585",
+  "integrationRevision": "665fe87d53c57a7f1308339711d27d41f4a041b2",
+  "promotionStrategy": "isolated-branch-from-production-and-exact-feature-commit-replay",
+  "includedSourcePullRequests": [581, 582, 583, 584, 586],
+  "excludedIntegrationChanges": [
+    {
+      "issue": 564,
+      "reason": "Not included in the Product Owner's approved production scope.",
+      "pathsAbsentFromPromotion": [
+        "docs/newsletter-beehiiv-launch-poc.md",
+        "docs/newsletter-beehiiv-production-configuration.md",
+        "docs/newsletter-subscriber-handling-policy.md",
+        "docs/plans/software-signal-newsletter-subscription-ux.md"
+      ]
+    }
+  ],
+  "routing": {
+    "development": {
+      "mode": "Razorpay Test Mode",
+      "paymentPage": "pl_TTdbTEtwC4vyYF",
+      "canonicalUrl": "https://pages.razorpay.com/pl_TTdbTEtwC4vyYF/view"
+    },
+    "production": {
+      "mode": "Razorpay Live Mode",
+      "paymentPage": "pl_TTcwSP5BE6K7WC",
+      "canonicalUrl": "https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view",
+      "successUrl": "https://suyogjoshi.com/support/thank-you/"
+    }
+  },
+  "liveProviderVerification": {
+    "dashboardMode": "Live Mode",
+    "pageStatus": "Active",
+    "publicTestModeBannerAbsent": true,
+    "merchantIdentity": "Suyog Joshi",
+    "purpose": "Support Software Signal",
+    "context": "One-time contribution via suyogjoshi.com",
+    "requiredFields": ["email", "phone"],
+    "automatedReceiptsEnabled": true,
+    "successRedirectConfigured": true,
+    "presetAmountVerified": 500,
+    "realPaymentSubmittedDuringPromotion": false
+  },
+  "privacy": {
+    "containsPii": false,
+    "containsPaymentIdentifiers": false,
+    "containsCredentials": false,
+    "containsProviderPayload": false
+  }
+}
