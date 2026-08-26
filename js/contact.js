@@ -23,6 +23,27 @@
     },
   });
 
+  const CONSULTING_CONTEXTS = Object.freeze({
+    'consulting-advisory': {
+      offer: 'engineering_advisory_session',
+      note: 'Engineering Advisory Session enquiry: share the decision you are facing and what a useful outcome would look like. Do not include passwords, secrets, or confidential material at this stage.',
+      prompt: 'I would like help with an Engineering Advisory Session. The decision or problem I am facing is: ',
+    },
+    'consulting-repository-review': {
+      offer: 'repository_ai_readiness_review',
+      note: 'Repository AI-Readiness Review enquiry: describe the concern or decision that prompted the review. Detailed access is requested only after fit and scope are established; do not paste private repository links, credentials, or confidential material.',
+      prompt: 'I would like to discuss a Repository AI-Readiness Review. The concern or decision that prompted it is: ',
+    },
+    'consulting-help-choose': {
+      offer: 'help_choose',
+      note: 'Not sure which offer fits? Describe the engineering decision or concern and the outcome you need. Do not include passwords, secrets, private repository links, or confidential material at this stage.',
+      prompt: 'I am not sure which Consulting offer fits. The decision or engineering problem I want to move forward is: ',
+    },
+  });
+
+  let activeConsultingContext = null;
+  let consultingStartTracked = false;
+
   function applyLearningContext(search) {
     const topic = new URLSearchParams(search || '').get('topic');
     const context = LEARNING_CONTEXTS[topic];
@@ -33,6 +54,29 @@
     box.hidden = false;
     if (!message.value) message.value = context.prompt;
     document.getElementById('message-hint').textContent = 'Add only the context needed to help. Remove anything sensitive before sending.';
+    return true;
+  }
+
+  function emitConsultingEvent(name) {
+    if (!activeConsultingContext || typeof window.gtag !== 'function') return false;
+    window.gtag('event', name, {
+      offer: activeConsultingContext.offer,
+      source_page: 'contact',
+    });
+    return true;
+  }
+
+  function applyConsultingContext(search) {
+    const topic = new URLSearchParams(search || '').get('topic');
+    const context = CONSULTING_CONTEXTS[topic];
+    if (!context) return false;
+    const box = document.getElementById('learning-contact-context');
+    const message = document.getElementById('message');
+    activeConsultingContext = context;
+    box.textContent = context.note;
+    box.hidden = false;
+    if (!message.value) message.value = context.prompt;
+    document.getElementById('message-hint').textContent = 'Add only the context needed to understand the problem. Remove anything sensitive before sending.';
     return true;
   }
 
@@ -103,6 +147,9 @@
     if (!message) {
       setError('message', 'A message is required.');
       valid = false;
+    } else if (activeConsultingContext && message.startsWith(activeConsultingContext.prompt.trimEnd()) && message.slice(activeConsultingContext.prompt.trimEnd().length).trim().length < 20) {
+      setError('message', 'Please add at least 20 characters describing the decision or problem.');
+      valid = false;
     } else if (message.length < 20) {
       setError('message', 'Please share a bit more context — at least 20 characters.');
       valid = false;
@@ -150,6 +197,7 @@
       const data = await res.json();
 
       if (res.status === 202) {
+        emitConsultingEvent('consulting_enquiry_submitted');
         statusEl.textContent = "Thanks — I’ll be in touch!";
         statusEl.classList.add('is-success');
         form.reset();
@@ -174,8 +222,12 @@
   form.querySelectorAll('input, textarea').forEach(function (field) {
     field.addEventListener('input', function () {
       clearError(field.id);
+      if (activeConsultingContext && !consultingStartTracked) {
+        consultingStartTracked = emitConsultingEvent('consulting_enquiry_started');
+      }
     });
   });
   applyLearningContext(window.location.search);
-  window.sjContact = { apiBaseUrl, applyLearningContext, isValidEmail };
+  applyConsultingContext(window.location.search);
+  window.sjContact = { apiBaseUrl, applyConsultingContext, applyLearningContext, isValidEmail };
 }());
