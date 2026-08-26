@@ -43,14 +43,15 @@ test('every public page exposes Training exactly once in primary navigation', ()
   const files = htmlFiles();
   const publicPages = files.filter((file) => !excludedRoutes.has(file));
 
-  assert.equal(files.length, 77, 'update the public-route classification when routes change');
-  assert.equal(publicPages.length, 67);
+  assert.equal(files.length, 78, 'update the public-route classification when routes change');
+  assert.equal(publicPages.length, 68);
   assert.ok(publicPages.includes('newsletter/index.html'), 'the newsletter entry point must remain in the public route set');
   assert.ok(publicPages.includes('newsletter/confirmed/index.html'), 'the newsletter confirmation utility must remain in the public route set');
   assert.ok(publicPages.includes('search/index.html'), 'the durable public search utility must remain in the public route set');
   assert.ok(publicPages.includes('support/index.html'), 'the canonical Support page must remain in the public route set');
   assert.ok(publicPages.includes('support/thank-you/index.html'), 'the Support return state must retain the public shell');
   assert.ok(publicPages.includes('consulting/index.html'), 'the canonical Consulting page must remain in the public route set');
+  assert.ok(publicPages.includes('website-services/index.html'), 'the canonical Website Services page must remain in the public route set');
 
   for (const file of publicPages) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
@@ -88,7 +89,7 @@ test('every existing public-shell footer exposes one restrained Support link', (
     return /<footer\b[^>]*class="[^"]*\bsite-footer\b/.test(html);
   });
 
-  assert.equal(footerPages.length, 63, 'update the footer contract when public shells change');
+  assert.equal(footerPages.length, 64, 'update the footer contract when public shells change');
 
   for (const file of footerPages) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
