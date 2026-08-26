@@ -15,12 +15,14 @@ FONT_STYLESHEET = (
 )
 LEARNING_ROOTS = {"apply", "learn", "my-learning", "privacy", "training"}
 SUPPORT_ROOTS = {"support"}
+CARD_ROOTS = {"card"}
 RAW_SIZE_BUDGETS = {
     "css/base.css": 3000,
     "css/components.css": 12000,
     "css/pages.css": 150000,
     "css/learning.css": 54000,
     "css/support.css": 6000,
+    "css/card.css": 8000,
 }
 
 
@@ -71,6 +73,10 @@ def validate(root: Path = ROOT) -> list[str]:
         support = [href for href in page.stylesheets if urlparse(href).path.endswith("/css/support.css")]
         if support and route_root(path, root) not in SUPPORT_ROOTS:
             errors.append(f"{relative}: unrelated route loads css/support.css")
+
+        card = [href for href in page.stylesheets if urlparse(href).path.endswith("/css/card.css")]
+        if card and route_root(path, root) not in CARD_ROOTS:
+            errors.append(f"{relative}: page-specific card stylesheet escaped /card/")
 
         font_links = [href for href in page.stylesheets if urlparse(href).netloc == "fonts.googleapis.com"]
         if font_links and font_links != [FONT_STYLESHEET]:

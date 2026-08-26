@@ -15,6 +15,7 @@ test('digital card exposes the canonical identity-first journey without JavaScri
   assert.match(html, /href="https:\/\/www\.linkedin\.com\/in\/suyog-joshi"/);
   assert.match(html, /href="mailto:contact@suyogjoshi\.com"/);
   assert.match(html, /src="\.\.\/assets\/card-qr\.svg"/);
+  assert.match(html, /href="\.\.\/css\/card\.css\?v=600-1"/);
   assert.match(html, />suyogjoshi\.com\/card\/<\/a>/);
   assert.doesNotMatch(html, /<form\b|newsletter|testimonial/i);
 });

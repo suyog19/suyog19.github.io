@@ -85,7 +85,7 @@
 
 ### Tech Lead feasibility and architecture decision
 
-- Reuse `base.css`, `components.css`, `pages.css`, the existing fonts/tokens, GA4 pattern, static directory routing, and minimal vanilla JavaScript.
+- Reuse `base.css`, `components.css`, `pages.css`, the existing fonts/tokens, GA4 pattern, static directory routing, and minimal vanilla JavaScript. Keep the fully scoped card composition in `card.css` so unrelated routes do not pay its transfer cost and shared `pages.css` remains within its evidence-backed budget.
 - Serve a committed UTF-8 vCard and a deterministic local SVG QR. Core behavior requires no runtime generation or external service.
 - A small page script owns only allow-listed analytics and native-share enhancement. The static HTML remains the complete fallback.
 - Rejected: a hosted business-card service (privacy/ownership/dependency), a QR library shipped to browsers (unnecessary runtime weight), a new design system or framework, and dynamic vCard construction (breaks no-JS primary action).
