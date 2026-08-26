@@ -1,0 +1,63 @@
+.consulting-reading { max-width: 64rem; }
+.consulting-hero { border-bottom: 1px solid var(--color-border); padding-block: clamp(5.5rem, 10vw, 8.5rem); }
+.consulting-hero h1 { font-family: var(--font-serif); font-size: clamp(2.75rem, 6.8vw, 5.35rem); font-weight: 500; letter-spacing: -0.04em; line-height: 1.03; max-width: 17ch; }
+.consulting-lede { font-size: clamp(1.125rem, 2vw, 1.35rem); line-height: 1.65; margin: 2rem 0 1.5rem; max-width: 65ch; }
+.consulting-section { padding-block: var(--section-py); }
+.consulting-section + .consulting-section { border-top: 1px solid var(--color-border); }
+.consulting-section-heading { max-width: 48rem; }
+.consulting-section h2 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.25rem); font-weight: 500; letter-spacing: -0.03em; line-height: 1.12; }
+.consulting-section-heading > p:last-child, .consulting-section-copy { color: var(--color-text-muted); font-size: 1.0625rem; line-height: 1.7; margin-top: 1.25rem; max-width: 58ch; }
+.consulting-offers, .consulting-evidence, .consulting-enquiry { background: var(--color-surface); }
+.consulting-offer-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 3.5rem; }
+.consulting-offer-card { background: var(--color-bg); border: 1px solid var(--color-border); display: flex; flex-direction: column; justify-content: space-between; min-width: 0; padding: clamp(1.75rem, 4vw, 2.5rem); }
+.consulting-offer-type { color: var(--color-text-muted); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 0.75rem; text-transform: uppercase; }
+.consulting-offer-card h3 { font-family: var(--font-serif); font-size: clamp(1.75rem, 3vw, 2.35rem); font-weight: 500; line-height: 1.16; }
+.consulting-offer-question { font-size: 1.05rem; line-height: 1.65; margin-top: 1rem; }
+.consulting-facts { border-top: 1px solid var(--color-border); margin-top: 2rem; }
+.consulting-facts > div { border-bottom: 1px solid var(--color-border); display: grid; gap: 0.75rem; grid-template-columns: 6.5rem minmax(0, 1fr); padding-block: 1.1rem; }
+.consulting-facts dt { font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; }
+.consulting-facts dd { color: var(--color-text-muted); line-height: 1.6; }
+.consulting-offer-action { margin-top: 2.5rem; }
+.consulting-price { display: grid; gap: 0.3rem; margin-bottom: 1.25rem; }
+.consulting-price span { color: var(--color-text-muted); font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; }
+.consulting-price strong { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 500; }
+.consulting-offer-action .btn { align-items: center; display: flex; justify-content: center; line-height: 1.4; min-height: 3rem; text-align: center; width: 100%; }
+.consulting-boundary { color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.55; margin-top: 0.85rem; }
+.consulting-split { align-items: start; display: grid; gap: clamp(3rem, 8vw, 7rem); grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+.consulting-problem-list, .consulting-evidence-list, .consulting-steps { border-top: 1px solid var(--color-border); }
+.consulting-problem-list li { border-bottom: 1px solid var(--color-border); display: grid; gap: 1rem 2rem; grid-template-columns: minmax(9rem, 0.75fr) minmax(0, 1.25fr); padding-block: 1.5rem; }
+.consulting-problem-list strong, .consulting-evidence-list strong { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 500; line-height: 1.3; }
+.consulting-problem-list span, .consulting-evidence-list span { color: var(--color-text-muted); line-height: 1.65; }
+.consulting-evidence .article-link { display: inline-block; margin-top: 1.5rem; }
+.consulting-evidence-list li { border-bottom: 1px solid var(--color-border); }
+.consulting-evidence-list a { display: grid; gap: 0.55rem; padding-block: 1.4rem; }
+.consulting-evidence-list a:hover strong, .consulting-evidence-list a:focus-visible strong { text-decoration: underline; text-underline-offset: 0.2em; }
+.consulting-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; margin-top: 3.5rem; }
+.consulting-steps li { border-bottom: 1px solid var(--color-border); min-width: 0; padding: 1.5rem; }
+.consulting-steps li + li { border-left: 1px solid var(--color-border); }
+.consulting-steps > li > span { color: var(--color-text-muted); display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; margin-bottom: 2rem; }
+.consulting-steps h3 { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 500; line-height: 1.3; }
+.consulting-steps p { color: var(--color-text-muted); line-height: 1.65; margin-top: 0.75rem; }
+.consulting-boundary-copy { border-left: 2px solid var(--color-text); padding-left: clamp(1.5rem, 4vw, 3rem); }
+.consulting-boundary-copy p { line-height: 1.75; }
+.consulting-boundary-copy p + p { color: var(--color-text-muted); margin-top: 1.25rem; }
+.consulting-enquiry-inner { align-items: end; display: grid; gap: clamp(2.5rem, 8vw, 7rem); grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr); }
+.consulting-enquiry-inner > div:first-child > p:last-child { color: var(--color-text-muted); line-height: 1.7; margin-top: 1.25rem; max-width: 58ch; }
+.consulting-enquiry-actions { display: grid; gap: 0.85rem; }
+.consulting-enquiry-actions .btn { text-align: center; }
+.consulting-enquiry-actions span { color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.55; }
+
+@media (max-width: 900px) {
+  .consulting-offer-grid, .consulting-split, .consulting-enquiry-inner { grid-template-columns: 1fr; }
+  .consulting-offer-grid { gap: 1rem; }
+  .consulting-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .consulting-steps li:nth-child(3) { border-left: 0; }
+}
+
+@media (max-width: 640px) {
+  .consulting-hero { padding-block: 4.5rem; }
+  .consulting-offer-grid, .consulting-steps { margin-top: 2.5rem; }
+  .consulting-facts > div, .consulting-problem-list li, .consulting-steps { grid-template-columns: 1fr; }
+  .consulting-steps li + li { border-left: 0; }
+  .consulting-offer-action .btn, .consulting-enquiry-actions .btn { width: 100%; }
+}
