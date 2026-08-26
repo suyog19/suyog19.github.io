@@ -7,6 +7,7 @@ const repositoryRoot = path.resolve(__dirname, '..');
 const excludedRoutes = new Set([
   'admin/index.html',
   'apply/index.html',
+  'card/index.html',
   'learn/index.html',
   'my-learning/index.html',
   'my-learning/balance/index.html',
@@ -43,7 +44,7 @@ test('every public page exposes Training exactly once in primary navigation', ()
   const files = htmlFiles();
   const publicPages = files.filter((file) => !excludedRoutes.has(file));
 
-  assert.equal(files.length, 78, 'update the public-route classification when routes change');
+  assert.equal(files.length, 79, 'update the public-route classification when routes change');
   assert.equal(publicPages.length, 68);
   assert.ok(publicPages.includes('newsletter/index.html'), 'the newsletter entry point must remain in the public route set');
   assert.ok(publicPages.includes('newsletter/confirmed/index.html'), 'the newsletter confirmation utility must remain in the public route set');
@@ -117,11 +118,18 @@ test('the Support footer self-link exposes its current-page state', () => {
 });
 
 test('private and compatibility routes stay outside the public navigation contract', () => {
-  for (const file of excludedRoutes) {
+  for (const file of [...excludedRoutes].filter((candidate) => candidate !== 'card/index.html')) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
     assert.doesNotMatch(html, /aria-label="Primary navigation"/, `${file} must retain its specialised shell`);
     assert.match(html, /<meta name="robots" content="[^"]*noindex/, `${file} must remain noindex`);
   }
+});
+
+test('digital card retains its focused indexable shell', () => {
+  const html = fs.readFileSync(path.join(repositoryRoot, 'card/index.html'), 'utf8');
+  assert.doesNotMatch(html, /aria-label="Primary navigation"/, 'card must not become a miniature public-site shell');
+  assert.match(html, /<meta name="robots" content="index, follow">/, 'card must remain deliberately indexable');
+  assert.match(html, /<link rel="canonical" href="https:\/\/suyogjoshi\.com\/card\/">/);
 });
 
 test('the public menu switches to its mobile layout before it wraps', () => {
