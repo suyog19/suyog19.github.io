@@ -41,8 +41,19 @@
     },
   });
 
+  const WEBSITE_SERVICE_CONTEXTS = Object.freeze({
+    'website-services-landing': { service: 'landing_campaign_page', note: 'Landing / Campaign Page enquiry: share what you are promoting, who it is for, and the action the page should support. Do not include passwords, account access, or confidential customer data.', prompt: 'I would like to discuss a Landing / Campaign Page. My work or business, current situation, and the outcome I want are: ' },
+    'website-services-starter': { service: 'starter_presence', note: 'Starter Presence enquiry: describe your work or business, who should find the website useful, and what visitors should do next. Do not include passwords or account access.', prompt: 'I would like to discuss a Starter Presence website. My work or business, current situation, and the outcome I want are: ' },
+    'website-services-business': { service: 'business_website', note: 'Business Website enquiry: share the services, audiences, trust or enquiry needs that the website should support. Do not include passwords, account access, or confidential customer data.', prompt: 'I would like to discuss a Business Website. My business, current situation, audiences, and the outcome I want are: ' },
+    'website-services-redesign': { service: 'website_redesign', note: 'Website Redesign enquiry: explain what the current site no longer does well. You may include its public URL in your message, but do not include credentials or private access links.', prompt: 'I would like to discuss a Website Redesign. My current situation, what should improve, and my existing public website URL if relevant are: ' },
+    'website-services-care': { service: 'website_care', note: 'Website Care enquiry: describe the website platform if known and the maintenance help you need. Do not include credentials, private dashboards, or access links.', prompt: 'I would like to discuss Website Care. My website, current maintenance situation, and the help I need are: ' },
+    'website-services-help-choose': { service: 'help_choose', note: 'Not sure which website option fits? Describe your work or business, current situation, and what the website should help achieve. Do not include passwords, account access, or confidential customer data.', prompt: 'I am not sure which Website Services option fits. My work or business, current situation, and the outcome I want are: ' },
+  });
+
   let activeConsultingContext = null;
+  let activeWebsiteServiceContext = null;
   let consultingStartTracked = false;
+  let websiteServiceStartTracked = false;
 
   function applyLearningContext(search) {
     const topic = new URLSearchParams(search || '').get('topic');
@@ -77,6 +88,26 @@
     box.hidden = false;
     if (!message.value) message.value = context.prompt;
     document.getElementById('message-hint').textContent = 'Add only the context needed to understand the problem. Remove anything sensitive before sending.';
+    return true;
+  }
+
+  function emitWebsiteServiceEvent(name) {
+    if (!activeWebsiteServiceContext || typeof window.gtag !== 'function') return false;
+    window.gtag('event', name, { service: activeWebsiteServiceContext.service, source_page: 'contact' });
+    return true;
+  }
+
+  function applyWebsiteServiceContext(search) {
+    const topic = new URLSearchParams(search || '').get('topic');
+    const context = WEBSITE_SERVICE_CONTEXTS[topic];
+    if (!context) return false;
+    const box = document.getElementById('learning-contact-context');
+    const message = document.getElementById('message');
+    activeWebsiteServiceContext = context;
+    box.textContent = context.note;
+    box.hidden = false;
+    if (!message.value) message.value = context.prompt;
+    document.getElementById('message-hint').textContent = 'Add only the context needed to understand your website goal. Remove anything sensitive before sending.';
     return true;
   }
 
@@ -150,6 +181,9 @@
     } else if (activeConsultingContext && message.startsWith(activeConsultingContext.prompt.trimEnd()) && message.slice(activeConsultingContext.prompt.trimEnd().length).trim().length < 20) {
       setError('message', 'Please add at least 20 characters describing the decision or problem.');
       valid = false;
+    } else if (activeWebsiteServiceContext && message.startsWith(activeWebsiteServiceContext.prompt.trimEnd()) && message.slice(activeWebsiteServiceContext.prompt.trimEnd().length).trim().length < 20) {
+      setError('message', 'Please add at least 20 characters describing your current situation and website goal.');
+      valid = false;
     } else if (message.length < 20) {
       setError('message', 'Please share a bit more context — at least 20 characters.');
       valid = false;
@@ -198,6 +232,7 @@
 
       if (res.status === 202) {
         emitConsultingEvent('consulting_enquiry_submitted');
+        emitWebsiteServiceEvent('website_services_enquiry_submitted');
         statusEl.textContent = "Thanks — I’ll be in touch!";
         statusEl.classList.add('is-success');
         form.reset();
@@ -225,9 +260,13 @@
       if (activeConsultingContext && !consultingStartTracked) {
         consultingStartTracked = emitConsultingEvent('consulting_enquiry_started');
       }
+      if (activeWebsiteServiceContext && !websiteServiceStartTracked) {
+        websiteServiceStartTracked = emitWebsiteServiceEvent('website_services_enquiry_started');
+      }
     });
   });
   applyLearningContext(window.location.search);
   applyConsultingContext(window.location.search);
-  window.sjContact = { apiBaseUrl, applyConsultingContext, applyLearningContext, isValidEmail };
+  applyWebsiteServiceContext(window.location.search);
+  window.sjContact = { apiBaseUrl, applyConsultingContext, applyLearningContext, applyWebsiteServiceContext, isValidEmail };
 }());

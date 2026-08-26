@@ -51,7 +51,7 @@ test('Contact accepts only three fixed Consulting contexts with safe guidance', 
   }
   assert.match(script, /do not include passwords, secrets/i);
   assert.match(script, /do not paste private repository links, credentials, or confidential material/i);
-  assert.match(page, /contact\.js\?v=3/);
+  assert.match(page, /contact\.js\?v=4/);
 });
 
 test('Consulting context renders safe guidance and ignores unknown topics', () => {
