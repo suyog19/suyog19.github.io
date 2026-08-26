@@ -73,6 +73,11 @@ test('Consulting start and accepted submission emit only fixed metadata without 
     ['event', 'consulting_enquiry_started', { offer: 'repository_ai_readiness_review', source_page: 'contact' }],
   ]);
   await state.events.get('form:submit')({ preventDefault() {} });
+  assert.equal(state.fetchCalls.length, 0, 'the untouched starter prompt must not be submittable');
+  assert.match(state.elements['message-error'].textContent, /add at least 20 characters describing/i);
+  state.elements.message.value += 'Our agent changes are difficult to verify consistently.';
+  state.events.get('message:input')();
+  await state.events.get('form:submit')({ preventDefault() {} });
   assert.equal(state.fetchCalls.length, 1);
   assert.equal(state.fetchCalls[0][0], 'https://api-dev.suyogjoshi.com/messages');
   const payload = JSON.parse(state.fetchCalls[0][1].body);
