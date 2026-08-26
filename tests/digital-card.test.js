@@ -34,6 +34,10 @@ test('owned vCard contains only approved public professional fields', () => {
   for (const field of required) assert.ok(vcard.includes(field), `missing ${field}`);
   assert.doesNotMatch(vcard, /^(TEL|ADR|BDAY|GENDER|UID|PHOTO)[;:]/m);
   assert.match(fs.readFileSync('.gitattributes', 'utf8'), /^card\/\*\.vcf text eol=crlf$/m);
+  for (const line of vcard.split(/\r?\n/).filter(Boolean)) {
+    assert.ok(Buffer.byteLength(line, 'utf8') <= 75, `vCard line exceeds 75 octets: ${line}`);
+  }
+  assert.match(vcard, /systems\.\r?\n Digital card:/, 'long NOTE must use vCard whitespace folding');
 });
 
 test('QR is a local high-contrast SVG with an explicit quiet zone', () => {
