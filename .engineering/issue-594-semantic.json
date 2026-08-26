@@ -1,0 +1,6 @@
+{
+  "information_architecture": true,
+  "observable_behavior": true,
+  "user_journey": true,
+  "validation_or_error": true
+}
