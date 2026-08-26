@@ -147,6 +147,9 @@
     if (!message) {
       setError('message', 'A message is required.');
       valid = false;
+    } else if (activeConsultingContext && message.startsWith(activeConsultingContext.prompt.trimEnd()) && message.slice(activeConsultingContext.prompt.trimEnd().length).trim().length < 20) {
+      setError('message', 'Please add at least 20 characters describing the decision or problem.');
+      valid = false;
     } else if (message.length < 20) {
       setError('message', 'Please share a bit more context — at least 20 characters.');
       valid = false;
