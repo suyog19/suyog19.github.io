@@ -1,0 +1,371 @@
+/* ============================================================
+   Digital visiting card
+   ============================================================ */
+.digital-card-page {
+  background: var(--color-surface);
+  min-height: 100vh;
+}
+.digital-card-page .skip-link {
+  background: var(--color-text);
+  color: var(--color-bg);
+  left: 1rem;
+  padding: 0.65rem 1rem;
+  position: fixed;
+  top: 1rem;
+  transform: translateY(-200%);
+  z-index: 10;
+}
+
+.digital-card-page .skip-link:focus {
+  transform: translateY(0);
+}
+
+.digital-card-page .visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.card-masthead,
+.card-footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-inline: auto;
+  max-width: 1240px;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+.card-masthead {
+  min-height: 5rem;
+}
+
+.card-brand {
+  align-items: center;
+  display: inline-flex;
+  font-size: 0.875rem;
+  font-weight: 500;
+  gap: 0.65rem;
+}
+
+.card-brand-mark {
+  align-items: center;
+  background: var(--color-text);
+  border-radius: 2px;
+  color: var(--color-bg);
+  display: inline-flex;
+  font-size: 0.6rem;
+  font-weight: 600;
+  height: 1.5rem;
+  justify-content: center;
+  width: 1.5rem;
+}
+
+.card-masthead-label,
+.card-footer {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.card-main {
+  margin-inline: auto;
+  max-width: 1240px;
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(1.25rem, 4vw, 3.5rem) clamp(3rem, 7vw, 6rem);
+}
+
+.card-layout {
+  align-items: start;
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
+}
+
+.card-identity,
+.card-section {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.card-identity {
+  min-height: 39rem;
+  padding: clamp(2rem, 6vw, 4.75rem);
+  position: sticky;
+  top: 1.5rem;
+}
+
+.card-identity-mark {
+  align-items: center;
+  border: 1px solid var(--color-text);
+  display: flex;
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  height: 4.25rem;
+  justify-content: center;
+  margin-bottom: clamp(3rem, 8vw, 6rem);
+  width: 4.25rem;
+}
+
+.card-kicker {
+  color: var(--color-text-muted);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.card-identity h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.75rem, 6vw, 4.8rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+.card-role {
+  font-size: clamp(0.95rem, 1.5vw, 1.08rem);
+  font-weight: 500;
+  margin-top: 1.35rem;
+}
+
+.card-positioning {
+  color: var(--color-text-muted);
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.55;
+  margin-top: 1.4rem;
+  max-width: 34ch;
+}
+
+.card-save {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  min-height: 3.5rem;
+  padding-inline: 1.25rem;
+  width: 100%;
+}
+
+.card-save-note {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-top: 0.7rem;
+}
+
+.card-direct-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 2rem;
+}
+
+.card-direct-actions a {
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  font-size: 0.85rem;
+  justify-content: space-between;
+  min-height: 3.25rem;
+  padding: 0.6rem 0.8rem;
+}
+
+.card-direct-actions a + a {
+  border-left: 1px solid var(--color-border);
+}
+
+.card-direct-actions a:hover,
+.card-direct-actions a:focus-visible,
+.card-section-link:hover,
+.card-section-link:focus-visible,
+.card-quiet-links a:hover,
+.card-quiet-links a:focus-visible,
+.card-url:hover,
+.card-url:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.card-secondary {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.card-section {
+  padding: clamp(1.75rem, 4vw, 3rem);
+}
+
+.card-section h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 3vw, 2.35rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+}
+
+.card-section h2 + p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  margin-top: 1.1rem;
+}
+
+.card-section-link {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 1.75rem;
+}
+
+.card-quiet-links {
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+}
+
+.card-quiet-links a {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  min-height: 2.75rem;
+  padding-block: 0.6rem;
+}
+
+.card-share {
+  align-items: center;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.card-share h2 {
+  font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+}
+
+.card-url {
+  display: block;
+  font-size: 0.82rem;
+  margin-top: 1.35rem;
+  overflow-wrap: anywhere;
+}
+
+.card-share-button {
+  background: transparent;
+  min-height: 2.75rem;
+  margin-top: 1.25rem;
+}
+
+.card-share-status {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin-top: 0.65rem;
+  min-height: 1.15rem;
+}
+
+.card-qr-link {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  display: block;
+  padding: 0.55rem;
+}
+
+.card-qr-link img {
+  height: clamp(8.5rem, 16vw, 11.5rem);
+  width: clamp(8.5rem, 16vw, 11.5rem);
+}
+
+.card-footer {
+  border-top: 1px solid var(--color-border);
+  min-height: 4.5rem;
+}
+
+.card-footer a {
+  color: var(--color-text);
+}
+
+@media (max-width: 860px) {
+  .card-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .card-identity {
+    min-height: 0;
+    position: static;
+  }
+
+  .card-identity-mark {
+    margin-bottom: 3.5rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .card-masthead {
+    min-height: 4.25rem;
+  }
+
+  .card-main {
+    padding-top: 0.5rem;
+  }
+
+  .card-identity,
+  .card-section {
+    padding: 1.5rem;
+  }
+
+  .card-identity-mark {
+    height: 3.5rem;
+    margin-bottom: 2.25rem;
+    width: 3.5rem;
+  }
+
+  .card-identity h1 {
+    font-size: clamp(2.6rem, 14vw, 3.5rem);
+  }
+
+  .card-positioning {
+    font-size: 1.05rem;
+    margin-top: 1rem;
+  }
+
+  .card-save {
+    margin-top: 1.75rem;
+  }
+
+  .card-direct-actions {
+    grid-template-columns: 1fr;
+    margin-top: 1.5rem;
+  }
+
+  .card-direct-actions a + a {
+    border-left: 0;
+    border-top: 0;
+  }
+
+  .card-share {
+    align-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  .card-qr-link {
+    justify-self: center;
+  }
+
+  .card-qr-link img {
+    height: min(13.5rem, calc(100vw - 7rem));
+    width: min(13.5rem, calc(100vw - 7rem));
+  }
+
+  .card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+    justify-content: center;
+  }
+}
