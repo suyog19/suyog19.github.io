@@ -28,7 +28,7 @@ test('homepage shows only the two launched course identities and starts actions 
 test('homepage consolidates writing and instruments the approved hierarchy', () => {
   assert.match(html, /Writing and Guides/);
   assert.equal((html.match(/AI-Assisted Software Engineering/g) || []).length, 1);
-  for (const event of ['home_training_click', 'home_writing_click', 'home_training_spotlight_view', 'home_training_course_detail_click', 'home_training_course_action_click', 'home_offering_click', 'home_writing_series_click', 'home_system_click', 'home_consulting_click']) assert.match(`${html}\n${analytics}\n${courseActions}`, new RegExp(event));
+  for (const event of ['home_training_click', 'home_writing_click', 'home_training_spotlight_view', 'home_training_course_detail_click', 'home_training_course_action_click', 'home_offering_click', 'home_writing_series_click', 'home_system_click', 'home_consulting_click', 'home_website_services_click']) assert.match(`${html}\n${analytics}\n${courseActions}`, new RegExp(event));
   assert.doesNotMatch(analytics, /email|application_id|cohort_id/i);
 });
 
