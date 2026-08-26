@@ -30,6 +30,11 @@ test('route uses scoped assets, responsive layouts, and secondary Home discovery
   for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../css/website-services.css', '../js/script.js', '../js/website-services-analytics.js']) assert.match(html, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(css, /@media \(max-width: 800px\)[\s\S]*\.ws-package[\s\S]*grid-template-columns: 1fr/);
   assert.match(css, /@media \(max-width: 640px\)[\s\S]*\.ws-enquiry-action \.btn[\s\S]*width: 100%/);
+  assert.match(css, /\.ws-process\s*\{[^}]*list-style:\s*none/);
+  assert.match(css, /@media \(max-width: 480px\)[\s\S]*?\.ws-process\s*\{[^}]*grid-template-columns:\s*1fr/);
+  assert.equal((html.match(/<ol class="ws-process"[\s\S]*?<\/ol>/) || [''])[0].match(/<li>/g)?.length, 9);
+  assert.match(html, /<strong>Discover<\/strong><p>We learn about your work, audience, current situation, and goals\.<\/p>/);
+  assert.match(html, /<strong>Stabilize<\/strong><p>We monitor the launch and fix covered post-launch defects\.<\/p>/);
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(home, /href="website-services\/"/);
   assert.doesNotMatch(home.slice(home.indexOf('<nav class="nav"'), home.indexOf('</nav>')), /website-services/);

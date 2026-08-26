@@ -174,3 +174,57 @@ recommended. **Broader UX recommendation:** none.
 **Residual UX risk:** screenshots are local-browser evidence rather than a deployed
 branch preview; deployment behavior remains covered by static route/asset checks
 and CI.
+
+### Post-acceptance correction — native list markers
+
+Product Owner testing identified that the delivery-process `<ol>` displayed both
+the browser's native `1.`–`9.` markers and the intended visible `01`–`09` labels.
+This was a Must-fix rendered defect that the original review missed, so the earlier
+unqualified acceptance was not sufficient.
+
+The correction explicitly removes native list styling from `.ws-process` while
+retaining the semantic ordered list and authored labels. The focused regression
+test now requires this CSS contract.
+
+Re-rendered evidence after correction:
+
+- 1440×900: three-by-three grid shows only `01`–`09`; computed
+  `list-style-type` is `none`; no horizontal overflow.
+- 390×844: two-column grid shows only `01`–`09`; computed `list-style-type` is
+  `none`; no horizontal overflow.
+
+**Corrected UX disposition:** Must fix resolved. The process remains semantically
+ordered, visually clear, responsive, and consistent with the original invariant
+that the delivery sequence should be understandable without visual noise.
+
+### Senior UX follow-up — explanatory process copy
+
+Product Owner review correctly identified that removing duplicate numbering did
+not resolve the larger comprehension problem. The section heading promises a
+clear understanding of what happens, but nine bare internal verbs did not fulfil
+that promise.
+
+Fresh Senior UX review classified explanatory copy as a Must fix and recommended
+this hierarchy: quiet step number, prominent verb, then one muted customer-facing
+sentence. All nine steps now explain what happens without exposing internal
+engineering ceremony. The semantic ordered list and sequential reading order are
+preserved.
+
+The review also classified a single-column phone layout as a Should fix. With the
+new descriptions, two narrow columns at 360px or 390px would produce cramped and
+uneven tiles. Desktop retains three columns; widths up to 480px use one compact
+column. No decorative connector was added because the ordered numbering already
+communicates sequence.
+
+Re-rendered evidence after the content and responsive correction:
+
+- 1440×900: nine descriptive steps in three equal columns; native list style is
+  `none`; no horizontal overflow.
+- 390×844: nine descriptive steps in one 335px column; native list style is
+  `none`; no horizontal overflow.
+- 360×800: one 305px column; no horizontal overflow.
+
+**Senior UX disposition:** Must fixes and accepted Should fix resolved. The
+delivery process is UX accepted for this follow-up: customer-facing, semantically
+ordered, visually subordinate to the main service decision, and readable at the
+required desktop and phone widths.
