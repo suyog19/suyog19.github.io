@@ -9,7 +9,9 @@ Status: implemented for epic #222. Owner: #224.
 ## Identity and components
 
 - Identifier: `Software Signal Learning`.
-- Accent: `#0f766e`; strong accent: `#115e59`; soft surface: `#f0fdfa`.
+- Palette: inherits the main website's `--color-signal`, `--color-signal-dark`,
+  `--color-surface`, and `--color-border` tokens. Learning does not introduce a
+  separate brand colour.
 - `.learning-eyebrow`: common page identifier.
 - `.btn-learning`: dominant learner action.
 - `.learning-status-card` and `.learning-status-marker`: current truth and next action.
@@ -17,7 +19,7 @@ Status: implemented for epic #222. Owner: #224.
 - `.learning-deadline`: visible deadline or expected-update line.
 - `.learning-support-guidance`: reason-specific recovery guidance.
 
-Public pages remain editorial. Private pages use the same identity with a more task-oriented status card. Status never relies on colour. Focus uses a 3px teal outline. At narrow widths actions stack and long learner email text wraps.
+Public pages remain editorial. Private pages use the same identity with a more task-oriented status card. Status never relies on colour. Focus uses the shared 3px Signal Red outline. At narrow widths actions stack and long learner email text wraps.
 
 ## Usage rules
 

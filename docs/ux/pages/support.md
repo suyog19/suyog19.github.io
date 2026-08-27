@@ -39,7 +39,7 @@ fundraising narrative.
   widths, flat bordered groupings, direct labels, visible focus, and generous
   whitespace.
 - Support is a new intent, but it must read as part of the same authored knowledge
-  site. It does not inherit the teal Software Signal Learning identity and does
+  site. It does not inherit Software Signal Learning-specific components and does
   not introduce a fundraising visual system.
 
 ### Strategic altitude
