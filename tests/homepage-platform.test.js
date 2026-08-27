@@ -21,7 +21,7 @@ test('homepage Framework preserves canonical architecture and learning loop', ()
   assert.match(map, /North Star/);
   assert.equal((map.match(/<li>/g) || []).length, 8);
   for (const branch of ['Context &amp; Specification Engineering', 'AI-Assisted &amp; Agentic SDLC',
-    'Verification, Testing &amp; Engineering Evidence', 'Architecture of AI-Assisted &amp; Agentic Systems',
+    'Verification, Testing &amp; Engineering Evidence', 'Architecture of AI-Assisted &amp; Agentic Engineering Systems',
     'Autonomy, Control &amp; Governance', 'Engineering Knowledge &amp; Organizational Memory',
     'Human &amp; Organizational Operating Model', 'Reliability Economics']) assert.match(map, new RegExp(branch));
   assert.match(map, /Cross-cutting concern[\s\S]*Security/);
