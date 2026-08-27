@@ -52,14 +52,18 @@ test.describe('accepted BEFORE-state rendered journeys', () => {
   test('HOME-01 HOME-02 HOME-03 HOME-04 WEEKLY-01: homepage critical CTAs reach current destinations', async ({ page }) => {
     const actions = [
       ['Explore training', '/training/'], ['Browse writing', '/writing/'],
-      ['Find my starting point', '/training/'], ['Explore Consulting', '/consulting/'],
+      ['Find my starting point', '/training/', '#starting-point'], ['Explore Consulting', '/consulting/'],
       ['Explore Website Services', '/website-services/'], ['About the newsletter', '/newsletter/'],
       ['View systems', '/systems/'],
     ];
-    for (const [name, expectedPath] of actions) {
+    for (const [name, expectedPath, expectedHash] of actions) {
       await page.goto('/');
       await page.getByRole('link', { name }).click();
       await expectPath(page, expectedPath);
+      if (expectedHash) {
+        expect(new URL(page.url()).hash).toBe(expectedHash);
+        await expect(page.locator(expectedHash)).toBeVisible();
+      }
     }
     await page.goto('/');
     await page.locator('.project-card').first().click();
