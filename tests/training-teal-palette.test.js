@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const test = require('node:test');
 
 const css = fs.readFileSync('css/learning.css', 'utf8');
+const pageCss = fs.readFileSync('css/pages.css', 'utf8');
 
 function declaration(selector) {
   const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -22,7 +23,15 @@ function contrast(a, b) {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
-test('course planning and application callouts reuse shared teal tokens', () => {
+test('learning maps its scoped roles to the main website palette', () => {
+  const root = declaration('.software-signal-learning');
+  assert.match(root, /--learning-accent:\s*var\(--color-signal\)/);
+  assert.match(root, /--learning-accent-strong:\s*var\(--color-signal\)/);
+  assert.match(root, /--learning-accent-soft:\s*var\(--color-surface\)/);
+  assert.match(root, /--learning-border:\s*var\(--color-border\)/);
+});
+
+test('course planning and application callouts reuse shared palette roles', () => {
   assert.match(declaration('.course-section--decision'), /var\(--learning-accent-soft\)/);
   assert.match(declaration('.course-certainty'), /background:\s*var\(--learning-accent-soft\)/);
   assert.match(declaration('.course-certainty'), /border:[^;]*var\(--learning-accent\)/);
@@ -42,8 +51,12 @@ test('shared planning components contain no orange or amber literals', () => {
   assert.doesNotMatch(scoped, /#(?:fff7ed|ffedd5|fdba74|c2410c)|orange|amber|yellow/i);
 });
 
-test('teal certainty text has WCAG AA contrast on the soft surface', () => {
-  assert.ok(contrast('#115e59', '#f0fdfa') >= 4.5);
+test('Signal Red certainty text has WCAG AA contrast on the neutral surface', () => {
+  assert.ok(contrast('#b91c1c', '#f7f6f3') >= 4.5);
+});
+
+test('active Learning styles contain no legacy teal palette literals', () => {
+  assert.doesNotMatch(`${css}\n${pageCss}`, /#(?:0f766e|115e59|f0fdfa|99d5cf|0b4f4a)|rgba\(15\s*,\s*118\s*,\s*110/i);
 });
 
 test('certainty meaning remains explicit without colour', () => {

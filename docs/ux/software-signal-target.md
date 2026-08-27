@@ -383,7 +383,7 @@ direction.
 | Dark Signal | `#7f1d1d`; optional darker text/control state when needed for contrast. |
 | Signal Wash | `#fef2f2`; sparse background or diagram emphasis, never a default card colour. |
 | Neutral foundation | Existing white, near-black, grey text, pale surfaces, and borders remain dominant. |
-| Learning teal | Remains scoped to Learning status/action semantics; it is not a second site-wide brand accent. |
+| Learning | Inherits the neutral foundation and restrained Signal Red emphasis; status/action meaning remains explicit without colour. |
 
 Do not assign different bright colours to Framework, Research, Consulting,
 Learning, Writing, Systems, or Website Services. Hierarchy comes from structure,
@@ -439,7 +439,7 @@ labels remain explicit.
 | Family | Target role and change | Preserve |
 |---|---|---|
 | Consulting | First-class engagement path. Connect offers to Framework/research thinking where truthful; lead with problem fit and evidence, not generic agency claims. | Existing offers, boundaries, pricing truth, contextual Contact handoff, analytics contract. |
-| Learning | Capability-building practice within Software Signal, not the homepage's dominant identity. Global label becomes Learning while canonical `/training/` remains. | Course truth, readiness/pathway decision order, scoped teal, application/interest contracts. |
+| Learning | Capability-building practice within Software Signal, not the homepage's dominant identity. Global label becomes Learning while canonical `/training/` remains. | Course truth, readiness/pathway decision order, shared site palette, application/interest contracts. |
 | Website Services | Professionally discoverable adjacent service, clearly endorsed by Suyog but outside the Framework spine. | Existing route, package truth, context handoff, analytics, scoped styling. |
 | Writing | Evidence and explanation engine. Curate relationships to Framework and Research without converting every article into brand marketing. | Latest, paths, topic hubs, series, external-source distinctions, reading flow, feedback. |
 | Systems | Practical proof and experiments. Surface relevant systems contextually from Framework/Research and keep maturity/status honest. | `/systems/`, demos, problem/approach/learning structure, limitations. |
@@ -465,8 +465,8 @@ labels remain explicit.
    the Framework.
 5. Writing and Systems read as evidence of thinking and practice, not as the site's
    business architecture or a uniform card catalogue.
-6. Signal Red is the only site-wide brand accent; Learning teal remains scoped and
-   no workstream depends on colour alone.
+6. Signal Red is the only site-wide brand accent, including restrained emphasis
+   on Learning surfaces, and no workstream depends on colour alone.
 7. The page varies composition through typography, framework/evidence structures,
    density, and whitespace without adopting generic AI/SaaS/agency aesthetics.
 8. Desktop sophistication preserves a single coherent semantic and mobile reading
@@ -490,7 +490,7 @@ labels remain explicit.
 | Website Services is a secondary homepage link. | Make it top-level navigation and give it a deliberate adjacent-service module with explicit boundary. | Reflect its active professional-service role without distorting the Framework. | #607/#608 |
 | Weekly appears mid/late page and in some navigation/footer contexts. | Make Subscribe a persistent header action and retain one substantive late-page section. | Support recurring audience growth without interruption. | #607/#608 |
 | Founder credibility appears late. | Show endorsement in hero/header and concise proof before final CTA. | Establish trust earlier without résumé-first composition. | #607/#608 |
-| Near-monochrome public system uses red sparingly; Learning owns teal. | Formalize red as Signal Red while teal remains scoped. | Create recognizable identity through an existing accessible direction. | #607 |
+| Near-monochrome public system uses red sparingly; Learning previously owned teal. | Formalize red as Signal Red across the site, including Learning. | Create one recognizable identity through an existing accessible direction. | #607/#624 |
 
 No #604 route is retired or redirected by this direction.
 
@@ -509,8 +509,9 @@ dependency, CMS, font, client router, or backend change is required.
 - Framework diagrams can use semantic HTML/CSS and accessible prose. Add raster or
   SVG media only if it communicates relationships more clearly and passes image
   performance/alternative-text review.
-- Existing Learning teal can remain route-scoped. Shared components must not make
-  red/teal combinations the only distinction between platform and Learning state.
+- Learning inherits the shared neutral and Signal Red tokens while its components
+  remain route-scoped. Shared components must never make colour the only
+  distinction between platform and Learning state.
 - The homepage hierarchy is long but feasible if #608 curates each section and
   varies density. It must not duplicate full landing-page content.
 - Existing Contact, newsletter, feedback, learner, payment, support, analytics,
@@ -534,8 +535,8 @@ dependency, CMS, font, client router, or backend change is required.
   churn; preserve `/training/`.
 - **New blue/purple AI palette:** generic category styling and needless departure
   from the established red/neutral foundation.
-- **Site-wide teal:** collapses the approved distinction between the larger
-  platform and Software Signal Learning.
+- **A separate Learning accent:** creates an unnecessary second visual identity
+  within the larger platform.
 - **Illustration/animation-led hero:** adds spectacle before comprehension and
   risks generic AI/agency character.
 
@@ -586,9 +587,9 @@ dependency, CMS, font, client router, or backend change is required.
      Software Signal surface.
   3. **Approved:** identity/problem framing → Framework → Research/evidence →
      engagement paths, with Senior UX control of section weight and rhythm.
-  4. **Approved as direction:** Signal Red (`#b91c1c`) is the current primary
-     platform accent; Learning teal stays scoped; rendered/accessibility evidence
-     may justify an adjusted value.
+  4. **Superseded by approved #624 follow-up:** Signal Red (`#b91c1c`) is the
+     current primary platform accent across the main website and Learning;
+     rendered/accessibility evidence may justify an adjusted value.
   5. **Approved after revision:** withdraw the five-movement scaffold as the
      public Framework structure. Present the canonical North Star, eight branches,
      cross-cutting Security, Methods of Investigation, and evidence-feedback loop.
