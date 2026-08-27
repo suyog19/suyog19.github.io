@@ -22,6 +22,7 @@ PRIVATE_ROUTE_PREFIXES = (
     "/training/register-interest/",
 )
 SPECIAL_PUBLIC_NOINDEX_FILES = {"404.html": "/404.html"}
+EXCLUDED_TOP_LEVEL_DIRECTORIES = {"node_modules", "playwright-report", "test-results"}
 
 
 class InventoryError(ValueError):
@@ -189,7 +190,11 @@ def classify_page(root: Path, path: Path) -> PublicPage:
 
 def discover_pages(root: Path) -> list[PublicPage]:
     root = root.resolve()
-    pages = [classify_page(root, path) for path in sorted(root.rglob("*.html"))]
+    source_paths = [
+        path for path in sorted(root.rglob("*.html"))
+        if path.relative_to(root).parts[0] not in EXCLUDED_TOP_LEVEL_DIRECTORIES
+    ]
+    pages = [classify_page(root, path) for path in source_paths]
     indexable = [page for page in pages if page.classification is PageClassification.PUBLIC_INDEXABLE]
     canonicals = [page.canonical for page in indexable]
     duplicates = sorted({url for url in canonicals if canonicals.count(url) > 1})

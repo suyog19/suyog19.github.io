@@ -1,0 +1,879 @@
+{
+  "schema": "issue-610-browser-review/v1",
+  "issue": 610,
+  "targetRevision": "62bcf47e5662514c8de50676b275de9689e2e19e",
+  "environment": {
+    "baseURL": "http://127.0.0.1:8080",
+    "browser": "Playwright Chromium 151.0.7922.34",
+    "playwright": "1.62.1",
+    "retries": 0
+  },
+  "matrix": {
+    "pages": [
+      "/",
+      "/framework/",
+      "/research/",
+      "/consulting/",
+      "/training/",
+      "/website-services/",
+      "/writing/",
+      "/systems/",
+      "/about/",
+      "/newsletter/",
+      "/contact/",
+      "/writing/ai-governance-without-bureaucracy/",
+      "/systems/ai-workflow-lab/"
+    ],
+    "viewports": [
+      "1440x900",
+      "1024x768",
+      "390x844"
+    ],
+    "captures": 39
+  },
+  "accessibility": {
+    "automatedChecks": [
+      "headings",
+      "landmarks",
+      "image alternatives",
+      "form labels",
+      "24px control floor",
+      "horizontal overflow"
+    ],
+    "signalRedContrastOnWhite": 6.47,
+    "signalRedContrastOnNeutral": 6.2,
+    "semanticEquivalent": {
+      "frameworkBranches": 8,
+      "northStar": true,
+      "securityCrossCutting": true,
+      "methodsAndFeedback": true,
+      "researchCriticalEvidence": true
+    }
+  },
+  "consoleAndResources": {
+    "siteAttributedFailures": []
+  },
+  "results": [
+    {
+      "name": "home",
+      "route": "/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Software Signal by Suyog Joshi | Reliable Engineering",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Software Signal by Suyog Joshi | Reliable Engineering",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "home",
+      "route": "/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Software Signal by Suyog Joshi | Reliable Engineering",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "framework",
+      "route": "/framework/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Reliable Engineering Framework | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "framework",
+      "route": "/framework/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Reliable Engineering Framework | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "framework",
+      "route": "/framework/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Reliable Engineering Framework | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "research",
+      "route": "/research/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Research | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "research",
+      "route": "/research/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Research | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "research",
+      "route": "/research/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Research | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "consulting",
+      "route": "/consulting/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Consulting | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "consulting",
+      "route": "/consulting/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Consulting | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "consulting",
+      "route": "/consulting/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Consulting | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "learning",
+      "route": "/training/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Practical Learning for Working Professionals | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "learning",
+      "route": "/training/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Practical Learning for Working Professionals | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "learning",
+      "route": "/training/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Practical Learning for Working Professionals | Software Signal",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "website-services",
+      "route": "/website-services/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Website Services | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "website-services",
+      "route": "/website-services/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Website Services | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "website-services",
+      "route": "/website-services/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Website Services | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "writing",
+      "route": "/writing/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Writing | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "writing",
+      "route": "/writing/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Writing | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "writing",
+      "route": "/writing/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Writing | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "systems",
+      "route": "/systems/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Systems | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "systems",
+      "route": "/systems/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Systems | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "systems",
+      "route": "/systems/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Systems | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "about",
+      "route": "/about/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "About | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "about",
+      "route": "/about/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "About | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "about",
+      "route": "/about/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "About | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "weekly",
+      "route": "/newsletter/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Software Signal Weekly | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "weekly",
+      "route": "/newsletter/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Software Signal Weekly | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "weekly",
+      "route": "/newsletter/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Software Signal Weekly | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "contact",
+      "route": "/contact/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "Contact | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "contact",
+      "route": "/contact/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "Contact | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "contact",
+      "route": "/contact/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "Contact | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "article-detail",
+      "route": "/writing/ai-governance-without-bureaucracy/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "AI Governance Without Bureaucracy | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "article-detail",
+      "route": "/writing/ai-governance-without-bureaucracy/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "AI Governance Without Bureaucracy | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "article-detail",
+      "route": "/writing/ai-governance-without-bureaucracy/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "AI Governance Without Bureaucracy | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "system-detail",
+      "route": "/systems/ai-workflow-lab/",
+      "viewport": "1440x900",
+      "checks": {
+        "title": "AI Workflow Lab | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "system-detail",
+      "route": "/systems/ai-workflow-lab/",
+      "viewport": "1024x768",
+      "checks": {
+        "title": "AI Workflow Lab | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    },
+    {
+      "name": "system-detail",
+      "route": "/systems/ai-workflow-lab/",
+      "viewport": "390x844",
+      "checks": {
+        "title": "AI Workflow Lab | Suyog Joshi",
+        "h1Count": 1,
+        "landmarks": {
+          "header": 1,
+          "main": 1,
+          "footer": 1,
+          "primaryNavigation": 1
+        },
+        "headingJumps": [],
+        "missingImageAlt": 0,
+        "unlabeledFields": [],
+        "smallControls": [],
+        "horizontalOverflow": false
+      },
+      "failures": []
+    }
+  ],
+  "failures": [],
+  "result": "pass"
+}

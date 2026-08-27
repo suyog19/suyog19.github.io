@@ -40,6 +40,26 @@ Raw growth budgets preserve today's architecture with reviewed headroom: 3,000
 bytes for base, 12,000 for components, 150,000 for pages, and 54,000 for learning.
 They are deterministic change-review signals, not claims about network transfer.
 
+Issue #607 intentionally expands the two smallest shared files to establish the
+approved brand, navigation, responsive menu, focus, CTA/link, footer, and flexible
+page-opening foundation. The accepted files are 3,322 raw bytes for `base.css` and
+13,708 raw bytes for `components.css`; their deterministic review ceilings are now
+3,600 and 14,500 bytes respectively (less than 9% headroom). The larger page-family
+budgets are unchanged. This is reviewed foundation cost, not permission for
+unbounded shared-style growth.
+
+Issue #608 adds a responsive, semantic homepage Framework map and art-directed
+homepage composition to `pages.css`. The accepted file measures 160,794 raw bytes;
+its deterministic ceiling is 165,000 bytes (2.62% headroom). The homepage adds no
+image, script, font, framework, or runtime dependency, and all other asset budgets
+remain unchanged.
+
+Issue #609 adds the purpose-specific Framework and Research comprehension/index
+patterns to the established page-family stylesheet rather than introducing a new
+design system or dependency. The accepted file measures 167,931 raw bytes; its
+evidence-backed ceiling is 175,000 bytes (4.0% headroom). This bounded increase is
+not permission for unrelated growth and remains a candidate for later consolidation.
+
 ### Fonts
 
 Rendered inspection found Inter 400/500/600 and Playfair Display 400/500/600/700.

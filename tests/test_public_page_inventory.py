@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from generate_sitemap import run as run_generator  # noqa: E402
 from public_page_inventory import (  # noqa: E402
+    EXCLUDED_TOP_LEVEL_DIRECTORIES,
     InventoryError,
     PageClassification,
     discover_pages,
@@ -172,7 +173,11 @@ class PublicPageInventoryTests(unittest.TestCase):
 class RepositoryInventoryIntegrationTests(unittest.TestCase):
     def test_repository_inventory_covers_all_html_and_expected_boundaries(self) -> None:
         pages = discover_pages(ROOT)
-        self.assertEqual(len(pages), len(list(ROOT.rglob("*.html"))))
+        repository_html = [
+            path for path in ROOT.rglob("*.html")
+            if path.relative_to(ROOT).parts[0] not in EXCLUDED_TOP_LEVEL_DIRECTORIES
+        ]
+        self.assertEqual(len(pages), len(repository_html))
         by_route = {page.route: page.classification for page in pages}
         for route in (
             "/search/",

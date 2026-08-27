@@ -58,13 +58,15 @@ Senior UX Gate B findings:
 
 The signed-in publication settings expose `Opt in redirect URL` directly beneath the enabled `Double opt in email` control, with no upgrade marker or locked state. beehiiv's current double-opt-in documentation describes the publication home page as the default and this field as the standard way to choose another destination; it does not label the redirect as a paid-plan feature. The workspace temporarily displays a Max trial badge, so availability is not inferred from the account badge alone. The implementation uses only this documented double-opt-in setting and explicitly excludes Smart Nudge, automations, surveys, recommendations, and other paid growth features.
 
-The redirect value will be `https://suyogjoshi.com/newsletter/confirmed/`. It contains no email address, subscriber ID, token, or query parameter. Saving remains deferred until the route is promoted and verified on production.
+After production promotion, the route returned HTTP 200 with the expected confirmation message, no form, and `noindex, follow`. The beehiiv account then explicitly reported the free Launch plan (`3 / 2,500` subscribers). The redirect was saved as `https://suyogjoshi.com/newsletter/confirmed/` and persisted after a full settings-page reload. It contains no email address, subscriber ID, token, or query parameter. Double opt-in remained enabled and Smart Nudge remained off.
+
+On 19 August 2026, the Product Owner completed a fresh real-device subscription and email-confirmation journey. The confirmation action opened the dedicated production route, presented the accepted success state, and did not ask for the email again. No artificial subscriber was created by the implementation agent.
 
 ### Gate D — issue #564 UX acceptance
 
 - **Result:** UX accepted for merge to `dev`.
 - **Accepted delivery sequence:** publish the static destination first; then set and verify the provider redirect. This prevents confirmation links from being sent to a route that is not yet live.
-- **Invitation gate:** quiet-launch invitations remain paused until one safe end-to-end confirmation proves the production redirect and final destination.
+- **Invitation gate:** passed. Product Owner real-device confirmation proved the production redirect and final destination; issue #27 may resume under its existing approval and audience controls.
 - **Recommendation strength:** strongly recommended.
 
 ## Narrow-mobile correction — issue #561
