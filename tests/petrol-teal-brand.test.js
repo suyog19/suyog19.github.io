@@ -25,6 +25,30 @@ test('identity and generated preview sources use one Petrol Teal direction', () 
   assert.doesNotMatch(generator, /CORE_ACCENT|LEARNING_ACCENT/);
 });
 
+test('homepage dark sections use accessible Petrol Teal wash instead of legacy pink accents', () => {
+  const pages = read('css/pages.css');
+  for (const selector of [
+    '.home-tension .eyebrow',
+    '.evidence-type',
+    '.home-final .eyebrow',
+    '.final-link:hover, .final-primary:hover',
+  ]) {
+    const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    assert.match(pages, new RegExp(`${escaped}\\s*\\{[^}]*color:\\s*var\\(--color-signal-wash\\)`, 's'));
+  }
+  assert.doesNotMatch(pages, /#fca5a5/i);
+  assert.match(read('index.html'), /css\/pages\.css\?v=652/);
+
+  const luminance = (hex) => {
+    const channels = hex.match(/[a-f\d]{2}/gi).map((channel) => parseInt(channel, 16) / 255);
+    const linear = channels.map((channel) => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  };
+  const foreground = luminance('#f1f6f5');
+  const background = luminance('#171717');
+  assert.ok((foreground + 0.05) / (background + 0.05) >= 4.5, 'dark-surface Petrol Teal text must meet WCAG AA');
+});
+
 test('remaining legacy reds are confined to intentional semantic states', () => {
   const files = ['css/components.css', 'css/pages.css', 'css/learning.css'];
   const allowedContext = /invalid|error|failed|missing|low|exception|attention|deadline|warning|over-limit/i;
