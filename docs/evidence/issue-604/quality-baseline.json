@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-08-27T01:26:52+00:00",
+  "lighthouse_version": "13.4.1",
+  "origin": "https://suyogjoshi.com",
+  "reports": {
+    "article-desktop": {"performance": 100, "accessibility": 100, "best_practices": 100, "seo": 100, "lcp": "0.6 s", "cls": 0.001, "tbt": "0 ms"},
+    "article-mobile": {"performance": 74, "accessibility": 100, "best_practices": 100, "seo": 100, "lcp": "5.1 s", "cls": 0, "tbt": "120 ms"},
+    "contact-desktop": {"performance": 99, "accessibility": 95, "best_practices": 100, "seo": 100, "lcp": "0.7 s", "cls": 0, "tbt": "0 ms"},
+    "contact-mobile": {"performance": 75, "accessibility": 95, "best_practices": 100, "seo": 100, "lcp": "4.8 s", "cls": 0, "tbt": "130 ms"},
+    "home-desktop": {"performance": 99, "accessibility": 96, "best_practices": 77, "seo": 100, "lcp": "0.7 s", "cls": 0.027, "tbt": "0 ms"},
+    "home-mobile": {"performance": 76, "accessibility": 96, "best_practices": 77, "seo": 100, "lcp": "4.9 s", "cls": 0, "tbt": "60 ms"}
+  },
+  "automated_findings": [
+    "Home and Contact report insufficient colour contrast.",
+    "Sampled pages report a visible-label/accessibility-name mismatch audit.",
+    "Home reports third-party-cookie and Chrome Issues-panel findings from embedded third-party content.",
+    "Sampled mobile performance is 74-76 with LCP between 4.8 and 5.1 seconds; desktop is 99-100 with LCP between 0.6 and 0.7 seconds."
+  ],
+  "browser_observations": {
+    "horizontal_overflow_count": 0,
+    "site_console_error_count": 0,
+    "site_console_warning_count": 0,
+    "environment_warning": "A Chrome extension emitted one repeated deprecation warning; it was not attributed to the site.",
+    "keyboard_focus": "The first ten homepage tab stops followed the visible header and primary-content order and each rendered a solid 2px outline."
+  }
+}
