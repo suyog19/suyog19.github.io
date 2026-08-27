@@ -1,0 +1,607 @@
+[
+  {
+    "file": "604-i1-home-1440x900-default.png",
+    "url": "https://suyogjoshi.com/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Suyog Joshi | AI Systems, Software Architecture & Real-World Engineering"
+    },
+    "console": []
+  },
+  {
+    "file": "604-i1-consulting-1440x900-default.png",
+    "url": "https://suyogjoshi.com/consulting/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/consulting/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Consulting | Suyog Joshi"
+    },
+    "console": []
+  },
+  {
+    "file": "604-i1-website-services-1440x900-default.png",
+    "url": "https://suyogjoshi.com/website-services/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/website-services/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Website Services | Suyog Joshi"
+    },
+    "console": []
+  },
+  {
+    "file": "604-i1-training-1440x900-default.png",
+    "url": "https://suyogjoshi.com/training/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/training/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Software Signal Learning Journey | Data, Machine Learning and AI Systems"
+    },
+    "console": []
+  },
+  {
+    "file": "604-i1-writing-1440x900-default.png",
+    "url": "https://suyogjoshi.com/writing/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/writing/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Writing | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-systems-1440x900-default.png",
+    "url": "https://suyogjoshi.com/systems/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/systems/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Systems | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-about-1440x900-default.png",
+    "url": "https://suyogjoshi.com/about/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/about/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "About | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-contact-1440x900-default.png",
+    "url": "https://suyogjoshi.com/contact/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/contact/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Contact | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-article-detail-1440x900-default.png",
+    "url": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "AI Governance Without Bureaucracy | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-system-detail-1440x900-default.png",
+    "url": "https://suyogjoshi.com/systems/ai-workflow-lab/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/systems/ai-workflow-lab/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "AI Workflow Lab | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-newsletter-1440x900-default.png",
+    "url": "https://suyogjoshi.com/newsletter/",
+    "viewport": {
+      "width": 1440,
+      "height": 900
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/newsletter/",
+      "clientWidth": 1425,
+      "scrollWidth": 1425,
+      "title": "Software Signal Weekly | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-home-390x844-default.png",
+    "url": "https://suyogjoshi.com/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Suyog Joshi | AI Systems, Software Architecture & Real-World Engineering"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-consulting-390x844-default.png",
+    "url": "https://suyogjoshi.com/consulting/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/consulting/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Consulting | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-website-services-390x844-default.png",
+    "url": "https://suyogjoshi.com/website-services/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/website-services/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Website Services | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-training-390x844-default.png",
+    "url": "https://suyogjoshi.com/training/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/training/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Software Signal Learning Journey | Data, Machine Learning and AI Systems"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-writing-390x844-default.png",
+    "url": "https://suyogjoshi.com/writing/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/writing/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Writing | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-systems-390x844-default.png",
+    "url": "https://suyogjoshi.com/systems/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/systems/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Systems | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-about-390x844-default.png",
+    "url": "https://suyogjoshi.com/about/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/about/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "About | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-contact-390x844-default.png",
+    "url": "https://suyogjoshi.com/contact/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/contact/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Contact | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-article-detail-390x844-default.png",
+    "url": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "AI Governance Without Bureaucracy | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-system-detail-390x844-default.png",
+    "url": "https://suyogjoshi.com/systems/ai-workflow-lab/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/systems/ai-workflow-lab/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "AI Workflow Lab | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-newsletter-390x844-default.png",
+    "url": "https://suyogjoshi.com/newsletter/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "default",
+    "page": {
+      "canonical": "https://suyogjoshi.com/newsletter/",
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "title": "Software Signal Weekly | Suyog Joshi"
+    },
+    "console": [
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:40.050Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      },
+      {
+        "level": "warn",
+        "message": "using deprecated parameters for the initialization function; pass a single object instead",
+        "timestamp": "2026-08-27T01:27:42.148Z",
+        "url": "chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/scripts/Sailer-Package/feature_collector.js"
+      }
+    ]
+  },
+  {
+    "file": "604-i1-home-390x844-menu-open.png",
+    "url": "https://suyogjoshi.com/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "mobile-menu-open",
+    "ariaExpanded": "true"
+  },
+  {
+    "file": "604-i1-contact-390x844-validation-error.png",
+    "url": "https://suyogjoshi.com/contact/",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "state": "empty-submit-validation",
+    "validation": {
+      "alerts": [
+        "Your name is required.",
+        "Your email address is required.",
+        "A message is required."
+      ],
+      "invalid": [
+        {
+          "describedby": "name-error",
+          "id": "name",
+          "name": "name"
+        },
+        {
+          "describedby": "email-error",
+          "id": "email",
+          "name": "email"
+        },
+        {
+          "describedby": "message-hint message-error",
+          "id": "message",
+          "name": "message"
+        }
+      ]
+    }
+  }
+]
