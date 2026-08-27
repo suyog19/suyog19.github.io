@@ -2,8 +2,9 @@
 
 ## Target and method
 
-- Implementation revision reviewed before the performance correction: `79fe972`.
-  The final corrected successor revision is bound in the implementation PR.
+- Final implementation revision: `61a661d` (with `79fe972` as its initial
+  implementation parent). This evidence-only successor binds the rendered review
+  and validation record to that corrected target.
 - Local routes rendered from the repository root at 1440×900 and 390×844:
   `/consulting/`, `/website-services/`, and `/training/`.
 - Browser inspection checked computed columns, placement, intrinsic/display image
