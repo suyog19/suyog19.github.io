@@ -3911,7 +3911,7 @@
 }
 
 .application-check a {
-  color: #0f766e;
+  color: var(--color-signal);
   font-weight: 600;
   text-decoration: underline;
   text-decoration-thickness: .08em;
@@ -3919,13 +3919,13 @@
 }
 
 .application-check a:hover {
-  color: #115e59;
+  color: var(--color-signal-dark);
   text-decoration-thickness: .12em;
 }
 
 .application-check a:focus-visible {
   border-radius: .15rem;
-  outline: 3px solid rgba(15, 118, 110, .3);
+  outline: 3px solid var(--color-signal);
   outline-offset: 2px;
 }
 
@@ -3944,14 +3944,14 @@
 }
 
 .application-course-details summary {
-  color: #0f766e;
+  color: var(--color-signal);
   cursor: pointer;
   font-weight: 600;
 }
 
 .application-course-details summary:focus-visible {
   border-radius: .2rem;
-  outline: 3px solid rgba(15, 118, 110, .3);
+  outline: 3px solid var(--color-signal);
   outline-offset: 3px;
 }
 
@@ -5055,7 +5055,7 @@
 .admin-training-courses, .admin-training-cohorts { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; margin: 1.5rem 0; }
 .admin-training-card { padding: 1.25rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-bg); }
 .admin-training-card .btn { margin: .75rem .5rem 0 0; }
-.admin-payment-handoff { background: var(--color-surface); border-left: 4px solid #0f766e; margin-top: 1rem; padding: 1rem; }
+.admin-payment-handoff { background: var(--color-surface); border-left: 4px solid var(--color-signal); margin-top: 1rem; padding: 1rem; }
 .admin-payment-handoff p { margin-top: 0; }
 .admin-training-cohort-editor { margin: 2rem 0; padding: 1.5rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-surface); }
 .admin-cohort-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
@@ -5473,8 +5473,8 @@
 }
 
 .learner-application-card--waiting {
-  border-left: 4px solid #0f766e;
-  background: #f0fdfa;
+  border-left: 4px solid var(--color-signal);
+  background: var(--color-surface);
 }
 
 .learner-application-progress {
@@ -5497,7 +5497,7 @@
 .learner-application-progress__step--complete,
 .learner-application-progress__step--current {
   color: var(--color-text);
-  border-color: #0f766e;
+  border-color: var(--color-signal);
 }
 
 .learner-application-progress__step--current {
@@ -5785,7 +5785,7 @@
 
   .learner-application-progress__step--complete,
   .learner-application-progress__step--current {
-    border-color: #0f766e;
+    border-color: var(--color-signal);
   }
 }
 

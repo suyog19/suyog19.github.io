@@ -15,22 +15,72 @@ test("My Learning remains reachable in the scoped Learning navigation", () => {
   assert.match(subnav, /href="\.\.\/my-learning\/"[^>]*>My Learning<\/a>/);
 });
 
-test("hero actions focus the selector before offering pathway exploration", () => {
+test("hero actions lead with format choice before deeper pathway exploration", () => {
   const hero = html.match(
     /<section class="training-hero[\s\S]*?<\/section>/,
   )[0];
   assert.ok(
-    hero.indexOf("Find my starting point") <
-      hero.indexOf("Explore the learning pathway"),
+    hero.indexOf("Choose a learning format") <
+      hero.indexOf("Explore deeper learning"),
   );
   assert.match(
     hero,
-    /class="btn btn-primary btn-learning"[\s\S]*?href="#starting-point"/,
+    /class="btn btn-primary btn-learning"[\s\S]*?href="#formats"/,
   );
   assert.match(hero, /class="btn btn-secondary"[\s\S]*?href="#journey"/);
   assert.match(html, /id="starting-point"[\s\S]*?tabindex="-1"/);
   assert.match(html, /id="journey"[\s\S]*?tabindex="-1"/);
   assert.match(script, /target\.focus\(\{ preventScroll: true \}\)/);
+});
+
+test("hero inherits the main site's editorial colour and type hierarchy", () => {
+  const hero = html.match(
+    /<section class="training-hero[\s\S]*?<\/section>/,
+  )[0];
+  assert.match(hero, /<p class="eyebrow">Software Signal Learning<\/p>/);
+  assert.doesNotMatch(hero, /<p class="learning-eyebrow">/);
+  assert.match(
+    learningCss,
+    /\.training-journey-page \.journey-hero\s*\{\s*background:\s*var\(--color-bg\);/,
+  );
+  assert.match(
+    learningCss,
+    /\.training-journey-page \.journey-hero h1\s*\{[^}]*font-family:\s*var\(--font-serif\);[^}]*font-weight:\s*500;/,
+  );
+  assert.match(
+    learningCss,
+    /\.training-journey-page \.journey-hero \.training-lead\s*\{[^}]*color:\s*var\(--color-text\);/,
+  );
+});
+
+test("the commitment ladder exposes six honest learning rungs", () => {
+  const formats = html.match(
+    /<section class="learning-format-strip"[\s\S]*?<\/section>/,
+  )[0];
+  for (const label of [
+    "Free micro-session",
+    "Focused workshop",
+    "Hands-on deep dive",
+    "Short structured course",
+    "Cohort or deeper pathway",
+    "Team learning",
+  ])
+    assert.match(formats, new RegExp(label));
+  assert.equal((formats.match(/<li>/g) || []).length, 6);
+  assert.match(formats, /Availability is published only when an offering is ready/);
+});
+
+test("focused learning names current directions without inventing inventory", () => {
+  const focused = html.match(
+    /<section[^>]+id="focused-learning"[\s\S]*?<\/section>/,
+  )[0];
+  assert.match(focused, /No focused public session is scheduled yet/);
+  assert.match(focused, /not a catalog of bookable offerings/);
+  for (const topic of ["Cursor", "GitHub Copilot", "coding-agent workflows", "MCP", "System design"])
+    assert.match(focused, new RegExp(topic, "i"));
+  assert.match(focused, /href="\.\.\/contact\/"[^>]*>Share a learning need<\/a>/);
+  assert.doesNotMatch(focused, /\?topic=/);
+  assert.doesNotMatch(focused, /Book now|Enrol now|Register now/);
 });
 
 test("one compact five-option selector precedes the connected pathway", () => {

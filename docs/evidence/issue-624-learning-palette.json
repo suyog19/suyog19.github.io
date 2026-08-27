@@ -1,0 +1,70 @@
+{
+  "schema": "issue-delivery-evidence/v1",
+  "issue": 624,
+  "scope": "Approved follow-up: unify public and private Learning page colours with the main website; dev only",
+  "implementationRevision": "717b3f7ecdc9b8a9a01111bc41ebd2feef020bc5",
+  "deliveryRevision": "SELF",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "classification": {
+    "schema": "classification/v1",
+    "targetRevision": "34ea2d0631632f655c06bdc0aafa25e9995c9141",
+    "deliveryProfile": "Standard",
+    "characteristics": {
+      "observable_behavior": true,
+      "user_visible_change": true,
+      "material_layout_change": true,
+      "learning_experience_change": true,
+      "production_change": false
+    }
+  },
+  "testResult": {
+    "schema": "test-result/v1",
+    "targetRevision": "717b3f7ecdc9b8a9a01111bc41ebd2feef020bc5",
+    "node": {"passed": 441, "failed": 0},
+    "playwright": {"passed": 13, "failed": 0, "skipped": 0},
+    "focusedPython": {"passed": 23, "failed": 0},
+    "repositoryValidators": "pass",
+    "retiredTealRegression": {"passed": 1, "failed": 0}
+  },
+  "renderedReview": {
+    "schema": "ux-verdict/v1",
+    "targetRevision": "717b3f7ecdc9b8a9a01111bc41ebd2feef020bc5",
+    "verdict": "pass",
+    "viewports": [
+      {"width": 1440, "height": 1000},
+      {"width": 390, "height": 844}
+    ],
+    "routes": [
+      "/training/",
+      "/training/python-foundations-for-data-science/",
+      "/training/practical-machine-learning-foundations/",
+      "/my-learning/"
+    ],
+    "states": [
+      "landing and launched course",
+      "pipeline course",
+      "readiness selection and recommended starting point",
+      "private unauthenticated sign-in and autofocus"
+    ],
+    "checks": {
+      "legacyTealComputedMatches": 0,
+      "horizontalPageOverflow": false,
+      "signalRedFocusVisible": true,
+      "statusMeaningIndependentOfColour": true,
+      "consoleWarningsOrErrors": 0
+    },
+    "coverageLimitations": [
+      "Authenticated private learner account/status data was not fabricated or exercised; its shared selectors are covered by source assertions and existing state-contract tests.",
+      "The Learning sub-navigation intentionally remains horizontally scrollable at narrow widths while the page itself does not overflow."
+    ]
+  },
+  "functionalQa": {
+    "schema": "functional-qa-verdict/v1",
+    "targetRevision": "717b3f7ecdc9b8a9a01111bc41ebd2feef020bc5",
+    "verdict": "pass",
+    "findings": [],
+    "coverageLimitations": ["No authenticated backend, payment, email, or production side effect was exercised."],
+    "residualFunctionalRisk": "Low; the change is limited to presentation tokens, scoped CSS fallbacks, documentation, and regression assertions."
+  },
+  "productionActivity": false
+}
