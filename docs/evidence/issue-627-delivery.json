@@ -46,6 +46,10 @@
   },
   "independentReview": {
     "required": true,
-    "status": "pending-final-review"
+    "status": "approved",
+    "targetRevision": "5c9ac3f516667b64159982e70a7af05afe00f246",
+    "baseRevision": "d0d74c1029d6eb0d85029a085885cc71d5e478d1",
+    "blockers": 0,
+    "scopeIsolated": true
   }
 }
