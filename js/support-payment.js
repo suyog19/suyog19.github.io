@@ -3,7 +3,7 @@
 
   const DESTINATIONS = Object.freeze({
     development: 'https://pages.razorpay.com/pl_TTdbTEtwC4vyYF/view',
-    production: '',
+    production: 'https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view',
   });
   const DEVELOPMENT_HOSTS = new Set(['dev.suyogjoshi.com', 'localhost', '127.0.0.1']);
   const PRODUCTION_HOSTS = new Set(['suyogjoshi.com', 'www.suyogjoshi.com']);
