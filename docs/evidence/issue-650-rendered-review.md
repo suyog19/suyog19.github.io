@@ -3,7 +3,7 @@
 ## Evidence index
 
 - Iteration: 1 (converged)
-- Target: working tree before implementation commit
+- Target: `0c6273b20f22dd5e327e863c0d5a03a830b42e3a`
 - Capture method: controlled Chrome render against `http://127.0.0.1:8080/`
 - Viewports: 1440×900 and 390×844
 - Direction: `docs/ux/site-ux-direction.md`, `docs/ux/software-signal-target.md`, and `docs/plans/issue-650-petrol-teal.md`
@@ -49,7 +49,9 @@ routine binaries were not committed.
 
 ### Result
 
-UX-ready for formal Gate D acceptance.
+Gate D **UX ACCEPTED** the exact target revision with no must-fix or should-fix
+findings. Primary teal on white measures 7.87:1; dark teal on white measures
+10.50:1.
 
 **Recommendation strength:** Strongly recommended.
 

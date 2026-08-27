@@ -1,0 +1,55 @@
+{
+  "issue": 650,
+  "classification": {
+    "changeType": "site-wide public brand and visual-system migration",
+    "uxApplicability": "material",
+    "processResolution": "The engineering-process CLI was unavailable; checked-in canonical policy and repository context were applied directly."
+  },
+  "baseRevision": "e26b9cc49282114317ead9ef079908c2bc3f6591",
+  "implementationRevision": "0c6273b20f22dd5e327e863c0d5a03a830b42e3a",
+  "palette": {
+    "primary": "#1f5a5a",
+    "dark": "#174646",
+    "wash": "#f1f6f5"
+  },
+  "scope": {
+    "sharedTokens": true,
+    "learningAligned": true,
+    "faviconRegenerated": true,
+    "socialPreviewsRegenerated": 15,
+    "semanticErrorRedPreserved": true,
+    "routesChanged": false
+  },
+  "historicalIssueComments": [
+    "https://github.com/suyog19/suyog19.github.io/issues/605#issuecomment-5437025304",
+    "https://github.com/suyog19/suyog19.github.io/issues/635#issuecomment-5437025600"
+  ],
+  "renderedReview": {
+    "browser": "Chrome",
+    "viewports": ["1440x900", "390x844"],
+    "families": ["home", "framework", "research", "consulting", "learning", "website-services", "writing", "systems", "about", "newsletter", "support", "contact", "card", "writing-detail", "systems-detail"],
+    "horizontalOverflow": false,
+    "semanticErrorStateVerified": true,
+    "keyboardFocusVerified": true
+  },
+  "validation": [
+    {"command": "python scripts/generate_sitemap.py --check", "result": "passed"},
+    {"command": "python scripts/validate_public_seo.py", "result": "passed", "summary": "13 contracts passed."},
+    {"command": "python scripts/validate_image_performance.py", "result": "passed"},
+    {"command": "python -m unittest discover -s tests -p test_*.py", "result": "passed", "summary": "53 tests passed."},
+    {"command": "node --test tests/*.test.js", "result": "passed", "summary": "457 tests passed."},
+    {"command": "npm run test:e2e", "result": "passed", "summary": "13 scenarios passed."},
+    {"command": "git diff --check", "result": "passed"}
+  ],
+  "uxGateD": {
+    "status": "accepted",
+    "reviewer": "/root/issue_626_independent_review",
+    "targetRevision": "0c6273b20f22dd5e327e863c0d5a03a830b42e3a",
+    "mustFix": 0,
+    "shouldFix": 0,
+    "recommendation": "strongly recommended"
+  },
+  "independentReview": {
+    "status": "pending"
+  }
+}
