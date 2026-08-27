@@ -16,6 +16,12 @@ test('homepage follows the approved Software Signal hierarchy', () => {
   }, -1);
 });
 
+test('homepage hero avoids unexplained decorative numbering', () => {
+  const hero = html.match(/<section class="home-opening[\s\S]*?<\/section>/)?.[0] || '';
+  assert.doesNotMatch(hero, /home-note-index|>01</);
+  assert.match(hero, /Not a catalogue of AI tools/);
+});
+
 test('homepage Framework preserves canonical architecture and learning loop', () => {
   const map = html.match(/<div class="framework-map"[\s\S]*?<\/div><\/div><\/section>/)?.[0] || '';
   assert.match(map, /North Star/);
