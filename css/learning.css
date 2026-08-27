@@ -440,7 +440,7 @@
 }
 
 .training-page .training-project-callout .learning-status-marker {
-  color: #ccfbf1;
+  color: #fff;
   margin-bottom: .35rem;
 }
 
@@ -804,7 +804,7 @@
 .software-signal-learning .learner-private-label { border-left: 1px solid var(--learning-border); color: var(--color-text-muted); font-size: .72rem; margin-left: .45rem; padding-left: .55rem; text-transform: uppercase; }
 .software-signal-learning .learner-account { position: relative; }
 .software-signal-learning .learner-account > summary { border: 1px solid var(--learning-border); cursor: pointer; font-weight: 600; list-style: none; padding: .55rem .8rem; }
-.software-signal-learning .learner-account__panel { background: #fff; border: 1px solid var(--learning-border); box-shadow: 0 12px 28px rgba(15,76,71,.12); display: grid; gap: .7rem; min-width: 15rem; padding: 1rem; position: absolute; right: 0; top: calc(100% + .4rem); z-index: 20; }
+.software-signal-learning .learner-account__panel { background: #fff; border: 1px solid var(--learning-border); box-shadow: 0 12px 28px rgba(17,17,17,.12); display: grid; gap: .7rem; min-width: 15rem; padding: 1rem; position: absolute; right: 0; top: calc(100% + .4rem); z-index: 20; }
 .software-signal-learning .learner-account__panel span { color: var(--color-text-muted); font-size: .82rem; overflow-wrap: anywhere; }
 .software-signal-learning .learner-current-action { background: #fffbeb; border: 1px solid #f2d38a; border-left: 4px solid #a16207; margin: 1.25rem 0 1.5rem; padding: 1rem 1.15rem; }
 .software-signal-learning .learner-current-action h2 { font-size: 1.2rem; margin: .2rem 0 .35rem; }
