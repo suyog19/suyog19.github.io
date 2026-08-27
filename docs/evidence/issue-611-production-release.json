@@ -1,0 +1,98 @@
+{
+  "schema": "production-release-evidence/v1",
+  "issue": 611,
+  "parentEpic": 603,
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "releaseCandidate": {
+    "acceptedDevCommit": "8b8dcec26b196cd6722fbee9d89a9732a8794c47",
+    "releaseCommit": "9f2ec64abc1786a287e32361c054edec1528fe69",
+    "acceptedTree": "036d9227965092cd8360b88abd488bc44560c973"
+  },
+  "promotion": {
+    "pullRequest": 621,
+    "pullRequestUrl": "https://github.com/suyog19/suyog19.github.io/pull/621",
+    "humanMergedAt": "2026-08-27T04:31:25Z",
+    "productionCommit": "f99b0bdb19d5fbda73df7164cd241e91e9be6e18",
+    "productionTree": "036d9227965092cd8360b88abd488bc44560c973",
+    "deploymentRun": 33039669671,
+    "deploymentUrl": "https://github.com/suyog19/suyog19.github.io/actions/runs/33039669671",
+    "deploymentStartedAt": "2026-08-27T04:31:29Z",
+    "deploymentCompletedAt": "2026-08-27T04:32:01Z",
+    "deploymentConclusion": "success"
+  },
+  "productionTarget": "https://suyogjoshi.com",
+  "capturedAt": "2026-08-27T04:34:18Z",
+  "testResult": {
+    "schema": "test-result/v1",
+    "targetRevision": "f99b0bdb19d5fbda73df7164cd241e91e9be6e18",
+    "baselineRoutes": {"preserved": 66, "redirected": 0, "retired": 0, "unaccounted": 0},
+    "sitemapRoutes": {"total": 68, "non200": 0, "canonicalMismatches": 0},
+    "sameOriginLinks": {"broken": 0, "additionalChecked": 20},
+    "productionBrowserSmoke": {
+      "safeAutomatedPassed": 12,
+      "safeAutomatedFailed": 0,
+      "weeklyContractManualPassed": 1,
+      "retries": 0,
+      "note": "The Weekly test was run manually because its third-party abort rule also matches the HTTPS production origin; no subscription was created."
+    },
+    "mainContinuousIntegration": {"browserRegressionPassed": 13, "failed": 0},
+    "renderedMatrix": {"pages": 13, "viewports": 3, "captures": 39, "failed": 0},
+    "consoleAndLocalResources": {"siteAttributedFailures": 0},
+    "indexingBoundaryResponses": {"checked": 12, "failed": 0}
+  },
+  "integrationSanity": {
+    "contactPreflight": {"status": 204, "allowOrigin": "https://suyogjoshi.com", "sideEffect": false},
+    "publicLearningApi": {"status": 200, "allowOrigin": "https://suyogjoshi.com"},
+    "googleAnalyticsTag": {"status": 200, "measurementId": "G-PKL56GJ38H"},
+    "beehiivLoader": {"status": 200, "formIdPreserved": true, "hostedFallbackPreserved": true},
+    "devEndpointLeakageFound": false,
+    "mixedContentFound": false
+  },
+  "accessibilitySanity": {
+    "result": "pass",
+    "signalRedContrastOnWhite": 6.47,
+    "signalRedContrastOnNeutral": 6.20,
+    "checks": ["headings", "landmarks", "image alternatives", "form labels", "control size floor", "horizontal overflow", "mobile navigation keyboard behavior"]
+  },
+  "sideEffects": {
+    "performed": [],
+    "deferred": [
+      "newsletter subscription and email confirmation",
+      "contact or enquiry submission and delivery",
+      "payments",
+      "feedback submission",
+      "authenticated learner mutations"
+    ]
+  },
+  "defects": {"productionDefectsFound": [], "productionDefectsFixed": []},
+  "functionalQa": {
+    "schema": "functional-qa-verdict/v1",
+    "targetRevision": "f99b0bdb19d5fbda73df7164cd241e91e9be6e18",
+    "freshContext": true,
+    "producerContextId": "/root/issue_606_final_review",
+    "verdict": "pass",
+    "releaseReadiness": "PRODUCTION VERIFIED",
+    "findings": [],
+    "blockers": []
+  },
+  "independentReview": {
+    "schema": "independent-review/v1",
+    "targetRevision": "f99b0bdb19d5fbda73df7164cd241e91e9be6e18",
+    "freshContext": true,
+    "producerContextId": "/root/issue_606_final_review",
+    "implementationContextTrusted": false,
+    "accessMode": "read-only",
+    "verdict": "pass",
+    "releaseReadiness": "PRODUCTION VERIFIED",
+    "findings": {"must": [], "should": [], "optional": []},
+    "blockers": []
+  },
+  "residualLimitations": [
+    "Responsive evidence uses Playwright emulation rather than physical devices.",
+    "Side-effecting and authenticated provider flows remain covered by prior approved evidence or require controlled manual verification.",
+    "The deployment run warns that referenced GitHub actions are being forced from deprecated Node.js 20 to Node.js 24 and that a timeout was capped; deployment succeeded.",
+    "Routine Playwright execution cleans transient test-results; durable committed evidence retains the decision record and required production screenshots."
+  ],
+  "finalDisposition": "PRODUCTION VERIFIED",
+  "epic603ReadyForProductOwnerClosure": true
+}
