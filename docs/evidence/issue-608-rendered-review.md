@@ -125,3 +125,29 @@ Owner taste or Framework decision remains before merge.
   minimum touch sizing through the accepted #607 foundation.
 - Dark surfaces use white or muted-white text; Signal Red is reserved for labels,
   hierarchy, actions, and the Security band rather than body text on dark surfaces.
+
+## Product Owner follow-up — hero annotation
+
+- Implementation revision: `2ca759bccd20cb29e5ed05a2a67b4e45752c43a3`
+- Capture method: Playwright 1.62.1 / Chromium, deterministic local render
+- Before: `docs/evidence/issue-608/screenshots/i2/`
+- After: `docs/evidence/issue-608/screenshots/followup/`
+- Compared states: homepage default and full-page at 1440×900, 1024×768,
+  and 390×844.
+
+The standalone hero `01` was removed because it did not identify a visible
+sequence. The positioning statement and Signal Red editorial rule are preserved;
+the note now uses only the padding needed to keep the rule and copy intentional.
+No other homepage section or visual-system decision changed.
+
+### Focused Senior UX review
+
+- **Must fix:** None.
+- **Should fix:** None.
+- **Optional:** None within this narrow follow-up.
+- **What works / preserve:** On desktop, the shorter rule and copy form a balanced
+  counterpoint to the large proposition without suggesting a false sequence. On
+  mobile, the note follows the actions with clear separation and no decorative
+  content delaying the proposition or CTAs. Preserve the existing typography,
+  spacing, page rhythm, and restrained Signal Red usage.
+- **Result:** UX accepted; strongly recommended. No further iteration required.

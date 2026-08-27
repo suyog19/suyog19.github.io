@@ -73,6 +73,24 @@ validation, rendered full-page review, and explicit E2E contract updates.
 | --- | --- | --- | --- |
 | HOME-01 | Hero `Explore training` opens `/training/`. | Hero `Explore the Framework` opens `/framework/`; Learning remains a later primary engagement path through `Explore Learning`. | #605 approved hero hierarchy and #608 brief. |
 
+## #609 page-family handoff
+
+Product Owner guidance: **Inherit the visual system, not the homepage composition.**
+Supporting pages should retain the typography system, restrained Signal Red,
+spacing and grid discipline, navigation/footer, CTA and link language, rules,
+responsive behaviour, and accessibility established by #607/#608. They should
+use the flexible page-opening patterns from #607 and be composed for their own
+visitor purpose rather than copying the homepage.
+
+In particular, #609 should not mechanically propagate giant Playfair headings,
+black emphasis panels, decorative numbering, identical asymmetric two-column
+layouts, homepage section sequencing, or repeated `eyebrow → huge headline →
+paragraph → cards` compositions. Consulting should optimize decision-making,
+trust, and conversion; Website Services clarity and professional delivery;
+Learning discovery and starting-point choice; Writing browsing and reading;
+About the founder story; Framework comprehension; and Research investigation
+and evidence discovery.
+
 No route, form, navigation, newsletter-provider, or backend contract changes.
 
 ### Asset-budget consequence
