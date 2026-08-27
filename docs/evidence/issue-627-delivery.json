@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "issue": 627,
+  "profile": "Lean",
+  "classification": {
+    "protectedCharacteristics": [],
+    "uxApplicability": "brief-required",
+    "reason": "Public homepage opening hierarchy and first-impression comprehension change"
+  },
+  "implementationRevision": "2872dceef8e8c9a929a3f531261f7d71cad780c4",
+  "deliveryRevision": "SELF",
+  "evidence": {
+    "uxBrief": "docs/plans/issue-627-first-visit-bridge.md",
+    "renderedReview": "docs/evidence/issue-627-rendered-review.md",
+    "viewports": [
+      "1440x900",
+      "390x844"
+    ],
+    "freshContextComprehension": {
+      "targetRevision": "2872dceef8e8c9a929a3f531261f7d71cad780c4",
+      "questionsAnsweredCorrectly": 5,
+      "questionsAsked": 5,
+      "result": "pass"
+    },
+    "seniorUxReview": {
+      "targetRevision": "2872dceef8e8c9a929a3f531261f7d71cad780c4",
+      "result": "UX accepted",
+      "mustFix": 0,
+      "shouldFix": 0,
+      "recommendation": "strongly recommended"
+    },
+    "tests": {
+      "node": {
+        "passed": 449,
+        "failed": 0
+      },
+      "python": {
+        "passed": 23,
+        "failed": 0
+      },
+      "sitemapPages": 68,
+      "canonicalPages": 81,
+      "staticImages": 105,
+      "diffCheck": "pass"
+    }
+  },
+  "independentReview": {
+    "required": true,
+    "status": "approved",
+    "targetRevision": "5c9ac3f516667b64159982e70a7af05afe00f246",
+    "baseRevision": "d0d74c1029d6eb0d85029a085885cc71d5e478d1",
+    "blockers": 0,
+    "scopeIsolated": true
+  }
+}
