@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const repositoryRoot = path.resolve(__dirname, '..');
+const excludedDirectories = new Set(['.git', 'node_modules', 'playwright-report', 'test-results']);
 const excludedRoutes = new Set([
   'admin/index.html',
   'apply/index.html',
@@ -21,7 +22,7 @@ const excludedRoutes = new Set([
 function htmlFiles(directory = repositoryRoot) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const absolute = path.join(directory, entry.name);
-    if (entry.isDirectory() && entry.name !== '.git') return htmlFiles(absolute);
+    if (entry.isDirectory() && !excludedDirectories.has(entry.name)) return htmlFiles(absolute);
     if (!entry.isFile() || entry.name !== 'index.html') return [];
     return [path.relative(repositoryRoot, absolute).split(path.sep).join('/')];
   });
