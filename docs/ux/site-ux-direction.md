@@ -99,9 +99,11 @@ structured rather than decorative, and specific rather than grandiose.
 
 ## Deliberate scoped variation: Software Signal Learning
 
-- **Previously decided:** Approved learning routes may load `css/learning.css`.
-  Its teal accent, status markers, disclosures, and learner-action components
-  are scoped to the learning experience.
+- **New approved direction (#624):** Approved learning routes may load
+  `css/learning.css`, but the layer inherits the main website's neutral surfaces,
+  borders, and Signal Red emphasis. It remains responsible for Learning-specific
+  status markers, disclosures, and learner-action components without creating a
+  second visual identity.
 - **Previously decided:** Public learning pages remain editorial; private
   learner pages may be more task-oriented. Status must not rely on colour, and
   one dominant learner action appears in the current-status region.
@@ -109,8 +111,8 @@ structured rather than decorative, and specific rather than grandiose.
   but it should inherit the site's typography, restraint, accessibility, and
   content-first hierarchy.
 - **Previously decided:** Home, Writing, article, About, Contact, and Admin do
-  not load the learning stylesheet. The teal identity must not become a casual
-  site-wide accent.
+  not load the learning stylesheet. Shared palette tokens do not make
+  Learning-specific components available outside approved Learning routes.
 
 ## Preserve-first invariants
 
@@ -119,7 +121,8 @@ Product Owner approves a departure:
 
 1. Editorial, content-led character with restrained visual decoration.
 2. Serif/sans role separation and the existing font families.
-3. Near-monochrome public palette; scoped learning colour stays scoped.
+3. Near-monochrome public palette with restrained Signal Red emphasis across
+   the main website and Learning.
 4. Clear page promise and content hierarchy before secondary navigation.
 5. Generous reading space, bounded line lengths, and flat bordered structures.
 6. Responsive reading and decision order with no horizontal overflow.
