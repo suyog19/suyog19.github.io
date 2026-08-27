@@ -2,7 +2,8 @@
   "schema": "issue-delivery-evidence/v1",
   "issue": 607,
   "baselineRevision": "b605c3b8720d28841dc22080b299e2ab566a3962",
-  "implementationRevision": "fd2f1a52a6d3222a252d22eeea3918cb0c04e761",
+  "renderedImplementationRevision": "fd2f1a52a6d3222a252d22eeea3918cb0c04e761",
+  "implementationRevision": "757e74257a5457baa141f8f7bb4a049995f1357a",
   "deliveryRevision": "SELF",
   "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
   "renderedEvidence": {
@@ -17,7 +18,8 @@
     {"command": "node --test tests/*.test.js", "passed": 431, "failed": 0},
     {"command": "npm run test:e2e", "passed": 13, "failed": 0},
     {"command": "python scripts/validate_public_seo.py", "contractsPassed": 13, "failed": 0},
-    {"command": "node --test tests/public-navigation.test.js", "passed": 7, "failed": 0}
+    {"command": "node --test tests/public-navigation.test.js", "passed": 7, "failed": 0},
+    {"command": "python -m unittest tests/test_validate_performance_contracts.py", "passed": 9, "failed": 0}
   ],
   "routeIntegrity": {
     "baselineRoutesPreserved": 66,
