@@ -59,24 +59,33 @@ test('host selection is closed outside exact development and production hosts', 
   }
 });
 
-test('missing provider configuration preserves the inert unavailable action', () => {
-  const { attributes, status } = load('suyogjoshi.com');
+test('unknown hosts preserve the inert unavailable action', () => {
+  const { attributes, status } = load('unknown.example');
   assert.equal(attributes.get('aria-disabled'), 'true');
   assert.equal(attributes.has('href'), false);
   assert.match(status.textContent, /Unavailable until/);
 });
 
-test('source configuration activates only verified development hosts', () => {
+test('source configuration keeps verified Test and Live destinations stage-separated', () => {
   for (const host of ['dev.suyogjoshi.com', 'localhost', '127.0.0.1']) {
     const state = load(host);
     assert.equal(state.attributes.has('href'), false);
     assert.equal(state.attributes.get('aria-disabled'), 'true');
     assert.equal(state.amountAttributes.has('disabled'), false);
   }
-  for (const host of ['suyogjoshi.com', 'www.suyogjoshi.com', 'unknown.example']) {
-    const { attributes } = load(host);
+  for (const host of ['suyogjoshi.com', 'www.suyogjoshi.com']) {
+    const state = load(host);
+    assert.equal(state.attributes.has('href'), false);
+    assert.equal(state.attributes.get('aria-disabled'), 'true');
+    assert.equal(state.amountAttributes.has('disabled'), false);
+    state.amountListeners.get('change')({ target: { value: '500' } });
+    assert.equal(state.attributes.get('href'), 'https://pages.razorpay.com/pl_TTcwSP5BE6K7WC/view?support_amount=500');
+  }
+  for (const host of ['unknown.example']) {
+    const { attributes, amountAttributes } = load(host);
     assert.equal(attributes.has('href'), false);
     assert.equal(attributes.get('aria-disabled'), 'true');
+    assert.equal(amountAttributes.has('disabled'), true);
   }
 });
 
@@ -119,8 +128,8 @@ test('frontend contains no checkout embed, callback, secret, customer data, or t
   assert.doesNotMatch(source, /checkout\.razorpay|callback|key_secret|payment_id|signature|localStorage|sessionStorage|fetch\(|XMLHttpRequest|email=|phone=/i);
 });
 
-test('source records only the approved Test Mode development page', () => {
+test('source records only the approved stage-specific Test and Live pages', () => {
   assert.match(source, /development:\s*'https:\/\/pages\.razorpay\.com\/pl_TTdbTEtwC4vyYF\/view'/);
-  assert.match(source, /production:\s*''/);
-  assert.doesNotMatch(source, /pl_TTcwSP5BE6K7WC|6x2ZLHMT/);
+  assert.match(source, /production:\s*'https:\/\/pages\.razorpay\.com\/pl_TTcwSP5BE6K7WC\/view'/);
+  assert.doesNotMatch(source, /6x2ZLHMT/);
 });
