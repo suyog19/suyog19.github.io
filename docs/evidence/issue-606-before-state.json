@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "issue": 606,
-  "executed_at_utc": "2026-08-27T02:11:21Z",
+  "executed_at_utc": "2026-08-27T02:17:23Z",
   "environment": {
     "type": "local-static-render",
     "url": "http://127.0.0.1:4173",
     "accepted_dev_revision_before_suite": "8da75cfe1a826125bd6cfe1b9f976de96e21e4ae",
-    "suite_and_rendered_source_revision": "6b0ca742419a2b48474ae33d44fff1decb926b4e",
+    "suite_and_rendered_source_revision": "4501400abe8ef6436992c46c30c7627436c55912",
     "rendered_site_change_from_accepted_dev": false,
     "browser": "Playwright Chromium 151.0.7922.34",
     "playwright": "1.62.1",

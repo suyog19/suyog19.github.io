@@ -18,7 +18,7 @@ Alternatives rejected:
 
 ## BEFORE-state proof
 
-The suite commit `6b0ca742419a2b48474ae33d44fff1decb926b4e` was run locally
+The suite commit `4501400abe8ef6436992c46c30c7627436c55912` was run locally
 against its static rendered source. Compared with accepted `dev` at
 `8da75cfe1a826125bd6cfe1b9f976de96e21e4ae`, that revision changes test,
 workflow, validator, and documentation-support files only—no public HTML, CSS,
