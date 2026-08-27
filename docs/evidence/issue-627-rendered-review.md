@@ -74,4 +74,3 @@ The Senior UX review found that all six issue questions pass. The opening remain
 ## Gate D result
 
 UX accepted at `2872dceef8e8c9a929a3f531261f7d71cad780c4`. Must fix: none. Should fix: none. Optional: none in issue scope. Recommendation strength: strongly recommended. No broader redesign or deferred finding is required for issue #627.
-

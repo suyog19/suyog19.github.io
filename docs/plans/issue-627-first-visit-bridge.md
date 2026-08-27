@@ -43,4 +43,3 @@ The existing semantic paragraph and responsive hero layout support the change wi
 - Inspect opening hierarchy, wrapping, first-viewport content, semantic order, console/resource errors, and horizontal overflow.
 - Run a fresh-context comprehension review using the five questions in issue #627.
 - Run homepage contract, full regression, SEO, accessibility-oriented browser, and repository validation suites.
-
