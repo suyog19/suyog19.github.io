@@ -7,12 +7,12 @@ const html = fs.readFileSync("training/index.html", "utf8");
 const script = fs.readFileSync("js/training-journey.js", "utf8");
 const learningCss = fs.readFileSync("css/learning.css", "utf8");
 
-test("My Learning remains only in the main navigation", () => {
+test("My Learning remains reachable in the scoped Learning navigation", () => {
   assert.equal((html.match(/>My Learning<\/a/g) || []).length, 1);
   const primaryNav = html.match(/<nav class="nav"[\s\S]*?<\/nav>/)[0];
   const subnav = html.match(/<nav class="learning-subnav"[\s\S]*?<\/nav>/)[0];
-  assert.match(primaryNav, /href="\.\.\/my-learning\/"/);
-  assert.doesNotMatch(subnav, /My Learning|my-learning/);
+  assert.doesNotMatch(primaryNav, /My Learning|my-learning/);
+  assert.match(subnav, /href="\.\.\/my-learning\/"[^>]*>My Learning<\/a>/);
 });
 
 test("hero actions focus the selector before offering pathway exploration", () => {

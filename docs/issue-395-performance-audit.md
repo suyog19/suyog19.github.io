@@ -40,6 +40,14 @@ Raw growth budgets preserve today's architecture with reviewed headroom: 3,000
 bytes for base, 12,000 for components, 150,000 for pages, and 54,000 for learning.
 They are deterministic change-review signals, not claims about network transfer.
 
+Issue #607 intentionally expands the two smallest shared files to establish the
+approved brand, navigation, responsive menu, focus, CTA/link, footer, and flexible
+page-opening foundation. The accepted files are 3,322 raw bytes for `base.css` and
+13,708 raw bytes for `components.css`; their deterministic review ceilings are now
+3,600 and 14,500 bytes respectively (less than 9% headroom). The larger page-family
+budgets are unchanged. This is reviewed foundation cost, not permission for
+unbounded shared-style growth.
+
 ### Fonts
 
 Rendered inspection found Inter 400/500/600 and Playfair Display 400/500/600/700.

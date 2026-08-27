@@ -13,18 +13,19 @@ async function expectPath(page, expectedPath) {
 test.describe('accepted BEFORE-state rendered journeys', () => {
   test('NAV-01 NAV-02: desktop primary destinations render and remain usable', async ({ page }) => {
     const destinations = [
-      ['Training', '/training/'], ['Writing', '/writing/'], ['Systems', '/systems/'],
-      ['About', '/about/'], ['Contact', '/contact/'],
+      ['Software Signal', '/'], ['Consulting', '/consulting/'], ['Learning', '/training/'],
+      ['Website Services', '/website-services/'], ['Writing', '/writing/'],
+      ['About', '/about/'], ['Subscribe', '/newsletter/'],
     ];
     for (const [name, expectedPath] of destinations) {
       await page.goto('/');
-      const link = page.getByRole('navigation', { name: 'Primary navigation' }).getByRole('link', { name });
+      const link = page.getByRole('navigation', { name: 'Primary navigation' }).getByRole('link', { name, exact: true });
       await expect(link).toBeVisible();
       await link.click();
       await expectPath(page, expectedPath);
     }
     await page.goto('/about/');
-    await page.getByRole('link', { name: /Home/ }).first().click();
+    await page.getByRole('link', { name: /Software Signal by Suyog Joshi/ }).first().click();
     await expectPath(page, '/');
   });
 
