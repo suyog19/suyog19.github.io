@@ -33,6 +33,26 @@ test("hero actions lead with format choice before deeper pathway exploration", (
   assert.match(script, /target\.focus\(\{ preventScroll: true \}\)/);
 });
 
+test("hero inherits the main site's editorial colour and type hierarchy", () => {
+  const hero = html.match(
+    /<section class="training-hero[\s\S]*?<\/section>/,
+  )[0];
+  assert.match(hero, /<p class="eyebrow">Software Signal Learning<\/p>/);
+  assert.doesNotMatch(hero, /<p class="learning-eyebrow">/);
+  assert.match(
+    learningCss,
+    /\.training-journey-page \.journey-hero \{ background: var\(--color-bg\);/,
+  );
+  assert.match(
+    learningCss,
+    /\.training-journey-page \.journey-hero h1 \{[^}]*font-family: var\(--font-serif\);[^}]*font-weight: 500;/,
+  );
+  assert.match(
+    learningCss,
+    /\.training-journey-page \.journey-hero \.training-lead \{[^}]*color: var\(--color-text\);/,
+  );
+});
+
 test("the commitment ladder exposes six honest learning rungs", () => {
   const formats = html.match(
     /<section class="learning-format-strip"[\s\S]*?<\/section>/,
