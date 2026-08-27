@@ -1,0 +1,55 @@
+{
+  "schema": "issue-delivery-evidence/v1",
+  "issue": 626,
+  "implementationRevision": "61a661db34a0619f2ea9c748cebb8887a345a40c",
+  "reviewedEvidenceRevision": "b96b21e12ae944a0507cd32112125d22d54a4a38",
+  "deliveryRevision": "SELF",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "classification": {
+    "schema": "classification/v1",
+    "targetRevision": "77c7af33e4ad91a3ecfe0983387f5f36d78393be",
+    "deliveryProfile": "Lean",
+    "characteristics": {}
+  },
+  "testResult": {
+    "schema": "test-result/v1",
+    "targetRevision": "b96b21e12ae944a0507cd32112125d22d54a4a38",
+    "node": {"passed": 446, "failed": 0},
+    "focusedAffected": {"passed": 22, "failed": 0},
+    "publicSeoContracts": {"passed": 13, "failed": 0},
+    "canonicalPages": 81,
+    "sitemapRoutes": 68,
+    "staticImages": 105,
+    "repositoryValidators": "pass",
+    "performanceContract": "pass",
+    "diffCheck": "pass"
+  },
+  "seniorUx": {
+    "schema": "ux-verdict/v1",
+    "targetRevision": "61a661db34a0619f2ea9c748cebb8887a345a40c",
+    "verdict": "pass",
+    "viewports": [
+      {"width": 1440, "height": 900},
+      {"width": 390, "height": 844}
+    ],
+    "routes": ["/consulting/", "/website-services/", "/training/"],
+    "horizontalOverflow": false,
+    "recommendationStrength": "strongly recommended",
+    "mustFix": [],
+    "acceptedDeviations": []
+  },
+  "independentReview": {
+    "schema": "independent-review/v1",
+    "targetRevision": "b96b21e12ae944a0507cd32112125d22d54a4a38",
+    "implementationRevision": "61a661db34a0619f2ea9c748cebb8887a345a40c",
+    "freshContext": true,
+    "producerContextId": "/root/issue_626_independent_review",
+    "implementationContextTrusted": false,
+    "accessMode": "read-only",
+    "verdict": "pass",
+    "findings": [],
+    "blockers": [],
+    "residualRisk": "Low; customer and learner proof remains intentionally absent until genuine, permissioned evidence exists."
+  },
+  "productionActivity": false
+}
