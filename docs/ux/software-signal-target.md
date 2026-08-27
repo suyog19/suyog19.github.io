@@ -368,22 +368,21 @@ Target: **quietly premium + editorial + engineered**.
 - Motion is optional and only supports state or diagram comprehension; the
   experience remains complete with reduced motion or no JavaScript.
 
-### Proposed Software Signal accent
+### Software Signal accent
 
-Adopt the existing deep red `#b91c1c` as **Signal Red**, the current approved
-primary platform accent direction. This evolves an established site token into an
-ownable brand signal rather than introducing an unrelated colour. It is not an
-immutable future constant: rendered Senior UX or accessibility evidence may
-justify an adjusted accessible value without reopening the overall colour
-direction.
+**Current Product Owner decision (#650):** Petrol Teal is the active platform
+accent. It supersedes Signal Red, which was approved under #605/#624 by promoting
+an existing site token into the shared identity. That historical rationale is
+preserved here; production review later found red more urgent/assertive than the
+intended calm, technical character.
 
 | Role | Direction |
 |---|---|
-| Signal Red | `#b91c1c`; selected emphasis, key rules/markers, primary platform links or controls where contrast passes. |
-| Dark Signal | `#7f1d1d`; optional darker text/control state when needed for contrast. |
-| Signal Wash | `#fef2f2`; sparse background or diagram emphasis, never a default card colour. |
+| Petrol Teal | `#1f5a5a`; selected emphasis, key rules/markers, primary platform links or controls where contrast passes. |
+| Dark Petrol Teal | `#174646`; darker text/control, hover, and active state. |
+| Petrol Teal Wash | `#f1f6f5`; sparse background or diagram emphasis, never a default card colour. |
 | Neutral foundation | Existing white, near-black, grey text, pale surfaces, and borders remain dominant. |
-| Learning | Inherits the neutral foundation and restrained Signal Red emphasis; status/action meaning remains explicit without colour. |
+| Learning | Inherits the neutral foundation and restrained Petrol Teal emphasis; status/action meaning remains explicit without colour. |
 
 Do not assign different bright colours to Framework, Research, Consulting,
 Learning, Writing, Systems, or Website Services. Hierarchy comes from structure,
@@ -465,7 +464,7 @@ labels remain explicit.
    the Framework.
 5. Writing and Systems read as evidence of thinking and practice, not as the site's
    business architecture or a uniform card catalogue.
-6. Signal Red is the only site-wide brand accent, including restrained emphasis
+6. Petrol Teal is the only site-wide brand accent, including restrained emphasis
    on Learning surfaces, and no workstream depends on colour alone.
 7. The page varies composition through typography, framework/evidence structures,
    density, and whitespace without adopting generic AI/SaaS/agency aesthetics.
@@ -490,7 +489,7 @@ labels remain explicit.
 | Website Services is a secondary homepage link. | Make it top-level navigation and give it a deliberate adjacent-service module with explicit boundary. | Reflect its active professional-service role without distorting the Framework. | #607/#608 |
 | Weekly appears mid/late page and in some navigation/footer contexts. | Make Subscribe a persistent header action and retain one substantive late-page section. | Support recurring audience growth without interruption. | #607/#608 |
 | Founder credibility appears late. | Show endorsement in hero/header and concise proof before final CTA. | Establish trust earlier without résumé-first composition. | #607/#608 |
-| Near-monochrome public system uses red sparingly; Learning previously owned teal. | Formalize red as Signal Red across the site, including Learning. | Create one recognizable identity through an existing accessible direction. | #607/#624 |
+| Near-monochrome public system used red sparingly; Learning previously owned teal. | Signal Red was formalized across the site in #607/#624, then superseded by one shared Petrol Teal system in #650. | Preserve one recognizable identity while shifting its personality from urgent to calm and engineered. | #607/#624/#650 |
 
 No #604 route is retired or redirected by this direction.
 
@@ -504,12 +503,12 @@ dependency, CMS, font, client router, or backend change is required.
   conventions.
 - The flat navigation model extends the current progressive menu without nested
   state. Shared header/footer updates should remain in existing HTML/CSS/JS patterns.
-- Signal Red reuses existing token truth; #607 should promote semantic aliases
-  rather than duplicate raw colours or create a second design system.
+- Petrol Teal reuses the semantic aliases established by #607/#624; #650 changes
+  their authoritative values rather than creating a second design system.
 - Framework diagrams can use semantic HTML/CSS and accessible prose. Add raster or
   SVG media only if it communicates relationships more clearly and passes image
   performance/alternative-text review.
-- Learning inherits the shared neutral and Signal Red tokens while its components
+- Learning inherits the shared neutral and Petrol Teal tokens while its components
   remain route-scoped. Shared components must never make colour the only
   distinction between platform and Learning state.
 - The homepage hierarchy is long but feasible if #608 curates each section and
@@ -587,9 +586,10 @@ dependency, CMS, font, client router, or backend change is required.
      Software Signal surface.
   3. **Approved:** identity/problem framing → Framework → Research/evidence →
      engagement paths, with Senior UX control of section weight and rhythm.
-  4. **Superseded by approved #624 follow-up:** Signal Red (`#b91c1c`) is the
-     current primary platform accent across the main website and Learning;
-     rendered/accessibility evidence may justify an adjusted value.
+  4. **Historical decision, superseded by #650:** #624 made Signal Red
+     (`#b91c1c`) the primary platform accent across the main website and Learning.
+     The Product Owner later selected Petrol Teal (`#1f5a5a`) with dark
+     `#174646` and wash `#f1f6f5` variants after production review.
   5. **Approved after revision:** withdraw the five-movement scaffold as the
      public Framework structure. Present the canonical North Star, eight branches,
      cross-cutting Security, Methods of Investigation, and evidence-feedback loop.

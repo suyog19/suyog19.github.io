@@ -1,7 +1,7 @@
 .software-signal-learning {
   --learning-accent: var(--color-signal);
   --learning-accent-strong: var(--color-signal);
-  --learning-accent-soft: var(--color-surface);
+  --learning-accent-soft: var(--color-signal-wash);
   --learning-border: var(--color-border);
 }
 

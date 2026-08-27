@@ -61,7 +61,8 @@ value” without inventing inventory.
    professional learning, and an adjacent website service respectively.
 4. Writing and Systems read as evidence/discovery surfaces, while About keeps
    Suyog visibly accountable for Software Signal.
-5. Signal Red remains restrained, black surfaces are exceptional, and numbering
+5. The shared accent remains restrained (Signal Red at delivery; superseded by
+   Petrol Teal in #650), black surfaces are exceptional, and numbering
    appears only for canonical branches or genuinely ordered processes.
 6. All #604 routes and preserved interactions remain functional at desktop and
    390px mobile; authenticated and third-party mutations remain untouched.
