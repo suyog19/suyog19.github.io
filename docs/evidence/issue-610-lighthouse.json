@@ -1,0 +1,24 @@
+{
+  "schema": "issue-610-lighthouse/v1",
+  "issue": 610,
+  "targetRevision": "62bcf47e5662514c8de50676b275de9689e2e19e",
+  "lighthouseVersion": "13.4.1",
+  "environment": "local static server at http://127.0.0.1:8080",
+  "profiles": {
+    "home-mobile": {"performance": 85, "accessibility": 100, "bestPractices": 77, "seo": 100, "lcpMs": 3306, "cls": 0.0037, "tbtMs": 51},
+    "home-desktop": {"performance": 99, "accessibility": 100, "bestPractices": 77, "seo": 100, "lcpMs": 795, "cls": 0.0079, "tbtMs": 0},
+    "contact-mobile": {"performance": 75, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcpMs": 5085, "cls": 0, "tbtMs": 38},
+    "contact-desktop": {"performance": 99, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcpMs": 752, "cls": 0.0006, "tbtMs": 0},
+    "article-mobile": {"performance": 93, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcpMs": 2929, "cls": 0.0011, "tbtMs": 26},
+    "article-desktop": {"performance": 99, "accessibility": 100, "bestPractices": 100, "seo": 100, "lcpMs": 827, "cls": 0.0007, "tbtMs": 0}
+  },
+  "comparison": {
+    "homeMobilePerformance": {"before": 76, "after": 85},
+    "contactMobilePerformance": {"before": 75, "after": 75},
+    "articleMobilePerformance": {"before": 74, "after": 93},
+    "sampledAccessibility": {"beforeRange": "95-100 with contrast findings", "after": 100},
+    "desktopPerformance": {"beforeRange": "99-100", "afterRange": "99-99"}
+  },
+  "knownEnvironmentFinding": "Home best-practices 77 is unchanged from #604 and remains attributable to third-party cookie/Chrome Issues observations.",
+  "result": "pass"
+}

@@ -7049,7 +7049,7 @@
 .framework-branches strong { line-height: 1.35; }
 .framework-branches small { color: var(--color-text-muted); line-height: 1.55; }
 .framework-security { display: grid; grid-template-columns: 9rem 8rem 1fr; align-items: center; padding: 1rem 1.75rem; background: var(--color-signal); color: white; }
-.framework-security span, .framework-security small { color: rgba(255,255,255,.78); }
+.framework-security span, .framework-security small { color: white; }
 .framework-security strong { font-family: var(--font-serif); font-size: 1.35rem; }
 .framework-method { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: center; padding: 1.6rem 1.75rem; background: var(--color-surface); }
 .framework-method div { display: grid; gap: .4rem; }
@@ -7084,7 +7084,9 @@
 .home-evidence { background: var(--color-bg); }
 .evidence-composition { display: grid; grid-template-columns: 1.25fr .75fr; border-block: 1px solid var(--color-border-strong); }
 .evidence-lead { min-height: 29rem; padding: clamp(2rem, 5vw, 4rem); border-right: 1px solid var(--color-border-strong); display: flex; flex-direction: column; justify-content: flex-end; background: var(--color-text); color: white; }
-.evidence-type, .evidence-notes article > span { color: #fca5a5; font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.evidence-type, .evidence-notes article > span { font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.evidence-type { color: #fca5a5; }
+.evidence-notes article > span { color: var(--color-signal); }
 .evidence-lead h3 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.6rem); max-width: 13ch; margin: 1rem 0; }
 .evidence-lead p { max-width: 50ch; color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 2rem; }
 .evidence-lead .article-link { color: white; border-color: rgba(255,255,255,.7); }

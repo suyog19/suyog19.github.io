@@ -1,0 +1,67 @@
+{
+  "schema": "issue-delivery-evidence/v1",
+  "issue": 610,
+  "testedImplementationRevision": "62bcf47e5662514c8de50676b275de9689e2e19e",
+  "reviewedEvidenceRevision": "95bb9531a8b1a936e9e3879d9f068b553592821e",
+  "deliveryRevision": "SELF",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "releaseRecommendation": "READY FOR #611",
+  "testResult": {
+    "schema": "test-result/v1",
+    "targetRevision": "62bcf47e5662514c8de50676b275de9689e2e19e",
+    "node": {"passed": 437, "failed": 0},
+    "playwright": {"passed": 13, "failed": 0, "skipped": 0, "retries": 0},
+    "publicSeoContracts": {"passed": 13, "failed": 0},
+    "focusedPython": {"passed": 32, "failed": 0},
+    "routeDisposition": {"preserved": 66, "redirected": 0, "retired": 0, "unaccounted": 0},
+    "canonicalPages": 81,
+    "sitemapRoutes": 68,
+    "images": 103,
+    "browserRenders": {"passed": 39, "failed": 0}
+  },
+  "architectureDecision": {
+    "schema": "architecture-decision/v1",
+    "targetRevision": "95bb9531a8b1a936e9e3879d9f068b553592821e",
+    "freshContext": true,
+    "decision": "accepted",
+    "releaseReadiness": "READY",
+    "blockingFindings": []
+  },
+  "functionalQa": {
+    "schema": "functional-qa-verdict/v1",
+    "targetRevision": "95bb9531a8b1a936e9e3879d9f068b553592821e",
+    "freshContext": true,
+    "producerContextId": "/root/issue_606_final_review",
+    "verdict": "pass",
+    "releaseReadiness": "READY",
+    "findings": [],
+    "blockers": [],
+    "coverageLimitations": [
+      "No real contact, newsletter, authenticated, payment, email-delivery, or backend side effect was exercised.",
+      "Production-host and physical-device behavior remains for #611 smoke."
+    ]
+  },
+  "independentReview": {
+    "schema": "independent-review/v1",
+    "targetRevision": "95bb9531a8b1a936e9e3879d9f068b553592821e",
+    "freshContext": true,
+    "producerContextId": "/root/issue_606_final_review",
+    "implementationContextTrusted": false,
+    "accessMode": "read-only",
+    "verdict": "pass",
+    "releaseReadiness": "READY",
+    "findings": [],
+    "blockers": [],
+    "residualRisk": "low; external services, physical devices, and the promoted production host remain #611 smoke responsibilities"
+  },
+  "seniorUx": {
+    "targetRevision": "95bb9531a8b1a936e9e3879d9f068b553592821e",
+    "freshContext": true,
+    "verdict": "UX Gate D accepted",
+    "recommendationStrength": "strongly recommended",
+    "mustFix": [],
+    "shouldFix": [],
+    "websiteServicesCredibility": "accepted"
+  },
+  "scope": {"productionPromotionStarted": false, "issue611Started": false}
+}
