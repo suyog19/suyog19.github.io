@@ -17,8 +17,10 @@ LEARNING_ROOTS = {"apply", "learn", "my-learning", "privacy", "training"}
 SUPPORT_ROOTS = {"support"}
 CARD_ROOTS = {"card"}
 RAW_SIZE_BUDGETS = {
-    "css/base.css": 3000,
-    "css/components.css": 12000,
+    # Issue #607 deliberately expands the shared token/shell foundation. These
+    # reviewed ceilings retain less than 9% headroom over the accepted files.
+    "css/base.css": 3600,
+    "css/components.css": 14500,
     "css/pages.css": 150000,
     "css/learning.css": 54000,
     "css/support.css": 6000,

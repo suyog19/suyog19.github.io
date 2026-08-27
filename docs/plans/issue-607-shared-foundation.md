@@ -87,3 +87,11 @@ representative review.
 No Product Owner decision remains for #607. Exact homepage hierarchy, substantive
 Framework/Research content, and broad page-family composition remain with #608
 and #609.
+
+## Shared asset budget disposition
+
+The accepted foundation measures 3,322 raw bytes in `base.css` and 13,708 raw
+bytes in `components.css`. The deterministic ceilings are narrowly reset to 3,600
+and 14,500 bytes, retaining less than 9% review headroom. This makes the intended
+shared-shell cost explicit while preserving the existing scoped-asset checks and
+all larger page-family budgets.
