@@ -55,8 +55,11 @@ test('Signal Red certainty text has WCAG AA contrast on the neutral surface', ()
   assert.ok(contrast('#b91c1c', '#f7f6f3') >= 4.5);
 });
 
-test('active Learning styles contain no legacy teal palette literals', () => {
-  assert.doesNotMatch(`${css}\n${pageCss}`, /#(?:0f766e|115e59|f0fdfa|99d5cf|0b4f4a)|rgba\(15\s*,\s*118\s*,\s*110/i);
+test('active Learning styles contain no retired teal palette literals', () => {
+  assert.doesNotMatch(
+    `${css}\n${pageCss}`,
+    /#(?:0f766e|115e59|f0fdfa|99d5cf|0b4f4a|ccfbf1)|rgba\(15\s*,\s*(?:118|76)\s*,\s*(?:110|71)/i,
+  );
 });
 
 test('certainty meaning remains explicit without colour', () => {
