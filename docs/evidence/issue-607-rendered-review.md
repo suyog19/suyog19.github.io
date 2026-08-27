@@ -9,6 +9,12 @@
   repository on port 8080
 - BEFORE comparison: `docs/evidence/issue-604/screenshots/`
 - AFTER captures: `docs/evidence/issue-607/screenshots/`
+- Captured implementation revision: `fd2f1a52a6d3222a252d22eeea3918cb0c04e761`
+- Process revision: `fa26e629787fbab681b389f02a9f9a6e28d8481a`
+
+The final delivery revision is an evidence-only successor to the captured
+implementation revision. `docs/evidence/issue-607-delivery.json` binds the
+review, rendered evidence, and test results to both exact revisions.
 
 The full-page home capture proves page-shell and footer continuity. Focus and
 mobile state behaviour are asserted functionally by the #606 Playwright suite;
