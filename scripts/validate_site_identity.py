@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -15,6 +16,9 @@ PROFILE_ID = "https://suyogjoshi.com/about/#profile"
 WRITING_ID = "https://suyogjoshi.com/writing/#collection"
 SYSTEMS_ID = "https://suyogjoshi.com/systems/#collection"
 TRAINING_ID = "https://suyogjoshi.com/training/#collection"
+RESEARCH_ID = "https://suyogjoshi.com/research/#collection"
+CONSULTING_SERVICE_ID = "https://suyogjoshi.com/consulting/#service"
+WEBSITE_SERVICE_ID = "https://suyogjoshi.com/website-services/#service"
 SERVICE_ID = "https://suyogjoshi.com/training/#service"
 BRAND_ID = "https://suyogjoshi.com/training/#brand"
 COURSE_LIST_ID = "https://suyogjoshi.com/training/#course-list"
@@ -26,6 +30,17 @@ PUBLIC_PROFILES = {
 PUBLIC_SYSTEM_REPOSITORIES = {
     "systems/ai-dev-orchestrator/index.html": "https://github.com/suyog19/ai-dev-orchestrator",
     "systems/survey-poll-serverless/index.html": "https://github.com/suyog19/survey-poll-app",
+}
+FAMILY_TITLES = {
+    "consulting/index.html": "Software Engineering Consulting | Software Signal by Suyog Joshi",
+    "training/index.html": "Professional Learning | Software Signal by Suyog Joshi",
+    "website-services/index.html": "Website Services | Software Signal by Suyog Joshi",
+    "framework/index.html": "Reliable Engineering Framework | Software Signal by Suyog Joshi",
+    "research/index.html": "Engineering Research | Software Signal by Suyog Joshi",
+    "newsletter/index.html": "Software Signal Weekly | Suyog Joshi",
+    "writing/index.html": "Software Engineering Writing | Software Signal by Suyog Joshi",
+    "systems/index.html": "Engineering Systems | Software Signal by Suyog Joshi",
+    "about/index.html": "About | Suyog Joshi",
 }
 
 
@@ -80,6 +95,18 @@ def validate_person(person: dict[str, object] | None, location: str) -> list[str
 
 def main() -> int:
     errors: list[str] = []
+    for relative, title in FAMILY_TITLES.items():
+        source = (ROOT / relative).read_text(encoding="utf-8")
+        escaped_title = re.escape(title)
+        patterns = (
+            rf"<title>\s*{escaped_title}\s*</title>",
+            rf"<meta\s+property=\"og:title\"\s+content=\"{escaped_title}\"\s*/?>",
+            rf"<meta\s+name=\"twitter:title\"\s+content=\"{escaped_title}\"\s*/?>",
+        )
+        if any(re.search(pattern, source, re.MULTILINE) is None for pattern in patterns):
+            errors.append(f"{relative}: metadata titles must use the approved family identity: {title}")
+        if len(title) > 70:
+            errors.append(f"{relative}: approved title exceeds the 70-character usability guardrail")
     _, home_nodes = load_nodes("index.html")
     website = node_by_id(home_nodes, WEBSITE_ID)
     errors.extend(validate_person(node_by_id(home_nodes, PERSON_ID), "index.html"))
@@ -112,6 +139,24 @@ def main() -> int:
             errors.append(f"{relative}: missing CollectionPage {collection_id}")
         elif reference_id(collection.get("creator")) != PERSON_ID or reference_id(collection.get("isPartOf")) != WEBSITE_ID:
             errors.append(f"{relative}: CollectionPage must connect the stable Person and WebSite")
+
+    _, research_nodes = load_nodes("research/index.html")
+    research = node_by_id(research_nodes, RESEARCH_ID)
+    if research is None or research.get("@type") != "CollectionPage":
+        errors.append(f"research/index.html: missing CollectionPage {RESEARCH_ID}")
+    elif reference_id(research.get("creator")) != PERSON_ID or reference_id(research.get("isPartOf")) != WEBSITE_ID:
+        errors.append("research/index.html: CollectionPage must connect the stable Person and WebSite")
+
+    for relative, service_id in (
+        ("consulting/index.html", CONSULTING_SERVICE_ID),
+        ("website-services/index.html", WEBSITE_SERVICE_ID),
+    ):
+        _, nodes = load_nodes(relative)
+        service_node = node_by_id(nodes, service_id)
+        if service_node is None or service_node.get("@type") != "Service":
+            errors.append(f"{relative}: missing Service {service_id}")
+        elif reference_id(service_node.get("provider")) != PERSON_ID or reference_id(service_node.get("isPartOf")) != WEBSITE_ID:
+            errors.append(f"{relative}: Service must connect the stable Person and WebSite")
 
     _, training_nodes = load_nodes("training/index.html")
     training = node_by_id(training_nodes, TRAINING_ID)
@@ -188,7 +233,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(f"Validated the Person/WebSite/ProfilePage graph, 3 public collections, {article_count} articles, and {course_count} courses.")
+    print(f"Validated the metadata family matrix, Person/WebSite/ProfilePage graph, 4 public collections, 3 services, {article_count} articles, and {course_count} courses.")
     return 0
 
 
