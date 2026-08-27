@@ -1,0 +1,99 @@
+{
+  "schema": "frontend-change-evidence/v1",
+  "issue": 635,
+  "implementationRevision": "51457384240125dd697f8adb08526ceae18edb80",
+  "process": {
+    "source": "suyog19/software-engineering-process",
+    "version": "1.0.0",
+    "revision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+    "deliveryProfile": "Standard",
+    "characteristics": {
+      "observable_behavior": true
+    }
+  },
+  "scope": {
+    "assets": [
+      "favicon.svg",
+      "favicon.ico"
+    ],
+    "uxBrief": "docs/plans/issue-635-signal-favicon.md",
+    "productionActivity": false
+  },
+  "assetContract": {
+    "identity": "white SS monogram on Signal Red #b91c1c",
+    "svgViewBox": "0 0 100 100",
+    "icoSizes": [
+      "16x16",
+      "32x32",
+      "48x48"
+    ],
+    "globalAssetVariants": [
+      "favicon.svg",
+      "favicon.ico"
+    ],
+    "learningSpecificVariant": false
+  },
+  "testResults": [
+    {
+      "suite": "public-seo",
+      "result": "pass",
+      "detail": "13 focused contracts; sitemap current for 68 public indexable pages"
+    },
+    {
+      "suite": "node",
+      "result": "pass",
+      "detail": "442/442"
+    },
+    {
+      "suite": "python-unit",
+      "result": "pass",
+      "detail": "23/23 public inventory and training tests"
+    },
+    {
+      "suite": "playwright",
+      "result": "pass",
+      "detail": "13/13"
+    },
+    {
+      "suite": "representative-favicon-resolution",
+      "result": "pass",
+      "detail": "HTTP 200 at root, Learning landing, two-level course, and three-level demo; zero site-attributed resource errors"
+    }
+  ],
+  "functionalQa": {
+    "schema": "functional-qa-verdict/v1",
+    "targetRevision": "51457384240125dd697f8adb08526ceae18edb80",
+    "verdict": "PASS",
+    "localReferencesChecked": 141,
+    "brokenReferences": 0,
+    "depthsCovered": [
+      "root",
+      "one-level",
+      "two-level",
+      "three-level"
+    ]
+  },
+  "seniorUx": {
+    "schema": "ux-verdict/v1",
+    "targetRevision": "51457384240125dd697f8adb08526ceae18edb80",
+    "verdict": "pass",
+    "disposition": "UX ACCEPTED — strongly recommended for dev merge",
+    "mustFix": [],
+    "shouldFix": [],
+    "reviewedSizes": [
+      16,
+      32,
+      48
+    ],
+    "reviewedChrome": [
+      "light",
+      "dark"
+    ]
+  },
+  "knownLimitations": [
+    "Browser favicon caches may temporarily retain the previous mark in an existing profile.",
+    "Platform-specific favicon rasterization can vary slightly.",
+    "Three pre-existing legacy redirect-only HTML files omit favicon markup; this is unchanged."
+  ],
+  "rollback": "Revert the #635 asset commit to restore the previous synchronized SVG and ICO files."
+}
