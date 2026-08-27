@@ -48,6 +48,12 @@ page-opening foundation. The accepted files are 3,322 raw bytes for `base.css` a
 budgets are unchanged. This is reviewed foundation cost, not permission for
 unbounded shared-style growth.
 
+Issue #608 adds a responsive, semantic homepage Framework map and art-directed
+homepage composition to `pages.css`. The accepted file measures 160,794 raw bytes;
+its deterministic ceiling is 165,000 bytes (2.62% headroom). The homepage adds no
+image, script, font, framework, or runtime dependency, and all other asset budgets
+remain unchanged.
+
 ### Fonts
 
 Rendered inspection found Inter 400/500/600 and Playfair Display 400/500/600/700.
