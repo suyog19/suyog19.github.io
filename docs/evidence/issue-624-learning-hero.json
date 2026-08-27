@@ -2,7 +2,7 @@
   "schema": "issue-delivery-evidence/v1",
   "issue": 624,
   "scope": "Product Owner visual correction: align the first Learning section with the main-site hero reference; dev only",
-  "implementationRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+  "implementationRevision": "be4d958b51dc89de5be265a69d75a55153f9d403",
   "deliveryRevision": "SELF",
   "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
   "classification": {
@@ -19,7 +19,7 @@
   },
   "testResult": {
     "schema": "test-result/v1",
-    "targetRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+    "targetRevision": "be4d958b51dc89de5be265a69d75a55153f9d403",
     "node": {"passed": 442, "failed": 0},
     "playwright": {"passed": 13, "failed": 0, "skipped": 0},
     "focusedPython": {"passed": 10, "failed": 0},
@@ -27,7 +27,7 @@
   },
   "seniorUx": {
     "schema": "ux-verdict/v1",
-    "targetRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+    "targetRevision": "be4d958b51dc89de5be265a69d75a55153f9d403",
     "verdict": "pass",
     "referenceRoute": "/website-services/",
     "reviewedRoute": "/training/",
@@ -51,7 +51,7 @@
   },
   "functionalQa": {
     "schema": "functional-qa-verdict/v1",
-    "targetRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+    "targetRevision": "be4d958b51dc89de5be265a69d75a55153f9d403",
     "verdict": "pass",
     "findings": [],
     "coverageLimitations": ["No backend, authenticated, payment, email, deployment, or production side effect was exercised."],
