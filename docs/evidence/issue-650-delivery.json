@@ -50,6 +50,12 @@
     "recommendation": "strongly recommended"
   },
   "independentReview": {
-    "status": "pending"
+    "status": "approved",
+    "reviewer": "/root/independent_review",
+    "baseRevision": "e26b9cc49282114317ead9ef079908c2bc3f6591",
+    "targetRevision": "0cbba2c2348c18b05302c6b8057982e5a428190f",
+    "blockingFindings": 0,
+    "materialFindings": 0,
+    "note": "The one-time raster migration helper is Windows-specific and should remain a controlled tool; committed generated assets are valid."
   }
 }
