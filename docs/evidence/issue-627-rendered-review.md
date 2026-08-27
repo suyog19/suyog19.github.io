@@ -57,7 +57,21 @@ Semantic inspection confirms the intended order: founder/platform identity, mott
 - Framework, Research, Consulting, and Learning are presented as parts of one practical body of work.
 - The existing tension section still performs the deeper “why” work without repetition.
 
+## Fresh-context comprehension and Gate D review
+
+Target: `2872dceef8e8c9a929a3f531261f7d71cad780c4`
+
+A reviewer instructed to assume no prior knowledge of Suyog Joshi or Software Signal answered:
+
+1. Software Signal is Suyog Joshi’s practical body of engineering work, joining a Framework, Research, Consulting, and Learning—not merely a consultancy or AI-tool catalogue.
+2. It is for software professionals and teams.
+3. It is concerned with preserving sound engineering judgment, reliability, and accountability as AI performs more engineering work.
+4. A visitor can explore the Reliable Engineering Framework, read the research, and find practical help through Consulting or Learning.
+5. Suyog Joshi is the founder and practitioner/author accountable for the body of work.
+
+The Senior UX review found that all six issue questions pass. The opening remains distinctive, lowers first-use cognitive load, leads naturally into deeper terminology, stays concise at desktop and mobile, improves hierarchy without adding UI, and retains an intellectually serious engineering character.
+
 ## Gate D result
 
-UX-ready, subject to the required fresh-context comprehension review and final independent review. Recommendation strength: strongly recommended. No broader redesign or deferred finding is required for issue #627.
+UX accepted at `2872dceef8e8c9a929a3f531261f7d71cad780c4`. Must fix: none. Should fix: none. Optional: none in issue scope. Recommendation strength: strongly recommended. No broader redesign or deferred finding is required for issue #627.
 
