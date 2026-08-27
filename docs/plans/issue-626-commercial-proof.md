@@ -20,7 +20,7 @@ evidence on Website Services.
   `docs/ux/site-ux-direction.md` and `docs/ux/software-signal-target.md`.
 - Preserve both Consulting offers, Website Services packages and prices, Learning
   readiness/pathway order, Contact handoffs, analytics contracts, and the existing
-  Signal Red/neutral system.
+  shared accent/neutral system (Signal Red at delivery; superseded by Petrol Teal in #650).
 - Existing public writing, systems, course curricula, project briefs, and #603
   render evidence are the source of truth. No new customer truth is inferred.
 

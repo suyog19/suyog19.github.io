@@ -21,8 +21,7 @@ WIDTH, HEIGHT = 1200, 630
 SAFE = 72
 INK = "#171717"
 MUTED = "#60646b"
-CORE_ACCENT = "#9f3f2f"
-LEARNING_ACCENT = "#0f766e"
+BRAND_ACCENT = "#1f5a5a"
 
 
 @dataclass(frozen=True)
@@ -124,7 +123,7 @@ def render(preview: Preview) -> None:
     if preview.series_art:
         add_series_art(canvas)
     draw = ImageDraw.Draw(canvas)
-    accent = LEARNING_ACCENT if preview.learning else CORE_ACCENT
+    accent = BRAND_ACCENT
     text_width = 720 if preview.series_art else 850
 
     label_font = ImageFont.truetype(SANS_BOLD, 18)

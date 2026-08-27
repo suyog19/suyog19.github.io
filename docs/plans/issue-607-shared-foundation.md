@@ -51,8 +51,9 @@ are not mechanically converted in #607.
    the closed shared header without an anonymous-corporate impression.
 2. The seven approved destinations remain calm, keyboard operable, and usable;
    mobile open/close/focus behaviour is at least as strong as #604.
-3. Signal Red identifies brand and selected/action hierarchy while neutral space,
-   typography, and rules still carry most of the composition.
+3. The shared accent identifies brand and selected/action hierarchy while neutral
+   space, typography, and rules still carry most of the composition. Signal Red
+   was the decision at delivery and was superseded by Petrol Teal in #650.
 4. Representative page families remain visibly distinct; the foundation enables
    multiple openings rather than imposing one universal hero.
 5. Every #604 route and critical CTA remains functional unless an approved,

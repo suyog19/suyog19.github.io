@@ -27,7 +27,7 @@ test('learning maps its scoped roles to the main website palette', () => {
   const root = declaration('.software-signal-learning');
   assert.match(root, /--learning-accent:\s*var\(--color-signal\)/);
   assert.match(root, /--learning-accent-strong:\s*var\(--color-signal\)/);
-  assert.match(root, /--learning-accent-soft:\s*var\(--color-surface\)/);
+  assert.match(root, /--learning-accent-soft:\s*var\(--color-signal-wash\)/);
   assert.match(root, /--learning-border:\s*var\(--color-border\)/);
 });
 
@@ -51,8 +51,8 @@ test('shared planning components contain no orange or amber literals', () => {
   assert.doesNotMatch(scoped, /#(?:fff7ed|ffedd5|fdba74|c2410c)|orange|amber|yellow/i);
 });
 
-test('Signal Red certainty text has WCAG AA contrast on the neutral surface', () => {
-  assert.ok(contrast('#b91c1c', '#f7f6f3') >= 4.5);
+test('Petrol Teal certainty text has WCAG AA contrast on the pale brand wash', () => {
+  assert.ok(contrast('#174646', '#f1f6f5') >= 4.5);
 });
 
 test('active Learning styles contain no retired teal palette literals', () => {
