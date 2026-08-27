@@ -96,6 +96,11 @@ index pages can establish patterns without rewriting detail pages. Residual risk
 cross-family CSS growth and page-length drift, controlled through scoped selectors,
 rendered cross-page review, performance contracts, and the #606 suite.
 
+The final purpose-specific additions bring `css/pages.css` to 167,931 raw bytes.
+The evidence-backed ceiling moves from 165,000 to 175,000 bytes (4.0% headroom);
+this is not permission for unrelated growth and avoids a second stylesheet or
+abstraction solely for Framework and Research.
+
 ## Migration and interaction disposition
 
 - All 66 #604 sitemap routes: `preserved`; no redirect or retirement proposed.

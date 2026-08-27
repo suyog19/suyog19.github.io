@@ -54,6 +54,12 @@ its deterministic ceiling is 165,000 bytes (2.62% headroom). The homepage adds n
 image, script, font, framework, or runtime dependency, and all other asset budgets
 remain unchanged.
 
+Issue #609 adds the purpose-specific Framework and Research comprehension/index
+patterns to the established page-family stylesheet rather than introducing a new
+design system or dependency. The accepted file measures 167,931 raw bytes; its
+evidence-backed ceiling is 175,000 bytes (4.0% headroom). This bounded increase is
+not permission for unrelated growth and remains a candidate for later consolidation.
+
 ### Fonts
 
 Rendered inspection found Inter 400/500/600 and Playfair Display 400/500/600/700.

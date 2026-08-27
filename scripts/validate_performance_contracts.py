@@ -22,7 +22,7 @@ RAW_SIZE_BUDGETS = {
     "css/base.css": 3600,
     "css/components.css": 14500,
     # Issue #608 adds the semantic flagship homepage and canonical Framework map.
-    "css/pages.css": 165000,
+    "css/pages.css": 175000,
     "css/learning.css": 54000,
     "css/support.css": 6000,
     "css/card.css": 8000,

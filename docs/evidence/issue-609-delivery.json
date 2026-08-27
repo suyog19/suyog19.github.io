@@ -1,0 +1,35 @@
+{
+  "schema": "issue-delivery-evidence/v1",
+  "issue": 609,
+  "baselineRevision": "6fff11e2e13af19045014f20eeae0c1515a46773",
+  "implementationRevision": "3c22c31c45101511019f00c79857c589dbddc613",
+  "deliveryRevision": "SELF",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "architectureDecision": {
+    "schema": "architecture-decision/v1",
+    "decision": "Reuse static HTML, scoped page-family CSS, #607 tokens/shell, and existing progressive behavior; add no framework, dependency, runtime, route, or backend change.",
+    "residualRisk": "Cross-family CSS growth and long index pages; bounded by scoped selectors, a 175000-byte evidence ceiling, rendered review, and regression validation."
+  },
+  "renderedEvidence": {
+    "review": "docs/evidence/issue-609-rendered-review.md",
+    "screenshots": "docs/evidence/issue-609/screenshots/final/",
+    "viewports": ["1440x900", "1024x768", "390x844"],
+    "families": ["framework", "research", "consulting", "training", "website-services", "writing", "systems", "about", "newsletter"],
+    "uxVerdict": "accepted"
+  },
+  "validation": [
+    {"command": "node --test tests/*.test.js", "passed": 437, "failed": 0},
+    {"command": "npm run test:e2e", "passed": 13, "failed": 0},
+    {"command": "python scripts/validate_public_seo.py", "contractsPassed": 13, "failed": 0},
+    {"command": "python -m unittest tests/test_public_page_inventory.py tests/test_training_consistency.py tests/test_training_delivery_profile.py tests/test_validate_performance_contracts.py", "passed": 32, "failed": 0}
+  ],
+  "routeIntegrity": {
+    "baselineRoutesPreserved": 66,
+    "publicSitemapRoutes": 68,
+    "canonicalPagesValidated": 81,
+    "brokenInternalLinks": 0
+  },
+  "interactionChanges": [],
+  "products": "No public Products route or inventory; no validated public product offer exists.",
+  "scope": {"releaseValidationStarted": false, "deferredTo": [610]}
+}
