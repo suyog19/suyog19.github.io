@@ -41,15 +41,15 @@ test("hero inherits the main site's editorial colour and type hierarchy", () => 
   assert.doesNotMatch(hero, /<p class="learning-eyebrow">/);
   assert.match(
     learningCss,
-    /\.training-journey-page \.journey-hero \{ background: var\(--color-bg\);/,
+    /\.training-journey-page \.journey-hero\s*\{\s*background:\s*var\(--color-bg\);/,
   );
   assert.match(
     learningCss,
-    /\.training-journey-page \.journey-hero h1 \{[^}]*font-family: var\(--font-serif\);[^}]*font-weight: 500;/,
+    /\.training-journey-page \.journey-hero h1\s*\{[^}]*font-family:\s*var\(--font-serif\);[^}]*font-weight:\s*500;/,
   );
   assert.match(
     learningCss,
-    /\.training-journey-page \.journey-hero \.training-lead \{[^}]*color: var\(--color-text\);/,
+    /\.training-journey-page \.journey-hero \.training-lead\s*\{[^}]*color:\s*var\(--color-text\);/,
   );
 });
 
