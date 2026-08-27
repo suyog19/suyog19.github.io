@@ -1,0 +1,126 @@
+{
+  "schema": "production-release-evidence/v1",
+  "issue": 624,
+  "parentEpic": 603,
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "deliveryRevision": "SELF",
+  "releaseCandidate": {
+    "acceptedDevCommit": "4df89aaade1c549de86d539c04ea96d7edb3fea4",
+    "productionBase": "f99b0bdb19d5fbda73df7164cd241e91e9be6e18",
+    "isolatedCandidate": "3c13f0f44942b02ad18e3fcf0d052e743f6bea60",
+    "candidateTree": "211c2853fce47357b0201fe394bd20d49c4c78a3",
+    "selectedCommits": 8,
+    "selectedFiles": 16
+  },
+  "scopeIsolation": {
+    "verdict": "pass",
+    "candidateVsProduction": "Only the 16 traced #624 files changed.",
+    "candidateVsDev": "Only four issue #611 production-evidence artifacts were omitted.",
+    "excludedCommit": "3bc8dbd9060f837518c3ba5e50ccbf131ce85645",
+    "excludedPaths": [
+      "docs/evidence/issue-611-production-release.json",
+      "docs/evidence/issue-611-production-release.md",
+      "docs/evidence/issue-611/screenshots/production-home-1440.png",
+      "docs/evidence/issue-611/screenshots/production-home-390-fullpage.png"
+    ],
+    "unrelatedChangesPromoted": 0
+  },
+  "approval": {
+    "actor": "Product Owner",
+    "decision": "approved production promotion of #624",
+    "recordedIn": "Product Owner production-promotion instruction in the delivery thread",
+    "mergeControl": "human-controlled",
+    "agentAutoMergeConfigured": false
+  },
+  "promotion": {
+    "pullRequest": 633,
+    "pullRequestUrl": "https://github.com/suyog19/suyog19.github.io/pull/633",
+    "humanMergedAt": "2026-08-27T05:51:27Z",
+    "productionCommit": "2e730f0facebe3b776f763c0c392776407425093",
+    "productionTree": "211c2853fce47357b0201fe394bd20d49c4c78a3",
+    "deploymentRun": 33043843157,
+    "deploymentUrl": "https://github.com/suyog19/suyog19.github.io/actions/runs/33043843157",
+    "deploymentStartedAt": "2026-08-27T05:51:29Z",
+    "deploymentCompletedAt": "2026-08-27T05:51:59Z",
+    "deploymentConclusion": "success"
+  },
+  "productionTarget": "https://suyogjoshi.com",
+  "capturedAt": "2026-08-27T05:53:07Z",
+  "testResult": {
+    "schema": "test-result/v1",
+    "targetRevision": "2e730f0facebe3b776f763c0c392776407425093",
+    "exactCandidate": {
+      "node": {"passed": 442, "failed": 0},
+      "pythonPublicInventory": {"passed": 13, "failed": 0},
+      "pythonPerformance": {"passed": 9, "failed": 0},
+      "pythonTraining": {"passed": 10, "failed": 0},
+      "playwright": {"passed": 13, "failed": 0},
+      "publicSeoContracts": {"passed": 13, "failed": 0},
+      "sitemapRoutes": 68
+    },
+    "mainContinuousIntegration": {"workflowsPassed": 14, "failed": 0},
+    "liveHttp": {
+      "routesChecked": 5,
+      "non200": 0,
+      "canonicalMismatches": 0,
+      "assetFailures": 0
+    },
+    "liveRendered": {
+      "viewports": ["1440x1000", "390x844"],
+      "horizontalOverflow": 0,
+      "retiredTealMatches": 0,
+      "siteAttributedConsoleFailures": 0,
+      "pathwayCards": 5,
+      "pipelineState": "IN PIPELINE"
+    }
+  },
+  "productionUx": {
+    "schema": "ux-verdict/v1",
+    "targetRevision": "2e730f0facebe3b776f763c0c392776407425093",
+    "verdict": "pass",
+    "findings": [
+      "Learning exposes the commitment ladder before the preserved deeper pathway.",
+      "Neutral surfaces and restrained Signal Red replace the retired teal identity.",
+      "The hero uses the accepted main-site editorial hierarchy at desktop and mobile.",
+      "State, selection, recommendation, and availability remain explicit without colour."
+    ],
+    "blockers": [],
+    "residualRisk": "Low; external social-card caches may refresh asynchronously."
+  },
+  "functionalQa": {
+    "schema": "functional-qa-verdict/v1",
+    "targetRevision": "2e730f0facebe3b776f763c0c392776407425093",
+    "freshContext": true,
+    "producerContextId": "/root/independent_review_624",
+    "verdict": "pass",
+    "releaseReadiness": "PRODUCTION VERIFIED",
+    "findings": [],
+    "blockers": [],
+    "coverageLimitations": [
+      "No authenticated learner mutation, payment, email, or form submission was exercised."
+    ]
+  },
+  "independentReview": {
+    "schema": "independent-review/v1",
+    "targetRevision": "2e730f0facebe3b776f763c0c392776407425093",
+    "freshContext": true,
+    "producerContextId": "/root/independent_review_624",
+    "implementationContextTrusted": false,
+    "accessMode": "read-only",
+    "verdict": "pass",
+    "releaseReadiness": "PRODUCTION VERIFIED",
+    "findings": [],
+    "blockers": []
+  },
+  "rollback": {
+    "strategy": "Human-reviewed revert of production PR #633 or its contiguous eight-commit candidate range.",
+    "irreversibleChanges": false,
+    "backendOrDataRollbackRequired": false
+  },
+  "residualLimitations": [
+    "Responsive evidence uses browser emulation rather than physical devices.",
+    "Learning CSS has 10 bytes of enforced budget headroom; future additions require consolidation.",
+    "Browser warnings observed during smoke originated only from a local Chrome extension, not the site."
+  ],
+  "finalDisposition": "PRODUCTION VERIFIED"
+}
