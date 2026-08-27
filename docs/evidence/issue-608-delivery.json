@@ -2,7 +2,7 @@
   "schema": "issue-delivery-evidence/v1",
   "issue": 608,
   "baselineRevision": "0528e18856701a8298ba6fde802356860f831cf7",
-  "implementationRevision": "5a0446a2af0a3fae7a3744ec882f149972519dd7",
+  "implementationRevision": "b7648976d0f5262fbd5758eb01df6671996d2a0b",
   "deliveryRevision": "SELF",
   "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
   "renderedEvidence": {

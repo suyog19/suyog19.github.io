@@ -6,7 +6,7 @@
 - AFTER: `docs/evidence/issue-608/screenshots/i2/`
 - Capture: Playwright Chromium, device scale 1, animations disabled, at
   1440×900, 1024×768, and 390×844; default and full-page states
-- Captured implementation revision: `5a0446a2af0a3fae7a3744ec882f149972519dd7`
+- Captured implementation revision: `b7648976d0f5262fbd5758eb01df6671996d2a0b`
 - Baseline revision: `0528e18856701a8298ba6fde802356860f831cf7`
 - Process revision: `fa26e629787fbab681b389f02a9f9a6e28d8481a`
 - Reproduce: serve on port 8080, then set `ISSUE_608_ITERATION=i2` and
@@ -81,6 +81,8 @@ Compared at the same six viewport/state combinations.
 - The desktop proposition holds `Engineer reliably.` as one decisive line while
   retaining an effective two-line mobile treatment.
 - Capture waits for semantic content plus a bounded delay, not third-party idle.
+- Fresh review found and the final render restores the exact canonical branch name
+  `Architecture of AI-Assisted & Agentic Engineering Systems`.
 
 ### Must fix
 
