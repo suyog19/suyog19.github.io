@@ -48,6 +48,16 @@ No site console warnings, errors, or failed resources were observed.
 
 The first render satisfies all six brief invariants. The new content uses existing typography, borders, spacing, links, and breakpoints; no material refinement cycle was required. Semantic source order matches the prospect decision sequence, and the three engagement items use an ordered list.
 
-## Gate D status
+## Gate D acceptance
 
-UX-ready, subject to Senior UX acceptance and final independent review against the committed revision. Recommendation strength: strongly recommended. No broader redesign or deferred finding is required for issue #628.
+Senior UX accepted exact target `24e8dd5334eafde2c05fe0e83c00ebc51ecb6939` after reviewing all seven issue questions.
+
+- Prospects can recognize the five customer problems without internal strategy knowledge.
+- Breadth stays bounded around AI adoption/practice, consequential decisions, reliability, and effectiveness.
+- The two priced launch cards remain first, visually strongest, directly packaged, and comparable.
+- Broader assessments and continued advisory depend on fit and agreed scope, without a direct-buy or broad-service promise.
+- Advisory Engagement is time-bounded and customer-owned for delivery and implementation.
+- Both unsure-prospect paths use the existing #625 `consulting-help-choose` context without duplicating intake mechanics.
+- At 390px, offers, five problems, and three engagement items stack in semantic order at 335px with zero overflow.
+
+Must fix: none. Should fix: none. Optional: none in scope. Recommendation strength: strongly recommended. No broader redesign or deferred finding is required for issue #628.
