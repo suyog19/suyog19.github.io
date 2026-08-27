@@ -1,7 +1,7 @@
 # Issue #609 — Rendered page-family review
 
-Status: UX accepted  
-Baseline: `6fff11e2e13af19045014f20eeae0c1515a46773`  
+Status: UX accepted
+Baseline: `6fff11e2e13af19045014f20eeae0c1515a46773`
 Implementation: `3c22c31c45101511019f00c79857c589dbddc613`
 
 ## Evidence matrix
@@ -100,4 +100,3 @@ and attention cost remained visible.
 - No #604 interaction outcome changed; the automated contract required no update.
 - No Product Owner consultation was required: the work follows approved #605–#608
   hierarchy and personality without a new colour, concept, route, or offer.
-
