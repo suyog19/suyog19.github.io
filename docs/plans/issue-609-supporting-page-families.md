@@ -1,7 +1,7 @@
 # Issue #609 — Supporting page-family evolution
 
-Status: Gate A accepted for implementation  
-Baseline: `6fff11e2e13af19045014f20eeae0c1515a46773`  
+Status: Gate A accepted for implementation
+Baseline: `6fff11e2e13af19045014f20eeae0c1515a46773`
 Parent: #603
 
 ## UX change brief
