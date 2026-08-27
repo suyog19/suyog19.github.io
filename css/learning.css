@@ -494,11 +494,11 @@
 .learning-subnav .container { align-items: center; display: flex; gap: 1.4rem; min-height: 3.1rem; overflow-x: auto; }
 .learning-subnav strong, .learning-subnav a { flex: 0 0 auto; font-size: .82rem; }
 .learning-subnav a { color: var(--learning-accent-strong); font-weight: 600; text-decoration: none; }
-.training-journey-page .journey-hero { background: var(--color-bg); padding-block: clamp(5.5rem, 10vw, 8.5rem); }
-.training-journey-page .journey-hero .training-reading { max-width: 67rem; }
-.training-journey-page .journey-hero h1 { font-family: var(--font-serif); font-size: clamp(2.75rem, 6.5vw, 5.2rem); font-weight: 500; letter-spacing: -.04em; line-height: 1.03; margin-bottom: 0; max-width: 18ch; }
-.training-journey-page .journey-hero .training-lead { color: var(--color-text); font-size: clamp(1.125rem, 2vw, 1.35rem); line-height: 1.65; margin-top: 2rem; max-width: 65ch; }
-.training-journey-page .journey-hero .training-actions { gap: 1.25rem 1.75rem; }
+.training-journey-page .journey-hero{background:var(--color-bg);padding-block:clamp(5.5rem,10vw,8.5rem)}
+.training-journey-page .journey-hero .training-reading{max-width:67rem}
+.training-journey-page .journey-hero h1{font-family:var(--font-serif);font-size:clamp(2.75rem,6.5vw,5.2rem);font-weight:500;letter-spacing:-.04em;line-height:1.03;margin-bottom:0;max-width:18ch}
+.training-journey-page .journey-hero .training-lead{color:var(--color-text);font-size:clamp(1.125rem,2vw,1.35rem);line-height:1.65;margin-top:2rem;max-width:65ch}
+.training-journey-page .journey-hero .training-actions{gap:1.25rem 1.75rem}
 .journey-summary { align-items: center; display: flex; flex-wrap: wrap; gap: .7rem 1.5rem; margin: 2rem 0 0; }
 .journey-summary span { border-left: 1px solid var(--learning-border); padding-left: 1.5rem; }
 .learning-format-strip { background: var(--color-bg); border-block: 1px solid var(--learning-border); padding-block: clamp(2.5rem, 5vw, 4rem); }
@@ -637,7 +637,7 @@
 }
 
 @media (max-width: 600px) {
-  .training-journey-page .journey-hero { padding-block: 4.5rem; }
+  .training-journey-page .journey-hero{padding-block:4.5rem}
   .learning-subnav .container { gap: 1rem; }
   .journey-summary { align-items: flex-start; flex-direction: column; }
   .journey-summary span { border-left: 0; padding-left: 0; }
