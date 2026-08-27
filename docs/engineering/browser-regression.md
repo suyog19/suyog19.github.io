@@ -55,9 +55,9 @@ links are checked by exact URL rather than third-party availability.
 `.github/workflows/validate-browser-regression.yml` runs on pull requests and
 pushes targeting `dev` or `main`. It installs pinned Node dependencies and
 Chromium, runs the canonical/local-link validator, then executes the browser
-suite with one worker and one retry. A retry is diagnostic resilience, not a
-passing substitute: repeated failure still fails the job. Failure screenshots,
-HTML reports, and traces are temporary workflow artifacts.
+suite with one worker and no automatic retries, so a flaky result remains visible
+as a failed job. Failure screenshots, HTML reports, and traces are temporary
+workflow artifacts.
 
 ## #604 interaction coverage
 
