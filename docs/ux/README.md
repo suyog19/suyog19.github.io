@@ -8,6 +8,11 @@ pixel specifications.
 
 ## How to use this baseline
 
+For the approved future Software Signal evolution, use
+[`software-signal-target.md`](software-signal-target.md). The current page-family
+direction and rendered implementation remain authoritative until the scoped
+implementation issues pass their own gates.
+
 1. Read [site-ux-direction.md](site-ux-direction.md) for the shared visual and
    interaction language.
 2. Read the relevant file in [pages/](pages/) for the page-family hierarchy,
