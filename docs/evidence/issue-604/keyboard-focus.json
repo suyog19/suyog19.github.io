@@ -1,0 +1,69 @@
+{
+  "url": "https://suyogjoshi.com/",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sequence": [
+    {
+      "href": "./",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "suyogjoshi.com — Home"
+    },
+    {
+      "href": "training/",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Training"
+    },
+    {
+      "href": "writing/",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Writing"
+    },
+    {
+      "href": "systems/",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Systems"
+    },
+    {
+      "href": "about/",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "About"
+    },
+    {
+      "href": "contact/",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Contact"
+    },
+    {
+      "href": "training/",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Explore training"
+    },
+    {
+      "href": "writing/",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Browse writing"
+    },
+    {
+      "href": "training/#starting-point",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Find my starting point"
+    },
+    {
+      "href": "training/#journey",
+      "outline": "solid 2px",
+      "tag": "A",
+      "text": "Explore the learning pathway"
+    }
+  ]
+}

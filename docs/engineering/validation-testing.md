@@ -39,6 +39,12 @@ umbrella command without path filtering, while focused workflows retain concise
 ownership-specific failures. `.github/workflows/process-validation.yml` adds
 canonical-process validation and must not replace or weaken those workflows.
 
+The browser-level preservation suite is documented in
+[`browser-regression.md`](browser-regression.md). Run `npm ci`, install Chromium
+with `npx playwright install chromium`, then use `npm run test:e2e`. The dedicated
+`validate-browser-regression.yml` workflow runs the canonical/local-link validator
+and the browser suite for pull requests and pushes targeting `dev` or `main`.
+
 For visible frontend changes, also render the actual nested routes at realistic
 desktop and mobile widths, check asset/link depth, keyboard and focus behavior,
 horizontal overflow, important states, console/resource failures, and semantics.

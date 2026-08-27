@@ -18,6 +18,7 @@ PRIVATE_ROUTE_PREFIXES = (
     "/my-learning/",
     "/training/register-interest/",
 )
+EXCLUDED_TOP_LEVEL_DIRECTORIES = {"node_modules", "playwright-report", "test-results"}
 
 
 class PageParser(HTMLParser):
@@ -117,7 +118,10 @@ def parse_page(path: Path) -> PageParser:
 
 def main() -> None:
     errors: list[str] = []
-    pages = sorted(ROOT.rglob("index.html"))
+    pages = sorted(
+        page for page in ROOT.rglob("index.html")
+        if page.relative_to(ROOT).parts[0] not in EXCLUDED_TOP_LEVEL_DIRECTORIES
+    )
     parsed_pages = {path: parse_page(path) for path in pages}
 
     for page, parsed in parsed_pages.items():

@@ -37,5 +37,5 @@ test('route uses scoped assets, responsive layouts, and secondary Home discovery
   assert.match(html, /<strong>Stabilize<\/strong><p>We monitor the launch and fix covered post-launch defects\.<\/p>/);
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(home, /href="website-services\/"/);
-  assert.doesNotMatch(home.slice(home.indexOf('<nav class="nav"'), home.indexOf('</nav>')), /website-services/);
+  assert.match(home.slice(home.indexOf('<nav class="nav"'), home.indexOf('</nav>')), /href="website-services\/"[^>]*>Website Services<\/a>/);
 });

@@ -34,8 +34,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/base.css?v=607">
+  <link rel="stylesheet" href="../css/components.css?v=607">
   <link rel="stylesheet" href="../css/pages.css">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -51,23 +51,26 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a href="../" class="brand-lockup" aria-label="suyogjoshi.com - Home">
-        <span class="brand-mark" aria-hidden="true">SJ</span>
-        <span class="brand-text">suyogjoshi.com</span>
+      <a href="../" class="brand-lockup">
+        <span class="brand-mark" aria-hidden="true">SS</span>
+        <span class="brand-text">
+          <span class="brand-primary">Software Signal</span>
+          <span class="brand-founder">by Suyog Joshi</span>
+        </span>
       </a>
       <nav class="nav" id="nav" aria-label="Primary navigation">
         <ul class="nav-list">
-          <li><a href="../training/" class="nav-link">Training</a></li>
+          <li><a href="../" class="nav-link">Software Signal</a></li>
+          <li><a href="../consulting/" class="nav-link">Consulting</a></li>
+          <li><a href="../training/" class="nav-link">Learning</a></li>
+          <li><a href="../website-services/" class="nav-link">Website Services</a></li>
           <li><a href="../writing/" class="nav-link">Writing</a></li>
-          <li><a href="../systems/" class="nav-link" aria-current="page">Systems</a></li>
           <li><a href="../about/" class="nav-link">About</a></li>
-          <li><a href="../contact/" class="nav-link">Contact</a></li>
+          <li><a href="../newsletter/" class="nav-link nav-link--cta">Subscribe</a></li>
         </ul>
       </nav>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
-        <span></span>
-        <span></span>
-        <span></span>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span><span></span>
       </button>
     </div>
   </header>
@@ -78,8 +81,8 @@
     <section class="sp-hero">
       <div class="container">
         <p class="eyebrow">Systems</p>
-        <h1 class="sp-hero-heading">Practical builds, experiments, and architecture notes behind the writing.</h1>
-        <p class="sp-hero-sub">These systems turn ideas from the articles into concrete workflows, demos, and engineering decisions.</p>
+        <h1 class="sp-hero-heading">Inspectable engineering work, not claims without artifacts.</h1>
+        <p class="sp-hero-sub">Systems, experiments, demos, and architecture notes that examine Software Signal ideas under practical constraints.</p>
       </div>
     </section>
 
@@ -87,7 +90,7 @@
     <section class="sp-intro">
       <div class="container">
         <div class="sp-intro-grid">
-          <p class="sp-intro-text">These are not just projects.<br><br>They are explorations of how software systems behave when ideas meet constraints - scale, uncertainty, AI integration, and real-world complexity.</p>
+          <p class="sp-intro-text">These artifacts show what was built, tested, or made inspectable.<br><br>They are evidence of practical examination—not a claim that every project proves the Framework.</p>
           <div class="sp-intro-links" aria-label="Systems reading bridges">
             <a href="../writing/#cluster-systems-experiments">Systems writing</a>
             <a href="../writing/series/ai-assisted-software-engineering/">AI-assisted engineering series</a>
@@ -102,7 +105,7 @@
       <div class="container">
         <div class="section-header">
           <h2 class="section-title">Explore by System Type</h2>
-          <p class="section-subtitle">Use these paths to connect practical builds back to the writing themes.</p>
+          <p class="section-subtitle">Use these paths to find the kind of system, experiment, or implementation evidence you want to inspect.</p>
         </div>
 
         <div class="sp-category-grid">
@@ -248,8 +251,8 @@
       <div class="container">
         <div class="sp-writing-bridge-inner">
           <div>
-            <h2 class="section-title">Systems are the evidence layer for the writing.</h2>
-            <p class="section-subtitle">The articles explain the mental models. These systems test those ideas against practical constraints, interfaces, workflows, and review needs.</p>
+            <h2 class="section-title">Practical work tests where ideas meet constraints.</h2>
+            <p class="section-subtitle">Writing explains the questions and mental models. Systems expose interfaces, workflows, trade-offs, review needs, and what remains unfinished.</p>
           </div>
           <div class="sp-writing-bridge-actions">
             <a href="../writing/#cluster-systems-experiments" class="btn btn-primary">Read systems writing</a>
@@ -264,21 +267,28 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="footer-top">
-        <span class="footer-brand">suyogjoshi.com</span>
+        <div class="footer-brand">Software Signal
+          <small>A professional body of work founded and practiced by Suyog Joshi.</small>
+        </div>
         <nav class="footer-nav" aria-label="Footer navigation">
-          <a href="../training/">Training</a>
+          <a href="../framework/">Framework</a>
+          <a href="../research/">Research</a>
+          <a href="../consulting/">Consulting</a>
+          <a href="../training/">Learning</a>
+          <a href="../website-services/">Website Services</a>
           <a href="../writing/">Writing</a>
           <a href="../systems/">Systems</a>
-          <a href="../about/">About</a>
+          <a href="../newsletter/">Subscribe</a>
           <a href="../contact/">Contact</a>
-          <a href="../support/">Support</a><a href="../privacy/">Privacy</a>
-</nav>
+          <a href="../support/">Support</a>
+          <a href="../privacy/">Privacy</a>
+        </nav>
       </div>
       <div class="footer-bottom">
         <div class="footer-social">
-          <a href="https://www.linkedin.com/in/suyog-joshi" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://medium.com/@suyog19" target="_blank" rel="noopener noreferrer">Medium</a>
-          <a href="https://github.com/suyog19" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/suyog-joshi" rel="me noopener noreferrer">LinkedIn</a>
+          <a href="https://medium.com/@suyog19" rel="me noopener noreferrer">Medium</a>
+          <a href="https://github.com/suyog19" rel="me noopener noreferrer">GitHub</a>
         </div>
         <p class="footer-copy">&copy; 2026 Suyog Joshi</p>
       </div>

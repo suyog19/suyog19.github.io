@@ -1,0 +1,13 @@
+{
+  "additional_same_origin_urls_checked": 20,
+  "broken_same_origin_links": [],
+  "canonical_mismatches": [],
+  "captured_at_utc": "2026-08-27T01:32:44+00:00",
+  "discovered_same_origin_link_count": 86,
+  "origin": "https://suyogjoshi.com",
+  "schema_version": 1,
+  "sitemap_non_200_routes": [],
+  "sitemap_route_count": 66,
+  "sitemap_status": 200,
+  "sitemap_url": "https://suyogjoshi.com/sitemap.xml"
+}

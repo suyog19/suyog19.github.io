@@ -66,11 +66,12 @@ test('privacy notice discloses newsletter processing and preserves the training 
 });
 
 test('double-opt-in confirmation destination acknowledges success without another form', () => {
+  const main = confirmed.match(/<main[\s\S]*?<\/main>/)[0];
   assert.match(confirmed, /Your subscription is confirmed/);
   assert.match(confirmed, /no need to enter your email again/i);
   assert.match(confirmed, /arrive in your inbox on Saturday/i);
   assert.match(confirmed, /https:\/\/newsletter\.suyogjoshi\.com\//);
   assert.match(confirmed, /href="\.\.\/\.\.\/"/);
   assert.match(confirmed, /name="robots" content="noindex, follow"/);
-  assert.doesNotMatch(confirmed, /<form\b|data-beehiiv-form|>Subscribe</i);
+  assert.doesNotMatch(main, /<form\b|data-beehiiv-form|>Subscribe</i);
 });

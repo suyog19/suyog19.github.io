@@ -1,0 +1,684 @@
+{
+  "schema": "issue-610-assurance-audit/v1",
+  "issue": 610,
+  "targetRevision": "62bcf47e5662514c8de50676b275de9689e2e19e",
+  "baseline": {
+    "revision": "a6420ee8519e96da15845347b78e4d7c3fc3da89",
+    "routeCount": 66,
+    "artifact": "docs/evidence/issue-604-public-route-inventory.csv"
+  },
+  "routeDisposition": {
+    "preserved": 66,
+    "redirected": 0,
+    "intentionallyRetired": 0,
+    "unaccounted": 0,
+    "additiveRoutes": [
+      "/framework/",
+      "/research/"
+    ],
+    "routes": [
+      {
+        "route": "/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/",
+        "expectedCanonical": "https://suyogjoshi.com/"
+      },
+      {
+        "route": "/about/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/about/",
+        "expectedCanonical": "https://suyogjoshi.com/about/"
+      },
+      {
+        "route": "/card/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/card/",
+        "expectedCanonical": "https://suyogjoshi.com/card/"
+      },
+      {
+        "route": "/consulting/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/consulting/",
+        "expectedCanonical": "https://suyogjoshi.com/consulting/"
+      },
+      {
+        "route": "/contact/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/contact/",
+        "expectedCanonical": "https://suyogjoshi.com/contact/"
+      },
+      {
+        "route": "/newsletter/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/newsletter/",
+        "expectedCanonical": "https://suyogjoshi.com/newsletter/"
+      },
+      {
+        "route": "/privacy/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/privacy/",
+        "expectedCanonical": "https://suyogjoshi.com/privacy/"
+      },
+      {
+        "route": "/research/ai-teaching-workflows/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/research/ai-teaching-workflows/",
+        "expectedCanonical": "https://suyogjoshi.com/research/ai-teaching-workflows/"
+      },
+      {
+        "route": "/search/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/search/",
+        "expectedCanonical": "https://suyogjoshi.com/search/"
+      },
+      {
+        "route": "/support/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/support/",
+        "expectedCanonical": "https://suyogjoshi.com/support/"
+      },
+      {
+        "route": "/systems/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/"
+      },
+      {
+        "route": "/systems/ai-dev-orchestrator/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/ai-dev-orchestrator/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/ai-dev-orchestrator/"
+      },
+      {
+        "route": "/systems/ai-native-learning-platform/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/ai-native-learning-platform/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/ai-native-learning-platform/"
+      },
+      {
+        "route": "/systems/ai-workflow-lab/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/ai-workflow-lab/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/ai-workflow-lab/"
+      },
+      {
+        "route": "/systems/ai-workflow-lab/ingestion-comparator/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/ai-workflow-lab/ingestion-comparator/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/ai-workflow-lab/ingestion-comparator/"
+      },
+      {
+        "route": "/systems/ai-workflow-lab/invoice-review-demo/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/ai-workflow-lab/invoice-review-demo/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/ai-workflow-lab/invoice-review-demo/"
+      },
+      {
+        "route": "/systems/ai-workflow-lab/knowledge-markdown-demo/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/ai-workflow-lab/knowledge-markdown-demo/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/ai-workflow-lab/knowledge-markdown-demo/"
+      },
+      {
+        "route": "/systems/ai-workflow-lab/vendor-onboarding-rag-demo/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/ai-workflow-lab/vendor-onboarding-rag-demo/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/ai-workflow-lab/vendor-onboarding-rag-demo/"
+      },
+      {
+        "route": "/systems/survey-poll-serverless/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/systems/survey-poll-serverless/",
+        "expectedCanonical": "https://suyogjoshi.com/systems/survey-poll-serverless/"
+      },
+      {
+        "route": "/training/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/",
+        "expectedCanonical": "https://suyogjoshi.com/training/"
+      },
+      {
+        "route": "/training/applied-data-analysis-with-python/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/applied-data-analysis-with-python/",
+        "expectedCanonical": "https://suyogjoshi.com/training/applied-data-analysis-with-python/"
+      },
+      {
+        "route": "/training/engineering-reliable-ai-systems/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/engineering-reliable-ai-systems/",
+        "expectedCanonical": "https://suyogjoshi.com/training/engineering-reliable-ai-systems/"
+      },
+      {
+        "route": "/training/generative-ai-application-development/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/generative-ai-application-development/",
+        "expectedCanonical": "https://suyogjoshi.com/training/generative-ai-application-development/"
+      },
+      {
+        "route": "/training/policies/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/policies/",
+        "expectedCanonical": "https://suyogjoshi.com/training/policies/"
+      },
+      {
+        "route": "/training/policies/cancellation-refunds/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/policies/cancellation-refunds/",
+        "expectedCanonical": "https://suyogjoshi.com/training/policies/cancellation-refunds/"
+      },
+      {
+        "route": "/training/policies/conduct-recording/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/policies/conduct-recording/",
+        "expectedCanonical": "https://suyogjoshi.com/training/policies/conduct-recording/"
+      },
+      {
+        "route": "/training/policies/terms/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/policies/terms/",
+        "expectedCanonical": "https://suyogjoshi.com/training/policies/terms/"
+      },
+      {
+        "route": "/training/practical-machine-learning-foundations/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/practical-machine-learning-foundations/",
+        "expectedCanonical": "https://suyogjoshi.com/training/practical-machine-learning-foundations/"
+      },
+      {
+        "route": "/training/provider/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/provider/",
+        "expectedCanonical": "https://suyogjoshi.com/training/provider/"
+      },
+      {
+        "route": "/training/python-foundations-for-data-science/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/training/python-foundations-for-data-science/",
+        "expectedCanonical": "https://suyogjoshi.com/training/python-foundations-for-data-science/"
+      },
+      {
+        "route": "/website-services/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/website-services/",
+        "expectedCanonical": "https://suyogjoshi.com/website-services/"
+      },
+      {
+        "route": "/writing/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/"
+      },
+      {
+        "route": "/writing/agent-risk-register/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/agent-risk-register/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/agent-risk-register/"
+      },
+      {
+        "route": "/writing/ai-code-review-is-not-just-code-review/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/"
+      },
+      {
+        "route": "/writing/ai-governance-without-bureaucracy/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/"
+      },
+      {
+        "route": "/writing/ai-ml-data-science-explained-simply/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/"
+      },
+      {
+        "route": "/writing/ai-stress-testing-agile/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/ai-stress-testing-agile/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/ai-stress-testing-agile/"
+      },
+      {
+        "route": "/writing/architecture-matters-more-in-the-ai-era/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/"
+      },
+      {
+        "route": "/writing/beyond-the-repository-why-ai-needs-work-context-too/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/"
+      },
+      {
+        "route": "/writing/business-rules-as-context/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/business-rules-as-context/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/business-rules-as-context/"
+      },
+      {
+        "route": "/writing/coding-assistants-are-not-junior-developers/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/"
+      },
+      {
+        "route": "/writing/documentation-is-becoming-executable-context/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/"
+      },
+      {
+        "route": "/writing/enterprise-ai-adoption-is-a-context-problem/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/"
+      },
+      {
+        "route": "/writing/from-developer-to-ai-orchestrator/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/"
+      },
+      {
+        "route": "/writing/how-i-structure-repositories-so-ai-can-understand-them/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/"
+      },
+      {
+        "route": "/writing/how-i-used-two-ais-to-build-a-software-engineering-system/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/"
+      },
+      {
+        "route": "/writing/how-modern-llm-systems-really-work/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/"
+      },
+      {
+        "route": "/writing/how-to-tame-your-agent/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/how-to-tame-your-agent/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/how-to-tame-your-agent/"
+      },
+      {
+        "route": "/writing/human-ai-responsibility-map/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/human-ai-responsibility-map/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/human-ai-responsibility-map/"
+      },
+      {
+        "route": "/writing/human-review-gates-ai-assisted-delivery/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/"
+      },
+      {
+        "route": "/writing/knowledge-debt-is-the-new-technical-debt/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/"
+      },
+      {
+        "route": "/writing/not-all-engineering-tasks-belong-to-ai/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/"
+      },
+      {
+        "route": "/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/"
+      },
+      {
+        "route": "/writing/series/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/series/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/series/"
+      },
+      {
+        "route": "/writing/series/ai-assisted-software-engineering/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/series/ai-assisted-software-engineering/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/series/ai-assisted-software-engineering/"
+      },
+      {
+        "route": "/writing/stop-prompting-harder-start-giving-better-context/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/"
+      },
+      {
+        "route": "/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/"
+      },
+      {
+        "route": "/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/"
+      },
+      {
+        "route": "/writing/topics/agile-process-and-engineering-leadership/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/topics/agile-process-and-engineering-leadership/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/topics/agile-process-and-engineering-leadership/"
+      },
+      {
+        "route": "/writing/topics/ai-agents-and-review/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/topics/ai-agents-and-review/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/topics/ai-agents-and-review/"
+      },
+      {
+        "route": "/writing/topics/ai-assisted-software-engineering/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/topics/ai-assisted-software-engineering/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/topics/ai-assisted-software-engineering/"
+      },
+      {
+        "route": "/writing/topics/engineering-context-and-knowledge/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/topics/engineering-context-and-knowledge/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/topics/engineering-context-and-knowledge/"
+      },
+      {
+        "route": "/writing/understanding-the-ai-ecosystem/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/"
+      },
+      {
+        "route": "/writing/using-multiple-ai-agents-as-a-software-engineering-team/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/"
+      },
+      {
+        "route": "/writing/why-ai-punishes-tribal-knowledge-in-software-teams/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/"
+      },
+      {
+        "route": "/writing/why-reviewing-ai-generated-work-is-a-different-skill/",
+        "disposition": "preserved",
+        "fileExists": true,
+        "inSitemap": true,
+        "canonical": "https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/",
+        "expectedCanonical": "https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/"
+      }
+    ]
+  },
+  "interactionAudit": {
+    "intentionalChanges": [
+      {
+        "id": "HOME-01",
+        "oldBehavior": "Homepage hero Explore training opened /training/.",
+        "approvedBehavior": "Homepage hero Explore the Framework opens /framework/; Learning remains later on Home.",
+        "contractUpdated": true,
+        "guideUpdated": true,
+        "automatedAssertionUpdated": true
+      }
+    ],
+    "otherCriticalOutcomes": "preserved; verified by the compact #606 browser suite"
+  },
+  "contentPreservation": {
+    "passed": 16,
+    "failed": 0,
+    "items": {
+      "CONTENT-01": {
+        "paths": [
+          "index.html",
+          "about/index.html"
+        ],
+        "present": true
+      },
+      "CONTENT-02": {
+        "paths": [
+          "consulting/index.html",
+          "js/contact.js"
+        ],
+        "present": true
+      },
+      "CONTENT-03": {
+        "paths": [
+          "website-services/index.html",
+          "js/contact.js"
+        ],
+        "present": true
+      },
+      "CONTENT-04": {
+        "paths": [
+          "training/index.html",
+          "training/python-foundations-for-data-science/index.html"
+        ],
+        "present": true
+      },
+      "CONTENT-05": {
+        "paths": [
+          "writing/index.html",
+          "data/search-index.json"
+        ],
+        "present": true
+      },
+      "CONTENT-06": {
+        "paths": [
+          "systems/index.html",
+          "systems/ai-workflow-lab/invoice-review-demo/index.html"
+        ],
+        "present": true
+      },
+      "CONTENT-07": {
+        "paths": [
+          "newsletter/index.html",
+          "index.html"
+        ],
+        "present": true
+      },
+      "CONTENT-08": {
+        "paths": [
+          "research/ai-teaching-workflows/index.html",
+          "research/index.html"
+        ],
+        "present": true
+      },
+      "CONTENT-09": {
+        "paths": [
+          "search/index.html",
+          "data/search-index.json"
+        ],
+        "present": true
+      },
+      "CONTENT-10": {
+        "paths": [
+          "support/index.html",
+          "docs/evidence/issue-585-provider-status.json"
+        ],
+        "present": true
+      },
+      "CONTENT-11": {
+        "paths": [
+          "contact/index.html",
+          "js/contact.js"
+        ],
+        "present": true
+      },
+      "CONTENT-12": {
+        "paths": [
+          "card/index.html",
+          "card/suyog-joshi.vcf",
+          "assets/card-qr.svg"
+        ],
+        "present": true
+      },
+      "CONTENT-13": {
+        "paths": [
+          "privacy/index.html",
+          "training/policies/index.html"
+        ],
+        "present": true
+      },
+      "ASSET-01": {
+        "paths": [
+          "data/social-previews.json",
+          "assets/social-previews"
+        ],
+        "present": true
+      },
+      "ASSET-02": {
+        "paths": [
+          "writing"
+        ],
+        "present": true
+      },
+      "ASSET-03": {
+        "paths": [
+          "css/base.css",
+          "css/components.css",
+          "css/pages.css"
+        ],
+        "present": true
+      }
+    }
+  },
+  "productsRouteInvented": false,
+  "result": "pass"
+}

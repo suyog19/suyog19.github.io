@@ -109,9 +109,6 @@ verified the successful-payment state, automated receipt delivery, and receipt
 identity. Despite saving and publishing the redirect first to the development route
 and then to an accessible branch preview, Test Mode stayed on Razorpay's own success
 screen and exposed no return control. The durable development redirect is restored;
-The site copy and provider evidence disclose this observed hosted-page limitation
-rather than treating the redirect setting as proof of navigation. During the later
-human-approved production promotion, the separate Live Mode page was configured and
-activated with the production thank-you URL, automated receipts, the same identity
-and purpose, and verified ₹500 prefill. No real payment was submitted merely to test
-the release, so live success navigation remains a post-deployment operational check.
+Live Mode remains untested and subject to human release approval. The site copy and
+provider evidence disclose this observed hosted-page limitation rather than treating
+the redirect setting as proof of navigation.
