@@ -6,7 +6,7 @@ const read = (path) => fs.readFileSync(path, 'utf8');
 const consulting = read('consulting/index.html');
 const websites = read('website-services/index.html');
 const learning = read('training/index.html');
-const components = read('css/components.css');
+const proofStyles = read('css/commercial-proof.css');
 
 test('Consulting attaches attributable public work to each buying decision', () => {
   assert.equal((consulting.match(/class="proof-item consulting-offer-proof"/g) || []).length, 2);
@@ -42,9 +42,10 @@ test('Learning offers inspectable teaching material without registration or paym
 });
 
 test('proof architecture is reusable, responsive, and free of fabricated trust decoration', () => {
-  for (const selector of ['.proof-grid', '.proof-item', '.proof-provenance', '.proof-links', '.proof-visual-pair']) assert.match(components, new RegExp(selector.replace('.', '\\.')));
-  assert.match(components, /@media \(max-width: 800px\)[\s\S]*?\.proof-grid--three[\s\S]*?grid-template-columns: 1fr/);
-  assert.match(components, /@media \(max-width: 640px\)[\s\S]*?\.proof-visual-pair[\s\S]*?grid-template-columns: 1fr/);
+  for (const page of [consulting, websites, learning]) assert.match(page, /\.\.\/css\/commercial-proof\.css\?v=626/);
+  for (const selector of ['.proof-grid', '.proof-item', '.proof-provenance', '.proof-links', '.proof-visual-pair']) assert.match(proofStyles, new RegExp(selector.replace('.', '\\.')));
+  assert.match(proofStyles, /@media \(max-width: 800px\)[\s\S]*?\.proof-grid--three[\s\S]*?grid-template-columns: 1fr/);
+  assert.match(proofStyles, /@media \(max-width: 640px\)[\s\S]*?\.proof-visual-pair[\s\S]*?grid-template-columns: 1fr/);
   const combined = `${consulting}\n${websites}\n${learning}`;
   assert.doesNotMatch(combined, /five-star|star rating|client logo|customer testimonial|conversion increased|revenue increased/i);
 });
