@@ -87,4 +87,3 @@ representative review.
 No Product Owner decision remains for #607. Exact homepage hierarchy, substantive
 Framework/Research content, and broad page-family composition remain with #608
 and #609.
-

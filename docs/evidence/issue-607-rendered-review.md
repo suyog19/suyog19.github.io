@@ -112,4 +112,3 @@ quietly restructuring existing page content in this issue.
   8.31:1, muted text/white 6.10:1, footer muted text/dark surface 7.48:1.
 - DOM order matches the visual desktop/mobile order; no horizontal overflow was
   observed in the evidence matrix.
-

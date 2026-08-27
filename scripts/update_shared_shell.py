@@ -22,8 +22,8 @@ def current_section(page: Path) -> str:
         return "software-signal"
     section = relative.parts[0]
     return {
-        "framework": "software-signal",
-        "research": "software-signal",
+        "framework": "",
+        "research": "",
         "training": "learning",
         "consulting": "consulting",
         "website-services": "website-services",
