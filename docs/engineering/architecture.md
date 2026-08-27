@@ -39,8 +39,10 @@ create a second design system.
 - Use `.flow-sequence` and `.process-flow` for suitable inline diagrams.
 
 The global list reset removes bullets. Article-body lists rely on the scoped
-`.article-body ul` restoration. The established accent red is `#b91c1c`; other
-colors, typography, spacing, widths, and surfaces come from the existing tokens.
+`.article-body ul` restoration. The established brand accent is Petrol Teal
+(`--color-signal: #1f5a5a`) with dark and wash variants; semantic error/danger
+reds remain separate. Other colors, typography, spacing, widths, and surfaces
+come from the existing tokens.
 
 ## Relative paths and JavaScript
 
