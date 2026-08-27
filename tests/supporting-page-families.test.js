@@ -37,7 +37,7 @@ test('#609 Research exposes a real investigation and critical evidence method', 
 test('#609 supporting families preserve their distinct public purpose', () => {
   assert.match(read('consulting/index.html'), /not generic outsourced development/i);
   assert.match(read('training/index.html'), /Practical learning for working professionals/);
-  assert.match(read('training/index.html'), /Current route · guided courses/);
+  assert.match(read('training/index.html'), /Start as small as the outcome allows/);
   const services = read('website-services/index.html');
   assert.match(services, /A clear message\. A credible presence\. A useful website\. Low maintenance\./);
   assert.doesNotMatch(services, /ws-package-number/);
