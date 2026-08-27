@@ -1,0 +1,61 @@
+{
+  "schema": "issue-delivery-evidence/v1",
+  "issue": 624,
+  "scope": "Product Owner visual correction: align the first Learning section with the main-site hero reference; dev only",
+  "implementationRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+  "deliveryRevision": "SELF",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "classification": {
+    "schema": "classification/v1",
+    "targetRevision": "c8c18d10a50dbc70752d81374c5f37ced3e9882d",
+    "deliveryProfile": "Standard",
+    "characteristics": {
+      "observable_behavior": true,
+      "user_visible_change": true,
+      "material_layout_change": true,
+      "learning_experience_change": true,
+      "production_change": false
+    }
+  },
+  "testResult": {
+    "schema": "test-result/v1",
+    "targetRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+    "node": {"passed": 442, "failed": 0},
+    "playwright": {"passed": 13, "failed": 0, "skipped": 0},
+    "focusedPython": {"passed": 10, "failed": 0},
+    "repositoryValidators": "pass"
+  },
+  "seniorUx": {
+    "schema": "ux-verdict/v1",
+    "targetRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+    "verdict": "pass",
+    "referenceRoute": "/website-services/",
+    "reviewedRoute": "/training/",
+    "viewports": [
+      {"width": 1440, "height": 1000},
+      {"width": 390, "height": 844}
+    ],
+    "computedMatches": {
+      "surface": "white",
+      "contextLabel": "muted grey, Inter, no uppercase transform",
+      "headline": "near-black, Playfair Display, weight 500, matching responsive scale and line height",
+      "supportingCopy": "near-black, matching responsive scale and line height"
+    },
+    "checks": {
+      "horizontalPageOverflow": false,
+      "primaryActionRemainsSignalRed": true,
+      "copyAndActionOrderPreserved": true,
+      "consoleWarningsOrErrors": 0
+    },
+    "residualRisk": "Low; the correction is scoped to the Learning landing hero and leaves all routes, actions, copy, and learner state unchanged."
+  },
+  "functionalQa": {
+    "schema": "functional-qa-verdict/v1",
+    "targetRevision": "17902cb355bcfb11e05cdda1e88998bb8d5fb7d3",
+    "verdict": "pass",
+    "findings": [],
+    "coverageLimitations": ["No backend, authenticated, payment, email, deployment, or production side effect was exercised."],
+    "residualFunctionalRisk": "Low; this changes scoped markup classes and CSS presentation only."
+  },
+  "productionActivity": false
+}
