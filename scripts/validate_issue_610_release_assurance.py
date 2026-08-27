@@ -136,7 +136,7 @@ def main() -> int:
     rendered = json.dumps(result, indent=2) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(rendered, encoding="utf-8")
+        args.output.write_bytes(rendered.encode("utf-8"))
     print(rendered, end="")
     return 0 if result["result"] == "pass" else 1
 
