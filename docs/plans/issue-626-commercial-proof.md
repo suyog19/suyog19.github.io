@@ -85,8 +85,9 @@ evidence on Website Services.
 
 ### Tech Lead feasibility
 
-- Reuse a small semantic `.proof-*` component in `css/components.css` and keep
-  page-specific placement in existing scoped styles.
+- Reuse a small semantic `.proof-*` component in `css/commercial-proof.css`, loaded
+  only by the three commercial routes, and keep page-specific placement in existing
+  scoped styles.
 - Static HTML remains complete without JavaScript. Existing local links and image
   validation cover the new evidence. No dependency, API, or data contract changes.
 - Gate B–D evidence will render all three pages at 1440×900 and 390×844, then check
@@ -99,4 +100,3 @@ evidence on Website Services.
   platform direction: truthful evidence close to decisions, no generic trust
   decoration, and #603 explicitly permitted as a self-case-study.
 - No Product Owner taste decision remains open before implementation.
-

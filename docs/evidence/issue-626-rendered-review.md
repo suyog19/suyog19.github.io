@@ -2,8 +2,8 @@
 
 ## Target and method
 
-- Branch target: `feat/issue-626-commercial-proof` (exact implementation revision
-  to be recorded in the PR after commit).
+- Implementation revision reviewed before the performance correction: `79fe972`.
+  The final corrected successor revision is bound in the implementation PR.
 - Local routes rendered from the repository root at 1440×900 and 390×844:
   `/consulting/`, `/website-services/`, and `/training/`.
 - Browser inspection checked computed columns, placement, intrinsic/display image
@@ -72,4 +72,3 @@
 surface now uses a decision-relevant proof type with explicit provenance, restrained
 visual weight, and a clean future path to genuine customer/learner evidence. There
 are no unresolved Must fix or accepted-deviation items.
-
