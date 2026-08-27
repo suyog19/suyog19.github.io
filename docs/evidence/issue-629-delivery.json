@@ -1,0 +1,62 @@
+{
+  "issue": 629,
+  "classification": {
+    "changeType": "public metadata and structured-data consistency",
+    "uxApplicability": "brief-not-required",
+    "uxReason": "No visible layout, content, interaction, responsive, or route change."
+  },
+  "baseRevision": "294f5ba3e6cb48d723768e5873457efcc4d94290",
+  "implementationRevision": "a9ee0bb330ff7fcb88a5dcbbe2fdc353f660d96e",
+  "scope": {
+    "routesChanged": false,
+    "canonicalUrlsChanged": false,
+    "visibleRedesign": false,
+    "majorFamiliesAligned": [
+      "consulting",
+      "learning",
+      "website-services",
+      "framework",
+      "research",
+      "writing",
+      "systems"
+    ],
+    "preservedFamiliesReviewed": [
+      "home",
+      "newsletter",
+      "about",
+      "writing-detail",
+      "systems-detail",
+      "research-detail"
+    ]
+  },
+  "validation": [
+    {
+      "command": "python scripts/validate_public_seo.py",
+      "result": "passed",
+      "summary": "13 focused public SEO contracts passed; 81 pages and 68 sitemap URLs validated."
+    },
+    {
+      "command": "python -m unittest discover -s tests -p test_*.py",
+      "result": "passed",
+      "summary": "53 tests passed."
+    },
+    {
+      "command": "node --test tests/*.test.js",
+      "result": "passed",
+      "summary": "453 tests passed."
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "independentReview": {
+    "status": "approved",
+    "reviewer": "/root/independent_review",
+    "baseRevision": "294f5ba3e6cb48d723768e5873457efcc4d94290",
+    "targetRevision": "a9ee0bb330ff7fcb88a5dcbbe2fdc353f660d96e",
+    "blockingFindings": 0,
+    "materialFindings": 0,
+    "note": "Formatting-sensitive metadata regex assertions have no dedicated negative mutation test; accepted as a non-blocking maintainability limitation."
+  }
+}
