@@ -36,7 +36,7 @@ test('offer scope, outputs, evidence and limitations remain explicit', () => {
 
 test('Consulting enquiry links carry only fixed non-sensitive topic identifiers', () => {
   const topics = [...html.matchAll(/href="\.\.\/contact\/\?topic=([^"]+)"/g)].map((match) => match[1]);
-  assert.deepEqual(topics, ['consulting-advisory', 'consulting-repository-review', 'consulting-help-choose']);
+  assert.deepEqual(topics, ['consulting-advisory', 'consulting-repository-review', 'consulting-help-choose', 'consulting-help-choose']);
   assert.doesNotMatch(topics.join(' '), /name|email|company|message|problem|repository[_-]?id|url/i);
 });
 
