@@ -1,0 +1,37 @@
+{
+  "schema": "issue-delivery-evidence/v1",
+  "issue": 608,
+  "baselineRevision": "0528e18856701a8298ba6fde802356860f831cf7",
+  "implementationRevision": "5a0446a2af0a3fae7a3744ec882f149972519dd7",
+  "deliveryRevision": "SELF",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "renderedEvidence": {
+    "review": "docs/evidence/issue-608-rendered-review.md",
+    "screenshots": "docs/evidence/issue-608/screenshots/i2/",
+    "viewports": ["1440x900", "1024x768", "390x844"],
+    "states": ["default", "fullpage"],
+    "iterations": 2,
+    "uxVerdict": "accepted"
+  },
+  "validation": [
+    {"command": "node --test tests/*.test.js", "passed": 431, "failed": 0},
+    {"command": "npm run test:e2e", "passed": 13, "failed": 0},
+    {"command": "python scripts/validate_public_seo.py", "contractsPassed": 13, "failed": 0},
+    {"command": "python -m unittest tests/test_public_page_inventory.py tests/test_training_consistency.py tests/test_training_delivery_profile.py tests/test_validate_performance_contracts.py", "passed": 32, "failed": 0}
+  ],
+  "routeIntegrity": {
+    "baselineRoutesPreserved": 66,
+    "publicSitemapRoutes": 68,
+    "canonicalPagesValidated": 81,
+    "brokenInternalLinks": 0
+  },
+  "interactionChanges": [
+    {
+      "id": "HOME-01",
+      "old": "Hero Explore training opened /training/.",
+      "new": "Hero Explore the Framework opens /framework/; Learning remains a primary later engagement path.",
+      "approval": "#605 approved direction and #608 issue brief"
+    }
+  ],
+  "scope": {"supportingPageMigrationStarted": false, "deferredTo": [609]}
+}

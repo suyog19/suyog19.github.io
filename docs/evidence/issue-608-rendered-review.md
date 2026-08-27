@@ -6,9 +6,16 @@
 - AFTER: `docs/evidence/issue-608/screenshots/i2/`
 - Capture: Playwright Chromium, device scale 1, animations disabled, at
   1440×900, 1024×768, and 390×844; default and full-page states
+- Captured implementation revision: `5a0446a2af0a3fae7a3744ec882f149972519dd7`
+- Baseline revision: `0528e18856701a8298ba6fde802356860f831cf7`
+- Process revision: `fa26e629787fbab681b389f02a9f9a6e28d8481a`
 - Reproduce: serve on port 8080, then set `ISSUE_608_ITERATION=i2` and
   `ISSUE_608_EVIDENCE_ROOT=docs/evidence/issue-608/screenshots` before running
   `node scripts/capture_issue_608_evidence.js`.
+
+The final delivery revision is an evidence-only successor to the captured
+implementation. `issue-608-delivery.json` binds the exact revisions, rendered
+evidence, validation, route integrity, and intentional interaction change.
 
 ## BEFORE / AFTER comparison
 
