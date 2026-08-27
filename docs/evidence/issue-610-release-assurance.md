@@ -1,6 +1,6 @@
 # Issue #610 — final before/after release assurance
 
-Status: final evidence candidate; fresh-context reviews pending
+Status: accepted — READY FOR #611
 
 Tested site revision: `62bcf47e5662514c8de50676b275de9689e2e19e`
 Baseline site revision: `a6420ee8519e96da15845347b78e4d7c3fc3da89`
@@ -8,8 +8,7 @@ Process revision: `fa26e629787fbab681b389f02a9f9a6e28d8481a`
 
 ## Release recommendation
 
-**READY FOR #611**, subject to the required fresh-context reviews confirming this
-evidence candidate. This authorizes production-smoke and human release review; it
+**READY FOR #611.** This authorizes production-smoke and human release review; it
 does not authorize promotion to `main`.
 
 ## BEFORE-state traceability
@@ -183,5 +182,22 @@ Residual limitations for #611/manual production smoke:
 | Content preservation | #604 CONTENT/ASSET inventory | 16/16 groups | Pass |
 | Website Services credibility | Service existed | service plus evolved site demonstrates delivery quality | Accepted |
 
-Fresh Senior UX, architecture, functional QA, accessibility, and independent
-review verdicts must be bound to the final evidence commit before merge.
+## Fresh-context review verdicts
+
+- Senior UX whole-site review: **UX Gate D accepted / READY / strongly
+  recommended**. No Must or Should finding. Website Services credibility was
+  explicitly accepted, and page families were found related without cloning Home.
+- Architecture: **pass / READY**. The static HTML/CSS/vanilla-JavaScript boundary,
+  runtime dependencies, public contracts, and maintainability remain safe.
+- Accessibility: **pass / READY**. The narrow contrast corrections are accepted;
+  sampled Lighthouse is 100 and no critical or material regression remains.
+- Functional QA: **pass / READY**. No finding or blocker; 66 routes, 13 journeys,
+  integrity, safe side-effect boundaries, and 16 preservation groups were
+  independently verified.
+- Independent final review: **pass / READY**, fresh context and read-only, with no
+  finding or blocker. Residual risk is low and belongs to #611 production smoke.
+
+The reviewed delivery target is
+`95bb9531a8b1a936e9e3879d9f068b553592821e`; the final delivery record contains
+the machine-readable exact-revision verdicts. The only later commit adds these
+review results and does not change the tested site.
