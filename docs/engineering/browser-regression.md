@@ -65,7 +65,7 @@ workflow artifacts.
 |---|---|
 | `NAV-01`-`NAV-02` | Desktop founder/platform lockup and the approved Software Signal, Consulting, Learning, Website Services, Writing, About, and Subscribe destinations load usable rendered pages. `NAV-02` was intentionally updated by #607 from the #604 navigation after #605 Product Owner approval. |
 | `NAV-03`-`NAV-05` | 390x844 menu opens, closes by Escape and outside activation, restores focus, reopens, and navigates. |
-| `HOME-01`-`HOME-04` | Current Training, Writing, starting-point, Consulting, Website Services, Weekly, and Systems actions load their accepted destinations. |
+| `HOME-01`-`HOME-04` | The approved Framework-first hero, Writing, Learning starting-point, Consulting, Website Services, Weekly, and Systems actions load their accepted destinations. `HOME-01` was intentionally updated by #608 after #605 Product Owner approval. |
 | `CON-01` | Homepage discovery reaches Consulting, then the contextual Contact journey without submission. |
 | `WEB-01` | Homepage discovery reaches Website Services, then its contextual Contact journey without submission. |
 | `LEARN-01` | Training catalogue reaches Python Foundations course detail. |
@@ -112,6 +112,7 @@ When an approved redesign intentionally changes an interaction:
 
 Never delete a regression because new code behaves differently, weaken an
 assertion merely to make CI green, or classify an accidental change as intentional
-without Product Owner/UX disposition. `HOME-01` is already marked by #604 as a
-future review candidate; its current Training destination remains asserted until
-an approved later issue records and implements the replacement.
+without Product Owner/UX disposition. `HOME-01` records the approved #608
+replacement: the old Training-oriented hero action became Framework-first
+discovery, while Learning remains available later on Home. The interaction
+contract and browser assertion must continue to describe that approved outcome.
