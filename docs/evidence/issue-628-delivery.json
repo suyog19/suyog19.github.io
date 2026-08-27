@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "issue": 628,
+  "profile": "Lean",
+  "classification": {
+    "protectedCharacteristics": [],
+    "uxApplicability": "brief-required",
+    "reason": "Material public Consulting information architecture and prospect decision-hierarchy change"
+  },
+  "implementationRevision": "24e8dd5334eafde2c05fe0e83c00ebc51ecb6939",
+  "deliveryRevision": "SELF",
+  "evidence": {
+    "uxBrief": "docs/plans/issue-628-consulting-breadth.md",
+    "renderedReview": "docs/evidence/issue-628-rendered-review.md",
+    "viewports": [
+      "1440x900",
+      "390x844"
+    ],
+    "seniorUxReview": {
+      "targetRevision": "24e8dd5334eafde2c05fe0e83c00ebc51ecb6939",
+      "result": "UX accepted",
+      "questionsPassed": 7,
+      "questionsAsked": 7,
+      "mustFix": 0,
+      "shouldFix": 0,
+      "recommendation": "strongly recommended"
+    },
+    "tests": {
+      "node": {
+        "passed": 453,
+        "failed": 0
+      },
+      "python": {
+        "passed": 53,
+        "failed": 0
+      },
+      "publicSeoContracts": 13,
+      "sitemapPages": 68,
+      "canonicalPages": 81,
+      "staticImages": 105,
+      "diffCheck": "pass"
+    }
+  },
+  "independentReview": {
+    "required": true,
+    "status": "pending-final-review"
+  }
+}
