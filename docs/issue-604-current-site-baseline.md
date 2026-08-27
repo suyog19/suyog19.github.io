@@ -105,7 +105,7 @@ approves a change. No production form was submitted during capture.
 | NAV-03 | Mobile header | Activate Toggle navigation | Primary navigation becomes visible and the button exposes `aria-expanded=true`. | Preserve |
 | NAV-04 | Mobile header | Activate a primary item | Destination loads and menu does not block the new page. | Preserve |
 | NAV-05 | Mobile header | Press Escape or click outside an open menu | Menu closes and focus/reading flow remains usable. | Preserve |
-| HOME-01 | Homepage hero | Activate Explore training | `/training/` loads. | Review only if approved |
+| HOME-01 | Homepage hero | Activate Explore the Framework | `/framework/` loads. This intentionally replaces the #604 `Explore training` hero behavior under the approved #605/#608 hierarchy; Learning remains available later on Home. | Approved change in #608 |
 | HOME-02 | Homepage hero | Activate Browse writing | `/writing/` loads. | Preserve |
 | HOME-03 | Homepage learning section | Activate starting-point or pathway CTA | Relevant Training fragment loads. | Preserve |
 | HOME-04 | Homepage cards | Activate writing or system card | The selected canonical detail page loads. | Preserve |
