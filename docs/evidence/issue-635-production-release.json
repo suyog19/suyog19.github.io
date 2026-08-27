@@ -1,0 +1,110 @@
+{
+  "schema": "production-release-evidence/v1",
+  "issue": 635,
+  "process": {
+    "source": "suyog19/software-engineering-process",
+    "version": "1.0.0",
+    "revision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+    "releaseProfile": "Protected"
+  },
+  "development": {
+    "pullRequest": 636,
+    "mergeCommit": "f9b81512511d690d4a1864e01030ba19375c16cc",
+    "status": "verified"
+  },
+  "productionCandidate": {
+    "baseRevision": "2e730f0facebe3b776f763c0c392776407425093",
+    "candidateRevision": "76458fdf1602efbdb732fe27744f4eef01baf03d",
+    "candidateTree": "baf93def5bb85329fcf01e3e70f59566e785c931",
+    "sourceCommits": [
+      "51457384240125dd697f8adb08526ceae18edb80",
+      "684b40555f019b51f18101e30cada60b3da5d7c9"
+    ],
+    "changedFiles": [
+      "docs/evidence/issue-635-favicon.json",
+      "docs/plans/issue-635-signal-favicon.md",
+      "favicon.ico",
+      "favicon.svg"
+    ],
+    "excludedUnrelatedDevFiles": [
+      "docs/evidence/issue-611-production-release.json",
+      "docs/evidence/issue-611-production-release.md",
+      "docs/evidence/issue-611/screenshots/production-home-1440.png",
+      "docs/evidence/issue-611/screenshots/production-home-390-fullpage.png",
+      "docs/evidence/issue-624-production-release.json"
+    ],
+    "scopeIsolation": "pass"
+  },
+  "approval": {
+    "type": "human-production-approval",
+    "source": "Product Owner explicitly requested promotion of #635 in the active session",
+    "agentSelfApproval": false
+  },
+  "production": {
+    "pullRequest": 637,
+    "humanMergedAt": "2026-08-27T06:22:13Z",
+    "mergeCommit": "09ffa4236fd70712342d50082e0c12f86146a705",
+    "tree": "baf93def5bb85329fcf01e3e70f59566e785c931",
+    "treeMatchesCandidate": true,
+    "deployment": {
+      "workflow": "Deploy to Production",
+      "runId": 33045616131,
+      "url": "https://github.com/suyog19/suyog19.github.io/actions/runs/33045616131",
+      "conclusion": "success"
+    },
+    "mainPushWorkflows": {
+      "passed": 11,
+      "failed": 0
+    }
+  },
+  "liveVerification": {
+    "faviconSvg": {
+      "url": "https://suyogjoshi.com/favicon.svg",
+      "status": 200,
+      "bytes": 313,
+      "sha256": "82b6869e28e3120575f9ee3f29cca21e9c3b4db74a012679486d23648878fd35",
+      "exactProductionMatch": true
+    },
+    "faviconIco": {
+      "url": "https://suyogjoshi.com/favicon.ico",
+      "status": 200,
+      "bytes": 2916,
+      "sha256": "1c6141eacf6781f4e2617ca6ae32ba0385c5206e17438b9be39e64f87e7c3c08",
+      "sizes": [
+        "16x16",
+        "32x32",
+        "48x48"
+      ],
+      "exactProductionMatch": true
+    },
+    "representativeRoutes": [
+      "https://suyogjoshi.com/",
+      "https://suyogjoshi.com/training/",
+      "https://suyogjoshi.com/training/python-foundations-for-data-science/",
+      "https://suyogjoshi.com/training/policies/terms/"
+    ],
+    "allRoutesStatus200": true,
+    "sharedRootAssetsResolved": true,
+    "siteAttributedErrors": 0
+  },
+  "reviews": {
+    "architectureDecision": "APPROVE",
+    "solutionSufficiency": "PASS",
+    "functionalQa": "PASS",
+    "nonFunctionalQa": "PASS",
+    "seniorUx": "UX ACCEPTED — strongly recommended",
+    "productionVerification": "PASS",
+    "independentReview": {
+      "freshContext": true,
+      "targetRevision": "09ffa4236fd70712342d50082e0c12f86146a705",
+      "verdict": "PRODUCTION_VERIFIED"
+    }
+  },
+  "limitations": [
+    "Existing browser profiles may temporarily retain the old favicon because of normal caching.",
+    "Platform-specific SVG text rasterization may vary slightly; the synchronized ICO provides tested fixed-size fallbacks."
+  ],
+  "rollback": "Revert production PR #637 or the isolated #635 commits to restore the prior synchronized SVG and ICO assets.",
+  "issueState": "CLOSED",
+  "finalDisposition": "PRODUCTION VERIFIED"
+}
