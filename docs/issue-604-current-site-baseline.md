@@ -101,7 +101,7 @@ approves a change. No production form was submitted during capture.
 | ID | Surface | User action | Current expected outcome | Default |
 |---|---|---|---|---|
 | NAV-01 | Desktop header | Activate logo | Home loads. | Preserve |
-| NAV-02 | Desktop header | Activate Training, Writing, Systems, About, or Contact | Corresponding directory landing loads; current page is indicated where applicable. | Preserve |
+| NAV-02 | Desktop header | Activate Software Signal, Consulting, Learning, Website Services, Writing, About, or Subscribe | Corresponding approved directory landing loads; current page is indicated with `aria-current` where applicable. Before #607 this was Training, Writing, Systems, About, and Contact; #605 Product Owner approval intentionally moved Systems and Contact to footer discovery and added the professional-platform destinations. | Intentionally changed by #607 |
 | NAV-03 | Mobile header | Activate Toggle navigation | Primary navigation becomes visible and the button exposes `aria-expanded=true`. | Preserve |
 | NAV-04 | Mobile header | Activate a primary item | Destination loads and menu does not block the new page. | Preserve |
 | NAV-05 | Mobile header | Press Escape or click outside an open menu | Menu closes and focus/reading flow remains usable. | Preserve |

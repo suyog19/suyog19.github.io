@@ -20,10 +20,15 @@ test('Gate 1 eyebrow text keeps full muted-color contrast', () => {
   );
 });
 
-test('Gate 1 brand links derive accessible names from visible text', () => {
+test('Gate 1 brand links derive the platform and founder name from visible text', () => {
   for (const file of entryPoints) {
     const html = fs.readFileSync(file, 'utf8');
     assert.doesNotMatch(html, /class="brand-lockup"[^>]*aria-label=/, file);
-    assert.match(html, /class="brand-text">suyogjoshi\.com<\/span>/, file);
+    if (/aria-label="Primary navigation"/.test(html)) {
+      assert.match(html, /class="brand-primary">Software Signal<\/span>/, file);
+      assert.match(html, /class="brand-founder">by Suyog Joshi<\/span>/, file);
+    } else {
+      assert.match(html, /class="brand-text">suyogjoshi\.com<\/span>/, file);
+    }
   }
 });

@@ -28,25 +28,21 @@ function htmlFiles(directory = repositoryRoot) {
   });
 }
 
-function expectedTrainingHref(file) {
-  const from = path.posix.dirname(file);
-  const relative = path.posix.relative(from === '.' ? '' : from, 'training');
-  return relative ? `${relative}/` : './';
+function expectedRootHref(file, route) {
+  const depth = path.posix.dirname(file) === '.' ? 0 : path.posix.dirname(file).split('/').length;
+  return `${'../'.repeat(depth)}${route}/`;
 }
 
 function expectedSupportHref(file) {
-  if (file === '404.html') return '/support/';
-  const from = path.posix.dirname(file);
-  const relative = path.posix.relative(from === '.' ? '' : from, 'support');
-  return relative ? `${relative}/` : './';
+  return expectedRootHref(file, 'support');
 }
 
-test('every public page exposes Training exactly once in primary navigation', () => {
+test('every public page exposes the approved professional-platform navigation', () => {
   const files = htmlFiles();
   const publicPages = files.filter((file) => !excludedRoutes.has(file));
 
-  assert.equal(files.length, 79, 'update the public-route classification when routes change');
-  assert.equal(publicPages.length, 68);
+  assert.equal(files.length, 81, 'update the public-route classification when routes change');
+  assert.equal(publicPages.length, 70);
   assert.ok(publicPages.includes('newsletter/index.html'), 'the newsletter entry point must remain in the public route set');
   assert.ok(publicPages.includes('newsletter/confirmed/index.html'), 'the newsletter confirmation utility must remain in the public route set');
   assert.ok(publicPages.includes('search/index.html'), 'the durable public search utility must remain in the public route set');
@@ -54,33 +50,35 @@ test('every public page exposes Training exactly once in primary navigation', ()
   assert.ok(publicPages.includes('support/thank-you/index.html'), 'the Support return state must retain the public shell');
   assert.ok(publicPages.includes('consulting/index.html'), 'the canonical Consulting page must remain in the public route set');
   assert.ok(publicPages.includes('website-services/index.html'), 'the canonical Website Services page must remain in the public route set');
+  assert.ok(publicPages.includes('framework/index.html'), 'the canonical Framework surface must remain in the public route set');
+  assert.ok(publicPages.includes('research/index.html'), 'the canonical Research surface must remain in the public route set');
 
   for (const file of publicPages) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
     const primaryNav = html.match(/<nav\b[^>]*aria-label="Primary navigation"[^>]*>[\s\S]*?<\/nav>/);
     assert.ok(primaryNav, `${file} must include primary navigation`);
 
-    const labels = [...primaryNav[0].matchAll(/<a\b[^>]*>(Training|Writing|Systems|About|Contact)<\/a>/g)].map(match => match[1]);
-    assert.deepEqual(labels, ['Training', 'Writing', 'Systems', 'About', 'Contact'], `${file} must use the standard public navigation order`);
+    const labels = [...primaryNav[0].matchAll(/<a\b[^>]*>(Software Signal|Consulting|Learning|Website Services|Writing|About|Subscribe)<\/a>/g)].map(match => match[1]);
+    assert.deepEqual(labels, ['Software Signal', 'Consulting', 'Learning', 'Website Services', 'Writing', 'About', 'Subscribe'], `${file} must use the approved public navigation order`);
 
-    const trainingLinks = [...primaryNav[0].matchAll(/<a\b([^>]*)>Training<\/a>/g)];
-    assert.equal(trainingLinks.length, 1, `${file} must include exactly one Training link`);
+    const learningLinks = [...primaryNav[0].matchAll(/<a\b([^>]*)>Learning<\/a>/g)];
+    assert.equal(learningLinks.length, 1, `${file} must include exactly one Learning link`);
 
-    const href = trainingLinks[0][1].match(/\bhref="([^"]+)"/);
-    assert.ok(href, `${file} Training link must have an href`);
-    assert.equal(href[1], expectedTrainingHref(file), `${file} Training link must resolve by directory depth`);
+    const href = learningLinks[0][1].match(/\bhref="([^"]+)"/);
+    assert.ok(href, `${file} Learning link must have an href`);
+    assert.equal(href[1], expectedRootHref(file, 'training'), `${file} Learning link must resolve by directory depth`);
   }
 });
 
-test('Training pages expose the active Training navigation state', () => {
+test('Learning pages expose the active Learning navigation state', () => {
   for (const file of htmlFiles().filter((candidate) => candidate.startsWith('training/') && !excludedRoutes.has(candidate))) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
     const primaryNav = html.match(/<nav\b[^>]*aria-label="Primary navigation"[^>]*>[\s\S]*?<\/nav>/);
     assert.ok(primaryNav, `${file} must include primary navigation`);
     assert.match(
       primaryNav[0],
-      /<a\b(?=[^>]*\bhref="[^"]+")(?=[^>]*\baria-current="page")[^>]*>Training<\/a>/,
-      `${file} must mark Training as the current page`,
+      /<a\b(?=[^>]*\bhref="[^"]+")(?=[^>]*\baria-current="page")[^>]*>Learning<\/a>/,
+      `${file} must mark Learning as the current page`,
     );
   }
 });
@@ -91,7 +89,7 @@ test('every existing public-shell footer exposes one restrained Support link', (
     return /<footer\b[^>]*class="[^"]*\bsite-footer\b/.test(html);
   });
 
-  assert.equal(footerPages.length, 64, 'update the footer contract when public shells change');
+  assert.equal(footerPages.length, 66, 'update the footer contract when public shells change');
 
   for (const file of footerPages) {
     const html = fs.readFileSync(path.join(repositoryRoot, file), 'utf8');
@@ -113,7 +111,7 @@ test('the Support footer self-link exposes its current-page state', () => {
   assert.ok(footer, 'Support must retain its public-shell footer');
   assert.match(
     footer[0],
-    /<a\b(?=[^>]*\bhref="\.\/")(?=[^>]*\baria-current="page")[^>]*>Support<\/a>/,
+    /<a\b(?=[^>]*\bhref="\.\.\/support\/")(?=[^>]*\baria-current="page")[^>]*>Support<\/a>/,
     'the Support footer link must expose its current-page state',
   );
 });
@@ -137,6 +135,6 @@ test('the public menu switches to its mobile layout before it wraps', () => {
   const css = fs.readFileSync(path.join(repositoryRoot, 'css/components.css'), 'utf8');
   assert.match(
     css,
-    /@media \(max-width: 800px\) \{[\s\S]*?\.nav \{[\s\S]*?display: none;[\s\S]*?\.nav\.is-open \{[\s\S]*?display: block;/,
+    /@media \(max-width: 1040px\) \{[\s\S]*?\.nav \{[\s\S]*?display: none;[\s\S]*?\.nav\.is-open \{[\s\S]*?display: block;/,
   );
 });

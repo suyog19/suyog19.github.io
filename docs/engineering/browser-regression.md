@@ -63,7 +63,7 @@ workflow artifacts.
 
 | Contract IDs | Automated proof |
 |---|---|
-| `NAV-01`-`NAV-02` | Desktop logo and all accepted primary destinations load usable rendered pages. |
+| `NAV-01`-`NAV-02` | Desktop founder/platform lockup and the approved Software Signal, Consulting, Learning, Website Services, Writing, About, and Subscribe destinations load usable rendered pages. `NAV-02` was intentionally updated by #607 from the #604 navigation after #605 Product Owner approval. |
 | `NAV-03`-`NAV-05` | 390x844 menu opens, closes by Escape and outside activation, restores focus, reopens, and navigates. |
 | `HOME-01`-`HOME-04` | Current Training, Writing, starting-point, Consulting, Website Services, Weekly, and Systems actions load their accepted destinations. |
 | `CON-01` | Homepage discovery reaches Consulting, then the contextual Contact journey without submission. |

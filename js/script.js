@@ -2,24 +2,33 @@ const toggle = document.getElementById('nav-toggle');
 const nav    = document.getElementById('nav');
 
 if (toggle && nav) {
+  const closeNavigation = ({ restoreFocus = false } = {}) => {
+    nav.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+    if (restoreFocus) toggle.focus();
+  };
+
   toggle.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('is-open');
     toggle.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
   });
 
   document.addEventListener('click', (e) => {
     if (!toggle.contains(e.target) && !nav.contains(e.target)) {
-      nav.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
+      closeNavigation();
     }
   });
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-      nav.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.focus();
+      closeNavigation({ restoreFocus: true });
     }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 1040 && nav.classList.contains('is-open')) closeNavigation();
   });
 }
 

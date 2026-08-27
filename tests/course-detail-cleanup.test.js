@@ -25,8 +25,8 @@ for (const [slug, stage, courseId] of courses) {
     const breadcrumb = section(html, /<nav class="course-breadcrumb"[\s\S]*?<\/nav>/, 'breadcrumb');
     const finalAction = section(html, /<section class="course-final-action" data-final-cta>[\s\S]*?<\/section>/, 'final action');
 
-    assert.match(html, /class="nav-link learning-header-action">My Learning<\/a>/);
-    assert.doesNotMatch(subnav, />My Learning<\/a>/);
+    assert.doesNotMatch(html.match(/<nav class="nav"[\s\S]*?<\/nav>/)[0], />My Learning<\/a>/);
+    assert.match(subnav, />My Learning<\/a>/);
 
     assert.equal((breadcrumb.match(/<li/g) || []).length, 2);
     assert.match(breadcrumb, /<li><a href="\.\.\/">Learning journey<\/a><\/li>/);
