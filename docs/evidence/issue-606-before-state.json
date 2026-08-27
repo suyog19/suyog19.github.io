@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "issue": 606,
+  "executed_at_utc": "2026-08-27T02:17:23Z",
+  "environment": {
+    "type": "local-static-render",
+    "url": "http://127.0.0.1:4173",
+    "accepted_dev_revision_before_suite": "8da75cfe1a826125bd6cfe1b9f976de96e21e4ae",
+    "suite_and_rendered_source_revision": "4501400abe8ef6436992c46c30c7627436c55912",
+    "rendered_site_change_from_accepted_dev": false,
+    "browser": "Playwright Chromium 151.0.7922.34",
+    "playwright": "1.62.1",
+    "viewports": [
+      {"width": 1440, "height": 900},
+      {"width": 390, "height": 844}
+    ]
+  },
+  "browser_results": {
+    "command": "npm run test:e2e",
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0
+  },
+  "interaction_ids_covered": [
+    "NAV-01", "NAV-02", "NAV-03", "NAV-04", "NAV-05",
+    "HOME-01", "HOME-02", "HOME-03", "HOME-04",
+    "CON-01", "WEB-01", "LEARN-01", "WEEKLY-01", "WEEKLY-02",
+    "WRITE-01", "SYS-01", "SYS-02", "FOOT-01", "EXT-01",
+    "CONTACT-01", "CONTACT-02", "CONTACT-03"
+  ],
+  "site_integrity": {
+    "inventory_source": "docs/evidence/issue-604-public-route-inventory.csv",
+    "expected_routes": 66,
+    "http_200_routes": 66,
+    "self_canonical_routes": 66,
+    "route_failures": [],
+    "internal_link_and_asset_command": "python scripts/validate_canonical_urls.py",
+    "internal_link_and_asset_result": "pass",
+    "validated_html_pages": 79,
+    "validated_sitemap_urls": 66,
+    "broken_internal_links": [],
+    "missing_local_assets": []
+  },
+  "representative_browser_health": {
+    "paths": ["/", "/consulting/", "/website-services/", "/training/", "/newsletter/", "/contact/", "/writing/", "/systems/"],
+    "site_attributed_console_errors": [],
+    "local_http_or_asset_failures": []
+  },
+  "baseline_defects_found_by_suite": [],
+  "intentionally_unautomated": [
+    {"ids": ["LEARN-02"], "reason": "Backend-authoritative/authenticated or interest state; retained focused contract coverage."},
+    {"ids": ["WEEKLY-02"], "reason": "Destination and form contract automated; real subscription and email confirmation deliberately not created."},
+    {"ids": ["CONTACT-03"], "reason": "Browser payload and 202 success automated with an intercept; no real production message."},
+    {"ids": ["CONTACT-04", "WRITE-02", "WRITE-03", "SEARCH-01", "SUPPORT-01"], "reason": "Existing focused contracts retained; not added to the compact rendered journey set."},
+    {"ids": [], "reason": "External service availability, authenticated private state, payment, email delivery, and production backend health remain release-smoke/manual concerns."}
+  ],
+  "pre_existing_baseline_findings_preserved": [
+    "Sampled accessibility contrast and visible-label/name findings from #604",
+    "Third-party cookie/Chrome Issues best-practice findings from #604",
+    "Mobile lab LCP of 4.8-5.1 seconds on the #604 samples"
+  ]
+}
