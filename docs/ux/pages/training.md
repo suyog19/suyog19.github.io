@@ -3,8 +3,8 @@
 - **Observed:** Training is a readiness and pathway decision experience. It
   opens with the capability-building promise, then helps visitors identify a
   starting point and understand progression.
-- **New approved direction (#624):** Software Signal Learning inherits the main
-  website's neutral surfaces and Signal Red emphasis while retaining functional
+- **Current approved direction (#650; supersedes the Signal Red choice in #624):**
+  Software Signal Learning inherits the main website's neutral surfaces and Petrol Teal emphasis while retaining functional
   learner components defined in `css/learning.css` and
   `content/plans/software-signal-learning-visual-system.md`.
 - **Observed:** Prerequisites, capability outcomes, availability, and stage are
@@ -19,7 +19,7 @@
 1. Start-point guidance precedes or accompanies the full pathway.
 2. The pathway communicates recommended progression without implying every
    earlier course is mandatory.
-3. Signal Red remains restrained and supports primary action, focus, selection,
+3. Petrol Teal remains restrained and supports primary action, focus, selection,
    or a concise accent rule; neutral surfaces carry grouping and hierarchy.
 4. Availability, prerequisite, and next-action information never relies on
    colour alone.

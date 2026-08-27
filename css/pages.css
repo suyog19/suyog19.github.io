@@ -702,7 +702,7 @@
 .framework-directory li > span { color: var(--color-signal); font-family: var(--font-serif); font-size: 1.25rem; }
 .framework-directory h3 { margin-bottom: .75rem; font-size: 1.05rem; line-height: 1.35; }
 .framework-directory p { color: var(--color-text-muted); font-size: .92rem; line-height: 1.65; }
-.framework-crosscut { display: grid; grid-template-columns: minmax(14rem, .45fr) minmax(0, 1fr); gap: 3rem; align-items: center; padding: 2rem; border-block: 1px solid var(--color-signal); background: #fff7f7; }
+.framework-crosscut { display: grid; grid-template-columns: minmax(14rem, .45fr) minmax(0, 1fr); gap: 3rem; align-items: center; padding: 2rem; border-block: 1px solid var(--color-signal); background: var(--color-signal-wash); }
 .framework-crosscut h2 { margin-top: .35rem; font-family: var(--font-serif); font-size: 2rem; }
 .framework-crosscut p { line-height: 1.7; }
 .framework-methods { background: var(--color-surface); border-block: 1px solid var(--color-border); }
@@ -1280,7 +1280,7 @@
 
 .wp-path-explore:hover,
 .wp-path-start:hover strong {
-  color: #b91c1c;
+  color: var(--color-signal-dark);
 }
 
 /* Featured Writing */
@@ -2552,20 +2552,20 @@
 }
 
 .article-body a {
-  color: #8f1d1d;
+  color: var(--color-signal-dark);
   font-weight: 500;
   text-decoration-line: underline;
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.18em;
-  text-decoration-color: rgba(185, 28, 28, 0.45);
+  text-decoration-color: color-mix(in srgb, var(--color-signal) 45%, transparent);
   transition: color 0.15s ease, text-decoration-color 0.15s ease, background-color 0.15s ease;
 }
 
 .article-body a:hover,
 .article-body a:focus-visible {
-  color: #6f1515;
+  color: var(--color-signal-dark);
   text-decoration-color: currentColor;
-  background-color: rgba(185, 28, 28, 0.08);
+  background-color: var(--color-signal-wash);
 }
 
 .article-body img {
@@ -2603,7 +2603,7 @@
 
 .flow-sequence-arrow {
   font-size: 0.95rem;
-  color: #b91c1c;
+  color: var(--color-signal);
   font-weight: 600;
   padding: 0 0.1rem;
 }
@@ -2622,7 +2622,7 @@
   font-family: var(--font-sans);
   font-size: 0.9rem;
   font-weight: 600;
-  color: #b91c1c;
+  color: var(--color-signal-dark);
   margin-bottom: 0.6rem;
 }
 
@@ -2641,7 +2641,7 @@
 
 .process-flow-steps li::before {
   content: "→ ";
-  color: #b91c1c;
+  color: var(--color-signal);
 }
 
 .article-body ul {
@@ -3961,7 +3961,7 @@
 
 .application-disclosure {
   padding: 1rem;
-  border-left: 3px solid #b91c1c;
+  border-left: 3px solid var(--color-signal);
   background: var(--color-surface);
 }
 
@@ -5414,7 +5414,7 @@
 .learner-text-button {
   border: 0;
   background: transparent;
-  color: #b91c1c;
+  color: var(--color-signal-dark);
   text-decoration: underline;
   cursor: pointer;
   padding: .75rem .25rem;
@@ -5866,7 +5866,7 @@
 
 .training-kicker {
   margin-bottom: .75rem;
-  color: #b91c1c;
+  color: var(--color-signal-dark);
   font-size: .78rem;
   font-weight: 600;
   letter-spacing: .08em;
@@ -5993,7 +5993,7 @@
 }
 
 .admin-page .admin-configuration-impact {
-  border-left: 3px solid #b91c1c;
+  border-left: 3px solid var(--color-signal);
   color: var(--color-text);
   padding-left: 0.75rem;
 }
@@ -7029,7 +7029,7 @@
 .home-opening-note { padding: .5rem 0 .5rem 1.5rem; border-left: 1px solid var(--color-signal); color: var(--color-text-muted); line-height: 1.7; }
 .home-tension { padding-block: clamp(5rem, 9vw, 8rem); background: var(--color-text); color: var(--color-bg); }
 .home-tension-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(3rem, 9vw, 9rem); }
-.home-tension .eyebrow { color: #fca5a5; }
+.home-tension .eyebrow { color: var(--color-signal-wash); }
 .home-tension h2 { color: var(--color-bg); max-width: 15ch; }
 .home-tension-copy p { color: rgba(255,255,255,.68); font-size: 1.05rem; line-height: 1.78; margin-bottom: 1.4rem; }
 .home-tension-copy .home-thesis { color: var(--color-bg); font-family: var(--font-serif); font-size: clamp(1.25rem, 2vw, 1.65rem); line-height: 1.5; border-top: 1px solid rgba(255,255,255,.25); padding-top: 1.5rem; }
@@ -7085,7 +7085,7 @@
 .evidence-composition { display: grid; grid-template-columns: 1.25fr .75fr; border-block: 1px solid var(--color-border-strong); }
 .evidence-lead { min-height: 29rem; padding: clamp(2rem, 5vw, 4rem); border-right: 1px solid var(--color-border-strong); display: flex; flex-direction: column; justify-content: flex-end; background: var(--color-text); color: white; }
 .evidence-type, .evidence-notes article > span { font-size: .7rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
-.evidence-type { color: #fca5a5; }
+.evidence-type { color: var(--color-signal-wash); }
 .evidence-notes article > span { color: var(--color-signal); }
 .evidence-lead h3 { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3.6rem); max-width: 13ch; margin: 1rem 0; }
 .evidence-lead p { max-width: 50ch; color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 2rem; }
@@ -7104,14 +7104,14 @@
 .founder-statement strong { color: var(--color-text); }
 .home-final { padding-block: clamp(5rem, 9vw, 8rem); background: var(--color-text); color: white; }
 .home-final h2 { color: white; max-width: 14ch; }
-.home-final .eyebrow { color: #fca5a5; }
+.home-final .eyebrow { color: var(--color-signal-wash); }
 .home-final-actions { border-top: 1px solid rgba(255,255,255,.3); }
 .home-final-actions a { color: white; }
 .final-primary, .final-link { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,.22); padding: 1.3rem 0; }
 .final-primary { flex-direction: column; align-items: flex-start; padding: 1.6rem 0; }
 .final-primary span { font-family: var(--font-serif); font-size: 1.55rem; }
 .final-primary small { color: rgba(255,255,255,.62); }
-.final-link:hover, .final-primary:hover { color: #fca5a5; }
+.final-link:hover, .final-primary:hover { color: var(--color-signal-wash); }
 @media (max-width: 960px) {
   .home-opening-grid, .home-tension-grid, .home-research-grid { grid-template-columns: 1fr; }
   .home-opening-note { max-width: 38rem; }

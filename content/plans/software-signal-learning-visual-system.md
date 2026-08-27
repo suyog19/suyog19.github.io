@@ -19,7 +19,7 @@ Status: implemented for epic #222. Owner: #224.
 - `.learning-deadline`: visible deadline or expected-update line.
 - `.learning-support-guidance`: reason-specific recovery guidance.
 
-Public pages remain editorial. Private pages use the same identity with a more task-oriented status card. Status never relies on colour. Focus uses the shared 3px Signal Red outline. At narrow widths actions stack and long learner email text wraps.
+Public pages remain editorial. Private pages use the same identity with a more task-oriented status card. Status never relies on colour. Focus uses the shared 3px Petrol Teal outline. Signal Red was the earlier approved shared direction and was superseded by #650. At narrow widths actions stack and long learner email text wraps.
 
 ## Usage rules
 

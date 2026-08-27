@@ -40,7 +40,8 @@ research changes the work, and choose an appropriate engagement path.
 
 ### Mandatory direction and resolved choices
 
-- Use the #607 brand/proposition opening, Signal Red, typography, CTA hierarchy,
+- Use the #607 brand/proposition opening, the shared accent (Signal Red at the
+  time; superseded by Petrol Teal in #650), typography, CTA hierarchy,
   and shared shell. Add homepage composition in `pages.css`; do not create a new
   design system, dependency, framework, animation layer, or image language.
 - Render the canonical Framework as semantic HTML rather than reusing the dense
@@ -76,7 +77,8 @@ validation, rendered full-page review, and explicit E2E contract updates.
 ## #609 page-family handoff
 
 Product Owner guidance: **Inherit the visual system, not the homepage composition.**
-Supporting pages should retain the typography system, restrained Signal Red,
+Supporting pages should retain the typography system, restrained shared accent
+(Signal Red at the time; superseded by Petrol Teal in #650),
 spacing and grid discipline, navigation/footer, CTA and link language, rules,
 responsive behaviour, and accessibility established by #607/#608. They should
 use the flexible page-opening patterns from #607 and be composed for their own

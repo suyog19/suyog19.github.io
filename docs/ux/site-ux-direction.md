@@ -99,9 +99,9 @@ structured rather than decorative, and specific rather than grandiose.
 
 ## Deliberate scoped variation: Software Signal Learning
 
-- **New approved direction (#624):** Approved learning routes may load
-  `css/learning.css`, but the layer inherits the main website's neutral surfaces,
-  borders, and Signal Red emphasis. It remains responsible for Learning-specific
+- **Current approved direction (#650; supersedes the Signal Red choice in #624):**
+  Approved learning routes may load `css/learning.css`, but the layer inherits the
+  main website's neutral surfaces, borders, and Petrol Teal emphasis. It remains responsible for Learning-specific
   status markers, disclosures, and learner-action components without creating a
   second visual identity.
 - **Previously decided:** Public learning pages remain editorial; private
@@ -121,8 +121,9 @@ Product Owner approves a departure:
 
 1. Editorial, content-led character with restrained visual decoration.
 2. Serif/sans role separation and the existing font families.
-3. Near-monochrome public palette with restrained Signal Red emphasis across
-   the main website and Learning.
+3. Near-monochrome public palette with restrained Petrol Teal emphasis across
+   the main website and Learning. Signal Red was the earlier approved direction
+   under #624 and was superseded by the Product Owner decision in #650.
 4. Clear page promise and content hierarchy before secondary navigation.
 5. Generous reading space, bounded line lengths, and flat bordered structures.
 6. Responsive reading and decision order with no horizontal overflow.

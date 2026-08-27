@@ -38,7 +38,9 @@ A person encountering a shared link should understand the destination before ope
 ### Software Signal Learning variant
 
 - The same composition, title scale, whitespace, and identity placement as the core variant.
-- Teal (`#0f766e` / `#115e59`) replaces the core marker and appears only on Training/course cards.
+- At delivery, Learning-only teal (`#0f766e` / `#115e59`) replaced the core marker
+  on Training/course cards. This separate accent was superseded by the shared
+  Petrol Teal system in #650.
 - Durable course titles and the Software Signal Learning identity only; no application, cohort, schedule, fee, capacity, or availability state.
 
 ## Composition contract
