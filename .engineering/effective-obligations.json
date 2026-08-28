@@ -1,7 +1,5 @@
 {
-  "approvals": [
-    "human-production-approval"
-  ],
+  "approvals": ["human-production-approval"],
   "classification": {
     "characteristics": {
       "information_architecture": true,
@@ -14,70 +12,28 @@
     "delivery_profile": "Protected",
     "deterministic_signals": [],
     "protected_ambiguity": false,
-    "reasons": [
-      "Protected characteristic present: production_controls"
-    ],
+    "reasons": ["Protected characteristic present: production_controls"],
     "semantic_rationale": "Selective release exception explicitly approved by Product Owner; final main merge remains human-controlled.",
     "target_revision": "3e1fe8e005989a081ae73f0f1d67d5d24725a6a7"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "native_enforcement": {
-    "production_environment": {
-      "prevent_self_review": true,
-      "required_human_reviewer": true
-    },
+    "production_environment": {"prevent_self_review": true, "required_human_reviewer": true},
     "protected_branches": true,
-    "required_status_checks": [
-      "engineering-process"
-    ]
+    "required_status_checks": ["engineering-process"]
   },
-  "not_required": [
-    "orchestrator",
-    "senior-ux-designer"
-  ],
+  "not_required": ["orchestrator", "senior-ux-designer"],
   "process": {
     "profile": "frontend",
     "revision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
     "source": "suyog19/software-engineering-process",
     "version": "1.0.0"
   },
-  "prohibited_actions": [
-    "autonomous_production_approval",
-    "self_independent_review",
-    "unresolved_protected_ambiguity",
-    "weakening_native_controls"
-  ],
-  "repository": {
-    "name": "suyog19/suyog19.github.io"
-  },
-  "required_capabilities": [
-    "architect",
-    "ci-automation",
-    "engineering-manager",
-    "functional-qa",
-    "independent-review",
-    "non-functional-qa",
-    "product-owner",
-    "software-developer",
-    "solution-sufficiency"
-  ],
-  "required_evidence": [
-    "architecture-decision/v1",
-    "classification/v1",
-    "functional-qa-verdict/v1",
-    "human-approval/v1",
-    "independent-review/v1",
-    "non-functional-qa-verdict/v1",
-    "solution-sufficiency/v1",
-    "test-result/v1"
-  ],
-  "selected_skills": [
-    "architecture-review",
-    "functional-qa",
-    "independent-review",
-    "non-functional-qa",
-    "solution-sufficiency"
-  ],
+  "prohibited_actions": ["autonomous_production_approval", "self_independent_review", "unresolved_protected_ambiguity", "weakening_native_controls"],
+  "repository": {"name": "suyog19/suyog19.github.io"},
+  "required_capabilities": ["architect", "ci-automation", "engineering-manager", "functional-qa", "independent-review", "non-functional-qa", "product-owner", "software-developer", "solution-sufficiency"],
+  "required_evidence": ["architecture-decision/v1", "classification/v1", "functional-qa-verdict/v1", "human-approval/v1", "independent-review/v1", "non-functional-qa-verdict/v1", "solution-sufficiency/v1", "test-result/v1"],
+  "selected_skills": ["architecture-review", "functional-qa", "independent-review", "non-functional-qa", "solution-sufficiency"],
   "validation_commands": [
     "python scripts/validate_article_structured_data.py",
     "python scripts/validate_canonical_urls.py",

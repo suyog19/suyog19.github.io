@@ -504,8 +504,8 @@ def render_landing_core(articles: list[dict[str, object]]) -> str:
     path_cards = []
     for path in curation["readerPaths"]:
         steps = [by_id[item] for item in path["workIds"]]
-        links = "".join(f'<li>{article_link(item, "wp-article-row")}</li>' for item in steps)
-        path_cards.append(f'<article class="wp-path-card"><p class="wp-theme-kicker">Reader path · {len(steps)} steps</p><h2 class="wp-path-title">{html.escape(path["title"])}</h2><p class="wp-path-desc">{html.escape(path["description"])}</p><ol class="wp-theme-articles">{links}</ol></article>')
+        links = "".join(f'<li class="wp-path-step">{article_link(item, "wp-article-row wp-path-step-link")}</li>' for item in steps)
+        path_cards.append(f'<article class="wp-path-card"><p class="wp-theme-kicker">Reader path · {len(steps)} steps</p><h2 class="wp-path-title">{html.escape(path["title"])}</h2><p class="wp-path-desc">{html.escape(path["description"])}</p><ol class="wp-path-steps">{links}</ol></article>')
     topic_cards = []
     for topic in curation["topics"]:
         preview = [by_id[item] for item in topic["previewWorkIds"]]

@@ -113,6 +113,18 @@ test('reader recommendations are merged into Choose Your Path without removing t
   assert.match(html, /Topic Clusters/);
 });
 
+test('reader paths use a readable responsive step composition', () => {
+  const paths = html.match(/<!-- Choose Your Path -->[\s\S]*?<\/section>/)?.[0] || '';
+  assert.equal((paths.match(/class="wp-path-card"/g) || []).length, 4);
+  assert.equal((paths.match(/class="wp-path-steps"/g) || []).length, 4);
+  assert.equal((paths.match(/class="wp-path-step"/g) || []).length, 17);
+  assert.equal((paths.match(/class="wp-article-row wp-path-step-link"/g) || []).length, 17);
+  assert.match(css, /\.wp-path-grid \{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/);
+  assert.match(css, /\.wp-path-step-link\.wp-article-row \{[\s\S]*?display: grid;[\s\S]*?justify-content: stretch;/);
+  assert.match(css, /\.wp-path-step-link\.wp-article-row \.wp-article-row-label \{[\s\S]*?white-space: normal;/);
+  assert.match(css, /@media \(max-width: 720px\) \{[\s\S]*?\.wp-path-grid \{[\s\S]*?grid-template-columns: 1fr;/);
+});
+
 test('cover styling preserves title measure across mobile widths', () => {
   assert.match(css, /\.wp-latest-cover \{[\s\S]*?aspect-ratio: 1\.91 \/ 1;[\s\S]*?object-fit: cover;/);
   assert.match(css, /@media \(max-width: 480px\) \{[\s\S]*?\.wp-latest-row \{[\s\S]*?grid-template-columns: 5\.5rem minmax\(0, 1fr\);/);
