@@ -1,0 +1,56 @@
+{
+  "schema": "engineering-delivery-evidence/v1",
+  "issue": 661,
+  "baseRevision": "b639eb",
+  "targetRevision": "7f4326442b67269e6c5e2901c96722fb8ec420b7",
+  "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+  "classification": "standard",
+  "scope": {
+    "logicalWorks": 41,
+    "publicationRepresentations": 42,
+    "latestWorks": 6,
+    "recentWorks": 37,
+    "archiveWorks": 4,
+    "topicHubs": 4,
+    "readerPaths": 4,
+    "searchDestinations": 60,
+    "feedItems": 41
+  },
+  "validation": [
+    {"command": "node --test tests/*.test.js", "result": "passed", "summary": "461/461 tests passed"},
+    {"command": "python -m unittest discover -s tests -p test_*.py", "result": "passed", "summary": "57/57 tests passed"},
+    {"command": "npm run test:e2e", "result": "passed", "summary": "13/13 scenarios passed"},
+    {"command": "python scripts/validate_public_seo.py", "result": "passed", "summary": "13 focused contracts passed"},
+    {"command": "python scripts/validate_public_discovery.py", "result": "passed", "summary": "41 feed entries and 60 Search destinations validated"},
+    {"command": "git diff --check", "result": "passed"}
+  ],
+  "renderedReview": {
+    "result": "passed",
+    "viewports": ["1440px desktop", "390px mobile", "720px 200%-zoom equivalent"],
+    "horizontalOverflow": false,
+    "missingImages": false,
+    "siteAttributedConsoleFailures": false,
+    "keyboardNavigation": "passed"
+  },
+  "functionalQa": {
+    "schema": "functional-qa-verdict/v1",
+    "producerContextId": "/root/functional_qa",
+    "targetRevision": "7f4326442b67269e6c5e2901c96722fb8ec420b7",
+    "verdict": "pass",
+    "limitation": "No live Beehiiv sync was exercised because BEEHIIV_RSS_URL is external repository state. Configure it and complete a successful workflow_dispatch before operational rollout."
+  },
+  "independentReview": {
+    "schema": "independent-review/v1",
+    "producerContextId": "/root/independent_review",
+    "implementationContextId": "/root",
+    "freshContext": true,
+    "targetRevision": "7f4326442b67269e6c5e2901c96722fb8ec420b7",
+    "verdict": "pass",
+    "findings": []
+  },
+  "deploymentPrerequisite": {
+    "required": true,
+    "action": "Set the BEEHIIV_RSS_URL repository variable to the publication's validated RSS feed and run Sync newsletter discovery successfully.",
+    "failureModeUntilConfigured": "The scheduled job fails immediately and does not write the last-known-good ledger."
+  }
+}
