@@ -120,7 +120,8 @@ def main() -> int:
     ledger["editions"] = sorted(merged.values(), key=lambda item: (item["published"], item["id"]), reverse=True)
     rendered = json.dumps(ledger, ensure_ascii=False, indent=2) + "\n"
     if LEDGER.read_text(encoding="utf-8") != rendered:
-        LEDGER.write_text(rendered, encoding="utf-8")
+        with LEDGER.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(rendered)
         print(f"Merged {len(incoming)} editions; ledger now retains {len(merged)} editions.")
     else:
         print(f"Newsletter ledger unchanged at {len(merged)} editions.")
