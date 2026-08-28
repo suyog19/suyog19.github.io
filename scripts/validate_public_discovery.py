@@ -15,7 +15,7 @@ import generate_public_discovery as discovery
 
 ROOT = Path(__file__).parents[1]
 ORIGIN = "https://suyogjoshi.com"
-ALLOWED_TYPES = {"Article", "Topic Hub", "Series", "System", "Demo", "Course"}
+ALLOWED_TYPES = {"Article", "Newsletter", "Topic Hub", "Series", "System", "Demo", "Course"}
 PROHIBITED_URL_PARTS = (
     "/admin/",
     "/my-learning/",
@@ -95,8 +95,10 @@ def validate_feed(errors: list[str]) -> None:
         if expected is None:
             error(errors, f"feed contains unapproved destination: {link}")
             continue
-        if guid != link or guid_element is None or guid_element.get("isPermaLink") != "true":
-            error(errors, f"feed GUID must be the stable destination URL: {link}")
+        expected_guid = str(expected["feedGuid"])
+        expected_permalink = "true" if expected_guid == link else "false"
+        if guid != expected_guid or guid_element is None or guid_element.get("isPermaLink") != expected_permalink:
+            error(errors, f"feed GUID must preserve stable Work identity: {link}")
         if guid in guids:
             error(errors, f"duplicate feed GUID: {guid}")
         guids.add(guid)
@@ -162,12 +164,14 @@ def validate_search(errors: list[str]) -> None:
         "System": len(discovery.structured_paths("systems", "TechArticle")),
         "Demo": len(discovery.structured_paths("systems", "CreativeWork")) + len(discovery.structured_paths("systems", "WebApplication")),
         "Course": len(discovery.course_items()),
+        "Newsletter": len(discovery.newsletter_items()),
     }
     actual_counts = {content_type: sum(item.get("type") == content_type for item in items) for content_type in ALLOWED_TYPES}
     if actual_counts != expected_counts:
         error(errors, f"search index type coverage mismatch: {actual_counts}")
     ids: set[str] = set()
     approved_external = {str(item["url"]) for item in discovery.external_articles()}
+    approved_newsletters = {str(item["url"]) for item in discovery.newsletter_items()}
     latest_parser = discovery.LatestWritingParser()
     latest_parser.feed((ROOT / "writing" / "index.html").read_text(encoding="utf-8"))
     latest_external = {item.get("url", "") for item in latest_parser.items}
@@ -196,7 +200,8 @@ def validate_search(errors: list[str]) -> None:
         if any(part in url for part in PROHIBITED_URL_PARTS):
             error(errors, f"private or transactional URL found in search index: {url}")
         if item.get("external"):
-            if content_type != "Article" or url not in approved_external or item.get("source") in (None, "", "suyogjoshi.com"):
+            approved = (content_type == "Article" and url in approved_external) or (content_type == "Newsletter" and url in approved_newsletters)
+            if not approved or item.get("source") in (None, "", "suyogjoshi.com"):
                 error(errors, f"external search result is not an approved Writing item: {url}")
         else:
             canonical = canonical_for_url(url)
@@ -242,7 +247,7 @@ def main() -> int:
         return 1
     feed_count = len(discovery.internal_articles()) + len(discovery.external_articles())
     search_count = len(discovery.build_search_index(discovery.internal_articles() + discovery.external_articles())["items"])
-    print(f"Validated {feed_count} Writing feed entries and {search_count} public search destinations across 6 approved content types.")
+    print(f"Validated {feed_count} Writing feed entries and {search_count} public search destinations across 7 approved content types.")
     return 0
 
 

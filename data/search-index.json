@@ -6,12 +6,13 @@
     "Series",
     "System",
     "Demo",
-    "Course"
+    "Course",
+    "Newsletter"
   ],
   "privacy": "Public metadata only. Queries stay in the browser and are not stored by this feature.",
   "items": [
     {
-      "id": "article:https://medium.com/generative-ai/agent-plugins-1-0-engineering-process-is-becoming-installable-ec1d4f751550?sk=d187ebce0263a86a6d317710fcef6199",
+      "id": "article:agent-plugins-1-0-engineering-process-is-becoming-installable",
       "type": "Article",
       "title": "Agent Plugins 1.0: Engineering Process Is Becoming Installable",
       "summary": "A new portability standard is turning agent skills, tools, and engineering procedures into reusable software artifacts.",
@@ -24,103 +25,91 @@
       "published": "2026-08-27"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/",
+      "id": "article:ai-code-review-is-not-just-code-review",
       "type": "Article",
       "title": "AI Code Review Is Not Just Code Review",
       "summary": "Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change.",
       "url": "https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/",
       "topics": [
-        "AI Review"
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-30"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+      "id": "article:ai-governance-without-bureaucracy",
       "type": "Article",
       "title": "AI Governance Without Bureaucracy",
       "summary": "AI governance works best inside normal engineering workflow: story quality, context, PR checks, review gates, evidence, and ownership.",
       "url": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
       "topics": [
-        "Governance"
+        "AI Agents and Review"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-07-04"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/ai-stress-testing-agile/",
+      "id": "article:ai-stress-testing-agile",
       "type": "Article",
       "title": "AI Is Not Replacing Agile. It Is Stress-Testing It.",
       "summary": "AI is not replacing Agile — it's stress-testing it. Teams with strong engineering discipline are accelerating. Teams with weak practices are amplified faster.",
       "url": "https://suyogjoshi.com/writing/ai-stress-testing-agile/",
       "topics": [
-        "Agile"
+        "Agile, Process, and Engineering Leadership"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-04"
     },
     {
-      "id": "article:https://medium.com/gitconnected/ai-is-quietly-changing-how-junior-engineers-become-senior-952f128b0888?sk=84d73ea9017579353d8df3faa573f428",
+      "id": "article:ai-is-quietly-changing-how-junior-engineers-become-senior",
       "type": "Article",
       "title": "AI Is Quietly Changing How Junior Engineers Become Senior",
       "summary": "How AI-assisted implementation changes the experience junior engineers need to develop judgment, debugging skill, and senior-level understanding.",
       "url": "https://medium.com/gitconnected/ai-is-quietly-changing-how-junior-engineers-become-senior-952f128b0888?sk=84d73ea9017579353d8df3faa573f428",
       "topics": [
-        "Engineering Leadership"
+        "Agile, Process, and Engineering Leadership"
       ],
       "source": "Level Up Coding",
       "external": true,
       "published": "2026-08-03"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/",
+      "id": "article:ai-ml-data-science-explained-simply",
       "type": "Article",
       "title": "AI, Machine Learning and Data Science — Explained Simply",
       "summary": "A practical explanation of AI, ML, and data science using a banking example — written for everyone who works near these systems but has never had them explained clearly.",
       "url": "https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/",
-      "topics": [
-        "AI Foundations"
-      ],
+      "topics": [],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-05-02"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/",
+      "id": "article:beyond-the-repository-why-ai-needs-work-context-too",
       "type": "Article",
       "title": "Beyond the Repository: Why AI Needs Work Context Too",
       "summary": "Why AI-assisted development needs work context from stories, acceptance criteria, constraints, traceability, and governance, not only repository context.",
       "url": "https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/",
       "topics": [
-        "Work Context"
+        "AI-Assisted Software Engineering",
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-15"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/business-rules-as-context/",
+      "id": "article:business-rules-as-context",
       "type": "Article",
       "title": "Business Rules as Context: The Missing Layer in AI-Assisted Development",
       "summary": "Why business rules must become first-class context for AI-assisted development when correctness depends on eligibility, limits, exceptions, and operations.",
-      "url": "https://suyogjoshi.com/writing/business-rules-as-context/",
-      "topics": [
-        "Business Rules"
-      ],
-      "source": "suyogjoshi.com",
-      "external": false,
-      "published": "2026-06-29"
-    },
-    {
-      "id": "article:https://medium.com/@suyog19/business-rules-as-context-the-missing-layer-in-ai-assisted-development-0e5a2c52299e?sk=4cf8826542a0d7a149dbe8205a978a77",
-      "type": "Article",
-      "title": "Business Rules as Context: The Missing Layer in AI-Assisted Development",
-      "summary": "AI assistants can read the code and the ticket, but that still may not tell them what the software is allowed to do.",
       "url": "https://medium.com/@suyog19/business-rules-as-context-the-missing-layer-in-ai-assisted-development-0e5a2c52299e?sk=4cf8826542a0d7a149dbe8205a978a77",
       "topics": [
+        "AI-Assisted Software Engineering",
         "Engineering Context and Knowledge"
       ],
       "source": "Medium",
@@ -128,20 +117,20 @@
       "published": "2026-08-22"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/",
+      "id": "article:coding-assistants-are-not-junior-developers",
       "type": "Article",
       "title": "Coding Assistants Are Not Junior Developers",
       "summary": "AI coding assistants are powerful software engineering tools, but treating them like junior developers creates the wrong expectations.",
       "url": "https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/",
       "topics": [
-        "Engineering Judgment"
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-06"
     },
     {
-      "id": "article:https://medium.com/generative-ai/cursor-just-launched-its-own-git-forge-its-built-for-ai-agents-a6ac940b0a02?sk=e37eedbb64566ebae0b8c61c0018ff39",
+      "id": "article:cursor-just-launched-its-own-git-forge-its-built-for-ai-agents",
       "type": "Article",
       "title": "Cursor Just Launched Its Own Git Forge. It’s Built for AI Agents.",
       "summary": "Origin Code Hosting brings repositories, pull requests, GitHub mirroring, and agent-triggered workflows directly into Cursor.",
@@ -154,111 +143,115 @@
       "published": "2026-08-28"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/",
+      "id": "article:documentation-is-becoming-executable-context",
       "type": "Article",
       "title": "Documentation Is Becoming Executable Context",
       "summary": "How AI-assisted software work is changing documentation from a passive reference into an active part of delivery.",
       "url": "https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/",
       "topics": [
-        "Documentation"
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-27"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/",
+      "id": "article:enterprise-ai-adoption-is-a-context-problem",
       "type": "Article",
       "title": "Enterprise AI Adoption Is a Context Problem",
       "summary": "Coding assistants need more than prompts. They need usable, trusted, permission-aware engineering context close to the work.",
       "url": "https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/",
       "topics": [
-        "AI Adoption"
+        "Agile, Process, and Engineering Leadership"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-25"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/",
+      "id": "article:from-developer-to-ai-orchestrator",
       "type": "Article",
       "title": "From Developer to AI Orchestrator",
       "summary": "AI is moving software engineering from implementation toward judgment, review, design, architecture, governance, and orchestration.",
       "url": "https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/",
       "topics": [
-        "Series"
+        "Agile, Process, and Engineering Leadership",
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-21"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/",
+      "id": "article:how-i-structure-repositories-so-ai-can-understand-them",
       "type": "Article",
       "title": "How I Structure Repositories So AI Can Actually Understand Them",
       "summary": "A practical guide to structuring repositories with README files, architecture docs, ADRs, standards, maps, and AGENTS.md so AI assistants can work well.",
       "url": "https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/",
       "topics": [
-        "Repository Context"
+        "AI-Assisted Software Engineering",
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-12"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/",
+      "id": "article:how-i-used-two-ais-to-build-a-software-engineering-system",
       "type": "Article",
       "title": "How I Used Two AIs to Build a Software Engineering System",
       "summary": "A practical reflection on using ChatGPT for design, Claude for implementation, and human judgment to keep the system grounded.",
       "url": "https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/",
       "topics": [
-        "System Story"
+        "Agile, Process, and Engineering Leadership",
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-05-02"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/",
+      "id": "article:how-modern-llm-systems-really-work",
       "type": "Article",
       "title": "How Modern LLM Systems Really Work",
       "summary": "A practical guide to how modern LLM systems work — from transformers, attention, and pretraining to inference runtimes, KV cache, RLHF, and AI agents.",
       "url": "https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/",
-      "topics": [
-        "AI Systems"
-      ],
+      "topics": [],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-05-07"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/how-to-tame-your-agent/",
+      "id": "article:how-to-tame-your-agent",
       "type": "Article",
       "title": "How To Tame Your Agent?",
       "summary": "A practical guide to controlling AI agents with context, constraints, plans, scope, tests, review separation, and human accountability.",
       "url": "https://suyogjoshi.com/writing/how-to-tame-your-agent/",
       "topics": [
-        "Series"
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-15"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/",
+      "id": "article:human-review-gates-ai-assisted-delivery",
       "type": "Article",
       "title": "Human Review Gates in AI-Assisted Delivery",
       "summary": "Human review gates help AI-assisted software teams make intent, design, risk, validation, release, and ownership decisions explicit.",
       "url": "https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/",
       "topics": [
-        "Governance"
+        "Agile, Process, and Engineering Leadership",
+        "AI Agents and Review"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-07-01"
     },
     {
-      "id": "article:https://medium.com/gitconnected/i-built-an-ai-software-team-the-hard-part-wasnt-coding-225382309c08?sk=7b471a2acfa79394053eba2851d1278c",
+      "id": "article:i-built-an-ai-software-team-the-hard-part-wasnt-coding",
       "type": "Article",
       "title": "I Built an AI Software Team. The Hard Part Wasn’t Coding.",
       "summary": "A practical account of building an AI software team and discovering that context, coordination, review, and human control are harder than code generation.",
@@ -271,20 +264,20 @@
       "published": "2026-08-11"
     },
     {
-      "id": "article:https://medium.com/gitconnected/i-made-architecture-documentation-fail-the-build-when-it-lies-ee92ff8287be?sk=214958e0f39257ad4678975a7e8ebaa1",
+      "id": "article:i-made-architecture-documentation-fail-the-build-when-it-lies",
       "type": "Article",
       "title": "I Made Architecture Documentation Fail the Build When It Lies",
       "summary": "How executable architecture checks can detect documentation drift and make important system boundaries fail visibly during delivery.",
       "url": "https://medium.com/gitconnected/i-made-architecture-documentation-fail-the-build-when-it-lies-ee92ff8287be?sk=214958e0f39257ad4678975a7e8ebaa1",
       "topics": [
-        "Architecture in the AI Era"
+        "AI-Assisted Software Engineering"
       ],
       "source": "Level Up Coding",
       "external": true,
       "published": "2026-08-05"
     },
     {
-      "id": "article:https://medium.com/@suyog19/i-stopped-trusting-my-coding-agent-to-read-the-docs-92e504c07a42?sk=6b9c4ee576da1eb765bf437febc3c6e3",
+      "id": "article:i-stopped-trusting-my-coding-agent-to-read-the-docs",
       "type": "Article",
       "title": "I Stopped Trusting My Coding Agent to Read the Docs",
       "summary": "Research on real coding agents suggests that important repository knowledge must be deliberately routed into the workflow.",
@@ -297,112 +290,115 @@
       "published": "2026-08-24"
     },
     {
-      "id": "article:https://medium.com/gitconnected/i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part-63a2459d3b52?sk=8b1e74050b31dc8d93e2c6a5edf9efcc",
+      "id": "article:i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part",
       "type": "Article",
       "title": "I Took an Idea to Soft Launch in a Day. Speed Wasn’t the Interesting Part.",
       "summary": "A one-day soft launch made room for more product thinking, research, validation, and engineering discipline—not just faster implementation.",
       "url": "https://medium.com/gitconnected/i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part-63a2459d3b52?sk=8b1e74050b31dc8d93e2c6a5edf9efcc",
-      "topics": [
-        "Systems and Experiments"
-      ],
+      "topics": [],
       "source": "Level Up Coding",
       "external": true,
       "published": "2026-08-22"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/",
+      "id": "article:knowledge-debt-is-the-new-technical-debt",
       "type": "Article",
       "title": "Knowledge Debt Is the New Technical Debt",
       "summary": "A practical explanation of knowledge debt, how it differs from technical debt, why AI-assisted teams feel its cost, and how to manage it.",
       "url": "https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/",
       "topics": [
-        "Knowledge Debt"
+        "Agile, Process, and Engineering Leadership",
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-29"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/",
+      "id": "article:not-all-engineering-tasks-belong-to-ai",
       "type": "Article",
       "title": "Not All Engineering Tasks Belong to AI",
       "summary": "A practical matrix for deciding which software engineering tasks AI can handle, where humans must guide it, and where judgment remains essential.",
       "url": "https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/",
       "topics": [
-        "Series"
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-19"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/",
+      "id": "article:process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants",
       "type": "Article",
       "title": "Process as Code: Making Engineering Standards Visible to Humans and AI Assistants",
       "summary": "How repository-level instructions, checks, templates, ADRs, and reviews can turn informal team expectations into shared engineering practice.",
       "url": "https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/",
       "topics": [
-        "Engineering Standards"
+        "Agile, Process, and Engineering Leadership",
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-24"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/",
+      "id": "article:stop-prompting-harder-start-giving-better-context",
       "type": "Article",
       "title": "Stop Prompting Harder. Start Giving Better Context.",
       "summary": "Why AI-assisted software engineering depends less on clever prompts and more on giving coding assistants the right context, constraints, and working memory.",
       "url": "https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/",
       "topics": [
-        "Context Design"
+        "AI-Assisted Software Engineering",
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-10"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/",
+      "id": "article:stronger-evidence-chains-for-ai-assisted-engineering-changes",
       "type": "Article",
       "title": "Stronger Evidence Chains for AI-Assisted Engineering Changes",
       "summary": "As code becomes easier to generate, important changes need clearer records of intent, validation, review, rollout, and ownership.",
       "url": "https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/",
       "topics": [
-        "Evidence"
+        "Agile, Process, and Engineering Leadership"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-25"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/agent-risk-register/",
+      "id": "article:agent-risk-register",
       "type": "Article",
       "title": "The Agent Risk Register: What to Check Before Letting AI Act",
       "summary": "A practical agent risk register for defining AI agent permissions, scope, evidence, review, blast radius, rollback, and ownership.",
       "url": "https://suyogjoshi.com/writing/agent-risk-register/",
       "topics": [
-        "Governance",
-        "Review and Governance"
+        "AI Agents and Review"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-07-04"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/",
+      "id": "article:the-context-supply-chain-how-organizational-knowledge-reaches-ai-output",
       "type": "Article",
       "title": "The Context Supply Chain: How Organizational Knowledge Reaches AI Output",
       "summary": "AI output often fails long before the prompt is written.",
       "url": "https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/",
       "topics": [
-        "Knowledge Flow"
+        "Agile, Process, and Engineering Leadership",
+        "AI-Assisted Software Engineering",
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-26"
     },
     {
-      "id": "article:https://medium.com/@suyog19/the-frontend-passed-the-experience-didnt-c7ae9e6a5140?sk=6913d5adfb68854f16718b4d7cd31347",
+      "id": "article:the-frontend-passed-the-experience-didnt",
       "type": "Article",
       "title": "The Frontend Passed. The Experience Didn’t.",
       "summary": "A technically correct interface can still fail on hierarchy, clarity, and human comprehension.",
@@ -415,20 +411,20 @@
       "published": "2026-08-28"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/human-ai-responsibility-map/",
+      "id": "article:human-ai-responsibility-map",
       "type": "Article",
       "title": "The Human + AI Responsibility Map",
       "summary": "A practical responsibility map for AI-assisted engineering: what AI can assist with, what humans must own, and how teams scale review with risk.",
       "url": "https://suyogjoshi.com/writing/human-ai-responsibility-map/",
       "topics": [
-        "Governance"
+        "AI Agents and Review"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-07-03"
     },
     {
-      "id": "article:https://medium.com/gitconnected/the-rise-of-multi-model-software-engineering-afa2c27b29bc?sk=bf073a9753b436a016e31bb619389bfc",
+      "id": "article:the-rise-of-multi-model-software-engineering",
       "type": "Article",
       "title": "The Rise of Multi-Model Software Engineering",
       "summary": "How engineering teams can use different AI models for planning, implementation, review, and evidence without treating one model as universally best.",
@@ -441,73 +437,71 @@
       "published": "2026-08-17"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/",
+      "id": "article:understanding-the-ai-ecosystem",
       "type": "Article",
       "title": "Understanding the AI Ecosystem",
       "summary": "A practical, systems-level explanation of the modern AI ecosystem for engineers, learners, and decision makers.",
       "url": "https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/",
-      "topics": [
-        "AI Systems"
-      ],
+      "topics": [],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-05-02"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/",
+      "id": "article:using-multiple-ai-agents-as-a-software-engineering-team",
       "type": "Article",
       "title": "Using Multiple AI Agents as a Software Engineering Team",
       "summary": "A practical model for using architecture, coding, test, review, security, documentation, and human governance agents in software engineering.",
       "url": "https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/",
       "topics": [
-        "Series"
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-20"
     },
     {
-      "id": "article:https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975",
+      "id": "article:when-ai-writes-the-code-what-makes-a-language-good",
       "type": "Article",
       "title": "When AI Writes the Code, What Makes a Language Good?",
       "summary": "What programming-language qualities matter when AI writes more code, including explicitness, feedback, tooling, contracts, and human reviewability.",
       "url": "https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975",
       "topics": [
-        "Architecture in the AI Era"
+        "AI-Assisted Software Engineering"
       ],
       "source": "Towards AI",
       "external": true,
       "published": "2026-08-17"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/",
+      "id": "article:why-ai-punishes-tribal-knowledge-in-software-teams",
       "type": "Article",
       "title": "Why AI Punishes Tribal Knowledge in Software Teams",
       "summary": "Tribal knowledge has always been expensive in software teams. AI-assisted development makes the cost harder to hide.",
       "url": "https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/",
       "topics": [
-        "Tribal Knowledge"
+        "Engineering Context and Knowledge"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-26"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/",
+      "id": "article:architecture-matters-more-in-the-ai-era",
       "type": "Article",
       "title": "Why Architecture Matters More in the AI Era",
       "summary": "Why architecture matters more when AI makes implementation faster, from boundaries and contracts to ownership, review, and system thinking.",
       "url": "https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/",
       "topics": [
-        "Architecture",
-        "Architecture in the AI Era"
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-07-06"
     },
     {
-      "id": "article:https://medium.com/towards-artificial-intelligence/why-multi-agent-coding-fails-6b3a45746477?sk=b085842583c07888997f98f3cf9544e2",
+      "id": "article:why-multi-agent-coding-fails",
       "type": "Article",
       "title": "Why Multi-Agent Coding Fails",
       "summary": "Why multi-agent coding workflows fail when roles, context, handoffs, validation, and human authority are not designed as an engineering system.",
@@ -520,20 +514,21 @@
       "published": "2026-08-10"
     },
     {
-      "id": "article:https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/",
+      "id": "article:why-reviewing-ai-generated-work-is-a-different-skill",
       "type": "Article",
       "title": "Why Reviewing AI-Generated Work Is a Different Skill",
       "summary": "AI can generate polished software artifacts quickly, but engineers still need to uncover assumptions, missing context, and hidden risks.",
       "url": "https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/",
       "topics": [
-        "Series"
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
       ],
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-20"
     },
     {
-      "id": "article:https://medium.com/towards-artificial-intelligence/your-coding-agent-shouldnt-work-alone-4e910cc835b9?sk=fbb2b54fb4b7996cb953e40cce9cb359",
+      "id": "article:your-coding-agent-shouldnt-work-alone",
       "type": "Article",
       "title": "Your Coding Agent Shouldn’t Work Alone",
       "summary": "AI-assisted development is shifting from private developer sessions to shared workspaces where teams and agents build together.",
@@ -546,7 +541,7 @@
       "published": "2026-08-26"
     },
     {
-      "id": "article:https://medium.com/analysts-corner/your-repository-has-a-truth-problem-bfc2f89b0346?sk=8b1551f76713d53216d4e2a0b50fab6b",
+      "id": "article:your-repository-has-a-truth-problem",
       "type": "Article",
       "title": "Your Repository Has a Truth Problem",
       "summary": "As AI agents act on repository context, stale documentation becomes an engineering risk.",
@@ -732,7 +727,7 @@
       "id": "topic-hub:https://suyogjoshi.com/writing/topics/agile-process-and-engineering-leadership/",
       "type": "Topic Hub",
       "title": "Agile, Process, and Engineering Leadership",
-      "summary": "Explore AI adoption, Agile pressure, engineering standards, evidence, and leadership practices for reliable AI-assisted software delivery.",
+      "summary": "AI adoption, engineering standards, evidence, and leadership practices for reliable delivery.",
       "url": "https://suyogjoshi.com/writing/topics/agile-process-and-engineering-leadership/",
       "topics": [],
       "source": "suyogjoshi.com",
@@ -742,7 +737,7 @@
       "id": "topic-hub:https://suyogjoshi.com/writing/topics/ai-agents-and-review/",
       "type": "Topic Hub",
       "title": "AI Agents and Review",
-      "summary": "Explore AI agent boundaries, multi-agent engineering, generated-work review, risk, evidence, governance, and accountable human orchestration.",
+      "summary": "Task boundaries, agent coordination, generated-work review, evidence, and accountable human control.",
       "url": "https://suyogjoshi.com/writing/topics/ai-agents-and-review/",
       "topics": [],
       "source": "suyogjoshi.com",
@@ -752,7 +747,7 @@
       "id": "topic-hub:https://suyogjoshi.com/writing/topics/ai-assisted-software-engineering/",
       "type": "Topic Hub",
       "title": "AI-Assisted Software Engineering",
-      "summary": "Explore practical AI-assisted software engineering through context, repository design, review, agents, orchestration, and human judgment.",
+      "summary": "Context, architecture, review, and delivery practices for reliable AI-assisted software work.",
       "url": "https://suyogjoshi.com/writing/topics/ai-assisted-software-engineering/",
       "topics": [],
       "source": "suyogjoshi.com",
@@ -762,7 +757,7 @@
       "id": "topic-hub:https://suyogjoshi.com/writing/topics/engineering-context-and-knowledge/",
       "type": "Topic Hub",
       "title": "Engineering Context and Knowledge",
-      "summary": "Explore how business rules, documentation, standards, and organizational knowledge become useful engineering context for people and AI.",
+      "summary": "How business rules, documentation, standards, and organizational knowledge reach humans and AI systems.",
       "url": "https://suyogjoshi.com/writing/topics/engineering-context-and-knowledge/",
       "topics": [],
       "source": "suyogjoshi.com",

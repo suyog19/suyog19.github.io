@@ -1320,6 +1320,12 @@
   margin-bottom: 3.5rem;
 }
 
+.wp-theme > *,
+.wp-theme-articles,
+.wp-article-row-title {
+  min-width: 0;
+}
+
 .wp-theme:last-child {
   margin-bottom: 0;
 }
@@ -1577,6 +1583,10 @@
     display: flex;
     align-items: flex-start;
     gap: 0.3rem;
+  }
+
+  .wp-article-row-label {
+    white-space: normal;
   }
 
   .wp-latest-row {

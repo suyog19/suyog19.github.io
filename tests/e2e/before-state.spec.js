@@ -151,7 +151,9 @@ test.describe('accepted BEFORE-state rendered journeys', () => {
 
   test('WRITE-01 SYS-01 SYS-02: representative evidence journeys reach rendered details', async ({ page }) => {
     await page.goto('/writing/');
-    await page.locator('.wp-latest-item[data-hosting="internal"] a').first().click();
+    // Latest is source-neutral and may legitimately contain six external Works.
+    // Follow a stable internal Work from the curated discovery surface instead.
+    await page.locator('main a[href="knowledge-debt-is-the-new-technical-debt/"]').first().click();
     await expect(page.locator('article h1, main h1').first()).toBeVisible();
     expect(new URL(page.url()).pathname).toMatch(/^\/writing\/.+\/$/);
     await page.goto('/systems/');
