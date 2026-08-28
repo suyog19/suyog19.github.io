@@ -3,7 +3,7 @@
   "predicate": {
     "capability": "product-owner",
     "findings": [],
-    "issuedAt": "2026-08-28T15:08:30.574367+00:00",
+    "issuedAt": "2026-08-28T15:10:40.214151+00:00",
     "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
     "processVersion": "1.0.0",
     "producer": {
@@ -13,7 +13,7 @@
       "implementationContextId": null
     },
     "residualRisk": [],
-    "verdict": "pass"
+    "verdict": "approved"
   },
   "predicateType": "https://suyogjoshi.com/software-signal/engineering/human-approval/v1",
   "subject": [
