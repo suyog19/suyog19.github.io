@@ -7,6 +7,7 @@ const css = fs.readFileSync('css/pages.css', 'utf8');
 const works = JSON.parse(fs.readFileSync('data/writing-works.json', 'utf8'));
 const curation = JSON.parse(fs.readFileSync('data/writing-curation.json', 'utf8'));
 const latest = html.match(/<!-- Latest Writing -->[\s\S]*?<\/section>/)?.[0] || '';
+const newsletterWorkflow = fs.readFileSync('.github/workflows/sync-newsletter-discovery.yml', 'utf8');
 
 const externalArticles = [
   {
@@ -123,6 +124,11 @@ test('reader paths use a readable responsive step composition', () => {
   assert.match(css, /\.wp-path-step-link\.wp-article-row \{[\s\S]*?display: grid;[\s\S]*?justify-content: stretch;/);
   assert.match(css, /\.wp-path-step-link\.wp-article-row \.wp-article-row-label \{[\s\S]*?white-space: normal;/);
   assert.match(css, /@media \(max-width: 720px\) \{[\s\S]*?\.wp-path-grid \{[\s\S]*?grid-template-columns: 1fr;/);
+});
+
+test('newsletter automation regenerates from the dev integration branch', () => {
+  assert.match(newsletterWorkflow, /actions\/checkout@v4[\s\S]*?with:\s*\n\s*# Main may be selectively promoted while dev remains the integration truth\.\s*\n\s*ref: dev/);
+  assert.match(newsletterWorkflow, /base: dev/);
 });
 
 test('cover styling preserves title measure across mobile widths', () => {

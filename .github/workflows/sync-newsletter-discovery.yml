@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Main may be selectively promoted while dev remains the integration truth.
+          ref: dev
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
