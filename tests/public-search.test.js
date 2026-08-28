@@ -35,7 +35,7 @@ test('empty, punctuation-only, and unknown queries return no results', () => {
 
 test('external articles and course states are explicit in generated metadata', () => {
   const external = index.items.filter((item) => item.external);
-  assert.equal(external.length, 6);
+  assert.equal(external.length, 14);
   external.forEach((item) => {
     assert.equal(item.type, 'Article');
     assert.match(item.url, /^https:\/\/medium\.com\//);
@@ -63,7 +63,7 @@ test('external discovery metadata survives Latest Writing rotation', () => {
     .map((match) => match[1]);
   const latestUrls = [...writing.matchAll(/<a href="(https:\/\/medium\.com\/[^"?]+\?sk=[^"]+)" class="wp-latest-row"/g)]
     .map((match) => match[1]);
-  assert.equal(new Set(catalogueUrls).size, 6);
+  assert.equal(new Set(catalogueUrls).size, 14);
   latestUrls.forEach((url) => assert.ok(catalogueUrls.includes(url)));
 });
 
