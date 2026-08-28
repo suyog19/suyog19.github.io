@@ -73,6 +73,15 @@ class WritingDiscoveryTests(unittest.TestCase):
         self.assertEqual(len(merged), 1)
         self.assertEqual(merged[0]["id"], url)
         self.assertEqual(merged[0]["summary"], "API reconciliation")
+        self.assertEqual(merged[0]["aliases"], ["post_uuid"])
+
+        moved_url = "https://newsletter.suyogjoshi.com/p/the-renamed-edition"
+        moved_api = {**api, "url": moved_url, "summary": "Renamed"}
+        merged_again = newsletter.merge_editions(merged, [moved_api])
+        self.assertEqual(len(merged_again), 1)
+        self.assertEqual(merged_again[0]["id"], url)
+        self.assertEqual(merged_again[0]["url"], moved_url)
+        self.assertEqual(merged_again[0]["aliases"], ["post_uuid"])
 
     def test_newsletter_ledger_writer_normalizes_line_endings(self):
         payload = {"version": 1, "editions": []}
