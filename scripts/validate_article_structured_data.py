@@ -54,7 +54,7 @@ class StructuredDataParser(HTMLParser):
                 self.meta[key.lower()] = values.get("content", "")
         elif tag == "link" and "canonical" in values.get("rel", "").lower().split():
             self.canonical = values.get("href", "")
-        elif tag == "h1" and ({"article-page-title", "topic-hub-title", "rag-demo-title", "invoice-demo-title"} & set(values.get("class", "").split())):
+        elif tag == "h1" and ({"article-page-title", "topic-hub-title", "wp-hero-heading", "rag-demo-title", "invoice-demo-title"} & set(values.get("class", "").split())):
             self._capture_headline = True
         elif tag == "script" and values.get("type", "").lower() == "application/ld+json":
             self._json_ld = True
@@ -169,18 +169,19 @@ def validate_topic_hub(path: Path) -> list[str]:
         errors.append(f"{relative}: mainEntity must be an ItemList")
         return errors
     items = item_list.get("itemListElement")
-    if item_list.get("numberOfItems") != 3 or not isinstance(items, list) or len(items) != 3:
-        errors.append(f"{relative}: starting-path ItemList must contain exactly three items")
+    if not isinstance(items, list) or item_list.get("numberOfItems") != len(items) or not items:
+        errors.append(f"{relative}: complete Topic ItemList count must match its non-empty items")
         return errors
-    if [item.get("position") for item in items if isinstance(item, dict)] != [1, 2, 3]:
-        errors.append(f"{relative}: starting-path positions must be 1, 2, 3")
+    if [item.get("position") for item in items if isinstance(item, dict)] != list(range(1, len(items) + 1)):
+        errors.append(f"{relative}: Topic ItemList positions must be contiguous")
     for item in items:
         if not isinstance(item, dict) or item.get("@type") != "ListItem" or not item.get("name") or not item.get("url"):
             errors.append(f"{relative}: each starting-path entry must be a named ListItem with a URL")
             continue
-        href = str(item["url"]).removeprefix(f"{PRODUCTION_ORIGIN}/writing/")
-        if f'href="../../{href}"' not in source:
-            errors.append(f"{relative}: structured starting-path URL is not a visible link: {item['url']}")
+        url = str(item["url"])
+        href = url if not url.startswith(f"{PRODUCTION_ORIGIN}/writing/") else "../../" + url.removeprefix(f"{PRODUCTION_ORIGIN}/writing/")
+        if f'href="{href}"' not in source:
+            errors.append(f"{relative}: structured Topic URL is not a visible link: {item['url']}")
     return errors
 
 
@@ -267,7 +268,8 @@ def validate_system_demo(path: Path, expected_type: str) -> list[str]:
 
 def main() -> int:
     errors: list[str] = []
-    article_paths = sorted(path / "index.html" for path in WRITING.iterdir() if path.is_dir() and path.name != "series" and (path / "index.html").exists())
+    collection_directories = {"series", "topics", "recent", "archive"}
+    article_paths = sorted(path / "index.html" for path in WRITING.iterdir() if path.is_dir() and path.name not in collection_directories and (path / "index.html").exists())
     for path in article_paths:
         errors.extend(validate_article(path))
     for relative in ("writing/series/index.html", "writing/series/ai-assisted-software-engineering/index.html"):

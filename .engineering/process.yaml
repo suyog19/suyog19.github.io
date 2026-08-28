@@ -1,8 +1,8 @@
 schema_version: 1
 process:
   source: suyog19/software-engineering-process
-  version: 1.0.0
-  revision: fa26e629787fbab681b389f02a9f9a6e28d8481a
+  version: 1.0.1
+  revision: 3f353cf48660f20883304cad07391966c3807e45
   profile: frontend
 repository:
   name: suyog19/suyog19.github.io

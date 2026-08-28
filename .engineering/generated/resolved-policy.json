@@ -45,8 +45,12 @@
         "semantics": "locked"
       },
       "human_production_boundary": {
+        "automation_may_authorize": false,
+        "automation_may_promote": false,
         "enabled": true,
-        "prevent_self_approval": true,
+        "human_authorization_required": true,
+        "manual_promotion_required": true,
+        "owner_manual_authorization_may_satisfy": true,
         "semantics": "locked"
       },
       "independent_review": {
@@ -99,8 +103,10 @@
     },
     "native_enforcement": {
       "production_environment": {
-        "prevent_self_review": true,
-        "required_human_reviewer": true
+        "automation_may_promote": false,
+        "distinct_human_reviewer_required": false,
+        "manual_human_promotion_required": true,
+        "stronger_multi_human_gate_permitted": true
       },
       "protected_branches": true,
       "required_status_checks": [
@@ -109,7 +115,7 @@
     },
     "process": {
       "source": "suyog19/software-engineering-process",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "schema_version": 1
   },

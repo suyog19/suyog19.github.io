@@ -4,7 +4,10 @@ const fs = require('node:fs');
 
 const html = fs.readFileSync('writing/index.html', 'utf8');
 const css = fs.readFileSync('css/pages.css', 'utf8');
+const works = JSON.parse(fs.readFileSync('data/writing-works.json', 'utf8'));
+const curation = JSON.parse(fs.readFileSync('data/writing-curation.json', 'utf8'));
 const latest = html.match(/<!-- Latest Writing -->[\s\S]*?<\/section>/)?.[0] || '';
+const newsletterWorkflow = fs.readFileSync('.github/workflows/sync-newsletter-discovery.yml', 'utf8');
 
 const externalArticles = [
   {
@@ -84,31 +87,48 @@ const externalArticles = [
 test('Latest Writing is a finite visual stream immediately after the hero', () => {
   assert.ok(html.indexOf('<!-- Latest Writing -->') > html.indexOf('<!-- Writing Hero -->'));
   assert.ok(html.indexOf('<!-- Latest Writing -->') < html.indexOf('<!-- Choose Your Path -->'));
-  assert.equal((latest.match(/class="wp-latest-item"/g) || []).length, 16);
-  assert.equal((latest.match(/class="wp-latest-cover"/g) || []).length, 16);
-  assert.equal((latest.match(/data-hosting="external"/g) || []).length, 14);
-  assert.equal((latest.match(/data-hosting="internal"/g) || []).length, 2);
-  assert.equal((latest.match(/<img[^>]+width="[^"]+"[^>]+height="[^"]+"/g) || []).length, 16);
+  assert.equal((latest.match(/class="wp-latest-item"/g) || []).length, 6);
+  assert.equal((latest.match(/class="wp-latest-cover"/g) || []).length, 6);
+  assert.equal((latest.match(/<img[^>]+width="[^"]+"[^>]+height="[^"]+"/g) || []).length, 6);
+  assert.match(latest, /href="recent\/"[^>]*>View all recent writing/);
 });
 
-test('external writing uses Friend URLs with publication and accessible link semantics', () => {
-  for (const article of externalArticles) {
-    const escapedUrl = article.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    assert.match(latest, new RegExp(`href="${escapedUrl}"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+aria-label="[^"]+opens in a new tab`));
-    assert.match(latest, new RegExp(article.publicationText || `Published in ${article.publication}`));
-    if (!article.latestOnly) {
-      assert.ok((html.match(new RegExp(article.title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length >= 2, `${article.title} must also appear in a topic cluster`);
-    }
+test('normalized Work records own external destinations independently of landing-page curation', () => {
+  assert.equal(works.works.length, 41);
+  const businessRules = works.works.find((work) => work.id === 'business-rules-as-context');
+  assert.equal(businessRules.publications.length, 2);
+  assert.equal(new Set(works.works.map((work) => work.id)).size, works.works.length);
+  for (const item of [...latest.matchAll(/<a href="(https:[^"]+)" class="wp-latest-row"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+aria-label="[^"]+opens in a new tab/g)]) {
+    assert.ok(works.works.some((work) => work.publications.some((publication) => publication.url === item[1])));
   }
 });
 
 test('reader recommendations are merged into Choose Your Path without removing taxonomy', () => {
-  assert.doesNotMatch(html, /Recommended Starting Points/);
-  assert.equal((html.match(/class="wp-path-start"/g) || []).length, 4);
-  assert.equal((html.match(/class="wp-path-explore"/g) || []).length, 4);
-  assert.match(html, /Start With the Main Series/);
+  assert.equal(curation.readerPaths.length, 4);
+  curation.readerPaths.forEach((path) => {
+    assert.ok(path.workIds.length >= 4 && path.workIds.length <= 6);
+    path.workIds.forEach((id) => assert.ok(works.works.some((work) => work.id === id)));
+  });
+  assert.match(html, /Ordered series/);
   assert.match(html, /Writing to systems/);
   assert.match(html, /Topic Clusters/);
+});
+
+test('reader paths use a readable responsive step composition', () => {
+  const paths = html.match(/<!-- Choose Your Path -->[\s\S]*?<\/section>/)?.[0] || '';
+  assert.equal((paths.match(/class="wp-path-card"/g) || []).length, 4);
+  assert.equal((paths.match(/class="wp-path-steps"/g) || []).length, 4);
+  assert.equal((paths.match(/class="wp-path-step"/g) || []).length, 17);
+  assert.equal((paths.match(/class="wp-article-row wp-path-step-link"/g) || []).length, 17);
+  assert.match(css, /\.wp-path-grid \{[\s\S]*?grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/);
+  assert.match(css, /\.wp-path-step-link\.wp-article-row \{[\s\S]*?display: grid;[\s\S]*?justify-content: stretch;/);
+  assert.match(css, /\.wp-path-step-link\.wp-article-row \.wp-article-row-label \{[\s\S]*?white-space: normal;/);
+  assert.match(css, /@media \(max-width: 720px\) \{[\s\S]*?\.wp-path-grid \{[\s\S]*?grid-template-columns: 1fr;/);
+});
+
+test('newsletter automation regenerates from the dev integration branch', () => {
+  assert.match(newsletterWorkflow, /actions\/checkout@v4[\s\S]*?with:\s*\n\s*# Main may be selectively promoted while dev remains the integration truth\.\s*\n\s*ref: dev/);
+  assert.match(newsletterWorkflow, /base: dev/);
 });
 
 test('cover styling preserves title measure across mobile widths', () => {

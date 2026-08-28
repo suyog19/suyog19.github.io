@@ -34,9 +34,9 @@ test('empty, punctuation-only, and unknown queries return no results', () => {
 });
 
 test('external articles and course states are explicit in generated metadata', () => {
-  const external = index.items.filter((item) => item.external);
-  assert.equal(external.length, 14);
-  external.forEach((item) => {
+  const externalArticles = index.items.filter((item) => item.external && item.type === 'Article');
+  assert.equal(externalArticles.length, 14);
+  externalArticles.forEach((item) => {
     assert.equal(item.type, 'Article');
     assert.match(item.url, /^https:\/\/medium\.com\//);
     assert.ok(item.source && item.source !== 'suyogjoshi.com');
@@ -44,6 +44,14 @@ test('external articles and course states are explicit in generated metadata', (
   const courses = index.items.filter((item) => item.type === 'Course');
   assert.equal(courses.length, 5);
   courses.forEach((item) => assert.match(item.state, /^(Launched|Proposed) course/));
+});
+
+test('newsletter and non-Medium HTTPS destinations use the generic external contract', () => {
+  const newsletter = { id: 'newsletter:edition-1', type: 'Newsletter', title: 'Edition', url: 'https://newsletter.suyogjoshi.com/p/edition', external: true };
+  const nonMediumArticle = { id: 'article:guest-post', type: 'Article', title: 'Guest post', url: 'https://example.org/engineering/guest-post', external: true };
+  assert.equal(search.resultUrl(newsletter), newsletter.url);
+  assert.equal(search.resultUrl(nonMediumArticle), nonMediumArticle.url);
+  assert.doesNotThrow(() => search.search([...index.items, newsletter, nonMediumArticle], 'guest post'));
 });
 
 test('internal results stay on the current site while external destinations remain absolute', () => {
@@ -59,12 +67,18 @@ test('internal results stay on the current site while external destinations rema
 });
 
 test('external discovery metadata survives Latest Writing rotation', () => {
-  const catalogueUrls = [...writing.matchAll(/<a href="(https:\/\/medium\.com\/[^"?]+\?sk=[^"]+)" class="wp-article-row"[\s\S]*?data-discovery-title=/g)]
-    .map((match) => match[1]);
-  const latestUrls = [...writing.matchAll(/<a href="(https:\/\/medium\.com\/[^"?]+\?sk=[^"]+)" class="wp-latest-row"/g)]
-    .map((match) => match[1]);
-  assert.equal(new Set(catalogueUrls).size, 14);
-  latestUrls.forEach((url) => assert.ok(catalogueUrls.includes(url)));
+  const works = JSON.parse(fs.readFileSync('data/writing-works.json', 'utf8')).works;
+  const articleIds = new Set(index.items.filter((item) => item.type === 'Article').map((item) => item.id));
+  assert.equal(articleIds.size, works.length);
+  works.forEach((work) => assert.ok(articleIds.has(`article:${work.id}`)));
+  assert.equal((writing.match(/class="wp-latest-item"/g) || []).length, 6);
+});
+
+test('search rendering is bounded while ranking still evaluates the complete index', () => {
+  const synthetic = Array.from({ length: 45 }, (_, index) => ({ id: `a:${index}`, type: 'Article', title: `Agent note ${index}`, summary: 'agent', topics: [], source: 'test' }));
+  const result = search.boundedSearch(synthetic, 'agent');
+  assert.equal(result.total, 45);
+  assert.equal(result.items.length, 30);
 });
 
 test('search runtime stays local and does not create URL or storage state', () => {

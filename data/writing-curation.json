@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "topics": [
+    {
+      "id": "ai-assisted-software-engineering",
+      "title": "AI-Assisted Software Engineering",
+      "description": "Context, architecture, review, and delivery practices for reliable AI-assisted software work.",
+      "previewWorkIds": ["stop-prompting-harder-start-giving-better-context", "beyond-the-repository-why-ai-needs-work-context-too", "the-rise-of-multi-model-software-engineering", "agent-plugins-1-0-engineering-process-is-becoming-installable"]
+    },
+    {
+      "id": "engineering-context-and-knowledge",
+      "title": "Engineering Context and Knowledge",
+      "description": "How business rules, documentation, standards, and organizational knowledge reach humans and AI systems.",
+      "previewWorkIds": ["business-rules-as-context", "knowledge-debt-is-the-new-technical-debt", "the-context-supply-chain-how-organizational-knowledge-reaches-ai-output", "your-repository-has-a-truth-problem"]
+    },
+    {
+      "id": "ai-agents-and-review",
+      "title": "AI Agents and Review",
+      "description": "Task boundaries, agent coordination, generated-work review, evidence, and accountable human control.",
+      "previewWorkIds": ["not-all-engineering-tasks-belong-to-ai", "why-reviewing-ai-generated-work-is-a-different-skill", "agent-risk-register", "why-multi-agent-coding-fails"]
+    },
+    {
+      "id": "agile-process-and-engineering-leadership",
+      "title": "Agile, Process, and Engineering Leadership",
+      "description": "AI adoption, engineering standards, evidence, and leadership practices for reliable delivery.",
+      "previewWorkIds": ["enterprise-ai-adoption-is-a-context-problem", "ai-stress-testing-agile", "process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants", "ai-is-quietly-changing-how-junior-engineers-become-senior"]
+    }
+  ],
+  "readerPaths": [
+    {
+      "id": "new-to-ai-concepts",
+      "title": "New to AI concepts",
+      "description": "Build a practical mental model before moving into engineering practice.",
+      "workIds": ["ai-ml-data-science-explained-simply", "understanding-the-ai-ecosystem", "how-modern-llm-systems-really-work", "coding-assistants-are-not-junior-developers"]
+    },
+    {
+      "id": "using-ai-coding-assistants",
+      "title": "Using AI coding assistants",
+      "description": "Move from prompting to context, task selection, and review.",
+      "workIds": ["stop-prompting-harder-start-giving-better-context", "how-i-structure-repositories-so-ai-can-understand-them", "not-all-engineering-tasks-belong-to-ai", "why-reviewing-ai-generated-work-is-a-different-skill"]
+    },
+    {
+      "id": "leading-ai-adoption",
+      "title": "Leading AI adoption",
+      "description": "Connect adoption, standards, governance, evidence, and human responsibility.",
+      "workIds": ["enterprise-ai-adoption-is-a-context-problem", "ai-stress-testing-agile", "ai-governance-without-bureaucracy", "human-ai-responsibility-map", "stronger-evidence-chains-for-ai-assisted-engineering-changes"]
+    },
+    {
+      "id": "exploring-practical-systems",
+      "title": "Exploring practical systems",
+      "description": "Start with the engineering story, then inspect working systems and evidence.",
+      "workIds": ["how-i-used-two-ais-to-build-a-software-engineering-system", "using-multiple-ai-agents-as-a-software-engineering-team", "from-developer-to-ai-orchestrator", "agent-risk-register"]
+    }
+  ]
+}
