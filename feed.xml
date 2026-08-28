@@ -7,7 +7,87 @@
     <language>en</language>
     <copyright>Copyright 2026 Suyog Joshi</copyright>
     <atom:link href="https://suyogjoshi.com/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 17 Aug 2026 09:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 28 Aug 2026 09:00:00 +0000</lastBuildDate>
+    <item>
+      <title>The Frontend Passed. The Experience Didn’t.</title>
+      <link>https://medium.com/@suyog19/the-frontend-passed-the-experience-didnt-c7ae9e6a5140?sk=6913d5adfb68854f16718b4d7cd31347</link>
+      <guid isPermaLink="true">https://medium.com/@suyog19/the-frontend-passed-the-experience-didnt-c7ae9e6a5140?sk=6913d5adfb68854f16718b4d7cd31347</guid>
+      <description>A technically correct interface can still fail on hierarchy, clarity, and human comprehension.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 28 Aug 2026 09:00:00 +0000</pubDate>
+      <category>AI-Assisted Software Engineering</category>
+      <source url="https://medium.com/@suyog19/">Medium</source>
+    </item>
+    <item>
+      <title>Cursor Just Launched Its Own Git Forge. It’s Built for AI Agents.</title>
+      <link>https://medium.com/generative-ai/cursor-just-launched-its-own-git-forge-its-built-for-ai-agents-a6ac940b0a02?sk=e37eedbb64566ebae0b8c61c0018ff39</link>
+      <guid isPermaLink="true">https://medium.com/generative-ai/cursor-just-launched-its-own-git-forge-its-built-for-ai-agents-a6ac940b0a02?sk=e37eedbb64566ebae0b8c61c0018ff39</guid>
+      <description>Origin Code Hosting brings repositories, pull requests, GitHub mirroring, and agent-triggered workflows directly into Cursor.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 28 Aug 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <source url="https://medium.com/generative-ai/">Generative AI</source>
+    </item>
+    <item>
+      <title>Agent Plugins 1.0: Engineering Process Is Becoming Installable</title>
+      <link>https://medium.com/generative-ai/agent-plugins-1-0-engineering-process-is-becoming-installable-ec1d4f751550?sk=d187ebce0263a86a6d317710fcef6199</link>
+      <guid isPermaLink="true">https://medium.com/generative-ai/agent-plugins-1-0-engineering-process-is-becoming-installable-ec1d4f751550?sk=d187ebce0263a86a6d317710fcef6199</guid>
+      <description>A new portability standard is turning agent skills, tools, and engineering procedures into reusable software artifacts.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Thu, 27 Aug 2026 09:00:00 +0000</pubDate>
+      <category>AI-Assisted Software Engineering</category>
+      <source url="https://medium.com/generative-ai/">Generative AI</source>
+    </item>
+    <item>
+      <title>Your Repository Has a Truth Problem</title>
+      <link>https://medium.com/analysts-corner/your-repository-has-a-truth-problem-bfc2f89b0346?sk=8b1551f76713d53216d4e2a0b50fab6b</link>
+      <guid isPermaLink="true">https://medium.com/analysts-corner/your-repository-has-a-truth-problem-bfc2f89b0346?sk=8b1551f76713d53216d4e2a0b50fab6b</guid>
+      <description>As AI agents act on repository context, stale documentation becomes an engineering risk.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 26 Aug 2026 09:00:00 +0000</pubDate>
+      <category>Engineering Context and Knowledge</category>
+      <source url="https://medium.com/analysts-corner/">Analyst’s Corner</source>
+    </item>
+    <item>
+      <title>Your Coding Agent Shouldn’t Work Alone</title>
+      <link>https://medium.com/towards-artificial-intelligence/your-coding-agent-shouldnt-work-alone-4e910cc835b9?sk=fbb2b54fb4b7996cb953e40cce9cb359</link>
+      <guid isPermaLink="true">https://medium.com/towards-artificial-intelligence/your-coding-agent-shouldnt-work-alone-4e910cc835b9?sk=fbb2b54fb4b7996cb953e40cce9cb359</guid>
+      <description>AI-assisted development is shifting from private developer sessions to shared workspaces where teams and agents build together.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 26 Aug 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <source url="https://medium.com/towards-artificial-intelligence/">Towards AI</source>
+    </item>
+    <item>
+      <title>I Stopped Trusting My Coding Agent to Read the Docs</title>
+      <link>https://medium.com/@suyog19/i-stopped-trusting-my-coding-agent-to-read-the-docs-92e504c07a42?sk=6b9c4ee576da1eb765bf437febc3c6e3</link>
+      <guid isPermaLink="true">https://medium.com/@suyog19/i-stopped-trusting-my-coding-agent-to-read-the-docs-92e504c07a42?sk=6b9c4ee576da1eb765bf437febc3c6e3</guid>
+      <description>Research on real coding agents suggests that important repository knowledge must be deliberately routed into the workflow.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 24 Aug 2026 09:00:00 +0000</pubDate>
+      <category>Engineering Context and Knowledge</category>
+      <source url="https://medium.com/@suyog19/">Medium</source>
+    </item>
+    <item>
+      <title>I Took an Idea to Soft Launch in a Day. Speed Wasn’t the Interesting Part.</title>
+      <link>https://medium.com/gitconnected/i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part-63a2459d3b52?sk=8b1e74050b31dc8d93e2c6a5edf9efcc</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part-63a2459d3b52?sk=8b1e74050b31dc8d93e2c6a5edf9efcc</guid>
+      <description>A one-day soft launch made room for more product thinking, research, validation, and engineering discipline—not just faster implementation.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 22 Aug 2026 09:00:00 +0000</pubDate>
+      <category>Systems and Experiments</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>Business Rules as Context: The Missing Layer in AI-Assisted Development</title>
+      <link>https://medium.com/@suyog19/business-rules-as-context-the-missing-layer-in-ai-assisted-development-0e5a2c52299e?sk=4cf8826542a0d7a149dbe8205a978a77</link>
+      <guid isPermaLink="true">https://medium.com/@suyog19/business-rules-as-context-the-missing-layer-in-ai-assisted-development-0e5a2c52299e?sk=4cf8826542a0d7a149dbe8205a978a77</guid>
+      <description>AI assistants can read the code and the ticket, but that still may not tell them what the software is allowed to do.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Sat, 22 Aug 2026 09:00:00 +0000</pubDate>
+      <category>Engineering Context and Knowledge</category>
+      <source url="https://medium.com/@suyog19/">Medium</source>
+    </item>
     <item>
       <title>When AI Writes the Code, What Makes a Language Good?</title>
       <link>https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975</link>
