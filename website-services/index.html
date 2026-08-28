@@ -17,14 +17,27 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Service",
-    "@id": "https://suyogjoshi.com/website-services/#service",
-    "name": "Software Signal Website Services",
-    "serviceType": "Website design and delivery",
-    "url": "https://suyogjoshi.com/website-services/",
-    "description": "Clear, credible, useful websites for professionals and small businesses, with practical design, reliable delivery, clear ownership, and low maintenance.",
-    "provider": { "@id": "https://suyogjoshi.com/#person" },
-    "isPartOf": { "@id": "https://suyogjoshi.com/#website" }
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://suyogjoshi.com/website-services/#webpage",
+        "url": "https://suyogjoshi.com/website-services/",
+        "name": "Website Services | Software Signal by Suyog Joshi",
+        "description": "Clear, credible, useful websites for professionals and small businesses, with practical design, reliable delivery, clear ownership, and low maintenance.",
+        "isPartOf": { "@id": "https://suyogjoshi.com/#website" },
+        "mainEntity": { "@id": "https://suyogjoshi.com/website-services/#service" }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://suyogjoshi.com/website-services/#service",
+        "name": "Software Signal Website Services",
+        "serviceType": "Website design and delivery",
+        "url": "https://suyogjoshi.com/website-services/",
+        "description": "Clear, credible, useful websites for professionals and small businesses, with practical design, reliable delivery, clear ownership, and low maintenance.",
+        "provider": { "@id": "https://suyogjoshi.com/#person" },
+        "mainEntityOfPage": { "@id": "https://suyogjoshi.com/website-services/#webpage" }
+      }
+    ]
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
