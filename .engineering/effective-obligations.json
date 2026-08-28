@@ -15,7 +15,7 @@
       "Standard characteristic present: observable_behavior"
     ],
     "semantic_rationale": "Issue #674 owns the approved layout correction.",
-    "target_revision": "2857d3bb2ea8ca3c63f592d9a1703b02a12b54cd"
+    "target_revision": "83241390a388ea6e7e2dcf45bfee8bf8dffa7765"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "native_enforcement": {
