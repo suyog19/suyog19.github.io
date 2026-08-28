@@ -1,6 +1,7 @@
 import json
 import re
 import sys
+import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
@@ -57,6 +58,21 @@ class WritingDiscoveryTests(unittest.TestCase):
                     "Software Signal Weekly",
                     "https://newsletter.suyogjoshi.com/archive",
                 )
+
+    def test_newsletter_merge_retains_editions_absent_from_later_rss(self):
+        older = {"id": "older", "title": "Older", "summary": "Known", "published": "2026-08-01", "url": "https://newsletter.suyogjoshi.com/p/older"}
+        newer = {"id": "newer", "title": "Newer", "summary": "Incoming", "published": "2026-08-22", "url": "https://newsletter.suyogjoshi.com/p/newer"}
+        merged = newsletter.merge_editions([older], [newer])
+        self.assertEqual([item["id"] for item in merged], ["newer", "older"])
+
+    def test_newsletter_ledger_writer_normalizes_line_endings(self):
+        payload = {"version": 1, "editions": []}
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ledger.json"
+            path.write_bytes(b'{\r\n  "version": 1,\r\n  "editions": []\r\n}\r\n')
+            self.assertTrue(newsletter.write_ledger(path, payload))
+            self.assertNotIn(b"\r\n", path.read_bytes())
+            self.assertFalse(newsletter.write_ledger(path, payload))
 
 
 if __name__ == "__main__":

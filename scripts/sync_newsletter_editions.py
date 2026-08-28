@@ -97,6 +97,23 @@ def api_editions(publication_id: str, token: str) -> list[dict[str, str]]:
     return editions
 
 
+def merge_editions(existing: list[dict[str, str]], incoming: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Merge new source rows without treating RSS absence as deletion."""
+    merged = {str(item["id"]): item for item in existing}
+    merged.update({str(item["id"]): item for item in incoming})
+    return sorted(merged.values(), key=lambda item: (item["published"], item["id"]), reverse=True)
+
+
+def write_ledger(path: Path, ledger: dict) -> bool:
+    """Write deterministic LF-only JSON and report whether bytes changed."""
+    rendered = json.dumps(ledger, ensure_ascii=False, indent=2) + "\n"
+    if path.read_bytes() == rendered.encode("utf-8"):
+        return False
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(rendered)
+    return True
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--rss-url")
@@ -115,16 +132,11 @@ def main() -> int:
         incoming = rss_editions(rss_url, ledger["source"], ledger["archiveUrl"])
     if not incoming:
         raise SystemExit("Newsletter source returned no published editions; last-known-good ledger retained")
-    merged = {str(item["id"]): item for item in ledger.get("editions", [])}
-    merged.update({str(item["id"]): item for item in incoming})
-    ledger["editions"] = sorted(merged.values(), key=lambda item: (item["published"], item["id"]), reverse=True)
-    rendered = json.dumps(ledger, ensure_ascii=False, indent=2) + "\n"
-    if LEDGER.read_text(encoding="utf-8") != rendered:
-        with LEDGER.open("w", encoding="utf-8", newline="\n") as handle:
-            handle.write(rendered)
-        print(f"Merged {len(incoming)} editions; ledger now retains {len(merged)} editions.")
+    ledger["editions"] = merge_editions(ledger.get("editions", []), incoming)
+    if write_ledger(LEDGER, ledger):
+        print(f"Merged {len(incoming)} editions; ledger now retains {len(ledger['editions'])} editions.")
     else:
-        print(f"Newsletter ledger unchanged at {len(merged)} editions.")
+        print(f"Newsletter ledger unchanged at {len(ledger['editions'])} editions.")
     return 0
 
 
