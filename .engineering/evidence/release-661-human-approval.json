@@ -1,25 +1,25 @@
 {
   "_type": "https://in-toto.io/Statement/v1",
   "predicate": {
-    "capability": "orchestrator",
+    "capability": "product-owner",
     "findings": [],
-    "issuedAt": "2026-08-28T14:26:10.349534+00:00",
+    "issuedAt": "2026-08-28T15:08:30.574367+00:00",
     "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
     "processVersion": "1.0.0",
     "producer": {
-      "contextId": "/root",
+      "contextId": "user-production-approval",
       "freshContext": false,
-      "identity": "/root",
+      "identity": "suyog19",
       "implementationContextId": null
     },
     "residualRisk": [],
     "verdict": "pass"
   },
-  "predicateType": "https://suyogjoshi.com/software-signal/engineering/classification/v1",
+  "predicateType": "https://suyogjoshi.com/software-signal/engineering/human-approval/v1",
   "subject": [
     {
       "digest": {
-        "gitCommit": "f2394ed9b8a39c4443fd28cf537762d0f087fb07"
+        "gitCommit": "ed2fc844abe192ebef8e5c50751797c203d3e6b6"
       },
       "name": "suyog19/suyog19.github.io"
     }
