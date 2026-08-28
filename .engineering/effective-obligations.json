@@ -2,14 +2,11 @@
   "approvals": [],
   "classification": {
     "characteristics": {
-      "information_architecture_change": true,
       "major_existing_journey_change": true,
       "material_layout_change": true,
-      "material_navigation_change": true,
       "observable_behavior": true,
-      "public_editorial_hierarchy_change": true,
-      "rationale": "Child issues 662-671 own the approved architecture decisions.",
-      "summary": "epic-661-writing-discovery"
+      "rationale": "Repair unreadable responsive Reader Path composition while preserving issue 666 content architecture.",
+      "summary": "issue-674-reader-path-layout"
     },
     "delivery_profile": "Standard",
     "deterministic_signals": [],
@@ -17,8 +14,8 @@
     "reasons": [
       "Standard characteristic present: observable_behavior"
     ],
-    "semantic_rationale": "Issue 661 newsletter activation continuation.",
-    "target_revision": "f2394ed9b8a39c4443fd28cf537762d0f087fb07"
+    "semantic_rationale": "Issue #674 owns the approved layout correction.",
+    "target_revision": "83241390a388ea6e7e2dcf45bfee8bf8dffa7765"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "native_enforcement": {
