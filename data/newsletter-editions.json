@@ -3,11 +3,19 @@
   "publicationId": "0155fbec-6197-4eec-a539-1f314b693da2",
   "source": "Software Signal Weekly",
   "archiveUrl": "https://newsletter.suyogjoshi.com/archive",
-  "rssUrl": null,
+  "rssUrl": "https://rss.beehiiv.com/feeds/PRbIOijCMd.xml",
   "reconciliation": {
     "strategy": "beehiiv-posts-api-when-available",
     "fallback": "cumulative-rss-ledger",
     "limitation": "Without Posts API read access, a fresh rebuild can recover only editions still exposed by the configured RSS feed; the committed cumulative ledger is therefore last-known-good history."
   },
-  "editions": []
+  "editions": [
+    {
+      "id": "https://newsletter.suyogjoshi.com/p/the-software-supply-chain-has-a-new-participant",
+      "title": "The Software Supply Chain Has a New Participant",
+      "summary": "AI agents can now do much more than generate code. That changes the engineering controls we need around them.",
+      "published": "2026-08-22",
+      "url": "https://newsletter.suyogjoshi.com/p/the-software-supply-chain-has-a-new-participant"
+    }
+  ]
 }

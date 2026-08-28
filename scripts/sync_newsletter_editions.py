@@ -97,6 +97,40 @@ def api_editions(publication_id: str, token: str) -> list[dict[str, str]]:
     return editions
 
 
+def merge_editions(existing: list[dict[str, str]], incoming: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Merge source rows by stable id or canonical URL without deleting history."""
+    merged = {str(item["id"]): dict(item) for item in existing}
+    ids_by_url = {str(item["url"]): str(item["id"]) for item in existing}
+    stable_by_source_id = {
+        source_id: stable_id
+        for stable_id, item in merged.items()
+        for source_id in [stable_id, *map(str, item.get("aliases", []))]
+    }
+    for item in incoming:
+        incoming_id = str(item["id"])
+        stable_id = stable_by_source_id.get(incoming_id) or ids_by_url.get(str(item["url"]), incoming_id)
+        aliases = set(map(str, merged.get(stable_id, {}).get("aliases", [])))
+        aliases.update(map(str, item.get("aliases", [])))
+        if incoming_id != stable_id:
+            aliases.add(incoming_id)
+        merged[stable_id] = {**merged.get(stable_id, {}), **item, "id": stable_id}
+        if aliases:
+            merged[stable_id]["aliases"] = sorted(aliases)
+        stable_by_source_id.update({source_id: stable_id for source_id in [stable_id, *aliases]})
+        ids_by_url[str(item["url"])] = stable_id
+    return sorted(merged.values(), key=lambda item: (item["published"], item["id"]), reverse=True)
+
+
+def write_ledger(path: Path, ledger: dict) -> bool:
+    """Write deterministic LF-only JSON and report whether bytes changed."""
+    rendered = json.dumps(ledger, ensure_ascii=False, indent=2) + "\n"
+    if path.read_bytes() == rendered.encode("utf-8"):
+        return False
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(rendered)
+    return True
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--rss-url")
@@ -115,15 +149,11 @@ def main() -> int:
         incoming = rss_editions(rss_url, ledger["source"], ledger["archiveUrl"])
     if not incoming:
         raise SystemExit("Newsletter source returned no published editions; last-known-good ledger retained")
-    merged = {str(item["id"]): item for item in ledger.get("editions", [])}
-    merged.update({str(item["id"]): item for item in incoming})
-    ledger["editions"] = sorted(merged.values(), key=lambda item: (item["published"], item["id"]), reverse=True)
-    rendered = json.dumps(ledger, ensure_ascii=False, indent=2) + "\n"
-    if LEDGER.read_text(encoding="utf-8") != rendered:
-        LEDGER.write_text(rendered, encoding="utf-8")
-        print(f"Merged {len(incoming)} editions; ledger now retains {len(merged)} editions.")
+    ledger["editions"] = merge_editions(ledger.get("editions", []), incoming)
+    if write_ledger(LEDGER, ledger):
+        print(f"Merged {len(incoming)} editions; ledger now retains {len(ledger['editions'])} editions.")
     else:
-        print(f"Newsletter ledger unchanged at {len(merged)} editions.")
+        print(f"Newsletter ledger unchanged at {len(ledger['editions'])} editions.")
     return 0
 
 

@@ -3,13 +3,13 @@
   "predicate": {
     "capability": "independent-review",
     "findings": [],
-    "issuedAt": "2026-08-28T14:13:18.237247+00:00",
+    "issuedAt": "2026-08-28T14:26:10.750650+00:00",
     "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
     "processVersion": "1.0.0",
     "producer": {
-      "contextId": "/root/independent_review",
+      "contextId": "/root/newsletter_activation_review",
       "freshContext": true,
-      "identity": "/root/independent_review",
+      "identity": "/root/newsletter_activation_review",
       "implementationContextId": "/root"
     },
     "residualRisk": [],
@@ -19,7 +19,7 @@
   "subject": [
     {
       "digest": {
-        "gitCommit": "4b295c5e13c8ec8daf2c9e5b12901bc19374fd42"
+        "gitCommit": "f2394ed9b8a39c4443fd28cf537762d0f087fb07"
       },
       "name": "suyog19/suyog19.github.io"
     }

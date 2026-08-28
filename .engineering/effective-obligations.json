@@ -17,8 +17,8 @@
     "reasons": [
       "Standard characteristic present: observable_behavior"
     ],
-    "semantic_rationale": "Issue 661 approved architecture.",
-    "target_revision": "4b295c5e13c8ec8daf2c9e5b12901bc19374fd42"
+    "semantic_rationale": "Issue 661 newsletter activation continuation.",
+    "target_revision": "f2394ed9b8a39c4443fd28cf537762d0f087fb07"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "native_enforcement": {

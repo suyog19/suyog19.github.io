@@ -1,6 +1,7 @@
 import json
 import re
 import sys
+import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
@@ -57,6 +58,39 @@ class WritingDiscoveryTests(unittest.TestCase):
                     "Software Signal Weekly",
                     "https://newsletter.suyogjoshi.com/archive",
                 )
+
+    def test_newsletter_merge_retains_editions_absent_from_later_rss(self):
+        older = {"id": "older", "title": "Older", "summary": "Known", "published": "2026-08-01", "url": "https://newsletter.suyogjoshi.com/p/older"}
+        newer = {"id": "newer", "title": "Newer", "summary": "Incoming", "published": "2026-08-22", "url": "https://newsletter.suyogjoshi.com/p/newer"}
+        merged = newsletter.merge_editions([older], [newer])
+        self.assertEqual([item["id"] for item in merged], ["newer", "older"])
+
+    def test_newsletter_merge_aliases_rss_guid_and_api_uuid_by_canonical_url(self):
+        url = "https://newsletter.suyogjoshi.com/p/the-same-edition"
+        rss = {"id": url, "title": "Edition", "summary": "RSS", "published": "2026-08-22", "url": url}
+        api = {"id": "post_uuid", "title": "Edition", "summary": "API reconciliation", "published": "2026-08-22", "url": url}
+        merged = newsletter.merge_editions([rss], [api])
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["id"], url)
+        self.assertEqual(merged[0]["summary"], "API reconciliation")
+        self.assertEqual(merged[0]["aliases"], ["post_uuid"])
+
+        moved_url = "https://newsletter.suyogjoshi.com/p/the-renamed-edition"
+        moved_api = {**api, "url": moved_url, "summary": "Renamed"}
+        merged_again = newsletter.merge_editions(merged, [moved_api])
+        self.assertEqual(len(merged_again), 1)
+        self.assertEqual(merged_again[0]["id"], url)
+        self.assertEqual(merged_again[0]["url"], moved_url)
+        self.assertEqual(merged_again[0]["aliases"], ["post_uuid"])
+
+    def test_newsletter_ledger_writer_normalizes_line_endings(self):
+        payload = {"version": 1, "editions": []}
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "ledger.json"
+            path.write_bytes(b'{\r\n  "version": 1,\r\n  "editions": []\r\n}\r\n')
+            self.assertTrue(newsletter.write_ledger(path, payload))
+            self.assertNotIn(b"\r\n", path.read_bytes())
+            self.assertFalse(newsletter.write_ledger(path, payload))
 
 
 if __name__ == "__main__":
