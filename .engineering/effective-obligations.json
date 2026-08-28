@@ -18,7 +18,7 @@
       "Protected characteristic present: production_controls"
     ],
     "semantic_rationale": "Selective release exception explicitly approved by Product Owner; final main merge remains human-controlled.",
-    "target_revision": "0850c174d9b835569be609b91a0f6a59099852ae"
+    "target_revision": "ed2fc844abe192ebef8e5c50751797c203d3e6b6"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "native_enforcement": {
