@@ -41,5 +41,6 @@ bypasses human-controlled production promotion.
 That daily workflow also runs `scripts/refresh_writing_chronology.py`, advancing
 the catalogue's `asOf` date and moving a Work from Recent to Archive after day
 100 without a hand-edited list. The workflow fails with an actionable message
-when neither the preferred RSS URL nor an API reconciliation credential is
-configured, so a chronology-only run cannot masquerade as a successful sync.
+when the required RSS URL is not configured, so a chronology-only run cannot
+masquerade as a successful routine sync. The Posts API path is available only
+through an explicit manual reconciliation dispatch; it never replaces RSS.
