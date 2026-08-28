@@ -18,10 +18,18 @@ jobs:
         with:
           python-version: "3.12"
       - name: Merge Beehiiv RSS into last-known-good metadata
-        if: ${{ vars.BEEHIIV_RSS_URL != '' }}
         env:
           BEEHIIV_RSS_URL: ${{ vars.BEEHIIV_RSS_URL }}
-        run: python scripts/sync_newsletter_editions.py
+          BEEHIIV_API_KEY: ${{ secrets.BEEHIIV_API_KEY }}
+        run: |
+          if [ -n "$BEEHIIV_RSS_URL" ]; then
+            python scripts/sync_newsletter_editions.py
+          elif [ -n "$BEEHIIV_API_KEY" ]; then
+            python scripts/sync_newsletter_editions.py --reconcile
+          else
+            echo "Configure BEEHIIV_RSS_URL (preferred) or BEEHIIV_API_KEY for newsletter synchronization." >&2
+            exit 1
+          fi
       - name: Advance chronology and regenerate static discovery surfaces
         run: |
           python scripts/refresh_writing_chronology.py

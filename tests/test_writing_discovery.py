@@ -2,12 +2,14 @@ import json
 import re
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 
 ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 import generate_public_discovery as discovery
+import sync_newsletter_editions as newsletter
 
 
 class WritingDiscoveryTests(unittest.TestCase):
@@ -39,6 +41,22 @@ class WritingDiscoveryTests(unittest.TestCase):
         index = discovery.build_search_index(discovery.article_works())
         results = [item for item in index["items"] if item["id"] == "article:business-rules-as-context"]
         self.assertEqual(len(results), 1)
+
+    def test_newsletter_rss_rejects_the_wrong_publication_identity(self):
+        xml = b'''<rss><channel><title>Someone Else</title><link>https://newsletter.suyogjoshi.com/</link></channel></rss>'''
+
+        class Response:
+            def __enter__(self): return self
+            def __exit__(self, *_): return False
+            def read(self): return xml
+
+        with patch.object(newsletter.urllib.request, "urlopen", return_value=Response()):
+            with self.assertRaisesRegex(ValueError, "identity mismatch"):
+                newsletter.rss_editions(
+                    "https://rss.example/feed.xml",
+                    "Software Signal Weekly",
+                    "https://newsletter.suyogjoshi.com/archive",
+                )
 
 
 if __name__ == "__main__":

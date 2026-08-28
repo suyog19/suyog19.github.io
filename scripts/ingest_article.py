@@ -97,10 +97,17 @@ def main() -> int:
     if (published, publication_id) >= max((item["published"], item["id"]) for item in work["publications"]):
         work["preferredPublicationId"] = publication_id
     catalogue["works"].sort(key=lambda item: item["id"])
+    original = discovery.WORKS_PATH.read_text(encoding="utf-8")
     discovery.WORKS_PATH.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    subprocess.run([sys.executable, "scripts/generate_public_discovery.py"], cwd=ROOT, check=True)
-    subprocess.run([sys.executable, "scripts/generate_sitemap.py"], cwd=ROOT, check=True)
-    subprocess.run([sys.executable, "scripts/validate_public_discovery.py"], cwd=ROOT, check=True)
+    try:
+        subprocess.run([sys.executable, "scripts/generate_public_discovery.py"], cwd=ROOT, check=True)
+        subprocess.run([sys.executable, "scripts/generate_sitemap.py"], cwd=ROOT, check=True)
+        subprocess.run([sys.executable, "scripts/validate_public_discovery.py"], cwd=ROOT, check=True)
+    except BaseException:
+        discovery.WORKS_PATH.write_text(original, encoding="utf-8")
+        subprocess.run([sys.executable, "scripts/generate_public_discovery.py"], cwd=ROOT, check=True)
+        subprocess.run([sys.executable, "scripts/generate_sitemap.py"], cwd=ROOT, check=True)
+        raise
     print(f"Ingested {publication_id} into Article Work {work_id}; all discovery surfaces regenerated.")
     return 0
 

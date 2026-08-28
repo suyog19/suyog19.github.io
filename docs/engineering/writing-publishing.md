@@ -40,5 +40,6 @@ bypasses human-controlled production promotion.
 
 That daily workflow also runs `scripts/refresh_writing_chronology.py`, advancing
 the catalogue's `asOf` date and moving a Work from Recent to Archive after day
-100 without a hand-edited list. Newsletter ingestion is skipped when no RSS URL
-is configured, while chronology refresh remains operational.
+100 without a hand-edited list. The workflow fails with an actionable message
+when neither the preferred RSS URL nor an API reconciliation credential is
+configured, so a chronology-only run cannot masquerade as a successful sync.

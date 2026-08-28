@@ -50,12 +50,18 @@ def fetch_json(url: str, token: str | None = None) -> dict:
         return json.load(response)
 
 
-def rss_editions(url: str) -> list[dict[str, str]]:
+def rss_editions(url: str, expected_source: str, archive_url: str) -> list[dict[str, str]]:
     with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "suyogjoshi.com newsletter discovery sync"}), timeout=30) as response:
         root = ET.fromstring(response.read())
     channel = root.find("channel") if root.tag == "rss" else None
     if channel is None:
         raise ValueError("Configured newsletter source is not an RSS channel")
+    channel_title = clean(channel.findtext("title") or "")
+    channel_link = valid_url(clean(channel.findtext("link") or ""))
+    if channel_title.casefold() != expected_source.casefold():
+        raise ValueError(f"RSS channel identity mismatch: expected {expected_source!r}, received {channel_title!r}")
+    if urlparse(channel_link).hostname != urlparse(archive_url).hostname:
+        raise ValueError("RSS channel link does not match the configured newsletter archive host")
     editions = []
     for item in channel.findall("item"):
         guid = clean(item.findtext("guid") or "")
@@ -106,7 +112,7 @@ def main() -> int:
         rss_url = args.rss_url or os.environ.get("BEEHIIV_RSS_URL") or ledger.get("rssUrl")
         if not rss_url:
             raise SystemExit("Configure BEEHIIV_RSS_URL or data/newsletter-editions.json rssUrl")
-        incoming = rss_editions(rss_url)
+        incoming = rss_editions(rss_url, ledger["source"], ledger["archiveUrl"])
     if not incoming:
         raise SystemExit("Newsletter source returned no published editions; last-known-good ledger retained")
     merged = {str(item["id"]): item for item in ledger.get("editions", [])}
