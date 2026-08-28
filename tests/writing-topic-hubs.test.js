@@ -10,9 +10,11 @@ const slugs = [
 ];
 const writing = fs.readFileSync('writing/index.html', 'utf8');
 const css = fs.readFileSync('css/pages.css', 'utf8');
+const works = JSON.parse(fs.readFileSync('data/writing-works.json', 'utf8')).works;
+const curation = JSON.parse(fs.readFileSync('data/writing-curation.json', 'utf8'));
 
 test('Writing promotes exactly four mature clusters to stable topic hubs', () => {
-  assert.equal((writing.match(/class="wp-theme-explore"/g) || []).length, 4);
+  assert.equal((writing.match(/href="topics\/[^"]+\/" class="wp-theme-explore"/g) || []).length, 4);
   for (const slug of slugs) assert.match(writing, new RegExp(`href="topics/${slug}/"`));
 });
 
@@ -20,14 +22,12 @@ for (const slug of slugs) {
   test(`${slug} is a crawlable, structured editorial hub`, () => {
     const html = fs.readFileSync(`writing/topics/${slug}/index.html`, 'utf8');
     assert.match(html, new RegExp(`<link rel="canonical" href="https://suyogjoshi.com/writing/topics/${slug}/"`));
-    assert.match(html, /<h1 class="topic-hub-title">[^<]+<\/h1>/);
+    assert.match(html, /<h1 class="wp-hero-heading">[^<]+<\/h1>/);
     assert.match(html, /"@type": "CollectionPage"/);
     assert.match(html, /"@type": "ItemList"/);
-    assert.match(html, /"numberOfItems": 3/);
-    assert.equal((html.match(/class="topic-hub-path-item"/g) || []).length, 3);
-    for (const id of ['orientation-title', 'start-title', 'explore-title', 'evidence-title']) {
-      assert.match(html, new RegExp(`id="${id}"`));
-    }
+    const expected = works.filter((work) => work.topicIds.includes(slug)).length;
+    assert.match(html, new RegExp(`"numberOfItems": ${expected}`));
+    assert.equal((html.match(/class="wp-article-item"/g) || []).length, expected);
     assert.match(html, /href="\.\.\/\.\.\/\.\.\/writing\/" class="nav-link" aria-current="page"/);
     for (const link of html.matchAll(/<a[^>]+href="https:\/\/medium\.com\/(?!@)[^>]+>/g)) {
       assert.match(link[0], /target="_blank"/);
@@ -44,6 +44,13 @@ test('topic hub presentation is scoped and responsive', () => {
   assert.match(css, /@media \(max-width: 900px\)[\s\S]*?\.topic-hub-grid/);
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.topic-hub-path-item/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.topic-hub/);
+});
+
+test('landing Topic previews are explicit stable Work-id curation with at most four Works', () => {
+  curation.topics.forEach((topic) => {
+    assert.ok(topic.previewWorkIds.length <= 4);
+    topic.previewWorkIds.forEach((id) => assert.ok(works.some((work) => work.id === id)));
+  });
 });
 
 test('maintenance note records promotion and update rules', () => {

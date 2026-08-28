@@ -5,7 +5,8 @@
 })(typeof window !== 'undefined' ? window : null, function () {
   'use strict';
 
-  const TYPE_ORDER = ['Article', 'Topic Hub', 'Series', 'System', 'Demo', 'Course'];
+  const TYPE_ORDER = ['Article', 'Newsletter', 'Topic Hub', 'Series', 'System', 'Demo', 'Course'];
+  const RESULT_LIMIT = 30;
   const PRODUCTION_HOST = 'suyogjoshi.com';
 
   function normalize(value) {
@@ -65,6 +66,11 @@
         left.item.title.localeCompare(right.item.title)
       )
       .map((candidate) => candidate.item);
+  }
+
+  function boundedSearch(items, query, limit = RESULT_LIMIT) {
+    const matches = search(items, query);
+    return { items: matches.slice(0, limit), total: matches.length, limit };
   }
 
   function resultUrl(item) {
@@ -165,7 +171,8 @@
         clear.hidden = true;
         return;
       }
-      const matches = search(items, query);
+      const matchSet = boundedSearch(items, query);
+      const matches = matchSet.items;
       clear.hidden = false;
       if (!matches.length) {
         status.textContent = `No public content matched “${query}”. Try a shorter term or use the browse links below.`;
@@ -173,7 +180,9 @@
         return;
       }
       for (const item of matches) resultsList.appendChild(createResult(documentRef, item));
-      status.textContent = `${matches.length} ${matches.length === 1 ? 'result' : 'results'} for “${query}”.`;
+      status.textContent = matchSet.total > matchSet.limit
+        ? `Showing the 30 best of ${matchSet.total} results for “${query}”. Try a more specific query to narrow the list.`
+        : `${matches.length} ${matches.length === 1 ? 'result' : 'results'} for “${query}”.`;
       resultsSection.hidden = false;
     }
 
@@ -194,5 +203,5 @@
   }
 
   if (typeof document !== 'undefined' && typeof fetch === 'function') init(document, fetch);
-  return { normalize, acronym, score, search, resultUrl, createResult, init };
+  return { normalize, acronym, score, search, boundedSearch, resultUrl, createResult, init };
 });
