@@ -17,14 +17,27 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Service",
-    "@id": "https://suyogjoshi.com/consulting/#service",
-    "name": "Software Signal Consulting",
-    "serviceType": "Software engineering consulting and advisory",
-    "url": "https://suyogjoshi.com/consulting/",
-    "description": "Focused engineering advisory and evidence-driven repository AI-readiness reviews for important software, AI, architecture, and reliability decisions.",
-    "provider": { "@id": "https://suyogjoshi.com/#person" },
-    "isPartOf": { "@id": "https://suyogjoshi.com/#website" }
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://suyogjoshi.com/consulting/#webpage",
+        "url": "https://suyogjoshi.com/consulting/",
+        "name": "Software Engineering Consulting | Software Signal by Suyog Joshi",
+        "description": "Focused engineering advisory and evidence-driven repository AI-readiness reviews for important software, AI, architecture, and reliability decisions.",
+        "isPartOf": { "@id": "https://suyogjoshi.com/#website" },
+        "mainEntity": { "@id": "https://suyogjoshi.com/consulting/#service" }
+      },
+      {
+        "@type": "Service",
+        "@id": "https://suyogjoshi.com/consulting/#service",
+        "name": "Software Signal Consulting",
+        "serviceType": "Software engineering consulting and advisory",
+        "url": "https://suyogjoshi.com/consulting/",
+        "description": "Focused engineering advisory and evidence-driven repository AI-readiness reviews for important software, AI, architecture, and reliability decisions.",
+        "provider": { "@id": "https://suyogjoshi.com/#person" },
+        "mainEntityOfPage": { "@id": "https://suyogjoshi.com/consulting/#webpage" }
+      }
+    ]
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
