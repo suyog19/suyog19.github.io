@@ -8,6 +8,7 @@
       "material_navigation_change": true,
       "observable_behavior": true,
       "public_editorial_hierarchy_change": true,
+      "rationale": "Child issues 662-671 own the approved architecture decisions.",
       "summary": "epic-661-writing-discovery"
     },
     "delivery_profile": "Standard",
@@ -16,8 +17,8 @@
     "reasons": [
       "Standard characteristic present: observable_behavior"
     ],
-    "semantic_rationale": "owner-approved-epic-661",
-    "target_revision": "b639eb376ebd9c8577621eb380c1caa616bcc0a1"
+    "semantic_rationale": "Issue 661 approved architecture.",
+    "target_revision": "4b295c5e13c8ec8daf2c9e5b12901bc19374fd42"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "native_enforcement": {

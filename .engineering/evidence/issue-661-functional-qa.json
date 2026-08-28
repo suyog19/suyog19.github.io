@@ -1,0 +1,27 @@
+{
+  "_type": "https://in-toto.io/Statement/v1",
+  "predicate": {
+    "capability": "functional-qa",
+    "findings": [],
+    "issuedAt": "2026-08-28T14:13:18.138466+00:00",
+    "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
+    "processVersion": "1.0.0",
+    "producer": {
+      "contextId": "/root/functional_qa",
+      "freshContext": true,
+      "identity": "/root/functional_qa",
+      "implementationContextId": "/root"
+    },
+    "residualRisk": [],
+    "verdict": "pass"
+  },
+  "predicateType": "https://suyogjoshi.com/software-signal/engineering/functional-qa-verdict/v1",
+  "subject": [
+    {
+      "digest": {
+        "gitCommit": "4b295c5e13c8ec8daf2c9e5b12901bc19374fd42"
+      },
+      "name": "suyog19/suyog19.github.io"
+    }
+  ]
+}

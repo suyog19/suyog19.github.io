@@ -1,0 +1,9 @@
+{
+  "observable_behavior": true,
+  "information_architecture_change": true,
+  "major_existing_journey_change": true,
+  "material_layout_change": true,
+  "material_navigation_change": true,
+  "public_editorial_hierarchy_change": true,
+  "summary": "epic-661-writing-discovery"
+}
