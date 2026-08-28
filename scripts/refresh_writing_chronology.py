@@ -16,7 +16,11 @@ CATALOGUE = ROOT / "data" / "writing-works.json"
 def main() -> int:
     payload = json.loads(CATALOGUE.read_text(encoding="utf-8"))
     payload["asOf"] = date.today().isoformat()
-    CATALOGUE.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    CATALOGUE.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     subprocess.run([sys.executable, "scripts/generate_public_discovery.py"], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "scripts/generate_sitemap.py"], cwd=ROOT, check=True)
     return 0

@@ -14,6 +14,12 @@ import sync_newsletter_editions as newsletter
 
 
 class WritingDiscoveryTests(unittest.TestCase):
+    def test_catalogue_writers_force_lf_on_every_write_path(self):
+        ingest = (ROOT / "scripts" / "ingest_article.py").read_text(encoding="utf-8")
+        refresh = (ROOT / "scripts" / "refresh_writing_chronology.py").read_text(encoding="utf-8")
+        self.assertEqual(ingest.count('newline="\\n"'), 2)
+        self.assertEqual(refresh.count('newline="\\n"'), 1)
+
     def test_chronology_boundary_is_gap_free_and_non_overlapping(self):
         sample = [
             {"workId": "zero", "published": "2026-08-28", "ageDays": 0},

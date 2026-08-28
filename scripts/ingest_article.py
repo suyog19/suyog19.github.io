@@ -98,13 +98,17 @@ def main() -> int:
         work["preferredPublicationId"] = publication_id
     catalogue["works"].sort(key=lambda item: item["id"])
     original = discovery.WORKS_PATH.read_text(encoding="utf-8")
-    discovery.WORKS_PATH.write_text(json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    discovery.WORKS_PATH.write_text(
+        json.dumps(catalogue, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
     try:
         subprocess.run([sys.executable, "scripts/generate_public_discovery.py"], cwd=ROOT, check=True)
         subprocess.run([sys.executable, "scripts/generate_sitemap.py"], cwd=ROOT, check=True)
         subprocess.run([sys.executable, "scripts/validate_public_discovery.py"], cwd=ROOT, check=True)
     except BaseException:
-        discovery.WORKS_PATH.write_text(original, encoding="utf-8")
+        discovery.WORKS_PATH.write_text(original, encoding="utf-8", newline="\n")
         subprocess.run([sys.executable, "scripts/generate_public_discovery.py"], cwd=ROOT, check=True)
         subprocess.run([sys.executable, "scripts/generate_sitemap.py"], cwd=ROOT, check=True)
         raise
