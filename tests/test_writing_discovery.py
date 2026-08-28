@@ -65,6 +65,15 @@ class WritingDiscoveryTests(unittest.TestCase):
         merged = newsletter.merge_editions([older], [newer])
         self.assertEqual([item["id"] for item in merged], ["newer", "older"])
 
+    def test_newsletter_merge_aliases_rss_guid_and_api_uuid_by_canonical_url(self):
+        url = "https://newsletter.suyogjoshi.com/p/the-same-edition"
+        rss = {"id": url, "title": "Edition", "summary": "RSS", "published": "2026-08-22", "url": url}
+        api = {"id": "post_uuid", "title": "Edition", "summary": "API reconciliation", "published": "2026-08-22", "url": url}
+        merged = newsletter.merge_editions([rss], [api])
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["id"], url)
+        self.assertEqual(merged[0]["summary"], "API reconciliation")
+
     def test_newsletter_ledger_writer_normalizes_line_endings(self):
         payload = {"version": 1, "editions": []}
         with tempfile.TemporaryDirectory() as directory:

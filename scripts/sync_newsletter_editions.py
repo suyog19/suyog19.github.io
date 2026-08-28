@@ -98,9 +98,14 @@ def api_editions(publication_id: str, token: str) -> list[dict[str, str]]:
 
 
 def merge_editions(existing: list[dict[str, str]], incoming: list[dict[str, str]]) -> list[dict[str, str]]:
-    """Merge new source rows without treating RSS absence as deletion."""
-    merged = {str(item["id"]): item for item in existing}
-    merged.update({str(item["id"]): item for item in incoming})
+    """Merge source rows by stable id or canonical URL without deleting history."""
+    merged = {str(item["id"]): dict(item) for item in existing}
+    ids_by_url = {str(item["url"]): str(item["id"]) for item in existing}
+    for item in incoming:
+        incoming_id = str(item["id"])
+        stable_id = incoming_id if incoming_id in merged else ids_by_url.get(str(item["url"]), incoming_id)
+        merged[stable_id] = {**merged.get(stable_id, {}), **item, "id": stable_id}
+        ids_by_url[str(item["url"])] = stable_id
     return sorted(merged.values(), key=lambda item: (item["published"], item["id"]), reverse=True)
 
 
