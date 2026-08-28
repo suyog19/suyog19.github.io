@@ -1,0 +1,55 @@
+name: Sync newsletter discovery
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+    inputs:
+      reconcile:
+        description: "Run explicit Beehiiv Posts API reconciliation instead of routine RSS sync"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Merge Beehiiv RSS into last-known-good metadata
+        if: ${{ github.event_name == 'schedule' || !inputs.reconcile }}
+        env:
+          BEEHIIV_RSS_URL: ${{ vars.BEEHIIV_RSS_URL }}
+        run: |
+          if [ -z "$BEEHIIV_RSS_URL" ]; then
+            echo "Configure BEEHIIV_RSS_URL; routine newsletter synchronization is RSS-only." >&2
+            exit 1
+          fi
+          python scripts/sync_newsletter_editions.py
+      - name: Reconcile cumulative metadata with the Beehiiv Posts API
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.reconcile }}
+        env:
+          BEEHIIV_API_KEY: ${{ secrets.BEEHIIV_API_KEY }}
+        run: python scripts/sync_newsletter_editions.py --reconcile
+      - name: Advance chronology and regenerate static discovery surfaces
+        run: |
+          python scripts/refresh_writing_chronology.py
+          python scripts/validate_public_discovery.py
+          python scripts/validate_public_seo.py
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/newsletter-discovery-sync
+          base: dev
+          delete-branch: true
+          commit-message: "chore: sync Software Signal Weekly discovery"
+          title: "chore: sync Software Signal Weekly discovery"
+          body: |
+            Automated last-known-good Beehiiv metadata sync. This PR intentionally
+            preserves human-controlled promotion from `dev` to `main`.

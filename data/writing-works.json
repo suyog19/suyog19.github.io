@@ -1,0 +1,1005 @@
+{
+  "version": 1,
+  "asOf": "2026-08-28",
+  "works": [
+    {
+      "id": "agent-plugins-1-0-engineering-process-is-becoming-installable",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Agent Plugins 1.0: Engineering Process Is Becoming Installable",
+        "summary": "A new portability standard is turning agent skills, tools, and engineering procedures into reusable software artifacts."
+      },
+      "topicIds": [
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/generative-ai/agent-plugins-1-0-engineering-process-is-becoming-installable-ec1d4f751550?sk=d187ebce0263a86a6d317710fcef6199",
+      "preferredPublicationId": "external:agent-plugins-1-0-engineering-process-is-becoming-installable",
+      "cover": "external-covers/agent-plugins-engineering-process.webp",
+      "coverWidth": 1200,
+      "coverHeight": 849,
+      "publications": [
+        {
+          "id": "external:agent-plugins-1-0-engineering-process-is-becoming-installable",
+          "url": "https://medium.com/generative-ai/agent-plugins-1-0-engineering-process-is-becoming-installable-ec1d4f751550?sk=d187ebce0263a86a6d317710fcef6199",
+          "published": "2026-08-27",
+          "source": "Generative AI",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "agent-risk-register",
+      "internalPath": "writing/agent-risk-register/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/agent-risk-register/",
+      "preferredPublicationId": "local:agent-risk-register",
+      "cover": "agent-risk-register/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:agent-risk-register",
+          "url": "https://suyogjoshi.com/writing/agent-risk-register/",
+          "published": "2026-07-04",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "ai-code-review-is-not-just-code-review",
+      "internalPath": "writing/ai-code-review-is-not-just-code-review/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/",
+      "preferredPublicationId": "local:ai-code-review-is-not-just-code-review",
+      "cover": "ai-code-review-is-not-just-code-review/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:ai-code-review-is-not-just-code-review",
+          "url": "https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/",
+          "published": "2026-06-30",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "ai-governance-without-bureaucracy",
+      "internalPath": "writing/ai-governance-without-bureaucracy/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+      "preferredPublicationId": "local:ai-governance-without-bureaucracy",
+      "cover": "ai-governance-without-bureaucracy/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:ai-governance-without-bureaucracy",
+          "url": "https://suyogjoshi.com/writing/ai-governance-without-bureaucracy/",
+          "published": "2026-07-04",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "ai-is-quietly-changing-how-junior-engineers-become-senior",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "AI Is Quietly Changing How Junior Engineers Become Senior",
+        "summary": "How AI-assisted implementation changes the experience junior engineers need to develop judgment, debugging skill, and senior-level understanding."
+      },
+      "topicIds": [
+        "agile-process-and-engineering-leadership"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/ai-is-quietly-changing-how-junior-engineers-become-senior-952f128b0888?sk=84d73ea9017579353d8df3faa573f428",
+      "preferredPublicationId": "external:ai-is-quietly-changing-how-junior-engineers-become-senior",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "external:ai-is-quietly-changing-how-junior-engineers-become-senior",
+          "url": "https://medium.com/gitconnected/ai-is-quietly-changing-how-junior-engineers-become-senior-952f128b0888?sk=84d73ea9017579353d8df3faa573f428",
+          "published": "2026-08-03",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "ai-ml-data-science-explained-simply",
+      "internalPath": "writing/ai-ml-data-science-explained-simply/index.html",
+      "externalMetadata": null,
+      "topicIds": [],
+      "feedGuid": "https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/",
+      "preferredPublicationId": "local:ai-ml-data-science-explained-simply",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "local:ai-ml-data-science-explained-simply",
+          "url": "https://suyogjoshi.com/writing/ai-ml-data-science-explained-simply/",
+          "published": "2026-05-02",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "ai-stress-testing-agile",
+      "internalPath": "writing/ai-stress-testing-agile/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/ai-stress-testing-agile/",
+      "preferredPublicationId": "local:ai-stress-testing-agile",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "local:ai-stress-testing-agile",
+          "url": "https://suyogjoshi.com/writing/ai-stress-testing-agile/",
+          "published": "2026-06-04",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "architecture-matters-more-in-the-ai-era",
+      "internalPath": "writing/architecture-matters-more-in-the-ai-era/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/",
+      "preferredPublicationId": "local:architecture-matters-more-in-the-ai-era",
+      "cover": "architecture-matters-more-in-the-ai-era/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:architecture-matters-more-in-the-ai-era",
+          "url": "https://suyogjoshi.com/writing/architecture-matters-more-in-the-ai-era/",
+          "published": "2026-07-06",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "beyond-the-repository-why-ai-needs-work-context-too",
+      "internalPath": "writing/beyond-the-repository-why-ai-needs-work-context-too/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-assisted-software-engineering",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/",
+      "preferredPublicationId": "local:beyond-the-repository-why-ai-needs-work-context-too",
+      "cover": "beyond-the-repository-why-ai-needs-work-context-too/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:beyond-the-repository-why-ai-needs-work-context-too",
+          "url": "https://suyogjoshi.com/writing/beyond-the-repository-why-ai-needs-work-context-too/",
+          "published": "2026-06-15",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "business-rules-as-context",
+      "internalPath": "writing/business-rules-as-context/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-assisted-software-engineering",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/business-rules-as-context/",
+      "preferredPublicationId": "external:business-rules-as-context-the-missing-layer-in-ai-assisted-development",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "local:business-rules-as-context",
+          "url": "https://suyogjoshi.com/writing/business-rules-as-context/",
+          "published": "2026-06-29",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        },
+        {
+          "id": "external:business-rules-as-context-the-missing-layer-in-ai-assisted-development",
+          "url": "https://medium.com/@suyog19/business-rules-as-context-the-missing-layer-in-ai-assisted-development-0e5a2c52299e?sk=4cf8826542a0d7a149dbe8205a978a77",
+          "published": "2026-08-22",
+          "source": "Medium",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "coding-assistants-are-not-junior-developers",
+      "internalPath": "writing/coding-assistants-are-not-junior-developers/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/",
+      "preferredPublicationId": "local:coding-assistants-are-not-junior-developers",
+      "cover": "coding-assistants-are-not-junior-developers/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:coding-assistants-are-not-junior-developers",
+          "url": "https://suyogjoshi.com/writing/coding-assistants-are-not-junior-developers/",
+          "published": "2026-06-06",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "cursor-just-launched-its-own-git-forge-its-built-for-ai-agents",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Cursor Just Launched Its Own Git Forge. It’s Built for AI Agents.",
+        "summary": "Origin Code Hosting brings repositories, pull requests, GitHub mirroring, and agent-triggered workflows directly into Cursor."
+      },
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://medium.com/generative-ai/cursor-just-launched-its-own-git-forge-its-built-for-ai-agents-a6ac940b0a02?sk=e37eedbb64566ebae0b8c61c0018ff39",
+      "preferredPublicationId": "external:cursor-just-launched-its-own-git-forge-its-built-for-ai-agents",
+      "cover": "external-covers/cursor-origin-git-forge.webp",
+      "coverWidth": 1200,
+      "coverHeight": 800,
+      "publications": [
+        {
+          "id": "external:cursor-just-launched-its-own-git-forge-its-built-for-ai-agents",
+          "url": "https://medium.com/generative-ai/cursor-just-launched-its-own-git-forge-its-built-for-ai-agents-a6ac940b0a02?sk=e37eedbb64566ebae0b8c61c0018ff39",
+          "published": "2026-08-28",
+          "source": "Generative AI",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "documentation-is-becoming-executable-context",
+      "internalPath": "writing/documentation-is-becoming-executable-context/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/",
+      "preferredPublicationId": "local:documentation-is-becoming-executable-context",
+      "cover": "documentation-is-becoming-executable-context/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:documentation-is-becoming-executable-context",
+          "url": "https://suyogjoshi.com/writing/documentation-is-becoming-executable-context/",
+          "published": "2026-06-27",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "enterprise-ai-adoption-is-a-context-problem",
+      "internalPath": "writing/enterprise-ai-adoption-is-a-context-problem/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/",
+      "preferredPublicationId": "local:enterprise-ai-adoption-is-a-context-problem",
+      "cover": "enterprise-ai-adoption-is-a-context-problem/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:enterprise-ai-adoption-is-a-context-problem",
+          "url": "https://suyogjoshi.com/writing/enterprise-ai-adoption-is-a-context-problem/",
+          "published": "2026-06-25",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "from-developer-to-ai-orchestrator",
+      "internalPath": "writing/from-developer-to-ai-orchestrator/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership",
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/",
+      "preferredPublicationId": "local:from-developer-to-ai-orchestrator",
+      "cover": "from-developer-to-ai-orchestrator/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:from-developer-to-ai-orchestrator",
+          "url": "https://suyogjoshi.com/writing/from-developer-to-ai-orchestrator/",
+          "published": "2026-06-21",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "how-i-structure-repositories-so-ai-can-understand-them",
+      "internalPath": "writing/how-i-structure-repositories-so-ai-can-understand-them/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-assisted-software-engineering",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/",
+      "preferredPublicationId": "local:how-i-structure-repositories-so-ai-can-understand-them",
+      "cover": "how-i-structure-repositories-so-ai-can-understand-them/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:how-i-structure-repositories-so-ai-can-understand-them",
+          "url": "https://suyogjoshi.com/writing/how-i-structure-repositories-so-ai-can-understand-them/",
+          "published": "2026-06-12",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "how-i-used-two-ais-to-build-a-software-engineering-system",
+      "internalPath": "writing/how-i-used-two-ais-to-build-a-software-engineering-system/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/",
+      "preferredPublicationId": "local:how-i-used-two-ais-to-build-a-software-engineering-system",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "local:how-i-used-two-ais-to-build-a-software-engineering-system",
+          "url": "https://suyogjoshi.com/writing/how-i-used-two-ais-to-build-a-software-engineering-system/",
+          "published": "2026-05-02",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "how-modern-llm-systems-really-work",
+      "internalPath": "writing/how-modern-llm-systems-really-work/index.html",
+      "externalMetadata": null,
+      "topicIds": [],
+      "feedGuid": "https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/",
+      "preferredPublicationId": "local:how-modern-llm-systems-really-work",
+      "cover": "how-modern-llm-systems-really-work/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:how-modern-llm-systems-really-work",
+          "url": "https://suyogjoshi.com/writing/how-modern-llm-systems-really-work/",
+          "published": "2026-05-07",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "how-to-tame-your-agent",
+      "internalPath": "writing/how-to-tame-your-agent/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/how-to-tame-your-agent/",
+      "preferredPublicationId": "local:how-to-tame-your-agent",
+      "cover": "how-to-tame-your-agent/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:how-to-tame-your-agent",
+          "url": "https://suyogjoshi.com/writing/how-to-tame-your-agent/",
+          "published": "2026-06-15",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "human-ai-responsibility-map",
+      "internalPath": "writing/human-ai-responsibility-map/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/human-ai-responsibility-map/",
+      "preferredPublicationId": "local:human-ai-responsibility-map",
+      "cover": "human-ai-responsibility-map/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:human-ai-responsibility-map",
+          "url": "https://suyogjoshi.com/writing/human-ai-responsibility-map/",
+          "published": "2026-07-03",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "human-review-gates-ai-assisted-delivery",
+      "internalPath": "writing/human-review-gates-ai-assisted-delivery/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership",
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/",
+      "preferredPublicationId": "local:human-review-gates-ai-assisted-delivery",
+      "cover": "human-review-gates-ai-assisted-delivery/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:human-review-gates-ai-assisted-delivery",
+          "url": "https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/",
+          "published": "2026-07-01",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "i-built-an-ai-software-team-the-hard-part-wasnt-coding",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "I Built an AI Software Team. The Hard Part Wasn’t Coding.",
+        "summary": "A practical account of building an AI software team and discovering that context, coordination, review, and human control are harder than code generation."
+      },
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/i-built-an-ai-software-team-the-hard-part-wasnt-coding-225382309c08?sk=7b471a2acfa79394053eba2851d1278c",
+      "preferredPublicationId": "external:i-built-an-ai-software-team-the-hard-part-wasnt-coding",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "external:i-built-an-ai-software-team-the-hard-part-wasnt-coding",
+          "url": "https://medium.com/gitconnected/i-built-an-ai-software-team-the-hard-part-wasnt-coding-225382309c08?sk=7b471a2acfa79394053eba2851d1278c",
+          "published": "2026-08-11",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "i-made-architecture-documentation-fail-the-build-when-it-lies",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "I Made Architecture Documentation Fail the Build When It Lies",
+        "summary": "How executable architecture checks can detect documentation drift and make important system boundaries fail visibly during delivery."
+      },
+      "topicIds": [
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/i-made-architecture-documentation-fail-the-build-when-it-lies-ee92ff8287be?sk=214958e0f39257ad4678975a7e8ebaa1",
+      "preferredPublicationId": "external:i-made-architecture-documentation-fail-the-build-when-it-lies",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "external:i-made-architecture-documentation-fail-the-build-when-it-lies",
+          "url": "https://medium.com/gitconnected/i-made-architecture-documentation-fail-the-build-when-it-lies-ee92ff8287be?sk=214958e0f39257ad4678975a7e8ebaa1",
+          "published": "2026-08-05",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "i-stopped-trusting-my-coding-agent-to-read-the-docs",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "I Stopped Trusting My Coding Agent to Read the Docs",
+        "summary": "Research on real coding agents suggests that important repository knowledge must be deliberately routed into the workflow."
+      },
+      "topicIds": [
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://medium.com/@suyog19/i-stopped-trusting-my-coding-agent-to-read-the-docs-92e504c07a42?sk=6b9c4ee576da1eb765bf437febc3c6e3",
+      "preferredPublicationId": "external:i-stopped-trusting-my-coding-agent-to-read-the-docs",
+      "cover": "external-covers/coding-agent-read-the-docs.webp",
+      "coverWidth": 1200,
+      "coverHeight": 800,
+      "publications": [
+        {
+          "id": "external:i-stopped-trusting-my-coding-agent-to-read-the-docs",
+          "url": "https://medium.com/@suyog19/i-stopped-trusting-my-coding-agent-to-read-the-docs-92e504c07a42?sk=6b9c4ee576da1eb765bf437febc3c6e3",
+          "published": "2026-08-24",
+          "source": "Medium",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "I Took an Idea to Soft Launch in a Day. Speed Wasn’t the Interesting Part.",
+        "summary": "A one-day soft launch made room for more product thinking, research, validation, and engineering discipline—not just faster implementation."
+      },
+      "topicIds": [],
+      "feedGuid": "https://medium.com/gitconnected/i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part-63a2459d3b52?sk=8b1e74050b31dc8d93e2c6a5edf9efcc",
+      "preferredPublicationId": "external:i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "external:i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part",
+          "url": "https://medium.com/gitconnected/i-took-an-idea-to-soft-launch-in-a-day-speed-wasnt-the-interesting-part-63a2459d3b52?sk=8b1e74050b31dc8d93e2c6a5edf9efcc",
+          "published": "2026-08-22",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "knowledge-debt-is-the-new-technical-debt",
+      "internalPath": "writing/knowledge-debt-is-the-new-technical-debt/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/",
+      "preferredPublicationId": "local:knowledge-debt-is-the-new-technical-debt",
+      "cover": "knowledge-debt-is-the-new-technical-debt/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:knowledge-debt-is-the-new-technical-debt",
+          "url": "https://suyogjoshi.com/writing/knowledge-debt-is-the-new-technical-debt/",
+          "published": "2026-06-29",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "not-all-engineering-tasks-belong-to-ai",
+      "internalPath": "writing/not-all-engineering-tasks-belong-to-ai/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/",
+      "preferredPublicationId": "local:not-all-engineering-tasks-belong-to-ai",
+      "cover": "not-all-engineering-tasks-belong-to-ai/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:not-all-engineering-tasks-belong-to-ai",
+          "url": "https://suyogjoshi.com/writing/not-all-engineering-tasks-belong-to-ai/",
+          "published": "2026-06-19",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants",
+      "internalPath": "writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/",
+      "preferredPublicationId": "local:process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants",
+      "cover": "process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants",
+          "url": "https://suyogjoshi.com/writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/",
+          "published": "2026-06-24",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "stop-prompting-harder-start-giving-better-context",
+      "internalPath": "writing/stop-prompting-harder-start-giving-better-context/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-assisted-software-engineering",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/",
+      "preferredPublicationId": "local:stop-prompting-harder-start-giving-better-context",
+      "cover": "stop-prompting-harder-start-giving-better-context/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:stop-prompting-harder-start-giving-better-context",
+          "url": "https://suyogjoshi.com/writing/stop-prompting-harder-start-giving-better-context/",
+          "published": "2026-06-10",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "stronger-evidence-chains-for-ai-assisted-engineering-changes",
+      "internalPath": "writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/",
+      "preferredPublicationId": "local:stronger-evidence-chains-for-ai-assisted-engineering-changes",
+      "cover": "stronger-evidence-chains-for-ai-assisted-engineering-changes/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:stronger-evidence-chains-for-ai-assisted-engineering-changes",
+          "url": "https://suyogjoshi.com/writing/stronger-evidence-chains-for-ai-assisted-engineering-changes/",
+          "published": "2026-06-25",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "the-context-supply-chain-how-organizational-knowledge-reaches-ai-output",
+      "internalPath": "writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "agile-process-and-engineering-leadership",
+        "ai-assisted-software-engineering",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/",
+      "preferredPublicationId": "local:the-context-supply-chain-how-organizational-knowledge-reaches-ai-output",
+      "cover": "the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:the-context-supply-chain-how-organizational-knowledge-reaches-ai-output",
+          "url": "https://suyogjoshi.com/writing/the-context-supply-chain-how-organizational-knowledge-reaches-ai-output/",
+          "published": "2026-06-26",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "the-frontend-passed-the-experience-didnt",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "The Frontend Passed. The Experience Didn’t.",
+        "summary": "A technically correct interface can still fail on hierarchy, clarity, and human comprehension."
+      },
+      "topicIds": [
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/@suyog19/the-frontend-passed-the-experience-didnt-c7ae9e6a5140?sk=6913d5adfb68854f16718b4d7cd31347",
+      "preferredPublicationId": "external:the-frontend-passed-the-experience-didnt",
+      "cover": "external-covers/frontend-passed-experience-didnt.webp",
+      "coverWidth": 1200,
+      "coverHeight": 800,
+      "publications": [
+        {
+          "id": "external:the-frontend-passed-the-experience-didnt",
+          "url": "https://medium.com/@suyog19/the-frontend-passed-the-experience-didnt-c7ae9e6a5140?sk=6913d5adfb68854f16718b4d7cd31347",
+          "published": "2026-08-28",
+          "source": "Medium",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "the-rise-of-multi-model-software-engineering",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "The Rise of Multi-Model Software Engineering",
+        "summary": "How engineering teams can use different AI models for planning, implementation, review, and evidence without treating one model as universally best."
+      },
+      "topicIds": [
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/the-rise-of-multi-model-software-engineering-afa2c27b29bc?sk=bf073a9753b436a016e31bb619389bfc",
+      "preferredPublicationId": "external:the-rise-of-multi-model-software-engineering",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "external:the-rise-of-multi-model-software-engineering",
+          "url": "https://medium.com/gitconnected/the-rise-of-multi-model-software-engineering-afa2c27b29bc?sk=bf073a9753b436a016e31bb619389bfc",
+          "published": "2026-08-17",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "understanding-the-ai-ecosystem",
+      "internalPath": "writing/understanding-the-ai-ecosystem/index.html",
+      "externalMetadata": null,
+      "topicIds": [],
+      "feedGuid": "https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/",
+      "preferredPublicationId": "local:understanding-the-ai-ecosystem",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "local:understanding-the-ai-ecosystem",
+          "url": "https://suyogjoshi.com/writing/understanding-the-ai-ecosystem/",
+          "published": "2026-05-02",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "using-multiple-ai-agents-as-a-software-engineering-team",
+      "internalPath": "writing/using-multiple-ai-agents-as-a-software-engineering-team/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/",
+      "preferredPublicationId": "local:using-multiple-ai-agents-as-a-software-engineering-team",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "local:using-multiple-ai-agents-as-a-software-engineering-team",
+          "url": "https://suyogjoshi.com/writing/using-multiple-ai-agents-as-a-software-engineering-team/",
+          "published": "2026-06-20",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "when-ai-writes-the-code-what-makes-a-language-good",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "When AI Writes the Code, What Makes a Language Good?",
+        "summary": "What programming-language qualities matter when AI writes more code, including explicitness, feedback, tooling, contracts, and human reviewability."
+      },
+      "topicIds": [
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975",
+      "preferredPublicationId": "external:when-ai-writes-the-code-what-makes-a-language-good",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "external:when-ai-writes-the-code-what-makes-a-language-good",
+          "url": "https://medium.com/towards-artificial-intelligence/when-ai-writes-the-code-what-makes-a-language-good-05a220034686?sk=123ed72ce3e0098570ed95140f1fb975",
+          "published": "2026-08-17",
+          "source": "Towards AI",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "why-ai-punishes-tribal-knowledge-in-software-teams",
+      "internalPath": "writing/why-ai-punishes-tribal-knowledge-in-software-teams/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/",
+      "preferredPublicationId": "local:why-ai-punishes-tribal-knowledge-in-software-teams",
+      "cover": "why-ai-punishes-tribal-knowledge-in-software-teams/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:why-ai-punishes-tribal-knowledge-in-software-teams",
+          "url": "https://suyogjoshi.com/writing/why-ai-punishes-tribal-knowledge-in-software-teams/",
+          "published": "2026-06-26",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "why-multi-agent-coding-fails",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Why Multi-Agent Coding Fails",
+        "summary": "Why multi-agent coding workflows fail when roles, context, handoffs, validation, and human authority are not designed as an engineering system."
+      },
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://medium.com/towards-artificial-intelligence/why-multi-agent-coding-fails-6b3a45746477?sk=b085842583c07888997f98f3cf9544e2",
+      "preferredPublicationId": "external:why-multi-agent-coding-fails",
+      "cover": null,
+      "coverWidth": null,
+      "coverHeight": null,
+      "publications": [
+        {
+          "id": "external:why-multi-agent-coding-fails",
+          "url": "https://medium.com/towards-artificial-intelligence/why-multi-agent-coding-fails-6b3a45746477?sk=b085842583c07888997f98f3cf9544e2",
+          "published": "2026-08-10",
+          "source": "Towards AI",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "why-reviewing-ai-generated-work-is-a-different-skill",
+      "internalPath": "writing/why-reviewing-ai-generated-work-is-a-different-skill/index.html",
+      "externalMetadata": null,
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/",
+      "preferredPublicationId": "local:why-reviewing-ai-generated-work-is-a-different-skill",
+      "cover": "why-reviewing-ai-generated-work-is-a-different-skill/cover.png",
+      "coverWidth": 1200,
+      "coverHeight": 630,
+      "publications": [
+        {
+          "id": "local:why-reviewing-ai-generated-work-is-a-different-skill",
+          "url": "https://suyogjoshi.com/writing/why-reviewing-ai-generated-work-is-a-different-skill/",
+          "published": "2026-06-20",
+          "source": "suyogjoshi.com",
+          "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "your-coding-agent-shouldnt-work-alone",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Your Coding Agent Shouldn’t Work Alone",
+        "summary": "AI-assisted development is shifting from private developer sessions to shared workspaces where teams and agents build together."
+      },
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://medium.com/towards-artificial-intelligence/your-coding-agent-shouldnt-work-alone-4e910cc835b9?sk=fbb2b54fb4b7996cb953e40cce9cb359",
+      "preferredPublicationId": "external:your-coding-agent-shouldnt-work-alone",
+      "cover": "external-covers/coding-agent-shouldnt-work-alone.webp",
+      "coverWidth": 1200,
+      "coverHeight": 675,
+      "publications": [
+        {
+          "id": "external:your-coding-agent-shouldnt-work-alone",
+          "url": "https://medium.com/towards-artificial-intelligence/your-coding-agent-shouldnt-work-alone-4e910cc835b9?sk=fbb2b54fb4b7996cb953e40cce9cb359",
+          "published": "2026-08-26",
+          "source": "Towards AI",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "your-repository-has-a-truth-problem",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Your Repository Has a Truth Problem",
+        "summary": "As AI agents act on repository context, stale documentation becomes an engineering risk."
+      },
+      "topicIds": [
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://medium.com/analysts-corner/your-repository-has-a-truth-problem-bfc2f89b0346?sk=8b1551f76713d53216d4e2a0b50fab6b",
+      "preferredPublicationId": "external:your-repository-has-a-truth-problem",
+      "cover": "external-covers/repository-truth-problem.webp",
+      "coverWidth": 1200,
+      "coverHeight": 800,
+      "publications": [
+        {
+          "id": "external:your-repository-has-a-truth-problem",
+          "url": "https://medium.com/analysts-corner/your-repository-has-a-truth-problem-bfc2f89b0346?sk=8b1551f76713d53216d4e2a0b50fab6b",
+          "published": "2026-08-26",
+          "source": "Analyst’s Corner",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    }
+  ]
+}
