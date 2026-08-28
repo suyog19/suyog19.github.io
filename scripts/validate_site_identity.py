@@ -17,8 +17,12 @@ WRITING_ID = "https://suyogjoshi.com/writing/#collection"
 SYSTEMS_ID = "https://suyogjoshi.com/systems/#collection"
 TRAINING_ID = "https://suyogjoshi.com/training/#collection"
 RESEARCH_ID = "https://suyogjoshi.com/research/#collection"
+FRAMEWORK_ID = "https://suyogjoshi.com/framework/#webpage"
+CONSULTING_PAGE_ID = "https://suyogjoshi.com/consulting/#webpage"
 CONSULTING_SERVICE_ID = "https://suyogjoshi.com/consulting/#service"
+WEBSITE_SERVICES_PAGE_ID = "https://suyogjoshi.com/website-services/#webpage"
 WEBSITE_SERVICE_ID = "https://suyogjoshi.com/website-services/#service"
+NEWSLETTER_ID = "https://suyogjoshi.com/newsletter/#webpage"
 SERVICE_ID = "https://suyogjoshi.com/training/#service"
 BRAND_ID = "https://suyogjoshi.com/training/#brand"
 COURSE_LIST_ID = "https://suyogjoshi.com/training/#course-list"
@@ -84,8 +88,8 @@ def validate_person(person: dict[str, object] | None, location: str) -> list[str
         errors.append(f"{location}: Person sameAs must contain only the three verified public profiles")
     if not isinstance(person.get("knowsAbout"), list) or not person["knowsAbout"]:
         errors.append(f"{location}: Person knowsAbout must be a concise non-empty list")
-    if reference_ids(person.get("subjectOf")) != {WRITING_ID, SYSTEMS_ID, TRAINING_ID}:
-        errors.append(f"{location}: Person subjectOf must connect Writing, Systems, and Training")
+    if "subjectOf" in person:
+        errors.append(f"{location}: Person subjectOf must not substitute for creator or provider relationships")
     private_fields = {"email", "telephone", "address", "birthDate"}
     exposed = sorted(private_fields.intersection(person))
     if exposed:
@@ -117,8 +121,24 @@ def main() -> int:
             errors.append("index.html: WebSite URL must match the homepage canonical")
         if reference_id(website.get("publisher")) != PERSON_ID:
             errors.append("index.html: WebSite publisher must reference the stable Person")
-        if reference_ids(website.get("hasPart")) != {WRITING_ID, SYSTEMS_ID, TRAINING_ID}:
-            errors.append("index.html: WebSite must connect Writing, Systems, and Training")
+        expected_parts = {
+            FRAMEWORK_ID,
+            RESEARCH_ID,
+            CONSULTING_PAGE_ID,
+            TRAINING_ID,
+            WEBSITE_SERVICES_PAGE_ID,
+            WRITING_ID,
+            SYSTEMS_ID,
+            NEWSLETTER_ID,
+        }
+        website_parts = website.get("hasPart")
+        valid_part_list = (
+            isinstance(website_parts, list)
+            and len(website_parts) == len(expected_parts)
+            and all(isinstance(item, dict) and set(item) == {"@id"} for item in website_parts)
+        )
+        if not valid_part_list or reference_ids(website_parts) != expected_parts:
+            errors.append("index.html: WebSite must connect every first-class Software Signal surface")
 
     about_source, about_nodes = load_nodes("about/index.html")
     errors.extend(validate_person(node_by_id(about_nodes, PERSON_ID), "about/index.html"))
@@ -147,16 +167,32 @@ def main() -> int:
     elif reference_id(research.get("creator")) != PERSON_ID or reference_id(research.get("isPartOf")) != WEBSITE_ID:
         errors.append("research/index.html: CollectionPage must connect the stable Person and WebSite")
 
-    for relative, service_id in (
-        ("consulting/index.html", CONSULTING_SERVICE_ID),
-        ("website-services/index.html", WEBSITE_SERVICE_ID),
+    for relative, page_id, person_property in (
+        ("framework/index.html", FRAMEWORK_ID, "creator"),
+        ("newsletter/index.html", NEWSLETTER_ID, "author"),
     ):
         _, nodes = load_nodes(relative)
+        page_node = node_by_id(nodes, page_id)
+        if page_node is None or page_node.get("@type") != "WebPage":
+            errors.append(f"{relative}: missing WebPage {page_id}")
+        elif reference_id(page_node.get("isPartOf")) != WEBSITE_ID or reference_id(page_node.get(person_property)) != PERSON_ID:
+            errors.append(f"{relative}: WebPage must connect the stable Person and WebSite")
+
+    for relative, page_id, service_id in (
+        ("consulting/index.html", CONSULTING_PAGE_ID, CONSULTING_SERVICE_ID),
+        ("website-services/index.html", WEBSITE_SERVICES_PAGE_ID, WEBSITE_SERVICE_ID),
+    ):
+        _, nodes = load_nodes(relative)
+        page_node = node_by_id(nodes, page_id)
         service_node = node_by_id(nodes, service_id)
+        if page_node is None or page_node.get("@type") != "WebPage":
+            errors.append(f"{relative}: missing WebPage {page_id}")
+        elif reference_id(page_node.get("isPartOf")) != WEBSITE_ID or reference_id(page_node.get("mainEntity")) != service_id:
+            errors.append(f"{relative}: WebPage must connect the WebSite and its main Service")
         if service_node is None or service_node.get("@type") != "Service":
             errors.append(f"{relative}: missing Service {service_id}")
-        elif reference_id(service_node.get("provider")) != PERSON_ID or reference_id(service_node.get("isPartOf")) != WEBSITE_ID:
-            errors.append(f"{relative}: Service must connect the stable Person and WebSite")
+        elif reference_id(service_node.get("provider")) != PERSON_ID or reference_id(service_node.get("mainEntityOfPage")) != page_id:
+            errors.append(f"{relative}: Service must connect the stable Person and its WebPage")
 
     _, training_nodes = load_nodes("training/index.html")
     training = node_by_id(training_nodes, TRAINING_ID)
@@ -233,7 +269,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print(f"Validated the metadata family matrix, Person/WebSite/ProfilePage graph, 4 public collections, 3 services, {article_count} articles, and {course_count} courses.")
+    print(f"Validated the revised Software Signal discovery graph, metadata family matrix, Person/WebSite/ProfilePage graph, 4 public collections, 3 services, {article_count} articles, and {course_count} courses.")
     return 0
 
 
