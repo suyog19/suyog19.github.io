@@ -1,25 +1,25 @@
 {
   "_type": "https://in-toto.io/Statement/v1",
   "predicate": {
-    "capability": "ci-automation",
+    "capability": "orchestrator",
     "findings": [],
-    "issuedAt": "2026-08-29T11:01:31.509047+00:00",
+    "issuedAt": "2026-08-29T12:53:52.830802+00:00",
     "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
     "processVersion": "1.0.0",
     "producer": {
       "contextId": "/root",
       "freshContext": false,
-      "identity": "local-validation",
+      "identity": "/root",
       "implementationContextId": null
     },
     "residualRisk": [],
     "verdict": "pass"
   },
-  "predicateType": "https://suyogjoshi.com/software-signal/engineering/test-result/v1",
+  "predicateType": "https://suyogjoshi.com/software-signal/engineering/classification/v1",
   "subject": [
     {
       "digest": {
-        "gitCommit": "5e453262c99395d81585b56b1d5ea006f3423d64"
+        "gitCommit": "0ccc6bc7abcaf6cdf7acca5363b86f823fc4f9e4"
       },
       "name": "suyog19/suyog19.github.io"
     }

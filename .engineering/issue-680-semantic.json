@@ -1,0 +1,3 @@
+{
+  "rationale": "Issue 680 implements approved cross-repository requirements suyog19/software-signal#53 and #54 for the global header identity, responsive mark, favicons, and default public social metadata. The change is user-visible and requires the repository UX gates, but it does not change navigation, public routes, analytics, data handling, deployment topology, or application contracts."
+}

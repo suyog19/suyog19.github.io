@@ -1,0 +1,8 @@
+{
+  "observable_behavior": true,
+  "material_layout_change": true,
+  "public_editorial_hierarchy_change": true,
+  "public_metadata_change": true,
+  "responsive_behavior_change": true,
+  "summary": "issue-680-software-signal-brand-identity"
+}
