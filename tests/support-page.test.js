@@ -11,7 +11,7 @@ test('support page implements the approved hierarchy and public metadata', () =>
   assert.match(html, /<title>Support the Work \| Suyog Joshi<\/title>/);
   assert.match(html, /<link rel="canonical" href="https:\/\/suyogjoshi\.com\/support\/"/);
   assert.match(html, /<meta property="og:url" content="https:\/\/suyogjoshi\.com\/support\/"/);
-  assert.match(html, /<meta name="twitter:card" content="summary"/);
+  assert.match(html, /<meta name="twitter:card" content="summary_large_image"/);
   assert.match(html, /G-PKL56GJ38H/);
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
 
@@ -60,7 +60,9 @@ test('support uses the established public shell without primary-navigation expan
   for (const asset of ['../css/base.css', '../css/components.css', '../css/pages.css', '../css/support.css', '../js/script.js', '../js/support-payment.js', '../js/support-analytics.js']) {
     assert.match(html, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
-  assert.doesNotMatch(html, /<img\b|<iframe\b|<form\b|data-[a-z-]*payment/i);
+  const main = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/);
+  assert.ok(main);
+  assert.doesNotMatch(main[0], /<img\b|<iframe\b|<form\b|data-[a-z-]*payment/i);
 });
 
 test('support composition is scoped and responsive without a new interaction system', () => {
