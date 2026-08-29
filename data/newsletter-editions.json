@@ -11,6 +11,13 @@
   },
   "editions": [
     {
+      "id": "https://newsletter.suyogjoshi.com/p/when-ai-workloads-change-the-infrastructure",
+      "title": "When AI Workloads Change the Infrastructure",
+      "summary": "Kubernetes 1.37 shows how new AI workloads are beginning to reshape familiar infrastructure assumptions.",
+      "published": "2026-08-29",
+      "url": "https://newsletter.suyogjoshi.com/p/when-ai-workloads-change-the-infrastructure"
+    },
+    {
       "id": "https://newsletter.suyogjoshi.com/p/the-software-supply-chain-has-a-new-participant",
       "title": "The Software Supply Chain Has a New Participant",
       "summary": "AI agents can now do much more than generate code. That changes the engineering controls we need around them.",

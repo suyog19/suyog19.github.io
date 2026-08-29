@@ -1,9 +1,7 @@
 {
   "approvals": [],
   "classification": {
-    "characteristics": {
-      "rationale": "Child issues 662-671 own the approved architecture decisions."
-    },
+    "characteristics": {},
     "delivery_profile": "Lean",
     "deterministic_signals": [],
     "protected_ambiguity": false,
@@ -11,7 +9,7 @@
       "No Standard or Protected characteristic was established"
     ],
     "semantic_rationale": "",
-    "target_revision": "fde0fec9b8510f6e56db598901715bc4073876ec"
+    "target_revision": "aaa643b9d1b181e8b8acda38e3f48e0771ba96f6"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "human_production_boundary": {

@@ -675,6 +675,17 @@
       "published": "2026-08-22"
     },
     {
+      "id": "newsletter:https://newsletter.suyogjoshi.com/p/when-ai-workloads-change-the-infrastructure",
+      "type": "Newsletter",
+      "title": "When AI Workloads Change the Infrastructure",
+      "summary": "Kubernetes 1.37 shows how new AI workloads are beginning to reshape familiar infrastructure assumptions.",
+      "url": "https://newsletter.suyogjoshi.com/p/when-ai-workloads-change-the-infrastructure",
+      "topics": [],
+      "source": "Software Signal Weekly",
+      "external": true,
+      "published": "2026-08-29"
+    },
+    {
       "id": "series:https://suyogjoshi.com/writing/series/ai-assisted-software-engineering/",
       "type": "Series",
       "title": "AI-Assisted Software Engineering Series",
