@@ -9,7 +9,7 @@
       "No Standard or Protected characteristic was established"
     ],
     "semantic_rationale": "",
-    "target_revision": "bbcda874f4d5a9ce22bbecdfe84f1f66cbcf4ab6"
+    "target_revision": "5e453262c99395d81585b56b1d5ea006f3423d64"
   },
   "execution_boundary": "Policy defines WHAT; assistants, humans, CI and native controls own HOW.",
   "native_enforcement": {

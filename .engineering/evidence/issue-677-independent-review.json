@@ -1,25 +1,25 @@
 {
   "_type": "https://in-toto.io/Statement/v1",
   "predicate": {
-    "capability": "functional-qa",
+    "capability": "independent-review",
     "findings": [],
-    "issuedAt": "2026-08-28T14:50:31.979609+00:00",
+    "issuedAt": "2026-08-29T11:03:32.454902+00:00",
     "processRevision": "fa26e629787fbab681b389f02a9f9a6e28d8481a",
     "processVersion": "1.0.0",
     "producer": {
-      "contextId": "/root/functional_qa",
+      "contextId": "codex-exec-issue-677-review-2",
       "freshContext": true,
-      "identity": "/root/functional_qa",
+      "identity": "codex-exec-issue-677-review-2",
       "implementationContextId": "/root"
     },
     "residualRisk": [],
     "verdict": "pass"
   },
-  "predicateType": "https://suyogjoshi.com/software-signal/engineering/functional-qa-verdict/v1",
+  "predicateType": "https://suyogjoshi.com/software-signal/engineering/independent-review/v1",
   "subject": [
     {
       "digest": {
-        "gitCommit": "83241390a388ea6e7e2dcf45bfee8bf8dffa7765"
+        "gitCommit": "5e453262c99395d81585b56b1d5ea006f3423d64"
       },
       "name": "suyog19/suyog19.github.io"
     }
