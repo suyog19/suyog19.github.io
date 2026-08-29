@@ -19,7 +19,7 @@ test('Petrol Teal is the authoritative shared Software Signal palette', () => {
 });
 
 test('identity and generated preview sources use one Petrol Teal direction', () => {
-  assert.match(read('favicon.svg'), /fill="#1f5a5a"/i);
+  assert.match(read('favicon.svg'), /(?:fill|stroke)="#1f5a5a"/i);
   const generator = read('scripts/generate_social_previews.py');
   assert.match(generator, /BRAND_ACCENT\s*=\s*"#1f5a5a"/i);
   assert.doesNotMatch(generator, /CORE_ACCENT|LEARNING_ACCENT/);

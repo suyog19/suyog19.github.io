@@ -34,6 +34,7 @@ function expectedRootHref(file, route) {
 }
 
 function expectedSupportHref(file) {
+  if (file === '404.html') return '/support/';
   return expectedRootHref(file, 'support');
 }
 

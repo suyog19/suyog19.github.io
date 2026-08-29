@@ -1,0 +1,4 @@
+{
+  "summary": "release-680-software-signal-brand-production",
+  "rationale": "Frontend issue 680 and source issues 53 and 54 own the approved implementation and UX decisions. This release selectively promotes the already accepted dev change onto the current production baseline without changing deployment topology or unrelated production content."
+}

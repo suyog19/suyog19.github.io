@@ -541,7 +541,22 @@ def collection_shell(title: str, description: str, canonical: str, eyebrow: str,
     head = re.sub(r'<meta property="og:url" content="[^"]*"', f'<meta property="og:url" content="{canonical}"', head, count=1)
     head = re.sub(r'\s*<meta property="og:image(?::(?:width|height|alt))?"[^>]*>', "", head)
     head = re.sub(r'\s*<meta name="twitter:image(?::alt)?"[^>]*>', "", head)
-    head = re.sub(r'<meta name="twitter:card" content="[^"]*"', '<meta name="twitter:card" content="summary"', head, count=1)
+    default_image = f"{ORIGIN}/assets/brand/software-signal-social-default.png"
+    default_alt = "Software Signal by Suyog Joshi — move fast, engineer reliably."
+    default_og = (
+        f'<meta property="og:image" content="{default_image}" />\n  '
+        '<meta property="og:image:width" content="1200" />\n  '
+        '<meta property="og:image:height" content="630" />\n  '
+        f'<meta property="og:image:alt" content="{default_alt}" />'
+    )
+    head = re.sub(r'(<meta property="og:url"[^>]*>)', rf'\1\n  {default_og}', head, count=1)
+    head = re.sub(r'<meta name="twitter:card" content="[^"]*"', '<meta name="twitter:card" content="summary_large_image"', head, count=1)
+    head = re.sub(
+        r'(<meta name="twitter:card"[^>]*>)',
+        rf'\1\n  <meta name="twitter:image" content="{default_image}" />\n  <meta name="twitter:image:alt" content="{default_alt}" />',
+        head,
+        count=1,
+    )
     head = re.sub(r'<meta name="twitter:title" content="[^"]*"', f'<meta name="twitter:title" content="{html.escape(title, quote=True)} | Suyog Joshi"', head, count=1)
     head = re.sub(r'<meta name="twitter:description" content="[^"]*"', f'<meta name="twitter:description" content="{html.escape(description, quote=True)}"', head, count=1)
     head = re.sub(r'"@id": "[^"]+#collection"', f'"@id": "{canonical}#collection"', head, count=1)
@@ -566,7 +581,7 @@ def render_topic_page(topic: dict[str, object], articles: list[dict[str, object]
     members.sort(key=lambda item: (str(item["published"]), str(item["workId"])), reverse=True)
     rows = "".join(f'<li class="wp-article-item">{article_link(item, "wp-article-row", "../../")}</li>' for item in members)
     body = f'<section class="wp-themes"><div class="container"><p class="wp-theme-kicker">{len(members)} Article Works</p><ul class="wp-theme-articles">{rows}</ul></div></section>'
-    rendered = collection_shell(str(topic["title"]), str(topic["description"]), f'{ORIGIN}/writing/topics/{topic["id"]}/', "Complete Topic", body).replace(b'../../css/', b'../../../css/').replace(b'../../js/', b'../../../js/').replace(b'../../favicon', b'../../../favicon').replace(b'../../assets/', b'../../../assets/').replace(b'href="../../writing/"', b'href="../../../writing/"').replace(b'href="../../search/"', b'href="../../../search/"').replace(b'href="../../feed.xml"', b'href="../../../feed.xml"')
+    rendered = collection_shell(str(topic["title"]), str(topic["description"]), f'{ORIGIN}/writing/topics/{topic["id"]}/', "Complete Topic", body).replace(b'../../css/', b'../../../css/').replace(b'../../js/', b'../../../js/').replace(b'../../favicon', b'../../../favicon').replace(b'../../apple-touch', b'../../../apple-touch').replace(b'../../assets/', b'../../../assets/').replace(b'href="../../writing/"', b'href="../../../writing/"').replace(b'href="../../search/"', b'href="../../../search/"').replace(b'href="../../feed.xml"', b'href="../../../feed.xml"')
     item_list = {
         "@context": "https://schema.org", "@type": "ItemList",
         "name": f"All {topic['title']} Article Works", "numberOfItems": len(members),
@@ -579,10 +594,20 @@ def render_topic_page(topic: dict[str, object], articles: list[dict[str, object]
     decoded = rendered.decode("utf-8")
     topic_image = f"{ORIGIN}/assets/social-previews/topic-{topic['id']}.png"
     topic_alt = f"{topic['title']} topic hub."
-    decoded = decoded.replace(
-        '<meta name="twitter:card" content="summary" />',
-        f'<meta property="og:image" content="{topic_image}" />\n  <meta property="og:image:width" content="1200" />\n  <meta property="og:image:height" content="630" />\n  <meta property="og:image:alt" content="{html.escape(topic_alt, quote=True)}" />\n  <meta name="twitter:card" content="summary_large_image" />\n  <meta name="twitter:image" content="{topic_image}" />\n  <meta name="twitter:image:alt" content="{html.escape(topic_alt, quote=True)}" />',
-        1,
+    decoded = re.sub(r'\s*<meta property="og:image(?::(?:width|height|alt))?"[^>]*>', "", decoded)
+    decoded = re.sub(r'\s*<meta name="twitter:image(?::alt)?"[^>]*>', "", decoded)
+    topic_og = (
+        f'<meta property="og:image" content="{topic_image}" />\n  '
+        '<meta property="og:image:width" content="1200" />\n  '
+        '<meta property="og:image:height" content="630" />\n  '
+        f'<meta property="og:image:alt" content="{html.escape(topic_alt, quote=True)}" />'
+    )
+    decoded = re.sub(r'(<meta property="og:url"[^>]*>)', rf'\1\n  {topic_og}', decoded, count=1)
+    decoded = re.sub(
+        r'(<meta name="twitter:card"[^>]*>)',
+        rf'\1\n  <meta name="twitter:image" content="{topic_image}" />\n  <meta name="twitter:image:alt" content="{html.escape(topic_alt, quote=True)}" />',
+        decoded,
+        count=1,
     )
     decoded, count = re.subn(
         r'("creator": \{ "@id": "https://suyogjoshi.com/#person" \})\n  \}',

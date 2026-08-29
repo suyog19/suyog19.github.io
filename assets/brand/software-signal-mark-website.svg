@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Software Signal website mark</title>
+  <desc id="desc">A teal S-shaped signal crossed by a muted terracotta engineering checkpoint.</desc>
+  <path d="M260 48H110C59 48 34 77 34 114c0 38 29 64 74 64h72c26 0 43 14 43 35 0 22-18 39-48 39H34" fill="none" stroke="#1F5A5A" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M24 170H274" fill="none" stroke="#C56A4A" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="149" cy="170" r="34" fill="#C56A4A"/>
+</svg>
