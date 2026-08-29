@@ -101,8 +101,12 @@ def validate_html(path: Path) -> list[str]:
     errors: list[str] = []
     parser = ImageParser()
     parser.feed(path.read_text(encoding="utf-8"))
+    content_images = [
+        image for image in parser.images
+        if "brand-logo" not in str(image.get("class") or "").split()
+    ]
     high_priority = 0
-    for position, image in enumerate(parser.images):
+    for position, image in enumerate(content_images):
         label = f"{path.relative_to(ROOT).as_posix()} img[{position + 1}]"
         src = image.get("src")
         if not src:
@@ -142,15 +146,15 @@ def validate_html(path: Path) -> list[str]:
 
     relative = path.relative_to(ROOT)
     is_article = len(relative.parts) == 3 and relative.parts[0] == "writing" and relative.name == "index.html"
-    if parser.images:
+    if content_images:
         expected_high = 1 if is_article else 0
         if high_priority != expected_high:
             errors.append(
                 f"{relative.as_posix()}: expected {expected_high} high-priority image, found {high_priority}"
             )
-        if is_article and parser.images[0].get("loading") != "eager":
+        if is_article and content_images[0].get("loading") != "eager":
             errors.append(f"{relative.as_posix()}: primary article image must load eagerly")
-        for position, image in enumerate(parser.images[1:] if is_article else parser.images, start=2 if is_article else 1):
+        for position, image in enumerate(content_images[1:] if is_article else content_images, start=2 if is_article else 1):
             if image.get("loading") != "lazy":
                 errors.append(f"{relative.as_posix()} img[{position}]: below-fold image must load lazily")
 

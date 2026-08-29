@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">Software Signal by Suyog Joshi</title>
+  <desc id="desc">Website-aligned Software Signal logo: a teal S-shaped signal crossed by a terracotta engineering checkpoint, with an editorial wordmark and founder attribution.</desc>
+  <g id="symbol" transform="translate(24 37)">
+    <path d="M235 35H105C58 35 32 62 32 99c0 35 27 58 69 58h68c24 0 39 13 39 32 0 20-16 35-44 35H28" fill="none" stroke="#1F5A5A" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22 151H228" fill="none" stroke="#C56A4A" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="126" cy="151" r="31" fill="#C56A4A"/>
+  </g>
+  <text x="330" y="185" fill="#1F5A5A" font-family="Playfair Display, Georgia, Times New Roman, serif" font-size="103" font-weight="600" letter-spacing="-2">Software Signal</text>
+  <text x="334" y="235" fill="#111111" font-family="Inter, Arial, Helvetica, sans-serif" font-size="25" font-weight="700" letter-spacing="10">BY SUYOG JOSHI</text>
+</svg>

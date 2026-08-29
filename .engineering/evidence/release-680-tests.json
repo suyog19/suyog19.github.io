@@ -3,7 +3,7 @@
   "predicate": {
     "capability": "ci-automation",
     "findings": [],
-    "issuedAt": "2026-08-29T11:12:10.391889+00:00",
+    "issuedAt": "2026-08-29T13:07:29.679069+00:00",
     "processRevision": "3f353cf48660f20883304cad07391966c3807e45",
     "processVersion": "1.0.1",
     "producer": {
@@ -19,7 +19,7 @@
   "subject": [
     {
       "digest": {
-        "gitCommit": "aaa643b9d1b181e8b8acda38e3f48e0771ba96f6"
+        "gitCommit": "44da21df4c195c4caffafb8e0518740b92d97d71"
       },
       "name": "suyog19/suyog19.github.io"
     }

@@ -8,10 +8,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED_PARTS = {".git", "node_modules", "playwright-report", "test-results"}
+ARTICLE_SOCIAL_FALLBACKS = {
+    "writing/ai-ml-data-science-explained-simply/index.html": "ai-ml-data-science-explained-simply",
+    "writing/how-i-used-two-ais-to-build-a-software-engineering-system/index.html": "how-i-used-two-ais-to-build-a-software-engineering-system",
+    "writing/how-modern-llm-systems-really-work/index.html": "how-modern-llm-systems-really-work",
+    "writing/understanding-the-ai-ecosystem/index.html": "understanding-the-ai-ecosystem",
+    "writing/using-multiple-ai-agents-as-a-software-engineering-team/index.html": "using-multiple-ai-agents-as-a-software-engineering-team",
+}
 
 
 def root_prefix(page: Path) -> str:
     relative = page.relative_to(ROOT)
+    if relative.as_posix() == "404.html":
+        return "/"
     depth = len(relative.parts) - 1
     return "../" * depth
 
@@ -55,12 +64,11 @@ def header(prefix: str, current: str) -> str:
     )
     return f'''<header class="site-header">
     <div class="container header-inner">
-      <a href="{prefix or './'}" class="brand-lockup">
-        <span class="brand-mark" aria-hidden="true">SS</span>
-        <span class="brand-text">
-          <span class="brand-primary">Software Signal</span>
-          <span class="brand-founder">by Suyog Joshi</span>
-        </span>
+      <a href="{prefix or './'}" class="brand-lockup" aria-label="Software Signal by Suyog Joshi — Home">
+        <picture class="brand-picture">
+          <source media="(max-width: 480px)" srcset="{prefix}assets/brand/software-signal-mark-website.svg">
+          <img class="brand-logo" src="{prefix}assets/brand/software-signal-logo-website.svg" width="1200" height="320" alt="">
+        </picture>
       </a>
       <nav class="nav" id="nav" aria-label="Primary navigation">
         <ul class="nav-list">
@@ -72,6 +80,122 @@ def header(prefix: str, current: str) -> str:
       </button>
     </div>
   </header>'''
+
+
+def update_head_identity(source: str, prefix: str, relative_page: str) -> str:
+    updated = source
+    if prefix == "/":
+        updated = re.sub(
+            r'href="(?:\.\./)*((?:favicon\.(?:svg|ico))|apple-touch-icon\.png)"',
+            r'href="/\1"',
+            updated,
+        )
+    if 'rel="apple-touch-icon"' not in updated:
+        icon_pattern = r'(<link rel="icon" type="image/x-icon" href="[^"]+">)'
+        replacement = rf'\1<link rel="apple-touch-icon" sizes="180x180" href="{prefix}apple-touch-icon.png">'
+        updated, count = re.subn(icon_pattern, replacement, updated, count=1)
+        if not count:
+            icon_pattern = r'(<link rel="icon" type="image/svg\+xml" href="[^"]+">)'
+            updated, count = re.subn(icon_pattern, replacement, updated, count=1)
+        if not count:
+            icon_block = (
+                f'<link rel="icon" type="image/svg+xml" href="{prefix}favicon.svg">'
+                f'<link rel="icon" type="image/x-icon" href="{prefix}favicon.ico">'
+                f'<link rel="apple-touch-icon" sizes="180x180" href="{prefix}apple-touch-icon.png">'
+            )
+            updated, count = re.subn(r'</head>', icon_block + '</head>', updated, count=1)
+        if not count:
+            raise RuntimeError("Shared public page has no document head")
+
+    structured_image = re.search(r'"image"\s*:\s*"(https://suyogjoshi\.com/[^"]+)"', updated)
+    default_image = "https://suyogjoshi.com/assets/brand/software-signal-social-default.png"
+    article_slug = ARTICLE_SOCIAL_FALLBACKS.get(relative_page)
+    if article_slug and default_image in updated:
+        article_image = f"https://suyogjoshi.com/assets/brand/article-social/{article_slug}.png"
+        title_match = re.search(r'<meta property="og:title" content="([^"]+)"', updated)
+        specific_alt = f"{title_match.group(1) if title_match else 'Software Signal article'} cover image."
+        updated = updated.replace(default_image, article_image)
+        updated = updated.replace(
+            "Software Signal by Suyog Joshi — move fast, engineer reliably.",
+            specific_alt,
+        )
+        if not re.search(r'"image"\s*:', updated):
+            updated, image_count = re.subn(
+                r'("author"\s*:)',
+                f'"image":  "{article_image}",\n        \\1',
+                updated,
+                count=1,
+            )
+            if not image_count:
+                raise RuntimeError(f"Article fallback has no structured-data author marker: {relative_page}")
+
+    if structured_image and default_image in updated:
+        title_match = re.search(r'<meta property="og:title" content="([^"]+)"', updated)
+        specific_alt = f"{title_match.group(1) if title_match else 'Software Signal article'} cover image."
+        updated = updated.replace(default_image, structured_image.group(1))
+        updated = updated.replace(
+            "Software Signal by Suyog Joshi — move fast, engineer reliably.",
+            specific_alt,
+        )
+
+    has_social_image = '<meta property="og:image"' in updated
+    is_noindex = bool(re.search(r'<meta name="robots" content="[^"]*noindex', updated, re.IGNORECASE))
+    if has_social_image and not is_noindex:
+        updated = re.sub(
+            r'<meta name="twitter:card" content="[^"]*"\s*/?>',
+            '<meta name="twitter:card" content="summary_large_image">',
+            updated,
+            count=1,
+        )
+    if has_social_image or is_noindex:
+        return updated
+
+    image_url = structured_image.group(1) if structured_image else default_image
+    if structured_image:
+        title_match = re.search(r'<meta property="og:title" content="([^"]+)"', updated)
+        image_alt = f"{title_match.group(1) if title_match else 'Software Signal article'} cover image."
+    else:
+        image_alt = "Software Signal by Suyog Joshi — move fast, engineer reliably."
+    open_graph = (
+        f'<meta property="og:image" content="{image_url}">'
+        '<meta property="og:image:width" content="1200">'
+        '<meta property="og:image:height" content="630">'
+        f'<meta property="og:image:alt" content="{image_alt}">'
+    )
+    updated, og_count = re.subn(
+        r'(<meta property="og:url"[^>]*>)',
+        rf'\1{open_graph}',
+        updated,
+        count=1,
+    )
+    if not og_count:
+        raise RuntimeError("Indexable shared public page has no Open Graph URL")
+
+    if '<meta name="twitter:card"' in updated:
+        updated = re.sub(
+            r'<meta name="twitter:card" content="[^"]*"\s*/?>',
+            '<meta name="twitter:card" content="summary_large_image">',
+            updated,
+            count=1,
+        )
+        twitter_image = (
+            f'<meta name="twitter:image" content="{image_url}">'
+            f'<meta name="twitter:image:alt" content="{image_alt}">'
+        )
+        updated = re.sub(
+            r'(<meta name="twitter:card"[^>]*>)',
+            rf'\1{twitter_image}',
+            updated,
+            count=1,
+        )
+    else:
+        twitter = (
+            '<meta name="twitter:card" content="summary_large_image">'
+            f'<meta name="twitter:image" content="{image_url}">'
+            f'<meta name="twitter:image:alt" content="{image_alt}">'
+        )
+        updated = updated.replace(open_graph, open_graph + twitter, 1)
+    return updated
 
 
 def footer(prefix: str, current: str) -> str:
@@ -137,9 +261,10 @@ def main() -> None:
             )
             if not footer_count:
                 raise RuntimeError(f"Shared footer could not be replaced: {page}")
+        updated = update_head_identity(updated, prefix, page.relative_to(ROOT).as_posix())
         updated = re.sub(
             r'(css/(?:base|components)\.css)(?:\?v=\d+)?',
-            r'\1?v=607',
+            r'\1?v=680',
             updated,
         )
         if page.relative_to(ROOT).parts[0] == "training" and "learning-subnav" in updated:
