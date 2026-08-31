@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-08-28T15:47:58.269405+00:00",
+  "generated_at": "2026-08-31T07:36:49.280398+00:00",
   "generated_files": {
-    ".engineering/generated/resolved-policy.json": "sha256:84369190aab6cb0808af627471507a81206f107c2e28d1b5450508aee538fd46",
+    ".engineering/generated/resolved-policy.json": "sha256:2b3369e23870769e6e004cfbd61d3dbdbcbdf9169ef08a6c04f2f2be9275e66a",
     ".engineering/skills/architecture-review/SKILL.md": "sha256:54680e22888f28b40390c5f402fafa7cc5338f3a8db6ebd29ebfac62a854b0e1",
     ".engineering/skills/functional-qa/SKILL.md": "sha256:6da8f6d1ee5eccca9a0fd2521e55c0a0ac25af0e352a2eda66a5e326a43d30e1",
-    ".engineering/skills/independent-review/SKILL.md": "sha256:724548405c51c8b61324efcb91687dc5efffd06a59c5d14b5b6acc9b8ba9dfbb",
+    ".engineering/skills/independent-review/SKILL.md": "sha256:4bc27a2d7fe30507d6ce83db616b2c23baa507defea62e8e673d64dd85b17695",
     ".engineering/skills/non-functional-qa/SKILL.md": "sha256:17c61ad036e624b67b4f669ad239b9b6dd280b11765186d1083da69d2bdaac56",
     ".engineering/skills/senior-ux-review/SKILL.md": "sha256:75b065163fc2a9881c92f3b9cc5badae4f9d7aae5afb9a1ecae1add890d7bde7",
     ".engineering/skills/solution-sufficiency/SKILL.md": "sha256:292981093e0eec05133681f7d4ec77f0828a8547dd38d22ca2c4ca096e90942d",
-    ".github/workflows/process-validation.yml": "sha256:45155cb3d45c04108bd5e6230ec363003fa4f80b33aacc9461974168ca382c1b",
-    "AGENTS.md": "sha256:b53d6a4a86552b807e52c04fe6396698540794711ecae25c782a6226628702f5",
-    "CLAUDE.md": "sha256:520b6d10fe355945132b0db5d54bacc5e4cbaba93cff19578c5e13456e0659b8"
+    ".github/workflows/process-validation.yml": "sha256:a7573ec2b58b3f2bf366c213a6ce4a119d7ae140091d9d176fb3f0ac7a9a6707",
+    "AGENTS.md": "sha256:ae6af6d93f7b6cf31d5cab2d540771b751eb4447be0a4c02f60b29c4e7db9971",
+    "CLAUDE.md": "sha256:4477761b264088ee66a7eb3894ee226622f1dad9c4d3fce10cc096b0bd37ae12"
   },
-  "manifest_digest": "sha256:d2dad178cdb68ce23f21152e8fa2631702b1bf3a8dc5a9bc0ddd9528f9e95617",
-  "policy_digest": "sha256:668683f3e90ad02dabf959ecea2600c13a8b2d9517ff7903417880e9a5a0cc35",
-  "revision": "3f353cf48660f20883304cad07391966c3807e45",
+  "manifest_digest": "sha256:0dc9ad186dcd1f93eccb27894d5313c165f4d5372b9220e4b6b25e32bbe003f5",
+  "policy_digest": "sha256:77cee395ba2c454e61d7b3a84e6998397c537f04e57c6650880cd53c327be0f4",
+  "revision": "9f023d4bfd11552b17175698892efe6d9402e4f8",
   "schema_version": 1,
   "source": "suyog19/software-engineering-process",
-  "version": "1.0.1"
+  "version": "1.4.1"
 }

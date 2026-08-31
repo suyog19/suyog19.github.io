@@ -3,3 +3,5 @@ playwright-report/
 test-results/
 __pycache__/
 .pytest_cache/
+.engineering/effective-obligations.json
+.engineering/evidence/
