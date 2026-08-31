@@ -6,10 +6,6 @@ process:
   profile: frontend
 repository:
   name: suyog19/suyog19.github.io
-  trusted_ci_workflows:
-  - .github/workflows/required-engineering-process.yml
-  authorized_review_workflows:
-  - .github/workflows/process-independent-review.yml
 overrides:
   validation:
     commands:
@@ -89,7 +85,7 @@ local_context:
   load_when: load for privacy, retention, deletion, personal data, or sensitive operational
     changes
 adoption:
-  target_mode: Assured
+  target_mode: Foundation
   metrics_enabled: false
 adapters:
   github:
