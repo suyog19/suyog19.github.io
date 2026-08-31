@@ -1,27 +1,40 @@
-schema_version: 1
+schema_version: 2
 process:
   source: suyog19/software-engineering-process
-  version: 1.0.0
-  revision: fa26e629787fbab681b389f02a9f9a6e28d8481a
+  version: 1.4.1
+  revision: 9f023d4bfd11552b17175698892efe6d9402e4f8
   profile: frontend
 repository:
   name: suyog19/suyog19.github.io
 overrides:
   validation:
     commands:
-    - python scripts/validate_article_structured_data.py
-    - python scripts/validate_canonical_urls.py
-    - python scripts/validate_custom_404.py
-    - python scripts/validate_image_performance.py
-    - python scripts/validate_public_routes.py
-    - python scripts/validate_public_discovery.py
-    - python scripts/validate_site_identity.py
-    - python scripts/validate_training_catalogue_schema.py
-    - python scripts/validate_training_commercials.py
-    - python scripts/validate_training_consistency.py
-    - python scripts/validate_training_discoverability.py
-    - python -m unittest tests/test_training_consistency.py tests/test_training_delivery_profile.py
-    - node --test tests/*.test.js
+    - command: python scripts/validate_article_structured_data.py
+      category: focused
+    - command: python scripts/validate_canonical_urls.py
+      category: negative
+    - command: python scripts/validate_custom_404.py
+      category: negative
+    - command: python scripts/validate_image_performance.py
+      category: focused
+    - command: python scripts/validate_public_routes.py
+      category: security
+    - command: python scripts/validate_public_discovery.py
+      category: integration
+    - command: python scripts/validate_site_identity.py
+      category: integration
+    - command: python scripts/validate_training_catalogue_schema.py
+      category: focused
+    - command: python scripts/validate_training_commercials.py
+      category: negative
+    - command: python scripts/validate_training_consistency.py
+      category: integration
+    - command: python scripts/validate_training_discoverability.py
+      category: integration
+    - command: python -m unittest tests/test_training_consistency.py tests/test_training_delivery_profile.py
+      category: integration
+    - command: node --test tests/*.test.js
+      category: integration
   classification:
     protected_path_hints:
     - admin/**
@@ -71,3 +84,13 @@ local_context:
   path: docs/privacy-retention-operations.md
   load_when: load for privacy, retention, deletion, personal data, or sensitive operational
     changes
+adoption:
+  target_mode: Foundation
+  metrics_enabled: false
+adapters:
+  github:
+    readiness_status: engineering-process
+    protected_branch: dev
+    production_environment: github-pages
+    runner_labels:
+    - ubuntu-latest

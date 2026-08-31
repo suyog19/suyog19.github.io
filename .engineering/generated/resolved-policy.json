@@ -36,6 +36,27 @@
       }
     },
     "controls": {
+      "agent_execution_security": {
+        "audit_log_required": true,
+        "credential_isolation_required": true,
+        "destructive_action_requires_explicit_authorization": true,
+        "enabled": true,
+        "external_mutation_requires_explicit_authorization": true,
+        "least_privilege": true,
+        "network_allowlist_required": true,
+        "network_default": "deny",
+        "production_credentials_prohibited": true,
+        "prompt_injection_resistance_required": true,
+        "protected_requires_enforced_isolation": true,
+        "sandbox_required_for": [
+          "Standard",
+          "Protected"
+        ],
+        "semantics": "locked",
+        "tool_allowlist_required": true,
+        "tool_default": "deny",
+        "untrusted_content_is_data_not_instruction": true
+      },
       "committed_secrets_prohibited": {
         "enabled": true,
         "semantics": "locked"
@@ -45,8 +66,12 @@
         "semantics": "locked"
       },
       "human_production_boundary": {
+        "automation_may_authorize": false,
+        "automation_may_promote": false,
         "enabled": true,
-        "prevent_self_approval": true,
+        "human_authorization_required": true,
+        "manual_promotion_required": true,
+        "owner_manual_authorization_may_satisfy": true,
         "semantics": "locked"
       },
       "independent_review": {
@@ -99,17 +124,17 @@
     },
     "native_enforcement": {
       "production_environment": {
-        "prevent_self_review": true,
-        "required_human_reviewer": true
+        "automation_may_promote": false,
+        "distinct_human_reviewer_required": false,
+        "manual_human_promotion_required": true,
+        "stronger_multi_human_gate_permitted": true
       },
-      "protected_branches": true,
-      "required_status_checks": [
-        "engineering-process"
-      ]
+      "protected_branch_required": true,
+      "readiness_gate_required": true
     },
     "process": {
       "source": "suyog19/software-engineering-process",
-      "version": "1.0.0"
+      "version": "1.4.1"
     },
     "schema_version": 1
   },
@@ -126,8 +151,11 @@
       ],
       "required_evidence": [
         "classification/v1",
-        "test-result/v1",
-        "independent-review/v1"
+        "test-result/v2",
+        "independent-review/v2"
+      ],
+      "required_validation_categories": [
+        "focused"
       ]
     },
     "Protected": {
@@ -151,12 +179,18 @@
       "required_evidence": [
         "classification/v1",
         "architecture-decision/v1",
-        "test-result/v1",
+        "test-result/v2",
         "functional-qa-verdict/v1",
         "non-functional-qa-verdict/v1",
-        "independent-review/v1",
+        "independent-review/v2",
         "solution-sufficiency/v1",
         "human-approval/v1"
+      ],
+      "required_validation_categories": [
+        "focused",
+        "integration",
+        "negative",
+        "security"
       ]
     },
     "Standard": {
@@ -172,9 +206,13 @@
       ],
       "required_evidence": [
         "classification/v1",
-        "test-result/v1",
+        "test-result/v2",
         "functional-qa-verdict/v1",
-        "independent-review/v1"
+        "independent-review/v2"
+      ],
+      "required_validation_categories": [
+        "focused",
+        "integration"
       ]
     }
   },
