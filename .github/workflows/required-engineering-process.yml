@@ -17,6 +17,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install pinned engineering process
-        run: pip install 'git+https://github.com/suyog19/software-engineering-process@3f353cf48660f20883304cad07391966c3807e45'
+        run: pip install 'git+https://github.com/suyog19/software-engineering-process@9f023d4bfd11552b17175698892efe6d9402e4f8'
       - name: Validate repository process
-        run: engineering-process validate
+        run: engineering-process validate --runtime-revision '9f023d4bfd11552b17175698892efe6d9402e4f8'
+      - name: Confirm configured adoption mode
+        run: engineering-process adoption-report

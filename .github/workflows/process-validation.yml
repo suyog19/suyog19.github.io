@@ -11,5 +11,5 @@ jobs:
         with: {fetch-depth: 0}
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - run: pip install 'git+https://github.com/suyog19/software-engineering-process@3f353cf48660f20883304cad07391966c3807e45'
-      - run: engineering-process validate
+      - run: pip install 'git+https://github.com/suyog19/software-engineering-process@9f023d4bfd11552b17175698892efe6d9402e4f8'
+      - run: engineering-process validate --runtime-revision '9f023d4bfd11552b17175698892efe6d9402e4f8'
