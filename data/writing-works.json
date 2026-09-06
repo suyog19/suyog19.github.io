@@ -656,9 +656,9 @@
       ],
       "feedGuid": "https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/",
       "preferredPublicationId": "external:suyog19-human-review-gates-in-ai-assisted-delivery-109f47ab23d7",
-      "cover": "human-review-gates-ai-assisted-delivery/cover.webp",
-      "coverWidth": 1672,
-      "coverHeight": 941,
+      "cover": "external-covers/human-review-gates-ai-assisted-delivery.webp",
+      "coverWidth": 1200,
+      "coverHeight": 632,
       "publications": [
         {
           "id": "local:human-review-gates-ai-assisted-delivery",
