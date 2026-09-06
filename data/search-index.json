@@ -25,18 +25,29 @@
       "published": "2026-08-27"
     },
     {
+      "id": "article:ai-can-help-you-write-without-owning-your-voice",
+      "type": "Article",
+      "title": "AI Can Help You Write Without Owning Your Voice",
+      "summary": "The practical boundary is not AI or no AI. It is deciding which parts of authorship you refuse to delegate.",
+      "url": "https://medium.com/@suyog19/ai-can-help-you-write-without-owning-your-voice-211ac7f0a136?sk=ddef5e2d38894de9f75f0fa51b6386b3",
+      "topics": [],
+      "source": "Medium",
+      "external": true,
+      "published": "2026-09-05"
+    },
+    {
       "id": "article:ai-code-review-is-not-just-code-review",
       "type": "Article",
       "title": "AI Code Review Is Not Just Code Review",
       "summary": "Reviewing AI-generated code means reviewing the code, the context, the evidence, and the engineering judgment behind the change.",
-      "url": "https://suyogjoshi.com/writing/ai-code-review-is-not-just-code-review/",
+      "url": "https://medium.com/@suyog19/ai-code-review-is-not-just-code-review-600f4e158edb",
       "topics": [
         "AI Agents and Review",
         "AI-Assisted Software Engineering"
       ],
-      "source": "suyogjoshi.com",
-      "external": false,
-      "published": "2026-06-30"
+      "source": "Medium",
+      "external": true,
+      "published": "2026-08-29"
     },
     {
       "id": "article:ai-governance-without-bureaucracy",
@@ -50,6 +61,19 @@
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-07-04"
+    },
+    {
+      "id": "article:ai-is-making-you-a-beginner-again-not-from-zero",
+      "type": "Article",
+      "title": "AI Is Making You a Beginner Again. Not From Zero",
+      "summary": "New tools may change how you work without erasing the judgment, context, and domain knowledge built over a career.",
+      "url": "https://medium.com/career-paths/ai-is-making-you-a-beginner-again-not-from-zero-32c0fa36bc9c?sk=41f77b46f815809e617e6ccbe63577ea",
+      "topics": [
+        "Agile, Process, and Engineering Leadership"
+      ],
+      "source": "Career Paths",
+      "external": true,
+      "published": "2026-09-03"
     },
     {
       "id": "article:ai-stress-testing-agile",
@@ -76,6 +100,33 @@
       "source": "Level Up Coding",
       "external": true,
       "published": "2026-08-03"
+    },
+    {
+      "id": "article:ai-made-coding-faster-where-did-the-bottleneck-go",
+      "type": "Article",
+      "title": "AI Made Coding Faster. Where Did the Bottleneck Go?",
+      "summary": "More output is useful only when review, delivery, reliability, and product learning can absorb it.",
+      "url": "https://medium.com/analysts-corner/ai-made-coding-faster-where-did-the-bottleneck-go-1c19796dc4ab?sk=cd1c850503b8a414c7ff918177bdf68b",
+      "topics": [
+        "Agile, Process, and Engineering Leadership",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "Analyst’s Corner",
+      "external": true,
+      "published": "2026-09-02"
+    },
+    {
+      "id": "article:ai-may-be-quietly-rewriting-workplace-collaboration",
+      "type": "Article",
+      "title": "AI May Be Quietly Rewriting Workplace Collaboration",
+      "summary": "Examines how AI may shift workplace collaboration as individual output rises and coordination, learning, and shared context move into new channels.",
+      "url": "https://medium.com/analysts-corner/ai-may-be-quietly-rewriting-workplace-collaboration-1611d479132a?sk=34bad058c4ccb45488c1351ceb010ea0",
+      "topics": [
+        "Agile, Process, and Engineering Leadership"
+      ],
+      "source": "Analyst’s Corner",
+      "external": true,
+      "published": "2026-09-04"
     },
     {
       "id": "article:ai-ml-data-science-explained-simply",
@@ -115,6 +166,20 @@
       "source": "Medium",
       "external": true,
       "published": "2026-08-22"
+    },
+    {
+      "id": "article:coding-agents-are-starting-to-reshape-source-control",
+      "type": "Article",
+      "title": "Coding Agents Are Starting to Reshape Source Control",
+      "summary": "GitLab and Cursor are redesigning the forge for concurrent, short-lived agent workloads operating at machine speed.",
+      "url": "https://medium.com/towards-artificial-intelligence/coding-agents-are-starting-to-reshape-source-control-49fc0aae8e01?sk=ab170c7dbaa297dc7ee9cb28c40219da",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "Towards AI",
+      "external": true,
+      "published": "2026-09-02"
     },
     {
       "id": "article:coding-assistants-are-not-junior-developers",
@@ -167,6 +232,20 @@
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-25"
+    },
+    {
+      "id": "article:fast-coding-agents-need-faster-ci",
+      "type": "Article",
+      "title": "Fast Coding Agents Need Faster CI",
+      "summary": "CI is moving from a post-development check into the feedback loop where autonomous software work actually happens.",
+      "url": "https://medium.com/gitconnected/fast-coding-agents-need-faster-ci-83e2c92b5166?sk=5b0420be6d04c89b8a553f9a738872b0",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "Level Up Coding",
+      "external": true,
+      "published": "2026-08-31"
     },
     {
       "id": "article:from-developer-to-ai-orchestrator",
@@ -241,14 +320,14 @@
       "type": "Article",
       "title": "Human Review Gates in AI-Assisted Delivery",
       "summary": "Human review gates help AI-assisted software teams make intent, design, risk, validation, release, and ownership decisions explicit.",
-      "url": "https://suyogjoshi.com/writing/human-review-gates-ai-assisted-delivery/",
+      "url": "https://medium.com/@suyog19/human-review-gates-in-ai-assisted-delivery-109f47ab23d7?sk=808cd3564a8511a2f6eba53776b08e86",
       "topics": [
         "Agile, Process, and Engineering Leadership",
         "AI Agents and Review"
       ],
-      "source": "suyogjoshi.com",
-      "external": false,
-      "published": "2026-07-01"
+      "source": "Medium",
+      "external": true,
+      "published": "2026-09-05"
     },
     {
       "id": "article:i-built-an-ai-software-team-the-hard-part-wasnt-coding",
@@ -370,6 +449,20 @@
       "published": "2026-06-25"
     },
     {
+      "id": "article:the-agent-harness-may-matter-more-than-the-model",
+      "type": "Article",
+      "title": "The Agent Harness May Matter More Than the Model",
+      "summary": "Agent performance depends not only on model capability, but on the engineering system that puts that capability to work.",
+      "url": "https://medium.com/analysts-corner/the-agent-harness-may-matter-more-than-the-model-fc0e9ed8648f?sk=97fdfa6c60e020bc622716eceffb8420",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "Analyst’s Corner",
+      "external": true,
+      "published": "2026-08-30"
+    },
+    {
       "id": "article:agent-risk-register",
       "type": "Article",
       "title": "The Agent Risk Register: What to Check Before Letting AI Act",
@@ -473,6 +566,20 @@
       "source": "Towards AI",
       "external": true,
       "published": "2026-08-17"
+    },
+    {
+      "id": "article:when-coding-agents-invent-packages",
+      "type": "Article",
+      "title": "When Coding Agents Invent Packages",
+      "summary": "A hallucinated dependency can look harmless until someone registers the name.",
+      "url": "https://medium.com/gitconnected/when-coding-agents-invent-packages-0804d788d135?sk=c6ba21050a1e4a89506b6bbba1d5d325",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "Level Up Coding",
+      "external": true,
+      "published": "2026-08-31"
     },
     {
       "id": "article:why-ai-punishes-tribal-knowledge-in-software-teams",

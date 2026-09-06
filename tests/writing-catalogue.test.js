@@ -9,6 +9,19 @@ const curation = JSON.parse(fs.readFileSync('data/writing-curation.json', 'utf8'
 const latest = html.match(/<!-- Latest Writing -->[\s\S]*?<\/section>/)?.[0] || '';
 const newsletterWorkflow = fs.readFileSync('.github/workflows/sync-newsletter-discovery.yml', 'utf8');
 
+const septemberMediumUrls = [
+  'https://medium.com/@suyog19/human-review-gates-in-ai-assisted-delivery-109f47ab23d7?sk=808cd3564a8511a2f6eba53776b08e86',
+  'https://medium.com/@suyog19/ai-can-help-you-write-without-owning-your-voice-211ac7f0a136?sk=ddef5e2d38894de9f75f0fa51b6386b3',
+  'https://medium.com/analysts-corner/ai-may-be-quietly-rewriting-workplace-collaboration-1611d479132a?sk=34bad058c4ccb45488c1351ceb010ea0',
+  'https://medium.com/career-paths/ai-is-making-you-a-beginner-again-not-from-zero-32c0fa36bc9c?sk=41f77b46f815809e617e6ccbe63577ea',
+  'https://medium.com/towards-artificial-intelligence/coding-agents-are-starting-to-reshape-source-control-49fc0aae8e01?sk=ab170c7dbaa297dc7ee9cb28c40219da',
+  'https://medium.com/analysts-corner/ai-made-coding-faster-where-did-the-bottleneck-go-1c19796dc4ab?sk=cd1c850503b8a414c7ff918177bdf68b',
+  'https://medium.com/gitconnected/when-coding-agents-invent-packages-0804d788d135?sk=c6ba21050a1e4a89506b6bbba1d5d325',
+  'https://medium.com/gitconnected/fast-coding-agents-need-faster-ci-83e2c92b5166?sk=5b0420be6d04c89b8a553f9a738872b0',
+  'https://medium.com/analysts-corner/the-agent-harness-may-matter-more-than-the-model-fc0e9ed8648f?sk=97fdfa6c60e020bc622716eceffb8420',
+  'https://medium.com/@suyog19/ai-code-review-is-not-just-code-review-600f4e158edb',
+];
+
 const externalArticles = [
   {
     title: 'The Frontend Passed. The Experience Didn’t.',
@@ -94,13 +107,20 @@ test('Latest Writing is a finite visual stream immediately after the hero', () =
 });
 
 test('normalized Work records own external destinations independently of landing-page curation', () => {
-  assert.equal(works.works.length, 41);
+  assert.equal(works.works.length, 49);
   const businessRules = works.works.find((work) => work.id === 'business-rules-as-context');
   assert.equal(businessRules.publications.length, 2);
   assert.equal(new Set(works.works.map((work) => work.id)).size, works.works.length);
   for (const item of [...latest.matchAll(/<a href="(https:[^"]+)" class="wp-latest-row"[^>]+target="_blank"[^>]+rel="noopener noreferrer"[^>]+aria-label="[^"]+opens in a new tab/g)]) {
     assert.ok(works.works.some((work) => work.publications.some((publication) => publication.url === item[1])));
   }
+});
+
+test('September Medium publications are represented without duplicating republished Works', () => {
+  const publications = works.works.flatMap((work) => work.publications);
+  septemberMediumUrls.forEach((url) => assert.equal(publications.filter((publication) => publication.url === url).length, 1));
+  assert.equal(works.works.filter((work) => work.id === 'human-review-gates-ai-assisted-delivery').length, 1);
+  assert.equal(works.works.filter((work) => work.id === 'ai-code-review-is-not-just-code-review').length, 1);
 });
 
 test('reader recommendations are merged into Choose Your Path without removing taxonomy', () => {
