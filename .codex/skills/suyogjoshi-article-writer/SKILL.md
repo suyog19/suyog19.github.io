@@ -1,6 +1,6 @@
 ---
 name: suyogjoshi-article-writer
-description: Write, adapt, or publish long-form articles for suyogjoshi.com in Suyog Joshi's existing voice and static-site conventions. Use when drafting new writing pages, adapting Medium posts, planning article outlines, improving article copy, creating SEO metadata, or converting an approved draft into hand-authored HTML under the writing section.
+description: Write, adapt, publish, or catalogue articles for suyogjoshi.com in Suyog Joshi's existing voice and static-site conventions. Use when drafting or editing articles, adapting Medium posts, adding external Medium publications to Writing, creating SEO metadata, or publishing under the writing section.
 ---
 
 # SuyogJoshi Article Writer
@@ -10,17 +10,20 @@ description: Write, adapt, or publish long-form articles for suyogjoshi.com in S
 1. Read the task and identify the article mode:
    - Draft-only: produce an outline or prose draft without editing site files.
    - Adaptation: preserve the source idea while making it fit SuyogJoshi.com.
+   - External-only publication: catalogue an article hosted on Medium or another approved publication without creating a local copy.
    - Publishable page: create or update hand-authored HTML in the repo.
 2. Load `references/article-style-guide.md` before writing or editing article content.
+   For external-only publication work, instead load `references/external-publication-ingestion.md`; load the style guide only if article prose is also being adapted.
 3. If creating or changing repo files, follow `AGENTS.md` and `CLAUDE.md` first:
    - Use a GitHub issue before edits.
    - Work from `dev` on a feature branch.
    - Keep the scope tied to the issue.
-4. For publishable pages, complete the Article Placement Workflow before editing article indexes, homepage highlights, series navigation, or related-reading blocks.
+4. For publishable pages, complete the Article Placement Workflow before editing article indexes, homepage highlights, series navigation, or related-reading blocks. For external-only publications, follow the ledger-backed generation workflow in `references/external-publication-ingestion.md` and do not hand-edit generated discovery artifacts.
 5. Draft the article around a practical mental model, not a newsy take.
 6. Author publishable pages with layout-aware HTML from the start; do not rely on validation to discover predictable list, table, code-block, image, or mobile overflow issues.
-7. Validate the draft against the voice checklist, layout-aware authoring checklist, Article Placement Checklist, and publishing checklist.
-8. For publishable pages, manually update required indexes and `sitemap.xml`, then complete local visual QA before handoff.
+7. For drafted or locally published content, validate against the voice checklist, layout-aware authoring checklist, Article Placement Checklist, and publishing checklist.
+8. For external-only publications, validate against `references/external-publication-ingestion.md`; the local-page metadata and placement checklists below do not apply.
+9. For publishable pages, manually update required indexes and `sitemap.xml`, then complete local visual QA before handoff.
 
 ## Article Shape
 
@@ -299,3 +302,4 @@ Before marking a publishable article as ready:
 ## References
 
 - Read `references/article-style-guide.md` for corpus-derived voice notes, article inventory, HTML template guidance, and final QA checks.
+- Read `references/external-publication-ingestion.md` when adding external-only Medium or other hosted publications, or recording a republication of an existing Work.
