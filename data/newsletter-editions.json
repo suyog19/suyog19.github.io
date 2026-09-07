@@ -11,6 +11,13 @@
   },
   "editions": [
     {
+      "id": "https://newsletter.suyogjoshi.com/p/the-real-ai-coding-upgrade-is-around-the-model",
+      "title": "The Real AI Coding Upgrade Is Around the Model",
+      "summary": "Uber, Microsoft, and new research show why specifications, verification, and delivery controls—not model capability alone—determine whether AI-generated code can be trusted.",
+      "published": "2026-09-05",
+      "url": "https://newsletter.suyogjoshi.com/p/the-real-ai-coding-upgrade-is-around-the-model"
+    },
+    {
       "id": "https://newsletter.suyogjoshi.com/p/when-ai-workloads-change-the-infrastructure",
       "title": "When AI Workloads Change the Infrastructure",
       "summary": "Kubernetes 1.37 shows how new AI workloads are beginning to reshape familiar infrastructure assumptions.",
