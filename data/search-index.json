@@ -771,6 +771,17 @@
       "external": false
     },
     {
+      "id": "newsletter:https://newsletter.suyogjoshi.com/p/the-real-ai-coding-upgrade-is-around-the-model",
+      "type": "Newsletter",
+      "title": "The Real AI Coding Upgrade Is Around the Model",
+      "summary": "Uber, Microsoft, and new research show why specifications, verification, and delivery controls—not model capability alone—determine whether AI-generated code can be trusted.",
+      "url": "https://newsletter.suyogjoshi.com/p/the-real-ai-coding-upgrade-is-around-the-model",
+      "topics": [],
+      "source": "Software Signal Weekly",
+      "external": true,
+      "published": "2026-09-05"
+    },
+    {
       "id": "newsletter:https://newsletter.suyogjoshi.com/p/the-software-supply-chain-has-a-new-participant",
       "type": "Newsletter",
       "title": "The Software Supply Chain Has a New Participant",
