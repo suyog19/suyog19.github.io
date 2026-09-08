@@ -9,6 +9,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 CHECKS = (
+    ("shared event page", "generate_training_events.py", "--check"),
+    ("shared event behavior", "-m", "unittest", "tests/test_training_events.py"),
     ("generated sitemap", "generate_sitemap.py", "--check"),
     ("legacy public-route redirects", "validate_legacy_redirects.py"),
     ("canonical URLs and local links", "validate_canonical_urls.py"),
@@ -28,7 +30,8 @@ CHECKS = (
 def main() -> int:
     failures: list[tuple[str, int]] = []
     for label, script, *arguments in CHECKS:
-        command = [sys.executable, str(ROOT / "scripts" / script), *arguments]
+        entrypoint = script if script == "-m" else str(ROOT / "scripts" / script)
+        command = [sys.executable, entrypoint, *arguments]
         print(f"\n== {label} ==", flush=True)
         result = subprocess.run(command, cwd=ROOT, check=False)
         if result.returncode:
