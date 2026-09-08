@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).parents[1]
 CHECKS = (
+    ("shared event page", "generate_training_events.py", "--check"),
     ("generated sitemap", "generate_sitemap.py", "--check"),
     ("legacy public-route redirects", "validate_legacy_redirects.py"),
     ("canonical URLs and local links", "validate_canonical_urls.py"),
