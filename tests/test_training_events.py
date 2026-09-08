@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 import unittest
 
-from scripts.generate_training_events import DATA, ROOT, render
+from scripts.generate_training_events import DATA, ROOT, render, render_outputs, replace_slot
 
 
 class EventTests(unittest.TestCase):
@@ -94,6 +94,50 @@ class EventTests(unittest.TestCase):
         self.assertNotIn("19 September", html)
         self.assertIn("A &lt;new&gt; title", html)
         self.assertNotIn("A <new> title", html)
+
+    def discovery_outputs(self):
+        return render_outputs(self.event, (ROOT / "index.html").read_text(encoding="utf-8"),
+                              (ROOT / "training/index.html").read_text(encoding="utf-8"))
+
+    def test_discovery_is_current_and_preserves_surrounding_content(self):
+        for path, html in self.discovery_outputs().items():
+            self.assertEqual(html, path.read_text(encoding="utf-8"))
+        html = '<header>Preserve</header><!-- EVENT:TEST:START -->old<!-- EVENT:TEST:END --><main>Keep</main>'
+        self.assertEqual(replace_slot(html, 'TEST', 'new'),
+                         '<header>Preserve</header><!-- EVENT:TEST:START -->\nnew\n<!-- EVENT:TEST:END --><main>Keep</main>')
+        for broken in ['', html + html, html.replace('START', 'MISSING')]:
+            with self.assertRaises(ValueError):
+                replace_slot(broken, 'TEST', '')
+
+    def test_shared_facts_update_both_discovery_surfaces(self):
+        self.event['title'] = 'A <changed> title — subtitle'
+        self.event['slug'] = 'changed-event'
+        self.event['start'] = '2026-10-03T12:00:00+05:30'
+        self.event['end'] = '2026-10-03T12:30:00+05:30'
+        self.event['registration']['closes_at'] = '2026-10-03T11:55:00+05:30'
+        self.event['audience'] = 'Students and professionals'
+        outputs = self.discovery_outputs()
+        for path in [ROOT / 'index.html', ROOT / 'training/index.html']:
+            with self.subTest(path=path):
+                self.assertIn('A &lt;changed&gt; title', outputs[path])
+                self.assertIn('/training/events/changed-event/?utm_source=', outputs[path])
+                self.assertIn('2026-10-03T12:30:00+05:30', outputs[path])
+                self.assertNotIn('ai-engineering-roles-2026', outputs[path])
+                self.assertNotIn(self.event['registration']['url'], outputs[path])
+        self.assertIn('Students and professionals welcome', outputs[ROOT / 'training/index.html'])
+
+    def test_completed_removes_generated_promotion_and_missing_url_has_no_promise(self):
+        self.event['status'] = 'completed'
+        for path, html in self.discovery_outputs().items():
+            if path.name == 'index.html' and path.parent in [ROOT, ROOT / 'training']:
+                self.assertNotIn('data-event-discovery=', html)
+                self.assertNotIn('data-discovery-cta=', html)
+                self.assertNotIn('id="featured-session-title"', html)
+        self.event['status'] = 'upcoming'
+        self.event['registration']['url'] = None
+        html = self.discovery_outputs()[ROOT / 'training/index.html']
+        self.assertNotIn('View session &amp; register', html)
+        self.assertIn('View session', html)
 
 
 if __name__ == "__main__":

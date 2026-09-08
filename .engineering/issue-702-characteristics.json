@@ -1,0 +1,8 @@
+{
+  "observable_behavior": true,
+  "material_layout_change": true,
+  "public_editorial_hierarchy_change": true,
+  "responsive_behavior_change": true,
+  "state_transition": true,
+  "summary": "Issue 702 homepage and Training event discovery generated from shared event facts"
+}

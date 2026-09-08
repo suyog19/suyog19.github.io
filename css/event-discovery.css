@@ -1,0 +1,31 @@
+.event-discovery { color: var(--color-text); }
+.event-discovery-label { color: var(--color-signal); font-size: .75rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+.event-announcement { background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
+.event-announcement-inner { display: flex; align-items: center; gap: 1.5rem; padding-top: .65rem; padding-bottom: .65rem; }
+.event-announcement p { margin: 0; flex: 1; }
+.event-announcement .event-discovery-label { display: block; margin-bottom: .2rem; }
+.event-announcement strong { font-size: 1rem; line-height: 1.4; }
+.event-announcement time { font-size: .85rem; white-space: nowrap; }
+.event-discovery-link { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; gap: .4rem; font-size: .9rem; font-weight: 600; text-decoration: underline; text-underline-offset: .2em; white-space: nowrap; }
+.event-feature { padding: 0 0 2rem; scroll-margin-top: 8rem; }
+.event-feature-panel { border: 1px solid var(--color-border); border-left: 3px solid var(--color-signal); padding: clamp(1.25rem, 3vw, 2rem); }
+.event-feature .event-discovery-label { margin-bottom: .75rem; }
+.event-feature h2 { max-width: 37ch; font-size: clamp(1.5rem, 2.5vw, 2rem); line-height: 1.25; margin: 0 0 .85rem; }
+.event-feature-summary { margin: 0 0 1rem; }
+.event-feature-facts { font-weight: 600; line-height: 1.65; margin: 0 0 .75rem; }
+.event-feature-audience { max-width: 72ch; font-size: .95rem; margin: 0 0 1.25rem; }
+.event-feature .btn { min-height: 48px; white-space: normal; }
+.event-discovery a:focus-visible { outline: 2px solid var(--color-signal); outline-offset: 4px; }
+.event-discovery--upcoming .discovery-closed,
+.event-discovery--registration-closed .discovery-upcoming { display: none; }
+html[data-event-discovery-state="registration-closed"] .event-discovery .discovery-upcoming { display: none; }
+html[data-event-discovery-state="registration-closed"] .event-discovery .discovery-closed { display: inline; }
+html[data-event-discovery-state="completed"] .event-discovery { display: none; }
+@media (max-width: 700px) {
+  .event-announcement-inner { display: grid; grid-template-columns: 1fr auto; column-gap: .75rem; row-gap: .1rem; }
+  .event-announcement p { grid-column: 1 / -1; }
+  .event-announcement strong { font-size: .95rem; }
+}
+@media (max-width: 480px) {
+  .event-feature .btn { display: flex; width: 100%; justify-content: center; }
+}

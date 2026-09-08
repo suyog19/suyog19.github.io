@@ -16,6 +16,16 @@ TEMPLATE = ROOT / "scripts/templates/training-event.html.tmpl"
 STATES = {"upcoming", "registration-closed", "completed"}
 
 
+def canonical_url(event):
+    return f'https://suyogjoshi.com/training/events/{event["slug"]}/'
+
+
+def date_labels(event):
+    start, end = (datetime.fromisoformat(event[key]) for key in ("start", "end"))
+    return (f'{start:%A}, {start.day} {start:%B %Y}',
+            f'{start:%I:%M}–{end:%I:%M %p} {event["timezone"]}')
+
+
 def public_url(value):
     if value is None:
         return None
@@ -50,7 +60,7 @@ def render(event):
         if closes.utcoffset() is None or closes >= start:
             raise ValueError("Registration must close before the session starts")
     resources = public_url(event["resources"])
-    canonical = f'https://suyogjoshi.com/training/events/{event["slug"]}/'
+    canonical = canonical_url(event)
     status = event["status"]
     labels = {"upcoming": "Upcoming", "registration-closed": "Registration closed", "completed": "Completed"}
     messages = {
@@ -97,8 +107,8 @@ def render(event):
               ("slug", "title", "description", "format", "start", "end", "audience", "host", "brand", "status")}
     fields.update(
         canonical=canonical, status_label=labels[status], primary_action=action("primary"), final_action=action("final"),
-        date_label=f'{start:%A}, {start.day} {start:%B %Y}',
-        time_label=f'{start:%I:%M}–{end:%I:%M %p} {escape(event["timezone"])}',
+        date_label=escape(date_labels(event)[0]),
+        time_label=escape(date_labels(event)[1]),
         roles="\n".join(f'<li><h3>{escape(role["name"])}</h3><p>{escape(role["summary"])}</p></li>' for role in event["roles"]),
         tools="\n".join(f'<li>{escape(tool)}</li>' for tool in event["tools"]),
         schema=json.dumps(schema, ensure_ascii=False, indent=2).replace("<", "\\u003c"),
@@ -108,21 +118,89 @@ def render(event):
     return Template(TEMPLATE.read_text(encoding="utf-8")).substitute(fields)
 
 
+def replace_slot(html, name, content):
+    """Replace exactly one owned region; never rewrite surrounding page content."""
+    start, end = f"<!-- EVENT:{name}:START -->", f"<!-- EVENT:{name}:END -->"
+    if html.count(start) != 1 or html.count(end) != 1 or html.index(end) < html.index(start):
+        raise ValueError(f"Expected one intact event slot: {name}")
+    before, rest = html.split(start)
+    _, after = rest.split(end)
+    return before + start + "\n" + content + "\n" + end + after
+
+
+def discovery_metadata(event, prefix):
+    values = {"status": event["status"], "end": event["end"],
+              "closes": event["registration"].get("closes_at") or event["start"]}
+    return "\n".join(f'<meta name="event-discovery-{key}" content="{escape(value, quote=True)}">'
+                     for key, value in values.items()) + f'\n<script src="{prefix}js/event-discovery.js"></script>'
+
+
+def render_discovery(event, surface):
+    if surface not in {"homepage", "training"}:
+        raise ValueError("Unknown event discovery surface")
+    if event["status"] == "completed":
+        return ""
+    start = datetime.fromisoformat(event["start"])
+    date, time = (escape(value) for value in date_labels(event))
+    slug, title, status = (escape(event[key], quote=True) for key in ("slug", "title", "status"))
+    # Keep preview deployments local; canonical metadata still uses the public origin.
+    route = urlsplit(canonical_url(event)).path
+    location = "homepage_announcement" if surface == "homepage" else "training_featured_event"
+    href = escape(f"{route}?utm_source={surface}&utm_medium=website&utm_content={location}", quote=True)
+    attributes = (f'class="event-discovery event-discovery--{status} '
+                  f'{"event-announcement" if surface == "homepage" else "event-feature"}" '
+                  f'data-event-discovery="{surface}" data-discovery-slug="{slug}"')
+    if surface == "homepage":
+        short_title = escape(event["title"].partition(" — ")[0])
+        summary = escape(f'{start.day} {start:%b} · {start:%I:%M %p} {event["timezone"]}')
+        return f'''<aside {attributes} aria-label="Free live session">
+  <div class="container event-announcement-inner">
+    <p><span class="event-discovery-label">Free live session<span class="discovery-closed"> · Registration closed</span></span>
+    <strong>{short_title}</strong></p>
+    <time datetime="{escape(event['start'], quote=True)}">{summary}</time>
+    <a class="event-discovery-link" href="{href}" data-discovery-cta="{location}">View session <span aria-hidden="true">→</span></a>
+  </div>
+</aside>'''
+    cta = "View session &amp; register" if event["registration"]["url"] else "View session"
+    return f'''<section {attributes} id="featured-session" aria-labelledby="featured-session-title">
+  <div class="container"><div class="event-feature-panel">
+    <p class="event-discovery-label"><span class="discovery-upcoming">Upcoming · Free micro-session</span><span class="discovery-closed">Registration closed · Free micro-session</span></p>
+    <h2 id="featured-session-title">{title}</h2>
+    <p class="event-feature-summary">What they do. The tools they use. What you need to learn.</p>
+    <p class="event-feature-facts"><time datetime="{escape(event['start'], quote=True)}">{date}</time><br>{time} · Online</p>
+    <p class="event-feature-audience">{escape(event['audience'])} welcome.</p>
+    <a class="btn btn-primary btn-learning" href="{href}" data-discovery-cta="{location}"><span class="discovery-upcoming">{cta}</span><span class="discovery-closed">View session</span></a>
+  </div></div>
+</section>'''
+
+
+def render_outputs(event, home_html, training_html):
+    detail = render(event)  # Validate all shared facts before generating any surface.
+    outputs = {ROOT / "training/events" / event["slug"] / "index.html": detail}
+    for path, html, surface, prefix in [(ROOT / "index.html", home_html, "homepage", ""),
+                                         (ROOT / "training/index.html", training_html, "training", "../")]:
+        html = replace_slot(html, "METADATA", discovery_metadata(event, prefix))
+        outputs[path] = replace_slot(html, "DISCOVERY", render_discovery(event, surface))
+    return outputs
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     event = json.loads(DATA.read_text(encoding="utf-8"))
-    rendered = render(event)
-    target = ROOT / "training/events" / event["slug"] / "index.html"
+    outputs = render_outputs(event, (ROOT / "index.html").read_text(encoding="utf-8"),
+                             (ROOT / "training/index.html").read_text(encoding="utf-8"))
+    for target, rendered in outputs.items():
+        if args.check:
+            if not target.exists() or target.read_text(encoding="utf-8") != rendered:
+                raise SystemExit(f"Event output is stale: {target.relative_to(ROOT)}; run python scripts/generate_training_events.py")
+        else:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(rendered, encoding="utf-8", newline="\n")
+            print(f"Generated {target.relative_to(ROOT)}")
     if args.check:
-        if not target.exists() or target.read_text(encoding="utf-8") != rendered:
-            raise SystemExit("Event page is stale: run python scripts/generate_training_events.py")
-        print("Shared event page is current.")
-    else:
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(rendered, encoding="utf-8", newline="\n")
-        print(f"Generated {target.relative_to(ROOT)}")
+        print("Shared event page and discovery surfaces are current.")
 
 
 if __name__ == "__main__":
