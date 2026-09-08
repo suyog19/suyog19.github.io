@@ -1,0 +1,23 @@
+{
+  "slug": "ai-engineering-roles-2026",
+  "title": "5 AI Engineering Roles Growing in 2026 — and What You Actually Need to Learn",
+  "description": "Understand five AI engineering roles, the skills behind them, and where tools like Python, RAG and MCP fit. A free live online session with Suyog Joshi.",
+  "format": "Free live online micro-session",
+  "start": "2026-09-19T11:00:00+05:30",
+  "end": "2026-09-19T11:30:00+05:30",
+  "timezone": "IST",
+  "status": "upcoming",
+  "audience": "College students, aspiring engineers, software professionals, tech leads, architects, and engineering managers",
+  "host": "Suyog Joshi",
+  "brand": "Software Signal Learning",
+  "roles": [
+    {"name": "Forward Deployed Engineer", "summary": "Connect customer problems to working AI solutions in real environments."},
+    {"name": "Applied AI Engineer", "summary": "Build useful applications around models, retrieval and evaluation."},
+    {"name": "Agentic AI Engineer", "summary": "Design tool-using workflows with clear boundaries and checks."},
+    {"name": "AI Solutions Architect", "summary": "Translate business needs into coherent AI system designs and trade-offs."},
+    {"name": "AI Platform / LLMOps Engineer", "summary": "Support deployment, observation and reliable operation of AI systems."}
+  ],
+  "tools": ["Python", "model APIs", "RAG", "LangGraph", "MCP", "FastAPI", "Docker", "LLMOps", "evaluation"],
+  "registration": {"url": null, "label": "Register Free"},
+  "resources": null
+}
