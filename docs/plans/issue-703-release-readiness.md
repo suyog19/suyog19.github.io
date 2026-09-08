@@ -192,3 +192,32 @@ the Python/Node commands in `docs/engineering/validation-testing.md`, and
 can otherwise be mistaken for repository pages by the public-route inventory.
 
 Rollback: revert this evidence/test-only PR. Event behavior and Luma remain unchanged.
+
+## Selective production promotion
+
+The owner explicitly authorized production promotion of only #700, #701, #702
+and #703. This authorizes publishing the website before the scheduled reminder
+and registration-close checks; it does not mark those future checks complete.
+The earlier operational HOLD is retained as historical evidence. The disclosed
+#705 authenticated process-evidence limitation remains open.
+
+The release branch starts at production `cc9a0a085bf2063e6c18662d925b0c7aab0426b1`
+and applies only the net changes from PRs #704, #706, #707 and the four #703
+commits through `a5ac821645c48520d236f28d8b19395c37c8f4ff`. It does not merge dev.
+All 26 changed paths match the event-only source range. A normalized comparison
+confirms the homepage and Training page preserve production content outside
+the event metadata, discovery slots, stylesheet and approved Training copy.
+
+The new event template uses production's existing text header and CSS versions;
+references to unrelated dev branding assets were removed. No existing branding,
+workflow, dependency, backend, domain or deployment configuration is promoted.
+
+The isolated release passed 15 SEO validators, 33 Python tests, 464 Node tests
+and all 64 browser tests, including responsive and accessibility coverage.
+The Node count reflects production's baseline without unrelated dev tests.
+Generator freshness, private-link scanning and an independent exact-commit
+review are release gates. Production CI and deployment must also succeed.
+
+Selective-release rollback: revert the production promotion merge as a unit.
+This removes the event website additions without reverting unrelated production
+work or changing the external Luma event.
