@@ -6,7 +6,7 @@ Final exact target, CI and independent review are recorded on the PR.
 
 **Release verdict: HOLD. Do not promote or publish promotional assets.**
 Confirmation, calendar and saved guest answers are verified for the real event.
-Meeting admission, CSV contents and scheduled operations remain unproven. The
+Manual attendee admission is owner-verified; CSV contents and scheduled operations remain unproven. The
 prototype evidence in #703 is explicitly insufficient for the remaining gates.
 
 ## Scope and UX
@@ -86,6 +86,7 @@ Read-only authenticated host UI inspection on 8 September 2026:
 | Consent | Required event-administration communications consent | Guest record shows Agreed; public terms wording also inspected |
 | Reminders | Enabled, Going audience, 18 September 11:00 AM and 19 September 10:00 AM | Verified configuration; delivery pending |
 | Confirmation | Actual Luma message received; host timeline reports Delivered | Verified correct title/date/IST time and attached calendar |
+| Attendee admission | Owner used the confirmation joining path in a normal incognito browser, requested entry and admitted the attendee as host | Owner-verified pass; automated browser remained rejected |
 | Guest/export | One controlled guest marked Going; full table includes registered time/status and all questions | Row verified; generated CSV download blocked by browser, contents pending |
 | Feedback | Built-in post-event feedback scheduling available | No custom feedback system needed |
 
@@ -97,28 +98,22 @@ separate Beehiiv consent/double-opt-in flow. Do not duplicate Luma email in SES.
 
 ## Remaining release gates
 
-1. Complete a host-assisted Meet admission test using the actual attendee link.
-   A fresh logged-out browser followed that Luma link to Google Meet, which showed
-   "You can't join this video call". This proves redirection, not working admission.
-   No meeting was joined and no microphone/camera permission was granted. The test
-   does not establish whether host presence, account or meeting settings caused
-   the rejection; do not change access controls or infer the cause without proof.
-2. Retrieve and inspect the CSV through the normal browser download flow. Luma
+1. Retrieve and inspect the CSV through the normal browser download flow. Luma
    required an email verification code, accepted it and generated an export, but
    Chrome returned `ERR_BLOCKED_BY_CLIENT` for the download. No browser safeguard
    was disabled. The UI row is verified; CSV columns/values remain unverified.
    Confirm retained per-registration UTM and any join/attendance columns where
    supported; the visible full table does not expose them. Record only outcomes
    and column names, never attendee records or private links.
-3. Observe scheduled reminder delivery and registration closure. Do not alter the
+2. Observe scheduled reminder delivery and registration closure. Do not alter the
    real event date or closing time just to accelerate a test. Prototype evidence
    is supporting feasibility evidence, not proof of this event's scheduled run.
-4. Keep canonical and discovery lifecycle truthful through editorial publication:
+3. Keep canonical and discovery lifecycle truthful through editorial publication:
    set `registration-closed` and regenerate at closure; set `completed` and
    regenerate after completion. Discovery additionally uses a client-clock guard;
    no-JS discovery and canonical detail depend on the documented editorial update.
-5. Resolve #705's declared-native-sandbox/authenticated readiness prerequisite.
-6. After reviewed human-controlled production promotion, smoke-test production
+4. Resolve #705's declared-native-sandbox/authenticated readiness prerequisite.
+5. After reviewed human-controlled production promotion, smoke-test production
    discovery, facts, registration and privacy before any promotional publishing.
 
 Physical-device testing, assistive-technology certification, additional browser
@@ -140,6 +135,21 @@ optional free-text answer was blank, so non-empty free-text persistence was not
 exercised. No attendee name/address, answers, token, message body or export was
 copied into repository evidence. Account-free completion is owner-assisted
 evidence; automation did not independently complete registration.
+
+The owner then opened the correct event as host and tested the confirmation
+email's joining path in a normal incognito browser. The owner explicitly reported
+that the attendee requested to join and was admitted by the host. Record this as
+owner-verified manual admission, not an automated pass. The automated logged-out
+browser repeatedly showed "You can't join this video call", including while the
+owner was hosting; its rejection does not invalidate the successful manual test
+or establish a provider setting defect. No access setting was changed and no
+camera/microphone access was granted to automation.
+
+Read-only calendar diagnosis found two distinct same-time host event records
+with different meeting destinations. The full-title record matches Luma's
+attendee redirect; the shorter-title record retains earlier placeholder copy.
+Neither record was deleted or modified. Use the full-title record for hosting;
+any cleanup of the earlier record is an owner decision.
 
 Luma Insights visibly reports `linkedin` under UTM Sources and live traffic,
 supporting campaign retention for page visits. It does not prove attribution on
