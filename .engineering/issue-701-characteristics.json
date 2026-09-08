@@ -1,0 +1,7 @@
+{
+  "observable_behavior": true,
+  "state_transition": true,
+  "public_metadata_change": true,
+  "responsive_behavior_change": true,
+  "summary": "Issue 701 external Luma registration, campaign handoff and event CTA analytics"
+}

@@ -35,6 +35,20 @@ def render(event):
     if start.utcoffset() is None or end.utcoffset() is None or end <= start:
         raise ValueError("Event timestamps must be aware and end after start")
     url = public_url(event["registration"]["url"])
+    registration = event["registration"]
+    provider = registration.get("provider")
+    if provider is not None and provider != "Luma":
+        raise ValueError("Unsupported registration provider")
+    if provider == "Luma" and url:
+        destination = urlsplit(url)
+        if (destination.netloc != "luma.com" or destination.query or destination.fragment
+                or not re.fullmatch(r"/[a-zA-Z0-9-]+", destination.path)):
+            raise ValueError("Use a clean public Luma event URL")
+    closes = registration.get("closes_at")
+    if closes:
+        closes = datetime.fromisoformat(closes)
+        if closes.utcoffset() is None or closes >= start:
+            raise ValueError("Registration must close before the session starts")
     resources = public_url(event["resources"])
     canonical = f'https://suyogjoshi.com/training/events/{event["slug"]}/'
     status = event["status"]
@@ -47,8 +61,19 @@ def render(event):
 
     def action(location):
         if status == "upcoming" and url:
+            note_id = f"registration-note-{location}"
+            note = ""
+            if provider == "Luma":
+                note = (f'<p class="event-registration-note" id="{note_id}">'
+                        'Registration opens on Luma. Session emails only; no newsletter signup.</p>')
+                if closes:
+                    note += (f'<p class="event-registration-note">Registration closes '
+                             f'<time datetime="{closes.isoformat()}">{closes.day} {closes:%B}, '
+                             f'{closes:%I:%M %p} {escape(event["timezone"])}</time>.</p>')
             return (f'<a class="btn btn-primary btn-learning" href="{escape(url, quote=True)}" '
-                    f'data-event-cta="{location}">{escape(event["registration"]["label"])}</a>')
+                    'referrerpolicy="no-referrer" '
+                    + (f'data-registration-provider="luma" aria-describedby="{note_id}" ' if note else '')
+                    + f'data-event-cta="{location}">{escape(registration["label"])}</a>' + note)
         message = f'<p class="event-registration-message">{messages[status]}</p>'
         if status == "completed" and resources:
             message += f'<a class="btn btn-secondary" href="{escape(resources, quote=True)}">Session resources</a>'
@@ -66,6 +91,8 @@ def render(event):
         schema["eventStatus"] = "https://schema.org/EventScheduled"
     if status == "upcoming" and url:
         schema["offers"] = {"@type": "Offer", "price": 0, "priceCurrency": "INR", "url": url, "availability": "https://schema.org/InStock"}
+        if closes:
+            schema["offers"]["validThrough"] = closes.isoformat()
     fields = {key: escape(str(event[key]), quote=True) for key in
               ("slug", "title", "description", "format", "start", "end", "audience", "host", "brand", "status")}
     fields.update(
