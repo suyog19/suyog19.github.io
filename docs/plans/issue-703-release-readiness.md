@@ -5,8 +5,9 @@ Read #699 and #703, including all comments, on 8 September 2026. Validation base
 Final exact target, CI and independent review are recorded on the PR.
 
 **Release verdict: HOLD. Do not promote or publish promotional assets.**
-Website evidence and provider configuration do not establish a completed real-event
-attendee dry run. The prototype evidence in #703 is explicitly insufficient.
+Confirmation, calendar and saved guest answers are verified for the real event.
+Meeting admission, CSV contents and scheduled operations remain unproven. The
+prototype evidence in #703 is explicitly insufficient for the remaining gates.
 
 ## Scope and UX
 
@@ -49,7 +50,8 @@ same-site routes and fixed source/CTA attribution. Luma remains the provider.
 Deployed dev smoke: the actual canonical event route loads with the exact title,
 production self-canonical and both configured Luma actions. An anonymous Chromium
 context followed the first action to the real Luma page and opened registration.
-No Luma account was signed in. Submission remains pending a controlled attendee.
+No Luma account was signed in. Automated submission later stalled at Luma's
+browser verification; the owner completed the controlled registration manually.
 Deployed homepage, Training, launched-course compatibility route, pipeline course,
 My Learning/sign-in, application and contact routes all returned 200 and their
 expected page headings/canonical destinations. Contact submission remains mocked
@@ -80,11 +82,11 @@ Read-only authenticated host UI inspection on 8 September 2026:
 | Unlisted discovery | Private; not listed on the host profile | Verified setting |
 | Event identity | Correct full title and 19 September, 11:00–11:30 AM IST | Verified |
 | Registration close | Standard Free ticket available until 19 September, 10:55 AM | Verified setting; scheduled enforcement pending |
-| Questions | Name/email; required profile, experience, role, technology; optional question | Verified configuration; persisted answers pending |
-| Consent | Required event-administration communications consent | Verified configuration; submitted consent pending |
+| Questions | Name/email; required profile, experience, role, technology; optional question | Required answers persisted in guest detail/table; optional question left blank by attendee |
+| Consent | Required event-administration communications consent | Guest record shows Agreed; public terms wording also inspected |
 | Reminders | Enabled, Going audience, 18 September 11:00 AM and 19 September 10:00 AM | Verified configuration; delivery pending |
-| Confirmation | Provider UI says registration sends confirmation with calendar invite | Actual real-event delivery pending |
-| Guest/export | Guest management and Download as CSV available; no guests yet | Actual row/export fields pending |
+| Confirmation | Actual Luma message received; host timeline reports Delivered | Verified correct title/date/IST time and attached calendar |
+| Guest/export | One controlled guest marked Going; full table includes registered time/status and all questions | Row verified; generated CSV download blocked by browser, contents pending |
 | Feedback | Built-in post-event feedback scheduling available | No custom feedback system needed |
 
 Event guest/contact data is for this session's confirmation, reminders, joining
@@ -95,12 +97,19 @@ separate Beehiiv consent/double-opt-in flow. Do not duplicate Luma email in SES.
 
 ## Remaining release gates
 
-1. Obtain the controlled attendee email and mailbox access; complete anonymous
-   registration with distinct synthetic profile/experience/role/topic answers and
-   required consent. Do not put the address or attendee tokens in repository logs.
-2. Verify the real confirmation, calendar timezone/time, protected attendee joining
-   path, guest record, persisted answers, export columns and retained UTM values.
-   Record only outcomes and column names, not attendee records or private links.
+1. Complete a host-assisted Meet admission test using the actual attendee link.
+   A fresh logged-out browser followed that Luma link to Google Meet, which showed
+   "You can't join this video call". This proves redirection, not working admission.
+   No meeting was joined and no microphone/camera permission was granted. The test
+   does not establish whether host presence, account or meeting settings caused
+   the rejection; do not change access controls or infer the cause without proof.
+2. Retrieve and inspect the CSV through the normal browser download flow. Luma
+   required an email verification code, accepted it and generated an export, but
+   Chrome returned `ERR_BLOCKED_BY_CLIENT` for the download. No browser safeguard
+   was disabled. The UI row is verified; CSV columns/values remain unverified.
+   Confirm retained per-registration UTM and any join/attendance columns where
+   supported; the visible full table does not expose them. Record only outcomes
+   and column names, never attendee records or private links.
 3. Observe scheduled reminder delivery and registration closure. Do not alter the
    real event date or closing time just to accelerate a test. Prototype evidence
    is supporting feasibility evidence, not proof of this event's scheduled run.
@@ -115,6 +124,28 @@ separate Beehiiv consent/double-opt-in flow. Do not duplicate Luma email in SES.
 Physical-device testing, assistive-technology certification, additional browser
 engines and real GA4 delivery are not established by the local Chromium checks.
 No anonymous privacy failure was observed; no architecture replacement is proposed.
+
+## Controlled attendee follow-up
+
+On 8 September 2026 the owner supplied a controlled address, authorized Gmail
+access and then reported completing registration after the automated browser
+verification stalled. The confirmation arrived at 12:49:35 UTC from Luma's mail
+domain. Its full title, date and 11:00–11:30 AM IST time match the shared facts.
+The attached `invite.ics` uses `METHOD:REQUEST`, start `20260919T053000Z` and end
+`20260919T060000Z`: the correct 30-minute interval in Asia/Kolkata. Both email and
+calendar contain a Luma-managed attendee joining path, with no raw meeting URL.
+The host's guest record shows Going, registration time, persisted required
+answers and Agreed consent; its timeline reports confirmation Delivered. The
+optional free-text answer was blank, so non-empty free-text persistence was not
+exercised. No attendee name/address, answers, token, message body or export was
+copied into repository evidence. Account-free completion is owner-assisted
+evidence; automation did not independently complete registration.
+
+Luma Insights visibly reports `linkedin` under UTM Sources and live traffic,
+supporting campaign retention for page visits. It does not prove attribution on
+the owner's manually completed guest row. Website handoff remains independently
+covered by browser tests. Luma handles its own mail transport; the receipt does
+not imply any Software Signal-owned SES or duplicate transactional flow.
 
 ## Evidence and reproducibility
 
