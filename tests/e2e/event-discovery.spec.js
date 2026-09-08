@@ -130,14 +130,25 @@ test('clock guard closes discovery and removes completed promotion before displa
   }
 });
 
-test('long-open page expires without dropping keyboard focus', async ({ page }) => {
+for (const width of [390, 1440]) {
+for (const route of ['/', '/training/']) {
+test(`long-open ${route} expires with visible keyboard focus at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 844 });
   await page.clock.install({ time: new Date(new Date(event.end).getTime() - 1000) });
-  await page.goto('/');
+  await page.goto(route);
+  await page.locator('[data-discovery-cta]').scrollIntoViewIfNeeded();
   await page.locator('[data-discovery-cta]').focus();
   await page.clock.fastForward(1001);
   await expect(page.locator('[data-event-discovery]')).toBeHidden();
-  await expect(page.locator('#home-title')).toBeFocused();
+  const heading = page.locator('main h1');
+  await expect(heading).toBeFocused();
+  const box = await heading.boundingBox();
+  const header = await page.locator('.site-header').boundingBox();
+  expect(box.y).toBeGreaterThanOrEqual(header.y + header.height);
+  expect(box.y + box.height).toBeLessThanOrEqual(844);
 });
+}
+}
 
 test('editorial closed state never reopens and unavailable registration has no promise', async ({ page }) => {
   await page.route('**/training/', r => r.fulfill({ contentType: 'text/html', body: variant('training', 'registration-closed') }));

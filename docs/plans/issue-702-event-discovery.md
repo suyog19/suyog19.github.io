@@ -83,11 +83,15 @@ Validation on 8 September 2026:
   Training schema/consistency/commercials, images and public-route safety.
 - Python: 33 event/inventory/Training tests pass, including 10 event tests.
 - Node: all 467 tests pass, including existing pathway, navigation and flow tests.
-- Playwright: all 46 tests pass. Discovery matrix: 320/360/390/768/1440px on both
+- Playwright: all 49 tests pass. Discovery matrix: 320/360/390/768/1440px on both
   pages; no-JS upcoming/closed/completed; pending registration; mobile menu/focus;
   fixed-location impression/click and website-to-canonical-to-Luma attribution;
   exact closing/end boundaries and focused long-open expiry. Existing site and
   canonical-event browser regressions also pass.
+- Independent review found that Training expiry could move keyboard focus above
+  the viewport. The fix removes the expired layout before positioning the focused
+  heading below the sticky header, without smooth scrolling. Expiry tests now
+  assert the entire focused heading stays visible on both pages at 390/1440px.
 - Semantic links, one H1, appropriate Training H2, visible keyboard focus,
   minimum 48px action height, no horizontal overflow and no promotional live
   regions checked. Native mobile emulation was used, not a physical device or

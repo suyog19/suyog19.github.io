@@ -10,16 +10,19 @@
     const now = Date.now();
     const state = declared === "completed" || now >= end ? "completed"
       : declared === "registration-closed" || now >= closes ? "registration-closed" : "upcoming";
-    // Preserve a keyboard destination if a long-open promotion expires in focus.
-    if (state === "completed" && document.activeElement?.closest("[data-event-discovery]")) {
+    const focusedPromotion = document.activeElement?.closest("[data-event-discovery]");
+    document.documentElement.dataset.eventDiscoveryState = state;
+    // Preserve a visible keyboard destination after the expired layout is removed.
+    if (state === "completed" && focusedPromotion) {
       const heading = document.querySelector("main h1");
       if (heading) {
         heading.setAttribute("tabindex", "-1");
         heading.focus({ preventScroll: true });
+        const headerBottom = document.querySelector(".site-header")?.getBoundingClientRect().bottom || 0;
+        window.scrollTo({ top: Math.max(0, window.scrollY + heading.getBoundingClientRect().top - headerBottom - 16), behavior: "instant" });
         heading.addEventListener("blur", () => heading.removeAttribute("tabindex"), { once: true });
       }
     }
-    document.documentElement.dataset.eventDiscoveryState = state;
     window.clearTimeout(timer);
     const next = state === "upcoming" ? closes : state === "registration-closed" ? end : NaN;
     if (Number.isFinite(next) && next > now) timer = window.setTimeout(refresh, Math.min(next - now, 2147483647));
