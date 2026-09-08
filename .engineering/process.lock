@@ -12,7 +12,7 @@
     "AGENTS.md": "sha256:ae6af6d93f7b6cf31d5cab2d540771b751eb4447be0a4c02f60b29c4e7db9971",
     "CLAUDE.md": "sha256:4477761b264088ee66a7eb3894ee226622f1dad9c4d3fce10cc096b0bd37ae12"
   },
-  "manifest_digest": "sha256:4fb45ee6bf86b3299b8de3d1fa39bccab3d9bedd47f1abddde3f3f72445f9ffc",
+  "manifest_digest": "sha256:069ff6c973b2e5f9cd40a09da08422c849d149fa72872fa8872ec45345b76663",
   "policy_digest": "sha256:77cee395ba2c454e61d7b3a84e6998397c537f04e57c6650880cd53c327be0f4",
   "revision": "9f023d4bfd11552b17175698892efe6d9402e4f8",
   "schema_version": 1,

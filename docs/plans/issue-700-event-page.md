@@ -49,9 +49,12 @@ lifecycle and CTA location; no query values, identity or destination are sent.
 Campaign forwarding is deferred to #701's provider/privacy validation rather
 than forwarding arbitrary visitor-controlled query strings now.
 
-The process manifest now declares the already-enforced native workspace sandbox:
-evaluation previously failed because that declaration was absent. No control is
-removed or relaxed. Final evidence binds the actual base/head and process revision.
+Process evaluation found the repository lacks a native-sandbox declaration.
+Independent review recommended keeping governance repair outside #700. The final
+scope leaves the manifest, lock and workflows unchanged; event tests run through
+the existing SEO umbrella. Final classification binds the actual base/head and
+process revision. Missing process declarations/evidence must not be waived merely
+because the existing Foundation CI check passes.
 
 ## Maintenance and #701 handoff
 
@@ -84,7 +87,7 @@ Final independent review remains a separate required gate. No subjective decisio
 or wider redesign is needed. Testing uses a reserved example-domain destination
 only; the checked-in registration URL remains null.
 
-Validation: public SEO's 14 contracts, 28 focused/regression Python tests, 467 Node
+Validation: public SEO's 15 contracts, 28 focused/regression Python tests, 467 Node
 tests, and all 21 Playwright browser tests passed. Browser coverage includes four
 widths, overflow, semantic heading/date, skip-link focus, CTA focus/size, no-JS
 lifecycle, real keyboard click events and analytics location payloads. Existing

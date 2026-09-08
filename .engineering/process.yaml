@@ -7,8 +7,6 @@ process:
 repository:
   name: suyog19/suyog19.github.io
 overrides:
-  agent_execution:
-    sandbox: native
   validation:
     commands:
     - command: python scripts/validate_article_structured_data.py
