@@ -74,7 +74,8 @@ test("focused learning names current directions without inventing inventory", ()
   const focused = html.match(
     /<section[^>]+id="focused-learning"[\s\S]*?<\/section>/,
   )[0];
-  assert.match(focused, /No focused public session is scheduled yet/);
+  assert.match(focused, /Bring a focused learning need/);
+  assert.doesNotMatch(focused, /No focused public session is scheduled yet/);
   assert.match(focused, /not a catalog of bookable offerings/);
   for (const topic of ["Cursor", "GitHub Copilot", "coding-agent workflows", "MCP", "System design"])
     assert.match(focused, new RegExp(topic, "i"));
