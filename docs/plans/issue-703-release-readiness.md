@@ -6,7 +6,8 @@ Final exact target, CI and independent review are recorded on the PR.
 
 **Release verdict: HOLD. Do not promote or publish promotional assets.**
 Confirmation, calendar and saved guest answers are verified for the real event.
-Manual attendee admission is owner-verified; CSV contents and scheduled operations remain unproven. The
+Manual attendee admission is owner-verified and the supplied guest CSV is verified.
+Scheduled operations remain unproven. The
 prototype evidence in #703 is explicitly insufficient for the remaining gates.
 
 ## Scope and UX
@@ -87,7 +88,7 @@ Read-only authenticated host UI inspection on 8 September 2026:
 | Reminders | Enabled, Going audience, 18 September 11:00 AM and 19 September 10:00 AM | Verified configuration; delivery pending |
 | Confirmation | Actual Luma message received; host timeline reports Delivered | Verified correct title/date/IST time and attached calendar |
 | Attendee admission | Owner used the confirmation joining path in a normal incognito browser, requested entry and admitted the attendee as host | Owner-verified pass; automated browser remained rejected |
-| Guest/export | One controlled guest marked Going; full table includes registered time/status and all questions | Row verified; generated CSV download blocked by browser, contents pending |
+| Guest/export | Owner supplied the generated CSV; one approved test registration, required answers and consent match the host record | Export verified; `has_joined_event` is Yes; guest attribution fields blank |
 | Feedback | Built-in post-event feedback scheduling available | No custom feedback system needed |
 
 Event guest/contact data is for this session's confirmation, reminders, joining
@@ -98,22 +99,15 @@ separate Beehiiv consent/double-opt-in flow. Do not duplicate Luma email in SES.
 
 ## Remaining release gates
 
-1. Retrieve and inspect the CSV through the normal browser download flow. Luma
-   required an email verification code, accepted it and generated an export, but
-   Chrome returned `ERR_BLOCKED_BY_CLIENT` for the download. No browser safeguard
-   was disabled. The UI row is verified; CSV columns/values remain unverified.
-   Confirm retained per-registration UTM and any join/attendance columns where
-   supported; the visible full table does not expose them. Record only outcomes
-   and column names, never attendee records or private links.
-2. Observe scheduled reminder delivery and registration closure. Do not alter the
+1. Observe scheduled reminder delivery and registration closure. Do not alter the
    real event date or closing time just to accelerate a test. Prototype evidence
    is supporting feasibility evidence, not proof of this event's scheduled run.
-3. Keep canonical and discovery lifecycle truthful through editorial publication:
+2. Keep canonical and discovery lifecycle truthful through editorial publication:
    set `registration-closed` and regenerate at closure; set `completed` and
    regenerate after completion. Discovery additionally uses a client-clock guard;
    no-JS discovery and canonical detail depend on the documented editorial update.
-4. Resolve #705's declared-native-sandbox/authenticated readiness prerequisite.
-5. After reviewed human-controlled production promotion, smoke-test production
+3. Resolve #705's declared-native-sandbox/authenticated readiness prerequisite.
+4. After reviewed human-controlled production promotion, smoke-test production
    discovery, facts, registration and privacy before any promotional publishing.
 
 Physical-device testing, assistive-technology certification, additional browser
@@ -156,6 +150,31 @@ supporting campaign retention for page visits. It does not prove attribution on
 the owner's manually completed guest row. Website handoff remains independently
 covered by browser tests. Luma handles its own mail transport; the receipt does
 not imply any Software Signal-owned SES or duplicate transactional flow.
+
+## Guest CSV verification
+
+The owner supplied the export dated 8 September 2026, 13:07:49, after the controlled
+browser download was blocked. Read-only parsing found 30 columns and one row.
+The exported email matches the authorized test attendee; name is populated,
+`created_at` matches the observed registration time, `approval_status` is approved,
+and required profile, experience, role and technology answers match the host UI.
+`Terms and Conditions` is Agreed. The optional attendee-question field is present
+and blank, consistent with the submitted record. No non-empty optional response
+was tested.
+
+The export includes `has_joined_event` with value Yes. This verifies Luma exports
+a joining signal; it is not proof of attendance duration or session completion.
+`utm_source`, `referrer` and `referred_by` columns exist but are blank for this
+manually completed registration. No lost campaign data is established because
+the successful registration was not observed carrying a campaign query. Website
+campaign handoff and Luma visit-level LinkedIn attribution are verified separately;
+per-guest campaign retention remains unproven and is a stated experiment limitation.
+
+The CSV also contains ticket identifiers/name, amounts/currency, survey rating
+and feedback columns, and a guest QR-code URL. Neither the source file nor guest
+identifiers, QR URL, personal answers or contact details were copied into the
+repository. A read-only scan found no raw meeting URL in the supplied file.
+The original remains in the owner's Downloads folder unchanged.
 
 ## Evidence and reproducibility
 
