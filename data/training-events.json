@@ -18,6 +18,6 @@
     {"name": "AI Platform / LLMOps Engineer", "summary": "Support deployment, observation and reliable operation of AI systems."}
   ],
   "tools": ["Python", "model APIs", "RAG", "LangGraph", "MCP", "FastAPI", "Docker", "LLMOps", "evaluation"],
-  "registration": {"url": null, "label": "Register Free"},
+  "registration": {"url": "https://luma.com/pg34dnol", "label": "Register Free", "provider": "Luma", "closes_at": "2026-09-19T10:55:00+05:30"},
   "resources": null
 }

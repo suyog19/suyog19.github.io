@@ -19,11 +19,25 @@ class EventTests(unittest.TestCase):
         for role in self.event["roles"]:
             self.assertIn(role["name"], html)
         self.assertNotIn("<form", html)
-        self.assertNotIn("data-event-cta=", html)
-        self.assertIn("Registration opens soon", html)
+        self.assertEqual(html.count('data-event-cta='), 2)
+        self.assertEqual(self.event["registration"]["url"], "https://luma.com/pg34dnol")
+        self.assertIn('referrerpolicy="no-referrer"', html)
+        self.assertIn('aria-describedby="registration-note-primary"', html)
+        self.assertIn("Registration opens on Luma", html)
+        self.assertIn("no newsletter signup", html)
+        self.assertIn("10:55 AM IST", html)
+        self.assertIn('"validThrough": "2026-09-19T10:55:00+05:30"', html)
+        self.assertIn('<link rel="canonical" href="https://suyogjoshi.com/training/events/ai-engineering-roles-2026/">', html)
+
+    def test_pending_registration_remains_honest(self):
+        self.event["registration"]["url"] = None
+        html = render(self.event)
+        self.assertNotIn('data-event-cta=', html)
+        self.assertNotIn('"offers"', html)
+        self.assertIn('Registration opens soon', html)
 
     def test_lifecycle_actions_and_schema(self):
-        self.event["registration"]["url"] = "https://example.com/registration"
+        self.event["registration"]["url"] = "https://luma.com/example-event"
         for state, count in [("upcoming", 2), ("registration-closed", 0), ("completed", 0)]:
             with self.subTest(state=state):
                 self.event["status"] = state
@@ -56,10 +70,25 @@ class EventTests(unittest.TestCase):
             with self.subTest(url=url), self.assertRaises(ValueError):
                 render(self.event)
 
+    def test_luma_destination_and_closing_time_boundaries(self):
+        for url in ["https://luma.com.evil.example/event", "https://example.com/event",
+                    "https://luma.com/event?email=synthetic", "https://luma.com/event#private",
+                    "https://luma.com/", "https://luma.com:8443/event"]:
+            event = copy.deepcopy(self.event)
+            event["registration"]["url"] = url
+            with self.subTest(url=url), self.assertRaises(ValueError):
+                render(event)
+        for closes in [self.event["start"], self.event["end"], "2026-09-19T10:55:00"]:
+            event = copy.deepcopy(self.event)
+            event["registration"]["closes_at"] = closes
+            with self.subTest(closes=closes), self.assertRaises(ValueError):
+                render(event)
+
     def test_changed_shared_facts_reach_all_page_surfaces(self):
         self.event["title"] = 'A <new> title'
         self.event["start"] = "2026-10-03T11:00:00+05:30"
         self.event["end"] = "2026-10-03T11:30:00+05:30"
+        self.event["registration"]["closes_at"] = "2026-10-03T10:55:00+05:30"
         html = render(self.event)
         self.assertIn("Saturday, 3 October 2026", html)
         self.assertNotIn("19 September", html)
