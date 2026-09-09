@@ -107,7 +107,7 @@ test('Latest Writing is a finite visual stream immediately after the hero', () =
 });
 
 test('normalized Work records own external destinations independently of landing-page curation', () => {
-  assert.equal(works.works.length, 49);
+  assert.equal(works.works.length, 50);
   const businessRules = works.works.find((work) => work.id === 'business-rules-as-context');
   assert.equal(businessRules.publications.length, 2);
   assert.equal(new Set(works.works.map((work) => work.id)).size, works.works.length);
