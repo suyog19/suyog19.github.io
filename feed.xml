@@ -7,7 +7,17 @@
     <language>en</language>
     <copyright>Copyright 2026 Suyog Joshi</copyright>
     <atom:link href="https://suyogjoshi.com/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Sat, 05 Sep 2026 09:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 09:00:00 +0000</lastBuildDate>
+    <item>
+      <title>What If AI Agents Didn't Have to Click Through Your Website?</title>
+      <link>https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website</link>
+      <guid isPermaLink="true">https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website</guid>
+      <description>WebMCP could give AI agents explicit application capabilities, reducing brittle browser interaction while making authorization and interface design more deliberate.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 09 Sep 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <source url="https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website/">HackerNoon</source>
+    </item>
     <item>
       <title>Human Review Gates in AI-Assisted Delivery</title>
       <link>https://medium.com/@suyog19/human-review-gates-in-ai-assisted-delivery-109f47ab23d7?sk=808cd3564a8511a2f6eba53776b08e86</link>
