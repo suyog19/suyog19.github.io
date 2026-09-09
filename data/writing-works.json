@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "asOf": "2026-09-06",
+  "asOf": "2026-09-09",
   "works": [
     {
       "id": "agent-plugins-1-0-engineering-process-is-becoming-installable",
@@ -1042,6 +1042,32 @@
           "published": "2026-06-20",
           "source": "suyogjoshi.com",
           "external": false,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "what-if-ai-agents-didn-t-have-to-click-through-your-website",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "What If AI Agents Didn't Have to Click Through Your Website?",
+        "summary": "WebMCP could give AI agents explicit application capabilities, reducing brittle browser interaction while making authorization and interface design more deliberate."
+      },
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website",
+      "preferredPublicationId": "external:what-if-ai-agents-didnt-have-to-click-through-your-website",
+      "cover": "external-covers/ai-agents-website-webmcp.webp",
+      "coverWidth": 1536,
+      "coverHeight": 1024,
+      "publications": [
+        {
+          "id": "external:what-if-ai-agents-didnt-have-to-click-through-your-website",
+          "url": "https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website",
+          "published": "2026-09-09",
+          "source": "HackerNoon",
+          "external": true,
           "status": "public"
         }
       ]

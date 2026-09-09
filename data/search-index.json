@@ -555,6 +555,19 @@
       "published": "2026-06-20"
     },
     {
+      "id": "article:what-if-ai-agents-didn-t-have-to-click-through-your-website",
+      "type": "Article",
+      "title": "What If AI Agents Didn't Have to Click Through Your Website?",
+      "summary": "WebMCP could give AI agents explicit application capabilities, reducing brittle browser interaction while making authorization and interface design more deliberate.",
+      "url": "https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website",
+      "topics": [
+        "AI Agents and Review"
+      ],
+      "source": "HackerNoon",
+      "external": true,
+      "published": "2026-09-09"
+    },
+    {
       "id": "article:when-ai-writes-the-code-what-makes-a-language-good",
       "type": "Article",
       "title": "When AI Writes the Code, What Makes a Language Good?",
