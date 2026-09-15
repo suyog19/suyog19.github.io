@@ -35,7 +35,7 @@ test('empty, punctuation-only, and unknown queries return no results', () => {
 
 test('external articles and course states are explicit in generated metadata', () => {
   const externalArticles = index.items.filter((item) => item.external && item.type === 'Article');
-  assert.equal(externalArticles.length, 25);
+  assert.equal(externalArticles.length, 33);
   externalArticles.forEach((item) => {
     assert.equal(item.type, 'Article');
     assert.match(item.url, /^https:\/\/(medium\.com|hackernoon\.com)\//);

@@ -7,7 +7,58 @@
     <language>en</language>
     <copyright>Copyright 2026 Suyog Joshi</copyright>
     <atom:link href="https://suyogjoshi.com/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Wed, 09 Sep 2026 09:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 14 Sep 2026 09:00:00 +0000</lastBuildDate>
+    <item>
+      <title>When AI Saves Time, Who Gets the Dividend?</title>
+      <link>https://medium.com/generative-ai/when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0?sk=0a79894931536cdc9a9e94911df1857a</link>
+      <guid isPermaLink="true">https://medium.com/generative-ai/when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0?sk=0a79894931536cdc9a9e94911df1857a</guid>
+      <description>Trace where AI time savings actually go, and decide how to share the gains across output, quality, stronger systems, and a sustainable workload.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 14 Sep 2026 09:00:00 +0000</pubDate>
+      <category>Agile, Process, and Engineering Leadership</category>
+      <source url="https://medium.com/generative-ai/">Generative AI</source>
+    </item>
+    <item>
+      <title>Use AI as an Examiner, Not an Answer Machine</title>
+      <link>https://medium.com/educreation/use-ai-as-an-examiner-not-an-answer-machine-69823e7a1532?sk=7b21af15bc3ed0a00cd62990cd6dc120</link>
+      <guid isPermaLink="true">https://medium.com/educreation/use-ai-as-an-examiner-not-an-answer-machine-69823e7a1532?sk=7b21af15bc3ed0a00cd62990cd6dc120</guid>
+      <description>Use AI to question and test your understanding, then check whether you can recall and apply the ideas without its help.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 14 Sep 2026 09:00:00 +0000</pubDate>
+      <source url="https://medium.com/educreation/">EduCreate</source>
+    </item>
+    <item>
+      <title>Solo Maintainer Does Not Mean Solo Reviewer</title>
+      <link>https://medium.com/gitconnected/solo-maintainer-does-not-mean-solo-reviewer-df2fc7a7879b?sk=17974d430777ddff3dcb204ad87e6fbe</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/solo-maintainer-does-not-mean-solo-reviewer-df2fc7a7879b?sk=17974d430777ddff3dcb204ad87e6fbe</guid>
+      <description>Separate implementation, fresh-context technical review, and production authorization so a solo repository can retain meaningful scrutiny.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 11 Sep 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <category>AI-Assisted Software Engineering</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>GPT-6 Astra Can Act. Now the Controls Matter More.</title>
+      <link>https://medium.com/gitconnected/gpt-6-astra-can-act-now-the-controls-matter-more-7e2b33df911b?sk=6e40c59eee8bfb0621ad694ee02fb977</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/gpt-6-astra-can-act-now-the-controls-matter-more-7e2b33df911b?sk=6e40c59eee8bfb0621ad694ee02fb977</guid>
+      <description>Why an AI model that can act across tools and workflows needs clear permissions, verification, monitoring, and reversible actions.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Fri, 11 Sep 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>Your AI Agent Needs an Operating Contract</title>
+      <link>https://medium.com/ai-in-plain-english/your-ai-agent-needs-an-operating-contract-52d0572aa010?sk=3cab04419247ad4e3b9fae65d3078ae6</link>
+      <guid isPermaLink="true">https://medium.com/ai-in-plain-english/your-ai-agent-needs-an-operating-contract-52d0572aa010?sk=3cab04419247ad4e3b9fae65d3078ae6</guid>
+      <description>Make an agent's permissions, approval boundaries, data access, and human ownership clear before employees rely on its work.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 09 Sep 2026 09:00:00 +0000</pubDate>
+      <category>Agile, Process, and Engineering Leadership</category>
+      <category>AI Agents and Review</category>
+      <source url="https://medium.com/ai-in-plain-english/">Artificial Intelligence in Plain English</source>
+    </item>
     <item>
       <title>What If AI Agents Didn't Have to Click Through Your Website?</title>
       <link>https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website</link>
@@ -17,6 +68,38 @@
       <pubDate>Wed, 09 Sep 2026 09:00:00 +0000</pubDate>
       <category>AI Agents and Review</category>
       <source url="https://hackernoon.com/what-if-ai-agents-didnt-have-to-click-through-your-website/">HackerNoon</source>
+    </item>
+    <item>
+      <title>The Reliable Coding Agent Is a Loop, Not a Long Run</title>
+      <link>https://medium.com/ai-software-engineer/the-reliable-coding-agent-is-a-loop-not-a-long-run-396a0c51d1f7?sk=18f5ff8505e348e9378616b47c4b8894</link>
+      <guid isPermaLink="true">https://medium.com/ai-software-engineer/the-reliable-coding-agent-is-a-loop-not-a-long-run-396a0c51d1f7?sk=18f5ff8505e348e9378616b47c4b8894</guid>
+      <description>Build reliable coding-agent workflows around bounded changes, durable state, verified checkpoints, and evidence-driven repair.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 09 Sep 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <category>AI-Assisted Software Engineering</category>
+      <source url="https://medium.com/ai-software-engineer/">AI Software Engineer</source>
+    </item>
+    <item>
+      <title>Don’t Count the Citations. Check What They Prove.</title>
+      <link>https://medium.com/ai-in-plain-english/dont-count-the-citations-check-what-they-prove-65b08d6a8f11?sk=d627d4aa107099ac24e6d20453327bb1</link>
+      <guid isPermaLink="true">https://medium.com/ai-in-plain-english/dont-count-the-citations-check-what-they-prove-65b08d6a8f11?sk=d627d4aa107099ac24e6d20453327bb1</guid>
+      <description>Inspect whether citations support the exact claim, use suitable and current sources, and offer independent evidence before trusting an AI answer.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Tue, 08 Sep 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <category>Engineering Context and Knowledge</category>
+      <source url="https://medium.com/ai-in-plain-english/">Artificial Intelligence in Plain English</source>
+    </item>
+    <item>
+      <title>When Sources Disagree, LLMs Still Want to Pick a Winner</title>
+      <link>https://medium.com/generative-ai/when-sources-disagree-llms-still-want-to-pick-a-winner-571b407ec5ee?sk=aad4848a8252b0b9a420e3bfd497f9ae</link>
+      <guid isPermaLink="true">https://medium.com/generative-ai/when-sources-disagree-llms-still-want-to-pick-a-winner-571b407ec5ee?sk=aad4848a8252b0b9a420e3bfd497f9ae</guid>
+      <description>How source ordering, repetition, and model knowledge can distort an AI synthesis when the underlying evidence disagrees.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Mon, 07 Sep 2026 09:00:00 +0000</pubDate>
+      <category>Engineering Context and Knowledge</category>
+      <source url="https://medium.com/generative-ai/">Generative AI</source>
     </item>
     <item>
       <title>Human Review Gates in AI-Assisted Delivery</title>
