@@ -221,6 +221,20 @@
       "published": "2026-06-27"
     },
     {
+      "id": "article:don-t-count-the-citations-check-what-they-prove",
+      "type": "Article",
+      "title": "Don’t Count the Citations. Check What They Prove.",
+      "summary": "Inspect whether citations support the exact claim, use suitable and current sources, and offer independent evidence before trusting an AI answer.",
+      "url": "https://medium.com/ai-in-plain-english/dont-count-the-citations-check-what-they-prove-65b08d6a8f11?sk=d627d4aa107099ac24e6d20453327bb1",
+      "topics": [
+        "AI Agents and Review",
+        "Engineering Context and Knowledge"
+      ],
+      "source": "Artificial Intelligence in Plain English",
+      "external": true,
+      "published": "2026-09-08"
+    },
+    {
       "id": "article:enterprise-ai-adoption-is-a-context-problem",
       "type": "Article",
       "title": "Enterprise AI Adoption Is a Context Problem",
@@ -261,6 +275,19 @@
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-21"
+    },
+    {
+      "id": "article:gpt-6-astra-can-act-now-the-controls-matter-more",
+      "type": "Article",
+      "title": "GPT-6 Astra Can Act. Now the Controls Matter More.",
+      "summary": "Why an AI model that can act across tools and workflows needs clear permissions, verification, monitoring, and reversible actions.",
+      "url": "https://medium.com/gitconnected/gpt-6-astra-can-act-now-the-controls-matter-more-7e2b33df911b?sk=6e40c59eee8bfb0621ad694ee02fb977",
+      "topics": [
+        "AI Agents and Review"
+      ],
+      "source": "Level Up Coding",
+      "external": true,
+      "published": "2026-09-11"
     },
     {
       "id": "article:how-i-structure-repositories-so-ai-can-understand-them",
@@ -422,6 +449,20 @@
       "published": "2026-06-24"
     },
     {
+      "id": "article:solo-maintainer-does-not-mean-solo-reviewer",
+      "type": "Article",
+      "title": "Solo Maintainer Does Not Mean Solo Reviewer",
+      "summary": "Separate implementation, fresh-context technical review, and production authorization so a solo repository can retain meaningful scrutiny.",
+      "url": "https://medium.com/gitconnected/solo-maintainer-does-not-mean-solo-reviewer-df2fc7a7879b?sk=17974d430777ddff3dcb204ad87e6fbe",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "Level Up Coding",
+      "external": true,
+      "published": "2026-09-11"
+    },
+    {
       "id": "article:stop-prompting-harder-start-giving-better-context",
       "type": "Article",
       "title": "Stop Prompting Harder. Start Giving Better Context.",
@@ -517,6 +558,20 @@
       "published": "2026-07-03"
     },
     {
+      "id": "article:the-reliable-coding-agent-is-a-loop-not-a-long-run",
+      "type": "Article",
+      "title": "The Reliable Coding Agent Is a Loop, Not a Long Run",
+      "summary": "Build reliable coding-agent workflows around bounded changes, durable state, verified checkpoints, and evidence-driven repair.",
+      "url": "https://medium.com/ai-software-engineer/the-reliable-coding-agent-is-a-loop-not-a-long-run-396a0c51d1f7?sk=18f5ff8505e348e9378616b47c4b8894",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "AI Software Engineer",
+      "external": true,
+      "published": "2026-09-09"
+    },
+    {
       "id": "article:the-rise-of-multi-model-software-engineering",
       "type": "Article",
       "title": "The Rise of Multi-Model Software Engineering",
@@ -539,6 +594,17 @@
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-05-02"
+    },
+    {
+      "id": "article:use-ai-as-an-examiner-not-an-answer-machine",
+      "type": "Article",
+      "title": "Use AI as an Examiner, Not an Answer Machine",
+      "summary": "Use AI to question and test your understanding, then check whether you can recall and apply the ideas without its help.",
+      "url": "https://medium.com/educreation/use-ai-as-an-examiner-not-an-answer-machine-69823e7a1532?sk=7b21af15bc3ed0a00cd62990cd6dc120",
+      "topics": [],
+      "source": "EduCreate",
+      "external": true,
+      "published": "2026-09-14"
     },
     {
       "id": "article:using-multiple-ai-agents-as-a-software-engineering-team",
@@ -568,6 +634,19 @@
       "published": "2026-09-09"
     },
     {
+      "id": "article:when-ai-saves-time-who-gets-the-dividend",
+      "type": "Article",
+      "title": "When AI Saves Time, Who Gets the Dividend?",
+      "summary": "Trace where AI time savings actually go, and decide how to share the gains across output, quality, stronger systems, and a sustainable workload.",
+      "url": "https://medium.com/generative-ai/when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0?sk=0a79894931536cdc9a9e94911df1857a",
+      "topics": [
+        "Agile, Process, and Engineering Leadership"
+      ],
+      "source": "Generative AI",
+      "external": true,
+      "published": "2026-09-14"
+    },
+    {
       "id": "article:when-ai-writes-the-code-what-makes-a-language-good",
       "type": "Article",
       "title": "When AI Writes the Code, What Makes a Language Good?",
@@ -593,6 +672,19 @@
       "source": "Level Up Coding",
       "external": true,
       "published": "2026-08-31"
+    },
+    {
+      "id": "article:when-sources-disagree-llms-still-want-to-pick-a-winner",
+      "type": "Article",
+      "title": "When Sources Disagree, LLMs Still Want to Pick a Winner",
+      "summary": "How source ordering, repetition, and model knowledge can distort an AI synthesis when the underlying evidence disagrees.",
+      "url": "https://medium.com/generative-ai/when-sources-disagree-llms-still-want-to-pick-a-winner-571b407ec5ee?sk=aad4848a8252b0b9a420e3bfd497f9ae",
+      "topics": [
+        "Engineering Context and Knowledge"
+      ],
+      "source": "Generative AI",
+      "external": true,
+      "published": "2026-09-07"
     },
     {
       "id": "article:why-ai-punishes-tribal-knowledge-in-software-teams",
@@ -646,6 +738,20 @@
       "source": "suyogjoshi.com",
       "external": false,
       "published": "2026-06-20"
+    },
+    {
+      "id": "article:your-ai-agent-needs-an-operating-contract",
+      "type": "Article",
+      "title": "Your AI Agent Needs an Operating Contract",
+      "summary": "Make an agent's permissions, approval boundaries, data access, and human ownership clear before employees rely on its work.",
+      "url": "https://medium.com/ai-in-plain-english/your-ai-agent-needs-an-operating-contract-52d0572aa010?sk=3cab04419247ad4e3b9fae65d3078ae6",
+      "topics": [
+        "Agile, Process, and Engineering Leadership",
+        "AI Agents and Review"
+      ],
+      "source": "Artificial Intelligence in Plain English",
+      "external": true,
+      "published": "2026-09-09"
     },
     {
       "id": "article:your-coding-agent-shouldnt-work-alone",
