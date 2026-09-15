@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "asOf": "2026-09-09",
+  "asOf": "2026-09-15",
   "works": [
     {
       "id": "agent-plugins-1-0-engineering-process-is-becoming-installable",
@@ -458,6 +458,33 @@
       ]
     },
     {
+      "id": "don-t-count-the-citations-check-what-they-prove",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Don’t Count the Citations. Check What They Prove.",
+        "summary": "Inspect whether citations support the exact claim, use suitable and current sources, and offer independent evidence before trusting an AI answer."
+      },
+      "topicIds": [
+        "ai-agents-and-review",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://medium.com/ai-in-plain-english/dont-count-the-citations-check-what-they-prove-65b08d6a8f11?sk=d627d4aa107099ac24e6d20453327bb1",
+      "preferredPublicationId": "external:ai-in-plain-english-dont-count-the-citations-check-what-they-prove-65b08d6a8f11",
+      "cover": "external-covers/don-t-count-the-citations-check-what-they-prove.webp",
+      "publications": [
+        {
+          "id": "external:ai-in-plain-english-dont-count-the-citations-check-what-they-prove-65b08d6a8f11",
+          "url": "https://medium.com/ai-in-plain-english/dont-count-the-citations-check-what-they-prove-65b08d6a8f11?sk=d627d4aa107099ac24e6d20453327bb1",
+          "published": "2026-09-08",
+          "source": "Artificial Intelligence in Plain English",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1672,
+      "coverHeight": 941
+    },
+    {
       "id": "enterprise-ai-adoption-is-a-context-problem",
       "internalPath": "writing/enterprise-ai-adoption-is-a-context-problem/index.html",
       "externalMetadata": null,
@@ -529,6 +556,32 @@
           "status": "public"
         }
       ]
+    },
+    {
+      "id": "gpt-6-astra-can-act-now-the-controls-matter-more",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "GPT-6 Astra Can Act. Now the Controls Matter More.",
+        "summary": "Why an AI model that can act across tools and workflows needs clear permissions, verification, monitoring, and reversible actions."
+      },
+      "topicIds": [
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/gpt-6-astra-can-act-now-the-controls-matter-more-7e2b33df911b?sk=6e40c59eee8bfb0621ad694ee02fb977",
+      "preferredPublicationId": "external:gitconnected-gpt-6-astra-can-act-now-the-controls-matter-more-7e2b33df911b",
+      "cover": "external-covers/gpt-6-astra-can-act-now-the-controls-matter-more.webp",
+      "publications": [
+        {
+          "id": "external:gitconnected-gpt-6-astra-can-act-now-the-controls-matter-more-7e2b33df911b",
+          "url": "https://medium.com/gitconnected/gpt-6-astra-can-act-now-the-controls-matter-more-7e2b33df911b?sk=6e40c59eee8bfb0621ad694ee02fb977",
+          "published": "2026-09-11",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1672,
+      "coverHeight": 941
     },
     {
       "id": "how-i-structure-repositories-so-ai-can-understand-them",
@@ -853,6 +906,33 @@
       ]
     },
     {
+      "id": "solo-maintainer-does-not-mean-solo-reviewer",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Solo Maintainer Does Not Mean Solo Reviewer",
+        "summary": "Separate implementation, fresh-context technical review, and production authorization so a solo repository can retain meaningful scrutiny."
+      },
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/solo-maintainer-does-not-mean-solo-reviewer-df2fc7a7879b?sk=17974d430777ddff3dcb204ad87e6fbe",
+      "preferredPublicationId": "external:gitconnected-solo-maintainer-does-not-mean-solo-reviewer-df2fc7a7879b",
+      "cover": "external-covers/solo-maintainer-does-not-mean-solo-reviewer.webp",
+      "publications": [
+        {
+          "id": "external:gitconnected-solo-maintainer-does-not-mean-solo-reviewer-df2fc7a7879b",
+          "url": "https://medium.com/gitconnected/solo-maintainer-does-not-mean-solo-reviewer-df2fc7a7879b?sk=17974d430777ddff3dcb204ad87e6fbe",
+          "published": "2026-09-11",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1672,
+      "coverHeight": 941
+    },
+    {
       "id": "stop-prompting-harder-start-giving-better-context",
       "internalPath": "writing/stop-prompting-harder-start-giving-better-context/index.html",
       "externalMetadata": null,
@@ -976,6 +1056,33 @@
       ]
     },
     {
+      "id": "the-reliable-coding-agent-is-a-loop-not-a-long-run",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "The Reliable Coding Agent Is a Loop, Not a Long Run",
+        "summary": "Build reliable coding-agent workflows around bounded changes, durable state, verified checkpoints, and evidence-driven repair."
+      },
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/ai-software-engineer/the-reliable-coding-agent-is-a-loop-not-a-long-run-396a0c51d1f7?sk=18f5ff8505e348e9378616b47c4b8894",
+      "preferredPublicationId": "external:ai-software-engineer-the-reliable-coding-agent-is-a-loop-not-a-long-run-396a0c51d1f7",
+      "cover": "external-covers/the-reliable-coding-agent-is-a-loop-not-a-long-run.webp",
+      "publications": [
+        {
+          "id": "external:ai-software-engineer-the-reliable-coding-agent-is-a-loop-not-a-long-run-396a0c51d1f7",
+          "url": "https://medium.com/ai-software-engineer/the-reliable-coding-agent-is-a-loop-not-a-long-run-396a0c51d1f7?sk=18f5ff8505e348e9378616b47c4b8894",
+          "published": "2026-09-09",
+          "source": "AI Software Engineer",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1672,
+      "coverHeight": 941
+    },
+    {
       "id": "the-rise-of-multi-model-software-engineering",
       "internalPath": null,
       "externalMetadata": {
@@ -1021,6 +1128,30 @@
           "status": "public"
         }
       ]
+    },
+    {
+      "id": "use-ai-as-an-examiner-not-an-answer-machine",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Use AI as an Examiner, Not an Answer Machine",
+        "summary": "Use AI to question and test your understanding, then check whether you can recall and apply the ideas without its help."
+      },
+      "topicIds": [],
+      "feedGuid": "https://medium.com/educreation/use-ai-as-an-examiner-not-an-answer-machine-69823e7a1532?sk=7b21af15bc3ed0a00cd62990cd6dc120",
+      "preferredPublicationId": "external:educreation-use-ai-as-an-examiner-not-an-answer-machine-69823e7a1532",
+      "cover": "external-covers/use-ai-as-an-examiner-not-an-answer-machine.webp",
+      "publications": [
+        {
+          "id": "external:educreation-use-ai-as-an-examiner-not-an-answer-machine-69823e7a1532",
+          "url": "https://medium.com/educreation/use-ai-as-an-examiner-not-an-answer-machine-69823e7a1532?sk=7b21af15bc3ed0a00cd62990cd6dc120",
+          "published": "2026-09-14",
+          "source": "EduCreate",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1448,
+      "coverHeight": 1086
     },
     {
       "id": "using-multiple-ai-agents-as-a-software-engineering-team",
@@ -1073,6 +1204,32 @@
       ]
     },
     {
+      "id": "when-ai-saves-time-who-gets-the-dividend",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "When AI Saves Time, Who Gets the Dividend?",
+        "summary": "Trace where AI time savings actually go, and decide how to share the gains across output, quality, stronger systems, and a sustainable workload."
+      },
+      "topicIds": [
+        "agile-process-and-engineering-leadership"
+      ],
+      "feedGuid": "https://medium.com/generative-ai/when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0?sk=0a79894931536cdc9a9e94911df1857a",
+      "preferredPublicationId": "external:generative-ai-when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0",
+      "cover": "external-covers/when-ai-saves-time-who-gets-the-dividend.webp",
+      "publications": [
+        {
+          "id": "external:generative-ai-when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0",
+          "url": "https://medium.com/generative-ai/when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0?sk=0a79894931536cdc9a9e94911df1857a",
+          "published": "2026-09-14",
+          "source": "Generative AI",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1672,
+      "coverHeight": 941
+    },
+    {
       "id": "when-ai-writes-the-code-what-makes-a-language-good",
       "internalPath": null,
       "externalMetadata": {
@@ -1122,6 +1279,32 @@
           "status": "public"
         }
       ]
+    },
+    {
+      "id": "when-sources-disagree-llms-still-want-to-pick-a-winner",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "When Sources Disagree, LLMs Still Want to Pick a Winner",
+        "summary": "How source ordering, repetition, and model knowledge can distort an AI synthesis when the underlying evidence disagrees."
+      },
+      "topicIds": [
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://medium.com/generative-ai/when-sources-disagree-llms-still-want-to-pick-a-winner-571b407ec5ee?sk=aad4848a8252b0b9a420e3bfd497f9ae",
+      "preferredPublicationId": "external:generative-ai-when-sources-disagree-llms-still-want-to-pick-a-winner-571b407ec5ee",
+      "cover": "external-covers/when-sources-disagree-llms-still-want-to-pick-a-winner.webp",
+      "publications": [
+        {
+          "id": "external:generative-ai-when-sources-disagree-llms-still-want-to-pick-a-winner-571b407ec5ee",
+          "url": "https://medium.com/generative-ai/when-sources-disagree-llms-still-want-to-pick-a-winner-571b407ec5ee?sk=aad4848a8252b0b9a420e3bfd497f9ae",
+          "published": "2026-09-07",
+          "source": "Generative AI",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1672,
+      "coverHeight": 941
     },
     {
       "id": "why-ai-punishes-tribal-knowledge-in-software-teams",
@@ -1195,6 +1378,33 @@
           "status": "public"
         }
       ]
+    },
+    {
+      "id": "your-ai-agent-needs-an-operating-contract",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Your AI Agent Needs an Operating Contract",
+        "summary": "Make an agent's permissions, approval boundaries, data access, and human ownership clear before employees rely on its work."
+      },
+      "topicIds": [
+        "agile-process-and-engineering-leadership",
+        "ai-agents-and-review"
+      ],
+      "feedGuid": "https://medium.com/ai-in-plain-english/your-ai-agent-needs-an-operating-contract-52d0572aa010?sk=3cab04419247ad4e3b9fae65d3078ae6",
+      "preferredPublicationId": "external:ai-in-plain-english-your-ai-agent-needs-an-operating-contract-52d0572aa010",
+      "cover": "external-covers/your-ai-agent-needs-an-operating-contract.webp",
+      "publications": [
+        {
+          "id": "external:ai-in-plain-english-your-ai-agent-needs-an-operating-contract-52d0572aa010",
+          "url": "https://medium.com/ai-in-plain-english/your-ai-agent-needs-an-operating-contract-52d0572aa010?sk=3cab04419247ad4e3b9fae65d3078ae6",
+          "published": "2026-09-09",
+          "source": "Artificial Intelligence in Plain English",
+          "external": true,
+          "status": "public"
+        }
+      ],
+      "coverWidth": 1672,
+      "coverHeight": 941
     },
     {
       "id": "your-coding-agent-shouldnt-work-alone",
