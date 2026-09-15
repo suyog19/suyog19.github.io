@@ -890,6 +890,17 @@
       "external": false
     },
     {
+      "id": "newsletter:https://newsletter.suyogjoshi.com/p/making-ai-work-takes-engineers-close-to-the-customer",
+      "type": "Newsletter",
+      "title": "Making AI Work Takes Engineers Close to the Customer",
+      "summary": "A planned 1,000-person engineering workforce puts customer understanding, integration and production delivery in focus.",
+      "url": "https://newsletter.suyogjoshi.com/p/making-ai-work-takes-engineers-close-to-the-customer",
+      "topics": [],
+      "source": "Software Signal Weekly",
+      "external": true,
+      "published": "2026-09-12"
+    },
+    {
       "id": "newsletter:https://newsletter.suyogjoshi.com/p/the-real-ai-coding-upgrade-is-around-the-model",
       "type": "Newsletter",
       "title": "The Real AI Coding Upgrade Is Around the Model",
