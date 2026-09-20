@@ -435,6 +435,20 @@
       "published": "2026-06-19"
     },
     {
+      "id": "article:openai-s-agents-api-the-code-you-may-no-longer-need-to-write",
+      "type": "Article",
+      "title": "OpenAI’s Agents API: The Code You May No Longer Need to Write",
+      "summary": "A managed agent runtime can handle sessions, orchestration, context compaction, and recovery while teams retain responsibility for the systems they build.",
+      "url": "https://medium.com/gitconnected/openais-agents-api-the-code-you-may-no-longer-need-to-write-1a88f816deeb?sk=f810c50768c34f07495727b5575c5627",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering"
+      ],
+      "source": "Level Up Coding",
+      "external": true,
+      "published": "2026-09-16"
+    },
+    {
       "id": "article:process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants",
       "type": "Article",
       "title": "Process as Code: Making Engineering Standards Visible to Humans and AI Assistants",
@@ -583,6 +597,21 @@
       "source": "Level Up Coding",
       "external": true,
       "published": "2026-08-17"
+    },
+    {
+      "id": "article:two-green-checks-can-still-hide-one-bad-source",
+      "type": "Article",
+      "title": "Two Green Checks Can Still Hide One Bad Source",
+      "summary": "Reliable AI-agent review depends on independent evidence sources, visible evidence lineage, and rechecking mutable conditions when an action commits.",
+      "url": "https://medium.com/gitconnected/two-green-checks-can-still-hide-one-bad-source-af6596b8a281?sk=539ff4c09d655bd3c39e9aedd15ea5b8",
+      "topics": [
+        "AI Agents and Review",
+        "AI-Assisted Software Engineering",
+        "Engineering Context and Knowledge"
+      ],
+      "source": "Level Up Coding",
+      "external": true,
+      "published": "2026-09-16"
     },
     {
       "id": "article:understanding-the-ai-ecosystem",
@@ -888,6 +917,17 @@
       "topics": [],
       "source": "suyogjoshi.com",
       "external": false
+    },
+    {
+      "id": "newsletter:https://newsletter.suyogjoshi.com/p/before-you-switch-coding-agents-look-beyond-the-leaderboard",
+      "type": "Newsletter",
+      "title": "Before You Switch Coding Agents, Look Beyond the Leaderboard",
+      "summary": "What benchmark rankings can tell you—and what you still need to test on your own codebase.",
+      "url": "https://newsletter.suyogjoshi.com/p/before-you-switch-coding-agents-look-beyond-the-leaderboard",
+      "topics": [],
+      "source": "Software Signal Weekly",
+      "external": true,
+      "published": "2026-09-19"
     },
     {
       "id": "newsletter:https://newsletter.suyogjoshi.com/p/making-ai-work-takes-engineers-close-to-the-customer",

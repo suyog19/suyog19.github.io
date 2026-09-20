@@ -7,7 +7,30 @@
     <language>en</language>
     <copyright>Copyright 2026 Suyog Joshi</copyright>
     <atom:link href="https://suyogjoshi.com/feed.xml" rel="self" type="application/rss+xml" />
-    <lastBuildDate>Mon, 14 Sep 2026 09:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 16 Sep 2026 09:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Two Green Checks Can Still Hide One Bad Source</title>
+      <link>https://medium.com/gitconnected/two-green-checks-can-still-hide-one-bad-source-af6596b8a281?sk=539ff4c09d655bd3c39e9aedd15ea5b8</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/two-green-checks-can-still-hide-one-bad-source-af6596b8a281?sk=539ff4c09d655bd3c39e9aedd15ea5b8</guid>
+      <description>Reliable AI-agent review depends on independent evidence sources, visible evidence lineage, and rechecking mutable conditions when an action commits.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 16 Sep 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <category>AI-Assisted Software Engineering</category>
+      <category>Engineering Context and Knowledge</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
+    <item>
+      <title>OpenAI’s Agents API: The Code You May No Longer Need to Write</title>
+      <link>https://medium.com/gitconnected/openais-agents-api-the-code-you-may-no-longer-need-to-write-1a88f816deeb?sk=f810c50768c34f07495727b5575c5627</link>
+      <guid isPermaLink="true">https://medium.com/gitconnected/openais-agents-api-the-code-you-may-no-longer-need-to-write-1a88f816deeb?sk=f810c50768c34f07495727b5575c5627</guid>
+      <description>A managed agent runtime can handle sessions, orchestration, context compaction, and recovery while teams retain responsibility for the systems they build.</description>
+      <dc:creator>Suyog Joshi</dc:creator>
+      <pubDate>Wed, 16 Sep 2026 09:00:00 +0000</pubDate>
+      <category>AI Agents and Review</category>
+      <category>AI-Assisted Software Engineering</category>
+      <source url="https://medium.com/gitconnected/">Level Up Coding</source>
+    </item>
     <item>
       <title>When AI Saves Time, Who Gets the Dividend?</title>
       <link>https://medium.com/generative-ai/when-ai-saves-time-who-gets-the-dividend-bc5d532f00c0?sk=0a79894931536cdc9a9e94911df1857a</link>
