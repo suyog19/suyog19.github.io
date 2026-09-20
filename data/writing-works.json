@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "asOf": "2026-09-15",
+  "asOf": "2026-09-20",
   "works": [
     {
       "id": "agent-plugins-1-0-engineering-process-is-becoming-installable",
@@ -882,6 +882,31 @@
       ]
     },
     {
+      "id": "openai-s-agents-api-the-code-you-may-no-longer-need-to-write",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "OpenAI’s Agents API: The Code You May No Longer Need to Write",
+        "summary": "A managed agent runtime can handle sessions, orchestration, context compaction, and recovery while teams retain responsibility for the systems they build."
+      },
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/openais-agents-api-the-code-you-may-no-longer-need-to-write-1a88f816deeb?sk=f810c50768c34f07495727b5575c5627",
+      "preferredPublicationId": "external:gitconnected-openais-agents-api-the-code-you-may-no-longer-need-to-write-1a88f816deeb",
+      "cover": null,
+      "publications": [
+        {
+          "id": "external:gitconnected-openais-agents-api-the-code-you-may-no-longer-need-to-write-1a88f816deeb",
+          "url": "https://medium.com/gitconnected/openais-agents-api-the-code-you-may-no-longer-need-to-write-1a88f816deeb?sk=f810c50768c34f07495727b5575c5627",
+          "published": "2026-09-16",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
       "id": "process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants",
       "internalPath": "writing/process-as-code-making-engineering-standards-visible-to-humans-and-ai-assistants/index.html",
       "externalMetadata": null,
@@ -1102,6 +1127,32 @@
           "id": "external:the-rise-of-multi-model-software-engineering",
           "url": "https://medium.com/gitconnected/the-rise-of-multi-model-software-engineering-afa2c27b29bc?sk=bf073a9753b436a016e31bb619389bfc",
           "published": "2026-08-17",
+          "source": "Level Up Coding",
+          "external": true,
+          "status": "public"
+        }
+      ]
+    },
+    {
+      "id": "two-green-checks-can-still-hide-one-bad-source",
+      "internalPath": null,
+      "externalMetadata": {
+        "title": "Two Green Checks Can Still Hide One Bad Source",
+        "summary": "Reliable AI-agent review depends on independent evidence sources, visible evidence lineage, and rechecking mutable conditions when an action commits."
+      },
+      "topicIds": [
+        "ai-agents-and-review",
+        "ai-assisted-software-engineering",
+        "engineering-context-and-knowledge"
+      ],
+      "feedGuid": "https://medium.com/gitconnected/two-green-checks-can-still-hide-one-bad-source-af6596b8a281?sk=539ff4c09d655bd3c39e9aedd15ea5b8",
+      "preferredPublicationId": "external:gitconnected-two-green-checks-can-still-hide-one-bad-source-af6596b8a281",
+      "cover": null,
+      "publications": [
+        {
+          "id": "external:gitconnected-two-green-checks-can-still-hide-one-bad-source-af6596b8a281",
+          "url": "https://medium.com/gitconnected/two-green-checks-can-still-hide-one-bad-source-af6596b8a281?sk=539ff4c09d655bd3c39e9aedd15ea5b8",
+          "published": "2026-09-16",
           "source": "Level Up Coding",
           "external": true,
           "status": "public"
