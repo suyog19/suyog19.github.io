@@ -963,6 +963,17 @@
       "published": "2026-08-22"
     },
     {
+      "id": "newsletter:https://newsletter.suyogjoshi.com/p/what-does-your-coding-agent-send-from-your-repository",
+      "type": "Newsletter",
+      "title": "What Does Your Coding Agent Send From Your Repository?",
+      "summary": "A ZCode incident shows why access to your code and permission to upload it are different decisions.",
+      "url": "https://newsletter.suyogjoshi.com/p/what-does-your-coding-agent-send-from-your-repository",
+      "topics": [],
+      "source": "Software Signal Weekly",
+      "external": true,
+      "published": "2026-09-26"
+    },
+    {
       "id": "newsletter:https://newsletter.suyogjoshi.com/p/when-ai-workloads-change-the-infrastructure",
       "type": "Newsletter",
       "title": "When AI Workloads Change the Infrastructure",

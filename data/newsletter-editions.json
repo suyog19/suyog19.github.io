@@ -11,6 +11,13 @@
   },
   "editions": [
     {
+      "id": "https://newsletter.suyogjoshi.com/p/what-does-your-coding-agent-send-from-your-repository",
+      "title": "What Does Your Coding Agent Send From Your Repository?",
+      "summary": "A ZCode incident shows why access to your code and permission to upload it are different decisions.",
+      "published": "2026-09-26",
+      "url": "https://newsletter.suyogjoshi.com/p/what-does-your-coding-agent-send-from-your-repository"
+    },
+    {
       "id": "https://newsletter.suyogjoshi.com/p/before-you-switch-coding-agents-look-beyond-the-leaderboard",
       "title": "Before You Switch Coding Agents, Look Beyond the Leaderboard",
       "summary": "What benchmark rankings can tell you—and what you still need to test on your own codebase.",
