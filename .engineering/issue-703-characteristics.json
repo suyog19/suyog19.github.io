@@ -1,0 +1,6 @@
+{
+  "summary": "Issue 703 integrated event release validation, browser regression evidence and operational readiness record; no product or provider changes",
+  "observable_behavior": false,
+  "material_layout_change": false,
+  "state_transition": false
+}
